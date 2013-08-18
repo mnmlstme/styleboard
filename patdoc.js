@@ -2,9 +2,89 @@ function PatDoc( opts ) {
     var pd = this,
         env = {},
         selectors = [],
-        moduleDict = {},
         $modules = $('#modules'),
         $selectors = $('#selectors'),
+        dictionary = new Dictionary();
+        analyzer = new Analyzer( dictionary ),
+        parser = new Parser();
+
+    parser.load( opts.cssUrl, function (rules) {
+        rules.forEach( showRule );
+        analyzer.analyze( rules );
+        dictionary.each( function (module) {
+            module.show( $modules );
+        });
+    });
+
+    return pd;
+
+    // this is just debugging stuff for now; might use it to show the CSS
+    function showRule( rule ) {
+        var type = rule.type.toLowerCase()
+            $li = $selectors.mk('li.' + type);
+        switch (type) {
+        case 'ruleset':
+            rule.selectors.forEach( function (selector) {
+                selector.elements.forEach( function (el, i) {
+                    if (i && el.combinator.value !== '') 
+                        $li.mk('code.combinator', el.combinator.value );
+                    $li.mk('code.element', el.value);
+                });
+            });
+            break;
+        default:
+            $li.mk( 'code', rule.toCSS(env) );
+        }
+    }
+}
+
+function Dictionary() {
+    var dict = this,
+        modules = {};
+
+    dict.theModule = function ( name ) {
+        return modules[name] || (modules[name] = new Module( name ));
+    };
+
+    dict.each = function ( fn ) { _(modules).each( fn ); }
+
+    dict.remove = function ( name ) { delete modules[name]; }
+}
+
+function Parser( opts ) {
+    opts = opts || {};
+    var parser = this;
+
+    parser.load = function ( url, done ) {
+        $.ajax({ 
+            url: url, 
+            dataType: 'text',
+            error:  function ( xhr, status, error ) {
+                alert("Failed " + status + ": " + error);
+            },
+            success: function( data, status, xhr ) {
+                parse(data, done);
+            }
+        });
+    };
+
+    function parse(data, done) {
+        new less.Parser( opts )
+            .parse( data, function (err, tree ) {
+                if ( err ) {
+                    console.warn( err );
+                } else {
+                    console.log('Read ' + tree.rules.length + " rules.");
+                    done( tree.rules );
+                }
+            });
+    }
+
+}
+
+function Analyzer( dictionary ) {
+    var anal = this,
+        context = null,
         regex = {
             module: /^\.?([a-z]+)$/,
             classname: /^\.([a-zA-Z][a-zA-Z0-9-_]+)$/,
@@ -15,74 +95,31 @@ function PatDoc( opts ) {
             state: /^(is-[a-z-]+)$/
         };
 
-    $.ajax({ 
-        url: opts.cssUrl, 
-        dataType: 'text',
-        error:  function ( xhr, status, error ) {
-            alert("Failed " + status + ": " + error);
-        },
-        success: function( data, status, xhr ) {
-            parse(data);
-            selectors.forEach( showSelector );
-            selectors.forEach( analyze );
-            cleanDictionary();
-            _.keys(moduleDict).sort()
-                .forEach( function (key) { theModule(key).show( $modules ); } );
-        }
-    });
-
-    return pd;
-
-    function parse (css) {
-        var options = {};
-        new less.Parser( options )
-            .parse( css, function (err, tree ) {
-                if ( err ) {
-                    console.warn( err );
-                } else {
-                    console.log('Read ' + tree.rules.length + " rules.");
-                    selectors = _.flatten( tree.rules.map( function (node) {
-                        return node.type === 'Ruleset' ? node.selectors : node;
-                    }));
-                }
-            });
-    }
-
-    function showSelector ( selector ) {
-        var type = selector.type.toLowerCase()
-            $li = $selectors.mk('li.' + type);
-        switch (type) {
-        case 'selector':
-            selector.elements.forEach( function (el, i) {
-                if (i && el.combinator.value !== '') 
-                    $li.mk('code.combinator', el.combinator.value );
-                $li.mk('code.element', el.value);
-            });
-            break;
-        default:
-            $li.mk( 'code', selector.toCSS(env) );
-        }
-    }
-
-    function analyze ( selector ) {
-        var type = selector.type.toLowerCase(),
-            matches;
-        switch (type) {
-        case 'selector':
-            if (( matches = regex.module.exec( selector.elements[0].value ) )) {
-                analyzeModule( theModule(matches[1]), selector.elements.slice(0) );
+    anal.analyze = function ( rules ) {
+        rules.forEach( function (node) {
+            switch (node.type) {
+            case 'Ruleset':
+                // TODO: pass in the definitions too, if we want to show them later
+                node.selectors.forEach( doSelector );
+                break;
+            default:
             }
-            break;
-        default:
-            // TODO: analyze other types
+        });
+        cleanDictionary();
+    };
+
+    function doSelector( selector ) {
+        if (( matches = regex.module.exec( selector.elements[0].value ) )) {
+            doModule( dictionary.theModule(matches[1]), selector.elements.slice(0) );
         }
     }
 
-    function analyzeModule (module, elements ) {
+    function doModule(module, elements ) {
         var first = elements.shift(),
             isRoot = true,
             current,
             matches;
+        context = module;
         if ( regex.classname.exec( first.value ) ) module.setClass();
         if ( regex.tagname.exec( first.value ) ) module.setTag();
         while ( elements.length ) {
@@ -95,30 +132,26 @@ function PatDoc( opts ) {
                 if ( (matches = regex.member.exec( current.value )) && matches[2] === module.getName() ) 
                     module.addMember(matches[1]);
                 if (( matches = regex.module.exec( current.value ) )) 
-                    module.addRelated( matches[1], theModule(matches[1]) );
+                    module.addRelated( matches[1], dictionary.theModule(matches[1]) );
             }
         }
     }
 
     function cleanDictionary () {
-        _(moduleDict).each( function (module, name) {
+        dictionary.each( function (module, name) {
             if ( module.isUndefined() ) {
-                delete moduleDict[name];
+                dictionary.remove(name);
             } else {
                 module.cleanup();
             }
         });
     }
-
-    function theModule ( name ) {
-        return moduleDict[name] || (moduleDict[name] = new Module( name ));
-    }
 }
 
 function Module( name ) {
     var mod = this,
-        isClass = false,
-        isTag = false,
+        classed = false,
+        tagged = false,
         modifiers = {},
         members = {},
         helpers = {},
@@ -126,15 +159,17 @@ function Module( name ) {
         related = {};
 
     mod.getName = function () { return name; };
-    mod.setClass = function () { isClass = true; };
-    mod.setTag = function () { isTag = true; };
+    mod.setClass = function () { classed = true; };
+    mod.isClass = function () { return classed; };
+    mod.setTag = function () { tagged = true; };
+    mod.isTag = function () { return tagged; };
     mod.addModifier = function (name) { modifiers[name]++; };
     mod.addState = function (name) { states[name]++; };
     mod.addMember = function (name) { members[name]++; };
     mod.addRelated = function (name, module) { related[name] = module; };
 
     mod.isUndefined = function () {
-        return !isClass && !isTag;
+        return mod.isClass() && !mod.isTag();
     };
 
     mod.cleanup = function () {
@@ -147,10 +182,10 @@ function Module( name ) {
         var $dl, $dd;
         $section.mk('h2', name);
         $dl = $section.mk('dl');
-        if ( isClass ) {
+        if ( mod.isClass() ) {
             $dl.mk(['dt', 'Class'], ['dd', code(name) ]);
         }
-        if ( isTag ) {
+        if ( mod.isTag() ) {
             $dl.mk(['dt', 'Tag'], ['dd', code('<' + name + '>') ]);
         }
         if ( !_.isEmpty(modifiers) ) {
