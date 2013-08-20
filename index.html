@@ -2,18 +2,18 @@
     <head>
         <meta charset="utf-8">
         <title>PatternDoc</title>
-        <link rel="stylesheet" type="text/css" href="patdoc.css">
-        <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-        <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
-        <script src="less/dist/less-1.4.2.min.js"></script>
-        <script src="mkay/mkay.js"></script>
-        <script src="patdoc.js"></script>
+        <link rel="stylesheet" type="text/css" href="styleboard.css">
+        <script src="lib/jquery.min.js"></script>
+        <script src="lib/underscore-min.js"></script>
+        <script src="lib/less-1.4.2.min.js"></script>
+        <script src="lib/mkay.js"></script>
+        <script src="styleboard.js"></script>
     </head>
     <body>
         <section id ="modules"></section>
         <ul id ="selectors"></ul>
         <script>
-            var pd = new PatDoc( { cssUrl: "samples/core-styles.css" } );
+            var pd = new StyleBoard( { cssUrl: "samples/core-styles.css" } );
         </script>
     </body>
 </html>

@@ -1,6 +1,5 @@
-function PatDoc( opts ) {
-    var pd = this,
-        env = {},
+function StyleBoard( opts ) {
+    var env = {},
         selectors = [],
         $modules = $('#modules'),
         $selectors = $('#selectors'),
@@ -16,7 +15,7 @@ function PatDoc( opts ) {
         });
     });
 
-    return pd;
+    return this;
 
     // this is just debugging stuff for now; might use it to show the CSS
     function showRule( rule ) {
@@ -49,6 +48,8 @@ function Dictionary() {
     dict.each = function ( fn ) { _(modules).each( fn ); }
 
     dict.remove = function ( name ) { delete modules[name]; }
+
+    return dict;
 }
 
 function Parser( opts ) {
@@ -92,7 +93,14 @@ function Analyzer( dictionary ) {
             pseudo: /^::?([a-z-]+)$/,
             modifier: /^\.([a-z-]+\-)$/,
             member: /^\.(([a-z]+)\-[a-z]+)$/,
-            state: /^(is-[a-z-]+)$/
+            state: /^(is-[a-z-]+)$/,
+            cmtfirst: /^\/\*+\s*/,
+            cmtmiddle: /^\s*\*+\s*/,
+            cmtlast:  /\s*\*+\/\s*$/,
+            atmodule: /^\s*@module\s*(\S+)/,
+            atdescription: /^\s*@description\s*(.*)$/,
+            atexample: /^\s*@example\s*(.*)$/,
+            ateot: /^\s*(@[a-z]+.)?$/
         };
 
     anal.analyze = function ( rules ) {
@@ -102,11 +110,15 @@ function Analyzer( dictionary ) {
                 // TODO: pass in the definitions too, if we want to show them later
                 node.selectors.forEach( doSelector );
                 break;
+            case 'Comment':
+                doComment( node );
             default:
             }
         });
         cleanDictionary();
     };
+
+    return anal;
 
     function doSelector( selector ) {
         if (( matches = regex.module.exec( selector.elements[0].value ) )) {
@@ -114,7 +126,7 @@ function Analyzer( dictionary ) {
         }
     }
 
-    function doModule(module, elements ) {
+    function doModule( module, elements ) {
         var first = elements.shift(),
             isRoot = true,
             current,
@@ -137,8 +149,43 @@ function Analyzer( dictionary ) {
         }
     }
 
+    function doComment( comment ) {
+        var  lines = comment.value.split('\n').slice(0, -1)
+                .map( function ( line, i, list ) {
+                    return line.replace( regexForLine(i, list.length), '' );
+                }),
+            line, matches;
+
+        while ( lines.length ) {
+            line = lines.shift();
+            if (( matches = regex.atmodule.exec( line ) )) {
+                context = dictionary.theModule(matches[1]);
+                context.setDeclared();
+            } else if (( matches = regex.atdescription.exec( line ) )) {
+                if ( context ) context.addDescription( contentsOfBlock() );
+            } else if  (( matches = regex.atexample.exec( line ) )) {
+                if ( context ) context.addExample( contentsOfBlock() );
+            }
+        }
+
+        function regexForLine( i, length ) {
+            return i == 0 ? regex.cmtfirst : 
+                ( i == length-1 ? regex.cmtlast : regex.cmtmiddle );
+        }
+
+        function contentsOfBlock() {
+            var content = [];
+            if ( matches[1] ) content.push( matches[1] );
+            //lookahead: may be ended by another tag which we should not consume
+            while (( lines.length && !regex.ateot.exec(lines[0]) )) {
+                content.push( lines.shift() );
+            }
+            return content;
+        }
+    }
+
     function cleanDictionary () {
-        dictionary.each( function (module, name) {
+        dictionary.each( function ( module, name ) {
             if ( module.isUndefined() ) {
                 dictionary.remove(name);
             } else {
@@ -152,6 +199,9 @@ function Module( name ) {
     var mod = this,
         classed = false,
         tagged = false,
+        declared = false,
+        descriptions = [],
+        examples = [],
         modifiers = {},
         members = {},
         helpers = {},
@@ -163,13 +213,17 @@ function Module( name ) {
     mod.isClass = function () { return classed; };
     mod.setTag = function () { tagged = true; };
     mod.isTag = function () { return tagged; };
+    mod.setDeclared = function () { declared = true; };
+    mod.isDeclared = function () { return declared; };
+    mod.addDescription = function ( lines ) { descriptions.push( lines ); }
+    mod.addExample = function ( lines ) { examples.push( lines ); }
     mod.addModifier = function (name) { modifiers[name]++; };
     mod.addState = function (name) { states[name]++; };
     mod.addMember = function (name) { members[name]++; };
     mod.addRelated = function (name, module) { related[name] = module; };
 
     mod.isUndefined = function () {
-        return mod.isClass() && !mod.isTag();
+        return !mod.isClass() && !mod.isTag() && !mod.isDeclared();
     };
 
     mod.cleanup = function () {
@@ -187,6 +241,18 @@ function Module( name ) {
         }
         if ( mod.isTag() ) {
             $dl.mk(['dt', 'Tag'], ['dd', code('<' + name + '>') ]);
+        }
+        if ( !_.isEmpty(descriptions) ) {
+            $dl.mk('dt', 'Description');
+            descriptions.forEach( function (content) {
+                $dl.mk('dd', content.join('\n'));
+            });
+        }
+        if ( !_.isEmpty(examples) ) {
+            $dl.mk('dt', 'Example');
+            examples.forEach( function (content) {
+                $dl.mk('dd', ['pre', content.join('\n')] );
+            });
         }
         if ( !_.isEmpty(modifiers) ) {
             $dl.mk(['dt', 'Modifiers'], ['dd', _.keys(modifiers).sort().map(code)]);

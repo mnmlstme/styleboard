@@ -1,4 +1,7 @@
-/*comment*/
+/* @module stratum
+ * @description one horizontal full-width region of the page.
+ *    The stratum establishes the content boundaries for that region
+ */
 .stratum {
   display: block;
   margin: 0 50px;
@@ -266,6 +269,8 @@ button.secondary- {
  *
  * @example
  *   <input type="text" value="My input">
+ *
+ * @example
  *   <span class="text- input">My input</span>
  *
  */
@@ -335,6 +340,7 @@ input:-ms-input-placeholder {
 }
 /**
  * @module select
+ * @description an HTML select or similar drop-down selection
  */
 select:focus {
   outline: none;
