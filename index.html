@@ -1,7 +1,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>PatternDoc</title>
+        <title>StyleBoard</title>
         <link rel="stylesheet" type="text/css" href="styleboard.css">
         <script src="lib/jquery.min.js"></script>
         <script src="lib/underscore-min.js"></script>
@@ -10,10 +10,18 @@
         <script src="styleboard.js"></script>
     </head>
     <body>
-        <section id ="modules"></section>
-        <ul id ="selectors"></ul>
+        <section class="main- frame">
+            <iframe id="sandbox" src="about:blank"></iframe>
+        </section>
+        <section class="scrollable- side- frame">
+            <div id ="modules"></div>
+        </section>
+        <section class="scrollable- bottom- frame">
+            <ul id ="selectors"></ul>
+        </section>
         <script>
-            var pd = new StyleBoard( { cssUrl: "samples/core-styles.css" } );
+            var sb = new StyleBoard( { cssUrl: "samples/core-styles.css" } );
+            sb.loadExample('<button class="primary-">My Awesome Button</button>');
         </script>
     </body>
 </html>
