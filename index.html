@@ -7,18 +7,32 @@
         <script src="lib/underscore-min.js"></script>
         <script src="lib/less-1.4.2.min.js"></script>
         <script src="lib/mkay.js"></script>
-        <script src="styleboard.js"></script>
+        <script src="scripts/Module.js"></script>
+        <script src="scripts/Dictionary.js"></script>
+        <script src="scripts/Parser.js"></script>
+        <script src="scripts/Analyzer.js"></script>
+        <script src="scripts/styleboard.js"></script>
     </head>
     <body>
-        <section class="main- frame">
-            <iframe id="sandbox" src="about:blank"></iframe>
-        </section>
-        <section class="scrollable- side- frame">
-            <div id ="modules"></div>
-        </section>
-        <section class="scrollable- bottom- frame">
-            <ul id ="selectors"></ul>
-        </section>
+        <div class="horizontal- one-two- split- pane">
+            <section class="scrollable- left- pane">
+                <div id ="modules"></div>
+            </section>
+            <div class="vertical- two-one- split- right- pane">
+                <section class="top- pane">
+                    <iframe id="sandbox" src="about:blank"></iframe>
+                </section>
+                <div class="horizontal- split- bottom- pane">
+                    <section class="scrollable- left- pane">
+                        <pre id="example">
+                        </pre>
+                    </section>
+                    <section class="scrollable- right- pane">
+                        <ul id ="selectors"></ul>
+                    </section>
+                </div>
+            </div>
+        </div>
         <script>
             var sb = new StyleBoard( { cssUrl: "samples/core-styles.css" } );
             sb.loadExample('<button class="primary-">My Awesome Button</button>');

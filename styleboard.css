@@ -13,33 +13,59 @@ body {
     box-sizing: border-box;
 }
 
-.frame {
-    position: absolute;
-    border: 1px solid #999;
-}
-
-.main-.frame {
-    top: 0;
-    right: 0;
-    width: 60%;
-    height: 50%;
-}
-
-.side-.frame {
-    top: 0;
-    left: 0;
-    width: 40%;
+.split-.pane {
+    position: relative;
     height: 100%;
+    width: 100%;
 }
 
-.bottom-.frame {
-    top: 50%;
+.horizontal-.split-.pane > .pane {
+    width: 50%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+}
+
+.left-.pane {
+    left: 0;
+}
+
+.right-.pane {
     right: 0;
-    width: 60%;
-    height: 50%;
 }
 
-.scrollable-.frame {
+.one-two-.horizontal-.split-.pane > .left-.pane {
+    width: 33.33333333%;
+}
+
+.one-two-.horizontal-.split-.pane > .right-.pane {
+    width: 66.66666666%;
+}
+
+.vertical-.split-.pane > .pane {
+    width: 100%;
+    height: 50%;
+    position: absolute;
+    left: 0;
+}
+
+.two-one-.vertical-.split-.pane > .top-.pane {
+    height: 66.66666666%;
+}
+
+.two-one-.horizontal-.split-.pane > .bottom-.pane {
+    height: 33.33333333%;
+}
+
+.top-.pane {
+    top: 0;
+}
+
+.bottom-.pane {
+    bottom: 0;
+}
+
+.scrollable-.pane {
     overflow-x: hidden;
     overflow-y: scroll;
 }
