@@ -7,11 +7,6 @@
         <script src="lib/underscore-min.js"></script>
         <script src="lib/less-1.4.2.min.js"></script>
         <script src="lib/mkay.js"></script>
-        <script src="scripts/Module.js"></script>
-        <script src="scripts/Dictionary.js"></script>
-        <script src="scripts/Parser.js"></script>
-        <script src="scripts/Analyzer.js"></script>
-        <script src="scripts/styleboard.js"></script>
     </head>
     <body>
         <div class="horizontal- one-two- split- pane">
@@ -33,9 +28,6 @@
                 </div>
             </div>
         </div>
-        <script>
-            var sb = new StyleBoard( { cssUrl: "samples/core-styles.css" } );
-            sb.loadExample('<button class="primary-">My Awesome Button</button>');
-        </script>
+        <script data-main="scripts/styleboard" src="scripts/require.js"></script>
     </body>
 </html>
