@@ -11,18 +11,16 @@
     </head>
     <body>
         <div class="horizontal- one-two- split- frame">
-            <div class="tabbed- frame" data-selectedindex="2">
+            <div id="dictionaryView" class="tabbed- frame">
                 <ul class="frame-tabs">
-                    <li>Index
-                    <li class="is-active">Button
+                    <li class="is-active">TOC</li><li></li>
                 </ul>
                 <ul class="frame-panes">
-                    <li>
-                        <ul id ="moduleList" class="scrollable- pane">
-                        </ul>
-                    </li>
                     <li class="is-active">
-                        <section id="currentModule"  class="scrollable- pane"></section>
+                        <ul class="dictionary-list scrollable- pane"></ul>
+                    </li>
+                    <li>
+                        <section class="dictionary-entry scrollable- pane"></section>
                     </li>
                 </ul>
             </div>

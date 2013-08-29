@@ -102,9 +102,9 @@ define( function () {
         }
     
         function cleanDictionary () {
-            dictionary.each( function ( module, name ) {
+            dictionary.each( function ( module ) {
                 if ( module.isUndefined() ) {
-                    dictionary.remove(name);
+                    dictionary.remove( module );
                 } else {
                     module.cleanup();
                 }

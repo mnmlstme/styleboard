@@ -10,6 +10,7 @@
     border-width: 1px;
     border-style: solid;
     border-color: @border-hi-color @border-lo-color @border-lo-color @border-hi-color;
+    padding: .5em;
 
     &.scrollable- {
         overflow-x: hidden;
@@ -57,17 +58,22 @@
         position: relative;
         ul.frame-tabs {
             background: @background-alt-color;
-            color: @body-lo-color;
+            color: @body-color;
             white-space: nowrap;
+            padding: 0 .25em;
             > li {
                 display: inline-block;
                 padding: .25em;
                 margin: .25em;
                 background: @background-color;
                 border: 1px solid @border-color;
+                cursor: pointer;
                 &.is-active {
                     color: @hl-color-1;
                     border-color: @hl-color-1;
+                }
+                &:empty {
+                    visibility: hidden;
                 }
             }
         }

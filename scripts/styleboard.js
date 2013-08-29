@@ -1,5 +1,5 @@
-require(["Dictionary", "Analyzer", "Parser", "ModuleView"], 
-function( Dictionary, Analyzer, Parser, ModuleView ) {
+require(["Dictionary", "Analyzer", "Parser", "DictionaryView"], 
+function( Dictionary, Analyzer, Parser, DictionaryView ) {
 
     console.log("loading styleboard.js");
 
@@ -10,7 +10,7 @@ function( Dictionary, Analyzer, Parser, ModuleView ) {
         var sb = this,
         env = {},
         cssUrl = opts.cssUrl || 'samples/home.css',
-        $moduleList = $('#moduleList'),
+        $dictionaryView = $('#dictionaryView'),
         $currentModule = $('#currentModule'),
         $selectors = $('#selectors'),
         dictionary = new Dictionary();
@@ -20,12 +20,9 @@ function( Dictionary, Analyzer, Parser, ModuleView ) {
         parser.load( cssUrl, function (rules) {
             rules.forEach( showRule );
             analyzer.analyze( rules );
-            dictionary.each( function (module) {
-                $moduleList.mk( 'li', module.get('name') );
-            });
-            (new ModuleView({
-                el: $currentModule,
-                model: dictionary.theModule('button')
+            (new DictionaryView({
+                el: $dictionaryView,
+                model: dictionary
             })).render();
         });
     
