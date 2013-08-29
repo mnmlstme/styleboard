@@ -1,0 +1,55 @@
+
+.pane, .frame {
+    height: 100%;
+    width: 100%;
+}
+
+.pane {
+    border-width: 1px;
+    border-style: solid;
+    border-color: @border-hi-color @border-lo-color @border-lo-color @border-hi-color;
+
+    &.scrollable- {
+        overflow-x: hidden;
+        overflow-y: scroll;
+    }
+}
+
+.frame {
+    &.split- {
+        position: relative;
+        > * {
+            position: absolute;
+        }
+        &.horizontal- {
+            > * {
+                width: 50%;
+                height: 100%;
+                top: 0;
+            }
+            > :first-child {
+                left: 0;
+            }
+            > :last-child {
+                right: 0;
+            }
+            &.one-two- {
+                > :first-child {
+                    width: 1/3 * 100%;
+                }
+                > :last-child {
+                    width: 2/3 * 100%;
+                }
+            }
+        }
+        &.vertical- > * {
+            width: 100%;
+            height: 50%;
+            left: 0;
+            &:first-child { top: 0; }
+            &:last-child { bottom: 0; }
+        }
+    }
+}
+
+

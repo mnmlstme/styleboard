@@ -24,7 +24,7 @@ require(["Dictionary", "Analyzer", "Parser"], function( Dictionary, Analyzer, Pa
         });
     
         sb.loadExample = function( example ) {
-            var doc = $('#sandbox')[0].contentWindow.document;
+            var doc = $('#sandbox iframe')[0].contentWindow.document;
             doc.open();
             doc.write('<html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" type="text/css" href="' +
                       cssUrl + '"></head><body>' + example + '</body></html>');

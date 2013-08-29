@@ -1,0 +1,45 @@
+@import "palette";
+@import "pane";
+@import "lists";
+@import "code";
+
+body {
+    font-family: 'Lucida Grande', 'Lucida Sans Unicode', serif;
+    font-size: 75%;
+    background: @background-color;
+    color: @body-color;
+    position: fixed;
+    top: 0;
+    left: 0;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+#modules {
+    padding: 10px;
+}
+
+#sandbox {
+    background: white url(../graphics/checkerboard.svg);
+    iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+        padding: 64px;
+    }
+}
+
+#selectors {
+    padding: 10px;
+    margin: 0;
+}
+

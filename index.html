@@ -2,27 +2,27 @@
     <head>
         <meta charset="utf-8">
         <title>StyleBoard</title>
-        <link rel="stylesheet" type="text/css" href="styleboard.css">
+        <link rel="stylesheet" type="text/css" href="styles/styleboard.css">
         <script src="lib/jquery.min.js"></script>
         <script src="lib/underscore-min.js"></script>
         <script src="lib/less-1.4.2.min.js"></script>
         <script src="lib/mkay.js"></script>
     </head>
     <body>
-        <div class="horizontal- one-two- split- pane">
-            <section class="scrollable- left- pane">
+        <div class="horizontal- one-two- split- frame">
+            <section class="scrollable- pane">
                 <div id ="modules"></div>
             </section>
-            <div class="vertical- two-one- split- right- pane">
-                <section class="top- pane">
-                    <iframe id="sandbox" src="about:blank"></iframe>
+            <div class="vertical- split- frame">
+                <section id="sandbox" class="pane">
+                    <iframe src="about:blank"></iframe>
                 </section>
-                <div class="horizontal- split- bottom- pane">
-                    <section class="scrollable- left- pane">
+                <div class="horizontal- split- frame">
+                    <section class="scrollable- pane">
                         <pre id="example">
                         </pre>
                     </section>
-                    <section class="scrollable- right- pane">
+                    <section class="scrollable- pane">
                         <ul id ="selectors"></ul>
                     </section>
                 </div>

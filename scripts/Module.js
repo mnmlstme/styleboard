@@ -56,7 +56,7 @@ define( function () {
             if ( !_.isEmpty(examples) ) {
                 $dl.mk('dt', 'Example');
                 examples.forEach( function (content) {
-                    $dl.mk('dd', ['pre', content.join('\n')] );
+                    $dl.mk('dd', ['pre.example', content.join('\n')] );
                 });
             }
             if ( !_.isEmpty(modifiers) ) {
