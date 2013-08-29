@@ -25,13 +25,15 @@ define( function () {
             if ( descriptions ) {
                 $dl.mk('dt', 'Description');
                 descriptions.forEach( function (content) {
-                    $dl.mk('dd', content.join('\n'));
+                    $dl.mk('dd', content);
                 });
             }
             if ( examples ) {
-                $dl.mk('dt', 'Example');
-                examples.forEach( function (content) {
-                    $dl.mk('dd', ['pre.example', content.join('\n')] );
+                examples.forEach( function (example) {
+                    var content = example.get('html'),
+                        title = example.get('title');
+                    $dl.mk('dt', 'Example' + (title ? ': ' + title : ''));
+                    $dl.mk('dd', ['pre.example', content] );
                 });
             }
             if ( modifiers ) {

@@ -1,10 +1,7 @@
-require(["Dictionary", "Analyzer", "Parser", "DictionaryView"], 
-function( Dictionary, Analyzer, Parser, DictionaryView ) {
+require(['Dictionary', 'Analyzer', 'Parser', 'DictionaryView', 'RenderedView'], 
+function( Dictionary, Analyzer, Parser, DictionaryView, RenderedView ) {
 
-    console.log("loading styleboard.js");
-
-    var sb = new StyleBoard( { cssUrl: "samples/core-styles.css" } );
-    sb.loadExample('<button class="primary-">My Awesome Button</button>');
+    new StyleBoard( { cssUrl: "samples/core-styles.css" } );
 
     function StyleBoard( opts ) {
         var sb = this,
@@ -16,26 +13,22 @@ function( Dictionary, Analyzer, Parser, DictionaryView ) {
         dictionary = new Dictionary();
         analyzer = new Analyzer( dictionary ),
         parser = new Parser();
-    
+
         parser.load( cssUrl, function (rules) {
             rules.forEach( showRule );
             analyzer.analyze( rules );
             (new DictionaryView({
-                el: $dictionaryView,
+                el: $('#dictionaryView'),
                 model: dictionary
             })).render();
+            (new RenderedView({
+                el: $('#sandbox'),
+                cssUrl: cssUrl
+            })).render();
         });
-    
-        sb.loadExample = function( example ) {
-            var doc = $('#sandbox iframe')[0].contentWindow.document;
-            doc.open();
-            doc.write('<html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" type="text/css" href="' +
-                      cssUrl + '"></head><body>' + example + '</body></html>');
-            doc.close();
-        }
-    
+
         return sb;
-    
+
         // this is just debugging stuff for now; might use it to show the CSS
         function showRule( rule ) {
             var type = rule.type.toLowerCase()

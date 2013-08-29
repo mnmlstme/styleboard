@@ -1,4 +1,4 @@
-define( function () {
+define(['Example'], function (Example) {
 
     var Module = Backbone.Model.extend({
 
@@ -11,12 +11,15 @@ define( function () {
         
         addDescription: function ( lines ) { 
             this.get('descriptions') ||  this.set('descriptions', []);
-            this.get('descriptions').push( lines );
+            this.get('descriptions').push( lines.join('\n') );
         },
         
-        addExample: function ( lines ) {
+        addExample: function ( lines, title ) {
+            var attrs = { html: lines.join('\n') };
+            if ( title ) { attrs.title = title; }
+
             this.get('examples') ||  this.set('examples', []);
-            this.get('examples').push( lines );
+            this.get('examples').push( new Example(attrs) );
         },
         
         addModifier: function (name) {

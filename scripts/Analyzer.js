@@ -79,9 +79,9 @@ define( function () {
                     context = dictionary.theModule(matches[1]);
                     context.set('isDeclared');
                 } else if (( matches = regex.atdescription.exec( line ) )) {
-                    if ( context ) context.addDescription( contentsOfBlock() );
+                    if ( context ) context.addDescription( contentsOfBlock(true) );
                 } else if  (( matches = regex.atexample.exec( line ) )) {
-                    if ( context ) context.addExample( contentsOfBlock() );
+                    if ( context ) context.addExample( contentsOfBlock(), matches[1] );
                 }
             }
     
@@ -90,9 +90,9 @@ define( function () {
                     ( i == length-1 ? regex.cmtlast : regex.cmtmiddle );
             }
     
-            function contentsOfBlock() {
+            function contentsOfBlock( includeMatch ) {
                 var content = [];
-                if ( matches[1] ) content.push( matches[1] );
+                if ( includeMatch && matches[1] ) content.push( matches[1] );
                 //lookahead: may be ended by another tag which we should not consume
                 while (( lines.length && !regex.ateot.exec(lines[0]) )) {
                     content.push( lines.shift() );

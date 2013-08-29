@@ -1,4 +1,4 @@
-define(["ModuleView"], function ( ModuleView ) {
+define(["ModuleView", "appState"], function ( ModuleView, appState ) {
 
     var DictionaryView = Backbone.View.extend({
 
@@ -11,7 +11,11 @@ define(["ModuleView"], function ( ModuleView ) {
             view.$namedTab = $el.find('.frame-tabs > li:eq(1)');
             view.$current = $el.find('.dictionary-entry');
 
-            dict.on('add', view.add, view);
+            dict.on('add', view.addModule, view);
+
+            appState.on('change:module', function (model, value) {
+                view.renderModule( value );
+            });
         },
 
         render: function () {
@@ -19,18 +23,13 @@ define(["ModuleView"], function ( ModuleView ) {
                 dict = view.model;
 
             dict.each( function (mod) {
-                view.add( mod, dict );
+                view.addModule( mod, dict );
             });
 
             return view;
         },
 
-        add: function ( mod, dict, options ) {
-            var view = this;
-            view.$moduleList.mk( 'li', mod.get('name') );
-        },
-
-        select: function ( mod ) {
+        renderModule: function ( mod ) {
             var view = this,
                 dict = view.model;
             
@@ -42,11 +41,9 @@ define(["ModuleView"], function ( ModuleView ) {
             })).render();
         },
 
-        selectPane: function ( index ) {
+        addModule: function ( mod, dict, options ) {
             var view = this;
-
-            activateNth( view.$('.frame-tabs > li'), index );
-            activateNth( view.$('.frame-panes > li'), index );
+            view.$moduleList.mk( 'li', mod.get('name') );
         },
 
         events: {
@@ -69,8 +66,15 @@ define(["ModuleView"], function ( ModuleView ) {
                 index = $target.index(),
                 mod = dict.at(index);
 
-            view.select( mod );
+            appState.set('module', mod);
             view.selectPane( 1 );
+        },
+
+        selectPane: function ( index ) {
+            var view = this;
+
+            activateNth( view.$('.frame-tabs > li'), index );
+            activateNth( view.$('.frame-panes > li'), index );
         }
 
     }); // end of DictionaryView view
