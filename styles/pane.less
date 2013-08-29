@@ -5,6 +5,8 @@
 }
 
 .pane {
+    background: @background-color;
+    color: @body-color;
     border-width: 1px;
     border-style: solid;
     border-color: @border-hi-color @border-lo-color @border-lo-color @border-hi-color;
@@ -48,6 +50,34 @@
             left: 0;
             &:first-child { top: 0; }
             &:last-child { bottom: 0; }
+        }
+    }
+
+    &.tabbed- {
+        position: relative;
+        ul.frame-tabs {
+            background: @background-alt-color;
+            color: @body-lo-color;
+            white-space: nowrap;
+            > li {
+                display: inline-block;
+                padding: .25em;
+                margin: .25em;
+                background: @background-color;
+                border: 1px solid @border-color;
+                &.is-active {
+                    color: @hl-color-1;
+                    border-color: @hl-color-1;
+                }
+            }
+        }
+        ul.frame-panes {
+            > li {
+                display: none;
+                &.is-active {
+                    display: block;
+                }
+            }
         }
     }
 }

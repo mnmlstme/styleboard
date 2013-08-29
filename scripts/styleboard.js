@@ -9,7 +9,8 @@ require(["Dictionary", "Analyzer", "Parser"], function( Dictionary, Analyzer, Pa
         var sb = this,
         env = {},
         cssUrl = opts.cssUrl || 'samples/home.css',
-        $modules = $('#modules'),
+        $moduleList = $('#moduleList'),
+        $currentModule = $('#currentModule'),
         $selectors = $('#selectors'),
         dictionary = new Dictionary();
         analyzer = new Analyzer( dictionary ),
@@ -19,8 +20,9 @@ require(["Dictionary", "Analyzer", "Parser"], function( Dictionary, Analyzer, Pa
             rules.forEach( showRule );
             analyzer.analyze( rules );
             dictionary.each( function (module) {
-                module.show( $modules );
+                $moduleList.mk( 'li', module.getName() );
             });
+            dictionary.theModule('button').show($currentModule);
         });
     
         sb.loadExample = function( example ) {

@@ -10,9 +10,21 @@
     </head>
     <body>
         <div class="horizontal- one-two- split- frame">
-            <section class="scrollable- pane">
-                <div id ="modules"></div>
-            </section>
+            <div class="tabbed- frame" data-selectedindex="2">
+                <ul class="frame-tabs">
+                    <li>Index
+                    <li class="is-active">Button
+                </ul>
+                <ul class="frame-panes">
+                    <li>
+                        <ul id ="moduleList" class="scrollable- pane">
+                        </ul>
+                    </li>
+                    <li class="is-active">
+                        <section id="currentModule"  class="scrollable- pane"></section>
+                    </li>
+                </ul>
+            </div>
             <div class="vertical- split- frame">
                 <section id="sandbox" class="pane">
                     <iframe src="about:blank"></iframe>

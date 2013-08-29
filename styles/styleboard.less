@@ -1,13 +1,12 @@
+@import "reset.css";
 @import "palette";
 @import "pane";
-@import "lists";
 @import "code";
 
 body {
     font-family: 'Lucida Grande', 'Lucida Sans Unicode', serif;
     font-size: 75%;
-    background: @background-color;
-    color: @body-color;
+    line-height: 1.5;
     position: fixed;
     top: 0;
     left: 0;
@@ -27,6 +26,8 @@ body {
 
 #sandbox {
     background: white url(../graphics/checkerboard.svg);
+    border: none;
+    box-shadow: 0 0 5px rgba(0,0,0,0.5) inset;
     iframe {
         position: absolute;
         top: 0;
