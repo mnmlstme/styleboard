@@ -1,4 +1,5 @@
-require(["Dictionary", "Analyzer", "Parser"], function( Dictionary, Analyzer, Parser ) {
+require(["Dictionary", "Analyzer", "Parser", "ModuleView"], 
+function( Dictionary, Analyzer, Parser, ModuleView ) {
 
     console.log("loading styleboard.js");
 
@@ -20,9 +21,12 @@ require(["Dictionary", "Analyzer", "Parser"], function( Dictionary, Analyzer, Pa
             rules.forEach( showRule );
             analyzer.analyze( rules );
             dictionary.each( function (module) {
-                $moduleList.mk( 'li', module.getName() );
+                $moduleList.mk( 'li', module.get('name') );
             });
-            dictionary.theModule('button').show($currentModule);
+            (new ModuleView({
+                el: $currentModule,
+                model: dictionary.theModule('button')
+            })).render();
         });
     
         sb.loadExample = function( example ) {

@@ -1,85 +1,52 @@
 define( function () {
 
-    function Module( name ) {
-        var mod = this,
-            classed = false,
-            tagged = false,
-            declared = false,
-            descriptions = [],
-            examples = [],
-            modifiers = {},
-            members = {},
-            helpers = {},
-            states = {},
-            related = {};
-    
-        mod.getName = function () { return name; };
-        mod.setClass = function () { classed = true; };
-        mod.isClass = function () { return classed; };
-        mod.setTag = function () { tagged = true; };
-        mod.isTag = function () { return tagged; };
-        mod.setDeclared = function () { declared = true; };
-        mod.isDeclared = function () { return declared; };
-        mod.addDescription = function ( lines ) { descriptions.push( lines ); }
-        mod.addExample = function ( lines ) { examples.push( lines ); }
-        mod.addModifier = function (name) { modifiers[name]++; };
-        mod.addState = function (name) { states[name]++; };
-        mod.addMember = function (name) { members[name]++; };
-        mod.addRelated = function (name, module) { related[name] = module; };
-    
-        mod.isUndefined = function () {
-            return !mod.isClass() && !mod.isTag() && !mod.isDeclared();
-        };
-    
-        mod.cleanup = function () {
+    var Module = Backbone.Model.extend({
+
+        isClass: function () { return !!this.get('isClass'); },
+        isElement: function () { return !!this.get('isElement'); },
+        isDeclared: function () { return !!this.get('isDeclared'); },
+        isUndefined: function () {
+            return !this.isClass() && !this.isElement() && !this.isDeclared();
+        },
+        
+        addDescription: function ( lines ) { 
+            this.get('descriptions') ||  this.set('descriptions', []);
+            this.get('descriptions').push( lines );
+        },
+        
+        addExample: function ( lines ) {
+            this.get('examples') ||  this.set('examples', []);
+            this.get('examples').push( lines );
+        },
+        
+        addModifier: function (name) {
+            this.get('modifiers') ||  this.set('modifiers', {});
+            this.get('modifiers')[name]++;
+        },
+
+        addState: function (name) {
+            this.get('states') ||  this.set('states', {});
+            this.get('states')[name]++;
+        },
+        
+        addMember: function (name) {
+            this.get('members') ||  this.set('members', {});
+            this.get('members')[name]++;
+        },
+
+        addRelated: function (name, module) {
+            this.get('related') ||  this.set('related', {});
+            this.get('related')[name] = module;
+        },
+        
+        cleanup: function () {
+            var related = this.get('related');
             _(related).each( function (module, name) {
                 if ( module.isUndefined() ) delete related[name];
             });
-        };
-    
-        mod.show = function ( $section ) {
-            var $dl, $dd;
-            $section.mk('h2', name);
-            $dl = $section.mk('dl');
-            if ( mod.isClass() ) {
-                $dl.mk(['dt', 'Class'], ['dd', code(name) ]);
-            }
-            if ( mod.isTag() ) {
-                $dl.mk(['dt', 'Tag'], ['dd', code('<' + name + '>') ]);
-            }
-            if ( !_.isEmpty(descriptions) ) {
-                $dl.mk('dt', 'Description');
-                descriptions.forEach( function (content) {
-                    $dl.mk('dd', content.join('\n'));
-                });
-            }
-            if ( !_.isEmpty(examples) ) {
-                $dl.mk('dt', 'Example');
-                examples.forEach( function (content) {
-                    $dl.mk('dd', ['pre.example', content.join('\n')] );
-                });
-            }
-            if ( !_.isEmpty(modifiers) ) {
-                $dl.mk(['dt', 'Modifiers'], ['dd', _.keys(modifiers).sort().map(code)]);
-            }
-            if ( !_.isEmpty(states) ) {
-                $dl.mk(['dt', 'States'], ['dd', _.keys(states).sort().map(code)]);
-            }
-            if ( !_.isEmpty(members) ) {
-                $dl.mk(['dt', 'Members'], ['dd', _.keys(members).sort().map(code)]);
-            }
-            if ( !_.isEmpty(related) ) {
-                $dl.mk(['dt', 'Related to'], ['dd', _.keys(related).sort().map(code)]);
-            }
-        };
-    
-        return mod;
-    
-        function code( text ) {
-            return $.mk('code', text);
         }
-    
-    }
+
+    }); // end of Module model
 
     return Module;
 });

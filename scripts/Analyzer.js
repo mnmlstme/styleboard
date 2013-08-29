@@ -49,8 +49,8 @@ define( function () {
                 current,
                 matches;
             context = module;
-            if ( regex.classname.exec( first.value ) ) module.setClass();
-            if ( regex.tagname.exec( first.value ) ) module.setTag();
+            if ( regex.classname.exec( first.value ) ) module.set('isClass', true);
+            if ( regex.tagname.exec( first.value ) ) module.set('isElement', true);
             while ( elements.length ) {
                 current = elements.shift();
                 isRoot = isRoot && current.combinator.value === '';
@@ -58,7 +58,7 @@ define( function () {
                     if (( matches = regex.modifier.exec( current.value ) )) module.addModifier(matches[1]);
                     if (( matches = regex.state.exec( current.value ) )) module.addState(matches[1]);
                 } else {
-                    if ( (matches = regex.member.exec( current.value )) && matches[2] === module.getName() ) 
+                    if ( (matches = regex.member.exec( current.value )) && matches[2] === module.get('name') ) 
                         module.addMember(matches[1]);
                     if (( matches = regex.module.exec( current.value ) )) 
                         module.addRelated( matches[1], dictionary.theModule(matches[1]) );
@@ -77,7 +77,7 @@ define( function () {
                 line = lines.shift();
                 if (( matches = regex.atmodule.exec( line ) )) {
                     context = dictionary.theModule(matches[1]);
-                    context.setDeclared();
+                    context.set('isDeclared');
                 } else if (( matches = regex.atdescription.exec( line ) )) {
                     if ( context ) context.addDescription( contentsOfBlock() );
                 } else if  (( matches = regex.atexample.exec( line ) )) {
