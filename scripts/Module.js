@@ -2,13 +2,6 @@ define(['Example'], function (Example) {
 
     var Module = Backbone.Model.extend({
 
-        isClass: function () { return !!this.get('isClass'); },
-        isElement: function () { return !!this.get('isElement'); },
-        isDeclared: function () { return !!this.get('isDeclared'); },
-        isUndefined: function () {
-            return !this.isClass() && !this.isElement() && !this.isDeclared();
-        },
-        
         addDescription: function ( lines ) { 
             this.get('descriptions') ||  this.set('descriptions', []);
             this.get('descriptions').push( lines.join('\n') );
@@ -22,6 +15,11 @@ define(['Example'], function (Example) {
             this.get('examples').push( new Example(attrs) );
         },
         
+        addSelector: function (selector) {
+            this.get('selectors') || this.set('selectors', {});
+            this.get('selectors')[selector]++;
+        },
+
         addModifier: function (name) {
             this.get('modifiers') ||  this.set('modifiers', {});
             this.get('modifiers')[name]++;
@@ -45,7 +43,7 @@ define(['Example'], function (Example) {
         cleanup: function () {
             var related = this.get('related');
             _(related).each( function (module, name) {
-                if ( module.isUndefined() ) delete related[name];
+                if ( !module.get('isDocumented') ) delete related[name];
             });
         }
 

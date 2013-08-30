@@ -1,10 +1,17 @@
 define( function () {
 
+    // TODO: implement the inverse case of these options
+    config = {
+        strictSyntax: true,              // ignore comments not beginning with /**
+        ignoreUndocumented: true,        // ignore modules not preceded by documentation
+        inferRelations: true,            // find relate classes by analyzing modules' selectors
+        strictNaming: true               // use naming conventions when infering relations
+    };
+
     function Analyzer( dictionary ) {
         var anal = this,
-            context = null,
             regex = {
-                module: /^\.?([a-z]+)$/,
+                module: /^\.([a-z]+)$/,
                 classname: /^\.([a-zA-Z][a-zA-Z0-9-_]+)$/,
                 tagname: /^([a-z]+)$/,
                 pseudo: /^::?([a-z-]+)$/,
@@ -12,23 +19,42 @@ define( function () {
                 member: /^\.(([a-z]+)\-[a-z]+)$/,
                 state: /^(is-[a-z-]+)$/,
                 cmtfirst: /^\/\*+\s*/,
-                cmtmiddle: /^\s*\*+\s*/,
+                cmtmiddle: /^(\s*\*+\s?)?/,
                 cmtlast:  /\s*\*+\/\s*$/,
-                atmodule: /^\s*@module\s*(\S+)/,
-                atdescription: /^\s*@description\s*(.*)$/,
-                atexample: /^\s*@example\s*(.*)$/,
-                ateot: /^\s*(@[a-z]+.)?$/
+                atcommand: /^\s*@([a-z-]+)\s*(.*)\s*$/,
+                ateot: /^\s*(@[a-z-]+.*)?$/
             };
-    
+
         anal.analyze = function ( rules ) {
+            var pendingComment = null;
             rules.forEach( function (node) {
+                var module,
+                    matches;
                 switch (node.type) {
                 case 'Ruleset':
-                    // TODO: pass in the definitions too, if we want to show them later
-                    node.selectors.forEach( doSelector );
+                    // TODO: handle the case where the first selector is not a classname, but a later one is
+                    if (( matches = regex.classname.exec( node.selectors[0].elements[0].value ) )) {
+                        module = dictionary.findWhere({ name: matches[1] }) ||
+                            (pendingComment || regex.module.exec(matches[0])) && dictionary.theModule(matches[1]);
+                        if ( module ) {
+                            // TODO: add the definitions from the rule, too
+                            node.selectors.forEach( function ( selector ) {
+                                doSelector( module, selector );
+                            });
+                            if ( pendingComment ) {
+                                doComment( module, pendingComment );
+                                pendingComment = null;
+                            }
+                        }
+                    }
                     break;
                 case 'Comment':
-                    doComment( node );
+                    if (regex.cmtfirst.exec( node.value )) {
+                        if (pendingComment) {
+                            console.warn('dropping unused styledoc comment: ' + pendingComment);
+                        }
+                        pendingComment = node.value;
+                    }
                 default:
                 }
             });
@@ -38,50 +64,56 @@ define( function () {
         return anal;
     
         function doSelector( selector ) {
-            if (( matches = regex.module.exec( selector.elements[0].value ) )) {
-                doModule( dictionary.theModule(matches[1]), selector.elements.slice(0) );
-            }
+            var module;
         }
     
-        function doModule( module, elements ) {
-            var first = elements.shift(),
-                isRoot = true,
-                current,
+        function doSelector( module, selector ) {
+            var elements = selector.elements.slice(0),
+                current = elements.shift().value,
+                atRoot = true,
                 matches;
-            context = module;
-            if ( regex.classname.exec( first.value ) ) module.set('isClass', true);
-            if ( regex.tagname.exec( first.value ) ) module.set('isElement', true);
+
+            if (regex.module.exec( current ) || regex.tagname.exec( current )) {
+                module.addSelector( current );
+            }
+
             while ( elements.length ) {
-                current = elements.shift();
-                isRoot = isRoot && current.combinator.value === '';
-                if( isRoot ) {
-                    if (( matches = regex.modifier.exec( current.value ) )) module.addModifier(matches[1]);
-                    if (( matches = regex.state.exec( current.value ) )) module.addState(matches[1]);
+                atRoot = atRoot && elements[0].combinator.value === '';
+                current = elements.shift().value;
+                if ( atRoot ) {
+                    if (( matches = regex.modifier.exec( current) )) module.addModifier(matches[1]);
+                    if (( matches = regex.state.exec( current ) )) module.addState(matches[1]);
                 } else {
-                    if ( (matches = regex.member.exec( current.value )) && matches[2] === module.get('name') ) 
+                    if ( (matches = regex.member.exec( current )) && matches[2] === module.get('name') ) 
                         module.addMember(matches[1]);
-                    if (( matches = regex.module.exec( current.value ) )) 
+                    if (( matches = regex.module.exec( current ) )) 
                         module.addRelated( matches[1], dictionary.theModule(matches[1]) );
                 }
             }
         }
-    
-        function doComment( comment ) {
-            var  lines = comment.value.split('\n').slice(0, -1)
+
+        function doComment( module, comment ) {
+            var  lines = comment.split('\n').slice(0, -1)
                     .map( function ( line, i, list ) {
                         return line.replace( regexForLine(i, list.length), '' );
                     }),
                 line, matches;
-    
+
+            module.set('isDocumented', true);
+
             while ( lines.length ) {
                 line = lines.shift();
-                if (( matches = regex.atmodule.exec( line ) )) {
-                    context = dictionary.theModule(matches[1]);
-                    context.set('isDeclared');
-                } else if (( matches = regex.atdescription.exec( line ) )) {
-                    if ( context ) context.addDescription( contentsOfBlock(true) );
-                } else if  (( matches = regex.atexample.exec( line ) )) {
-                    if ( context ) context.addExample( contentsOfBlock(), matches[1] );
+debugger;
+                if  (( matches = regex.atcommand.exec( line ) )) {
+                    switch ( matches[1] ) {
+                    case 'example': 
+                        module.addExample( contentsOfBlock(), matches[2] );
+                        break;
+                    default:
+                        console.warn('unrecognized styledoc tag @' + matches[1]);
+                    }
+                } else {
+                    module.addDescription( contentsOfBlock(line) );
                 }
             }
     
@@ -90,9 +122,9 @@ define( function () {
                     ( i == length-1 ? regex.cmtlast : regex.cmtmiddle );
             }
     
-            function contentsOfBlock( includeMatch ) {
+            function contentsOfBlock( firstLine ) {
                 var content = [];
-                if ( includeMatch && matches[1] ) content.push( matches[1] );
+                if ( firstLine ) content.push( firstLine );
                 //lookahead: may be ended by another tag which we should not consume
                 while (( lines.length && !regex.ateot.exec(lines[0]) )) {
                     content.push( lines.shift() );
@@ -103,7 +135,7 @@ define( function () {
     
         function cleanDictionary () {
             dictionary.each( function ( module ) {
-                if ( module.isUndefined() ) {
+                if ( !module.get('isDocumented') ) {
                     dictionary.remove( module );
                 } else {
                     module.cleanup();

@@ -7,6 +7,7 @@ define( function () {
                 mod = view.model,
                 name = mod.get('name'),
                 descriptions = mod.get('descriptions'),
+                selectors = mod.get('selectors'),
                 examples = mod.get('examples'),
                 modifiers = mod.get('modifiers'),
                 states = mod.get('states'),
@@ -16,11 +17,8 @@ define( function () {
 
             view.$el.mk('h2', name);
             $dl = view.$el.mk('dl');
-            if ( mod.isClass() ) {
-                $dl.mk(['dt', 'Class'], ['dd', code(name) ]);
-            }
-            if ( mod.isElement() ) {
-                $dl.mk(['dt', 'Tag'], ['dd', code('<' + name + '>') ]);
+            if ( selectors ) {
+                $dl.mk(['dt', 'Selectors'], ['dd'].concat(_.keys(selectors).sort().map(code)) );
             }
             if ( descriptions ) {
                 $dl.mk('dt', 'Description');
@@ -37,16 +35,16 @@ define( function () {
                 });
             }
             if ( modifiers ) {
-                $dl.mk(['dt', 'Modifiers'], ['dd', _.keys(modifiers).sort().map(code)]);
+                $dl.mk(['dt', 'Modifiers'], ['dd'].concat(_.keys(modifiers).sort().map(code)) );
             }
             if ( states ) {
-                $dl.mk(['dt', 'States'], ['dd', _.keys(states).sort().map(code)]);
+                $dl.mk(['dt', 'States'], ['dd'].concat(_.keys(states).sort().map(code)) );
             }
             if ( members ) {
-                $dl.mk(['dt', 'Members'], ['dd', _.keys(members).sort().map(code)]);
+                $dl.mk(['dt', 'Members'], ['dd'].concat(_.keys(members).sort().map(code)) );
             }
             if ( related ) {
-                $dl.mk(['dt', 'Related to'], ['dd', _.keys(related).sort().map(code)]);
+                $dl.mk(['dt', 'Related to'], ['dd'].concat(_.keys(related).sort().map(code)) );
             }
 
             return view;
