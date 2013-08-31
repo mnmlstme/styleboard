@@ -2,41 +2,39 @@ define(['appState'], function (appState) {
 
     var RenderedView = Backbone.View.extend({
 
-        initialize: function () {
-            var view = this;
-
-            view.$title = view.$('h2');
-
-            appState.on('change:module', function( model, value ) {
-                view.renderExample( value );
-            });
-        },
-
-        render: function () {
+        initialize: function ( options ) {
             var view = this,
                 doc = view.$('iframe')[0].contentWindow.document;
 
             doc.open();
-            doc.write('<html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" type="text/css" href="' +
-                      view.options.cssUrl + '"></head><body></body></html>');
+            doc.write('<html lang="en"><head><meta charset="utf-8">' + 
+                      '<link rel="stylesheet" type="text/css" href="' + options.cssUrl + '">' +
+                      '</head><body></body></html>');
             doc.close();
 
             view.$body = view.$('iframe').contents().find('body');
+            view.$title = view.$('h2');
 
-            return view;
+            appState.on('change:example', function( appState, example ) {
+                view.setModel( example );
+            });
         },
 
-        renderExample: function ( module, index ) {
-            index = index || 0;
+        setModel: function ( example ) {
+            var view = this;
 
+            view.model = example;
+            view.render();
+        },
+
+        render: function () {
             var view = this,
-                examples = module.get('examples'),
-                example = examples && examples[index],
-                title = example ? (example.get('title') || 'Example: ' + module.get('name')) : '',
-                html = example && example.get('html');
+                example = view.model,
+                title = example ? example.get('title') : '',
+                html = example ? example.get('html') : '';
 
-            view.$body.empty().html( html );
             view.$title.text( title );
+            view.$body.empty().html( html );
         }
 
     }); // end of view RenderedView

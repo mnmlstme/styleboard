@@ -11,13 +11,14 @@ define( function () {
     function Analyzer( dictionary ) {
         var anal = this,
             regex = {
-                module: /^\.([a-z]+)$/,
                 classname: /^\.([a-zA-Z][a-zA-Z0-9-_]+)$/,
                 tagname: /^([a-z]+)$/,
                 pseudo: /^::?([a-z-]+)$/,
-                modifier: /^\.([a-z-]+\-)$/,
-                member: /^\.(([a-z]+)\-[a-z]+)$/,
-                state: /^(is-[a-z-]+)$/,
+                // TODO: make some these regexes be configuration options
+                module: /^\.([a-z]+)$/,             // lowercase, no hyphens
+                modifier: /^\.([a-z-]+\-)$/,        // trailing hyphen
+                member: /^\.(([a-z]+)\-[a-z-]+)$/,  //  module name '-' member name
+                state: /^(is-[a-z-]+)$/,            // 'is-' prefix
                 cmtfirst: /^\/\*+\s*/,
                 cmtmiddle: /^(\s*\*+\s?)?/,
                 cmtlast:  /\s*\*+\/\s*$/,
@@ -103,7 +104,6 @@ define( function () {
 
             while ( lines.length ) {
                 line = lines.shift();
-debugger;
                 if  (( matches = regex.atcommand.exec( line ) )) {
                     switch ( matches[1] ) {
                     case 'example': 
@@ -121,14 +121,22 @@ debugger;
                 return i == 0 ? regex.cmtfirst : 
                     ( i == length-1 ? regex.cmtlast : regex.cmtmiddle );
             }
-    
+
             function contentsOfBlock( firstLine ) {
-                var content = [];
+                var content = [],
+                    leader = Infinity;
                 if ( firstLine ) content.push( firstLine );
                 //lookahead: may be ended by another tag which we should not consume
                 while (( lines.length && !regex.ateot.exec(lines[0]) )) {
                     content.push( lines.shift() );
                 }
+                content.forEach( function (s) {
+                    var leadingWS = /^(\s*)/,
+                        matches = leadingWS.exec( s ),
+                        length = matches ? matches[1].length : 0;
+                    if ( length < leader ) leader = length;
+                });
+                content = content.map( function (s) { return s.substr(leader); } );
                 return content;
             }
         }

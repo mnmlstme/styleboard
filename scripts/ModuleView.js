@@ -1,6 +1,15 @@
-define( function () {
+define(['appState'], function (appState) {
 
     var ModuleView = Backbone.View.extend({
+
+        initialize: function () {
+            var view = this,
+                module = view.model,
+                examples = module.get('examples'),
+                example = examples && examples[0];
+
+            appState.set('example', example);
+        },
 
         render: function () {
             var view = this,
@@ -29,9 +38,12 @@ define( function () {
             if ( examples ) {
                 examples.forEach( function (example) {
                     var content = example.get('html'),
-                        title = example.get('title');
-                    $dl.mk('dt', 'Example' + (title ? ': ' + title : ''));
-                    $dl.mk('dd', ['pre.example', content] );
+                        title = example.get('title'),
+                        $button = $.mk('button', (title || 'View'))
+                            .data('example', example);
+
+                    $dl.mk('dt', 'Example');
+                    $dl.mk('dd.module-example', $button);
                 });
             }
             if ( modifiers ) {
@@ -48,8 +60,21 @@ define( function () {
             }
 
             return view;
-        }
-    }); // end of ModuleView view
+        },
+
+        events: {
+            'click .module-example button': 'uiSelectExample'
+        },
+
+        uiSelectExample: function (event) {
+            var view = this,
+                $target = $(event.target),
+                example = $target.data('example');
+
+            appState.set('example', example);
+        },
+
+    });
 
     function code( text ) {
         return $.mk('code', text);

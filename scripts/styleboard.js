@@ -1,5 +1,7 @@
-require(['Dictionary', 'Analyzer', 'Parser', 'DictionaryView', 'RenderedView'], 
-function( Dictionary, Analyzer, Parser, DictionaryView, RenderedView ) {
+require(['Dictionary', 'Analyzer', 'Parser',
+         'DictionaryView', 'RenderedView', 'MarkupView'], 
+function( Dictionary, Analyzer, Parser,
+          DictionaryView, RenderedView, MarkupView ) {
 
     new StyleBoard( { cssUrl: "samples/core-styles.css" } );
 
@@ -24,6 +26,9 @@ function( Dictionary, Analyzer, Parser, DictionaryView, RenderedView ) {
             (new RenderedView({
                 el: $('#sandbox'),
                 cssUrl: cssUrl
+            })).render();
+            (new MarkupView({
+                el: $('#example')
             })).render();
         });
 
