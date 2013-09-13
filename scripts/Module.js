@@ -1,45 +1,39 @@
-define(['Example'], function (Example) {
+define(['Definition'], function (Definition) {
 
     var Module = Backbone.Model.extend({
 
-        addDescription: function ( lines ) { 
-            this.get('descriptions') ||  this.set('descriptions', []);
-            this.get('descriptions').push( lines.join('\n') );
-        },
-        
-        addExample: function ( lines, title ) {
-            var attrs = { html: lines.join('\n') };
-            if ( title ) { attrs.title = title; }
+        initialize: function () {
+            var mod = this;
 
-            this.get('examples') ||  this.set('examples', []);
-            this.get('examples').push( new Example(attrs) );
+            mod.set('selectors', []);
+            mod.set('definitions', new Backbone.Collection());
         },
-        
+
         addSelector: function (selector) {
-            this.get('selectors') || this.set('selectors', {});
             this.get('selectors')[selector]++;
         },
 
-        addModifier: function (name) {
-            this.get('modifiers') ||  this.set('modifiers', {});
-            this.get('modifiers')[name]++;
+        define: function ( type, nameOrAttrs, addlAttrs ) {
+            var mod = this,
+                named = !_.isObject( nameOrAttrs ),
+                name = named ? nameOrAttrs: undefined,
+                index = mod.get('definitions').where({ type: type }).length;
+                attrs = _.extend( { type: type, index: index },
+                              named ? {name: name} : nameOrAttrs,
+                                      addlAttrs ),
+                prior = named && mod.getDefinition({type: type, name: name});
+
+            if ( prior ) {
+                prior.merge( attrs );
+            } else {
+                mod.get('definitions').add( new Definition(attrs) );
+            }
         },
 
-        addState: function (name) {
-            this.get('states') ||  this.set('states', {});
-            this.get('states')[name]++;
-        },
-        
-        addMember: function (name) {
-            this.get('members') ||  this.set('members', {});
-            this.get('members')[name]++;
+        getDefinition: function ( attrs ) {
+            return this.get('definitions').findWhere( attrs );
         },
 
-        addRelated: function (name, module) {
-            this.get('related') ||  this.set('related', {});
-            this.get('related')[name] = module;
-        },
-        
         cleanup: function () {
             var related = this.get('related');
             _(related).each( function (module, name) {

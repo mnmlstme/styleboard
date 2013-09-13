@@ -1,7 +1,15 @@
 # Makefile for LESS files
 
 CSSFILES=reset.css
-LESSFILES=palette.less pane.less lists.less code.less
+
+LESSFILES= \
+	code.less \
+	list.less \
+	module.less \
+	palette.less \
+	pane.less \
+	typography.less \
+	util.less
 
 all: styleboard.css
 

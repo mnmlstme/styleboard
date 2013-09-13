@@ -1,13 +1,6 @@
-code {
-    display: inline-block;
-    white-space: pre;
-    font-family: 'Lucida Typewriter', Monaco, monospace;
-    line-height: 1em;
-    padding: .25em;
-    vertical-align: top;
-    border: 1px solid @border-color;
-    color: @hl-color-1;
-    border-radius: 3px;
+code, pre {
+    line-height: 1.25em;
+    .font( code, small );
 }
 
 code + code {
@@ -16,10 +9,6 @@ code + code {
 
 code.combinator {
     color: @hl-color-2;
-}
-
-pre {
-    font-family: 'Lucida Typewriter', Monaco, monospace;
 }
 
 .example {

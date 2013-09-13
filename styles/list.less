@@ -1,0 +1,48 @@
+@import "util";
+
+.list {
+    
+    > * {
+        list-style: none;
+    }
+
+    &.bullet {
+        @margin: 1em;
+        margin-left: @margin;
+        > * + *::before {
+            display: block;
+            .font( symbol, inherit, highlight-1 );
+            content: '•';
+            width: -@margin;
+            margin-left: -@margin;
+        }
+    }
+
+    &.comma- {
+        > * {
+            display: inline-block;
+            & + *::before {
+                content: ', ';
+            }
+        }
+    }
+
+    &.definition- {
+        .clearfix;
+        padding-left: 6em; 
+        > * {
+            margin-bottom: 1em;
+        }
+    }
+
+    .list-term {
+        float: left;
+        margin-left: -6em;
+        .font( header, inherit, highlight-1 );
+    }
+
+    .list-definition {
+    }
+
+}
+

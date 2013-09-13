@@ -1,12 +1,11 @@
 @import "reset.css";
-@import "palette";
+@import "color";
+@import "typography";
 @import "pane";
 @import "code";
+@import "module";
 
 body {
-    font-family: 'Lucida Grande', 'Lucida Sans Unicode', serif;
-    font-size: 75%;
-    line-height: 1.5;
     position: fixed;
     top: 0;
     left: 0;
@@ -18,10 +17,6 @@ body {
 
 * {
     box-sizing: border-box;
-}
-
-#modules {
-    padding: 10px;
 }
 
 #sandbox {
@@ -53,8 +48,11 @@ body {
 }
 
 #dictionaryView {
-    .dictionary-list > li {
-        margin: .5em 0;
-        cursor: pointer;
+    .dictionary-list {
+        .font( header, medium );
+        > li {
+            margin: .5em 0;
+            cursor: pointer;
+        }
     }
 }

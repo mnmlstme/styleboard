@@ -82,13 +82,13 @@ define( function () {
                 atRoot = atRoot && elements[0].combinator.value === '';
                 current = elements.shift().value;
                 if ( atRoot ) {
-                    if (( matches = regex.modifier.exec( current) )) module.addModifier(matches[1]);
-                    if (( matches = regex.state.exec( current ) )) module.addState(matches[1]);
+                    if (( matches = regex.modifier.exec( current) )) module.define('modifier', matches[1]);
+                    if (( matches = regex.state.exec( current ) )) module.define('state', matches[1]);
                 } else {
                     if ( (matches = regex.member.exec( current )) && matches[2] === module.get('name') ) 
-                        module.addMember(matches[1]);
+                        module.define('member', matches[1]);
                     if (( matches = regex.module.exec( current ) )) 
-                        module.addRelated( matches[1], dictionary.theModule(matches[1]) );
+                        module.define('related', matches[1], { module: dictionary.theModule(matches[1]) });
                 }
             }
         }
@@ -107,16 +107,16 @@ define( function () {
                 if  (( matches = regex.atcommand.exec( line ) )) {
                     switch ( matches[1] ) {
                     case 'example': 
-                        module.addExample( contentsOfBlock(), matches[2] );
+                        module.define('example', { html: contentsOfBlock(), title: matches[2] });
                         break;
                     default:
                         console.warn('unrecognized styledoc tag @' + matches[1]);
                     }
                 } else {
-                    module.addDescription( contentsOfBlock(line) );
+                    module.define('description', { text: contentsOfBlock(line) });
                 }
             }
-    
+
             function regexForLine( i, length ) {
                 return i == 0 ? regex.cmtfirst : 
                     ( i == length-1 ? regex.cmtlast : regex.cmtmiddle );
@@ -137,10 +137,10 @@ define( function () {
                     if ( length < leader ) leader = length;
                 });
                 content = content.map( function (s) { return s.substr(leader); } );
-                return content;
+                return content.join('\n');
             }
         }
-    
+
         function cleanDictionary () {
             dictionary.each( function ( module ) {
                 if ( !module.get('isDocumented') ) {

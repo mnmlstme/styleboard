@@ -1,0 +1,77 @@
+@import "color";
+@import "list";
+
+.font-family ( body ) {
+    font-family: 'Lucida Grande', 'Lucida Sans Unicode', serif;
+}
+
+.font-family ( header ) {
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+.font-family ( code ) {
+    font-family: 'Lucida Console', 'Monaco', monospace;
+}
+
+.font-family ( nav ) {
+    font-family: 'Helvetica Narrow', Helvetica, Arial, sans-serif;
+}
+
+.font-family ( symbol ) {
+    font-family: 'Symbol', symbol;
+}
+
+@font-size-base: 16px;
+
+.font-size ( inherit ) { font-size: inherit; }
+
+.font-size ( xsmall ) { font-size: 0.75 * @font-size-base; }
+.font-size ( small ) { font-size: 0.875 * @font-size-base; }
+.font-size ( medium ) { font-size: @font-size-base; }
+.font-size ( large ) { font-size: 1.25 * @font-size-base; }
+.font-size ( xlarge ) { font-size: 1.5 * @font-size-base; }
+
+.font ( @family: body, @size: medium, @color: body ) {
+    .font-family( @family );
+    .font-size( @size );
+    .color( @color );
+}
+
+body {
+    -webkit-font-smoothing: antialiased;
+}
+
+.typography {
+
+    .font();
+    line-height: 1.5;
+
+    label {
+        .font( header, xsmall, highlight-3 );
+    }
+
+     pre {
+        .font( code, small );
+    }
+
+    code {
+        .font( code, inherit, highlight-2 );
+        white-space: pre;
+    }
+
+    h2 {
+        .font( header, xlarge, high );
+    }
+
+    h3 {
+        .font( header, large, highlight-1 );
+    }
+
+    ul {
+        &:extend( .list all );
+    }
+
+    dl { &:extend( .list.definition- all ); }
+    dt { &:extend( .list .list-term ); }
+    dd { &:extend( .list-definition ); }
+}

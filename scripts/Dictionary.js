@@ -14,8 +14,12 @@ define(["./Module"], function ( Module ) {
             }
 
             return result;
+        },
+
+        comparator: function comparator( dict ) {
+            return dict.get('name');
         }
-        
+
     }); // end of Dictionary collection
 
     return Dictionary;

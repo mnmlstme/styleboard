@@ -22,6 +22,7 @@ define(["ModuleView", "appState"], function ( ModuleView, appState ) {
             var view = this,
                 dict = view.model;
 
+            dict.sort
             dict.each( function (mod) {
                 view.addModule( mod, dict );
             });
