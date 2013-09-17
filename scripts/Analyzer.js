@@ -38,7 +38,6 @@ define(['Declaration'], function (Declaration) {
                 pattern = null;
             // Pass 1 - Associate comments with rules, generating Declarations
             nodes.forEach( function (node) {
-                console.log( node.type );
                 switch ( node.type ) {
                 case 'Ruleset':
                     pending = pending || new Declaration();
@@ -107,7 +106,6 @@ define(['Declaration'], function (Declaration) {
         return anal;
 
         function parseTags( comment, decl ) {
-            console.warn( comment );
             var  lines = comment.split('\n').slice(0, -1)
                     .map( function ( line, i, list ) {
                         if ( i === 0 ) line = line.replace( regex.cmtfirst, '' );
