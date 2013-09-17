@@ -1,14 +1,20 @@
 @import "reset.css";
+/** A simple list */
+.list,
+.typography ul {
+  /* no style */
+
+}
 .list > *,
 .typography ul > * {
   list-style: none;
 }
-.list.bullet,
-.typography ul.bullet {
+.list.bullet-,
+.typography ul.bullet- {
   margin-left: 1em;
 }
-.list.bullet > * + *::before,
-.typography ul.bullet > * + *::before {
+.list.bullet- > * + *::before,
+.typography ul.bullet- > * + *::before {
   display: block;
   font-family: 'Symbol', symbol;
   font-size: inherit;
@@ -51,6 +57,11 @@
   font-size: inherit;
   color: #e9c063;
 }
+.list .list-definition,
+.typography ul .list-definition {
+  /* ns */
+
+}
 body {
   -webkit-font-smoothing: antialiased;
 }
@@ -59,6 +70,29 @@ body {
   font-size: 16px;
   color: #dddddd;
   line-height: 1.5;
+}
+.typography article > header,
+article.typography > header {
+  padding-bottom: .5em;
+  margin-bottom: .5em;
+}
+.typography section > header {
+  padding-top: 1em;
+}
+.typography header h2 {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 24px;
+  color: #ffffff;
+}
+.typography header h3 {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 20px;
+  color: #e9c063;
+}
+.typography header label + h1,
+.typography header label + h2,
+.typography header label + h3 {
+  margin-top: -0.25em;
 }
 .typography label {
   font-family: Helvetica, Arial, sans-serif;
@@ -75,16 +109,6 @@ body {
   font-size: inherit;
   color: #cf6a4c;
   white-space: pre;
-}
-.typography h2 {
-  font-family: Helvetica, Arial, sans-serif;
-  font-size: 24px;
-  color: #ffffff;
-}
-.typography h3 {
-  font-family: Helvetica, Arial, sans-serif;
-  font-size: 20px;
-  color: #e9c063;
 }
 .pane,
 .frame {
@@ -191,11 +215,19 @@ code.combinator {
   padding: 1em;
   width: 75%;
 }
-/** A styleguide entry for a style module */
-.module .module-selectors {
+/** 
+ A styleguide entry for a pattern.
+*/
+.pattern > header {
+  background: #393633;
+}
+.pattern > header h2 {
+  text-transform: capitalize;
+}
+.pattern .pattern-selectors {
   font-size: 14px;
 }
-.module .module-example {
+.pattern .pattern-example {
   margin: 1em 2em;
   background: #444;
   padding: .5em;
@@ -204,7 +236,7 @@ code.combinator {
   font-style: oblique;
   cursor: pointer;
 }
-.module .module-example:hover {
+.pattern .pattern-example:hover {
   color: #e9c063;
   box-shadow: 0 0 2px #e9c063;
 }
@@ -254,4 +286,5 @@ body {
 #dictionaryView .dictionary-list > li {
   margin: .5em 0;
   cursor: pointer;
+  text-transform: capitalize;
 }

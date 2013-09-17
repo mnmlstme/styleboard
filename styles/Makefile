@@ -5,7 +5,7 @@ CSSFILES=reset.css
 LESSFILES= \
 	code.less \
 	list.less \
-	module.less \
+	pattern.less \
 	palette.less \
 	pane.less \
 	typography.less \

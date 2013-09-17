@@ -1,11 +1,16 @@
-define( function () {
+/**
+ @filespec Analyzer - parse CSS and comments and extract patterns
+ */
 
-    // TODO: implement the inverse case of these options
-    config = {
+define(['Declaration'], function (Declaration) {
+
+    options = {
         strictSyntax: true,              // ignore comments not beginning with /**
-        ignoreUndocumented: true,        // ignore modules not preceded by documentation
-        inferRelations: true,            // find relate classes by analyzing modules' selectors
-        strictNaming: true               // use naming conventions when infering relations
+        structuralInference: true,       // infer relations by analyzing selectors
+        semanticInference: true,         // infer relations by applying naming conventions
+        warnNaming: true,                // flag apparent violations of naming conventions
+        explicitPatterns: false          // don't infer patterns, they must be documented
+                                         // (relations within patterns will still be inferred)
     };
 
     function Analyzer( dictionary ) {
@@ -14,114 +19,128 @@ define( function () {
                 classname: /^\.([a-zA-Z][a-zA-Z0-9-_]+)$/,
                 tagname: /^([a-z]+)$/,
                 pseudo: /^::?([a-z-]+)$/,
-                // TODO: make some these regexes be configuration options
-                module: /^\.([a-z]+)$/,             // lowercase, no hyphens
+                // TODO: make some of these regexes be configuration options
+                pattern: /^\.([a-z]+)$/,            // lowercase, no hyphens
                 modifier: /^\.([a-z-]+\-)$/,        // trailing hyphen
-                member: /^\.(([a-z]+)\-[a-z-]+)$/,  //  module name '-' member name
+                member: /^\.(([a-z]+)\-[a-z-]+)$/,  //  pattern name '-' member name
+                helper: /^\.(([a-z]+)\-[a-z-]+)$/,  //  pattern name '-' helper name
                 state: /^(is-[a-z-]+)$/,            // 'is-' prefix
-                cmtfirst: /^\/\*+\s*/,
+                cmtfirst: /^\s*\/\*+\s*/,
                 cmtmiddle: /^(\s*\*+\s?)?/,
                 cmtlast:  /\s*\*+\/\s*$/,
                 atcommand: /^\s*@([a-z-]+)\s*(.*)\s*$/,
                 ateot: /^\s*(@[a-z-]+.*)?$/
             };
 
-        anal.analyze = function ( rules ) {
-            var pendingComment = null;
-            rules.forEach( function (node) {
-                var module,
-                    matches;
-                switch (node.type) {
+        anal.analyze = function ( nodes ) {
+            var decls = [],
+                pending = null,
+                pattern = null;
+            // Pass 1 - Associate comments with rules, generating Declarations
+            nodes.forEach( function (node) {
+                console.log( node.type );
+                switch ( node.type ) {
                 case 'Ruleset':
-                    // TODO: handle the case where the first selector is not a classname, but a later one is
-                    if (( matches = regex.classname.exec( node.selectors[0].elements[0].value ) )) {
-                        module = dictionary.findWhere({ name: matches[1] }) ||
-                            (pendingComment || regex.module.exec(matches[0])) && dictionary.theModule(matches[1]);
-                        if ( module ) {
-                            // TODO: add the definitions from the rule, too
-                            node.selectors.forEach( function ( selector ) {
-                                doSelector( module, selector );
-                            });
-                            if ( pendingComment ) {
-                                doComment( module, pendingComment );
-                                pendingComment = null;
-                            }
-                        }
-                    }
+                    pending = pending || new Declaration();
+                    node.selectors.forEach( function ( selector ) {
+                        pending.addSelector( selector );
+                    });
                     break;
                 case 'Comment':
                     if (regex.cmtfirst.exec( node.value )) {
-                        if (pendingComment) {
-                            console.warn('dropping unused styledoc comment: ' + pendingComment);
-                        }
-                        pendingComment = node.value;
+                        pending = pending || new Declaration();
+                        parseTags( node.value, pending );
                     }
+                    break;
                 default:
+                    // ignore all other nodes
+                }
+                if ( pending && pending.get('selectors').length ) {
+                    decls.push( pending );
+                    pending = null;
                 }
             });
-            cleanDictionary();
-        };
-    
-        return anal;
-    
-        function doSelector( selector ) {
-            var module;
-        }
-    
-        function doSelector( module, selector ) {
-            var elements = selector.elements.slice(0),
-                current = elements.shift().value,
-                atRoot = true,
-                matches;
-
-            if (regex.module.exec( current ) || regex.tagname.exec( current )) {
-                module.addSelector( current );
-            }
-
-            while ( elements.length ) {
-                atRoot = atRoot && elements[0].combinator.value === '';
-                current = elements.shift().value;
-                if ( atRoot ) {
-                    if (( matches = regex.modifier.exec( current) )) module.define('modifier', matches[1]);
-                    if (( matches = regex.state.exec( current ) )) module.define('state', matches[1]);
-                } else {
-                    if ( (matches = regex.member.exec( current )) && matches[2] === module.get('name') ) 
-                        module.define('member', matches[1]);
-                    if (( matches = regex.module.exec( current ) )) 
-                        module.define('related', matches[1], { module: dictionary.theModule(matches[1]) });
+            // Pass 2 - Identify Patterns and add them to the Dictionary
+            decls.forEach( function( decl ) {
+                var selectors = decl.get('selectors'),
+                    name = selectors[0].elements[0].value,
+                    patternSelectors = selectors.filter( function (sel) {
+                        return sel.elements.length === 1 && 
+                            (!options.semanticInference || 
+                             regex.pattern.exec( sel.elements[0].value ));
+                    });
+                // Pattern inferencing
+                if ( !decl.get('type') &&
+                     !options.explicitPatterns && 
+                     (options.structuralInference || options.semanticInference ) &&
+                     patternSelectors.length ) {
+                    decl.set('type', 'pattern');
+                    decl.set('selectors', patternSelectors);
                 }
-            }
-        }
+                // add patterns to dictionary
+                if ( decl.get('type') === 'pattern' ) {
+                    dictionary.entry(name).merge(decl);
+                }
+            });
+            // Pass 3 - Process declarations and infer relations
+            decls.forEach( function( decl ) {
+                var type = decl.get('type');
+                switch (type) {
+                case 'pattern':
+                    pattern = decl;
+                    break;
+                case 'modifier':
+                case 'member':
+                case 'state':
+                case 'helper':
+                    if ( pattern ) pattern.define(type, decl);
+                    break;
+                case undefined:
+                    if (options.structuralInference || options.semanticInference) {
+                        parseSelectors( decl );
+                    }
+                    break;
+                }
+            });
+        };
 
-        function doComment( module, comment ) {
+        return anal;
+
+        function parseTags( comment, decl ) {
+            console.warn( comment );
             var  lines = comment.split('\n').slice(0, -1)
                     .map( function ( line, i, list ) {
-                        return line.replace( regexForLine(i, list.length), '' );
+                        if ( i === 0 ) line = line.replace( regex.cmtfirst, '' );
+                        if ( i === list.length-1 ) line = line.replace( regex.cmtlast, '' );
+                        if ( i > 0 && i < list.length-1 ) line = line.replace( regex.cmtmiddle, '' );
+                        return line;
                     }),
                 line, matches;
-
-            module.set('isDocumented', true);
 
             while ( lines.length ) {
                 line = lines.shift();
                 if  (( matches = regex.atcommand.exec( line ) )) {
                     switch ( matches[1] ) {
+                    case 'member':
+                    case 'modifier':
+                    case 'state':
+                    case 'helper':
+                    case 'pattern':
+                        decl.set('type', matches[1]);
+                        // TODO: parse comma-separated selector list
+                        if ( matches[2] ) decl.addSelector( matches[2] );
+                        break;
                     case 'example': 
-                        module.define('example', { html: contentsOfBlock(), title: matches[2] });
+                        decl.define('example', { html: contentsOfBlock(), title: matches[2] });
                         break;
                     default:
                         console.warn('unrecognized styledoc tag @' + matches[1]);
                     }
                 } else {
-                    module.define('description', { text: contentsOfBlock(line) });
+                    decl.define('description', { text: contentsOfBlock(line) });
                 }
             }
-
-            function regexForLine( i, length ) {
-                return i == 0 ? regex.cmtfirst : 
-                    ( i == length-1 ? regex.cmtlast : regex.cmtmiddle );
-            }
-
+    
             function contentsOfBlock( firstLine ) {
                 var content = [],
                     leader = Infinity;
@@ -140,13 +159,37 @@ define( function () {
                 return content.join('\n');
             }
         }
+    
+        function parseSelectors( decl ) {
+            var sem = options.semanticInference,
+                str = options.structuralInference,
+                selectors = decl.get('selectors');
+            selectors.forEach( function(selector) {
+                var elements = selector.elements.slice(0),
+                    root = elements.shift().value,
+                    current = root,
+                    atRoot = true,
+                    pattern = dictionary.findBySelector(root),
+                    matches;
 
-        function cleanDictionary () {
-            dictionary.each( function ( module ) {
-                if ( !module.get('isDocumented') ) {
-                    dictionary.remove( module );
-                } else {
-                    module.cleanup();
+                if ( pattern ) {
+                    while ( elements.length ) {
+                        atRoot = atRoot && elements[0].combinator.value === '';
+                        current = elements.shift().value;
+                        // TODO: also look for semantic inferences that are not structural
+                        if ( sem && atRoot && ( matches = regex.modifier.exec(current) )) {
+                            pattern.define( 'modifier', matches[1], decl );
+                        } else if ( sem && atRoot && ( matches = regex.state.exec(current) )) {
+                            pattern.define( 'state', matches[1], decl );
+                        } else if ( sem && !atRoot &&
+                                    ( matches = regex.member.exec(current) ) &&
+                                    dictionary.findByName(matches[2]) === pattern ){
+                            pattern.define( 'member', matches[1], decl );
+                        } else if ( str && !sem && pattern &&
+                                    ( matches = regex.classname.exec(current) )) {
+                            pattern.define( atRoot ? 'modifier' : 'member', matches[1], decl );
+                        }
+                    }
                 }
             });
         }

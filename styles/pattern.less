@@ -1,13 +1,21 @@
 
-/** A styleguide entry for a style module */
+/** 
+ A styleguide entry for a pattern.
+*/
+.pattern {
 
-.module {
+    > header {
+        background: @background-alt-color;
+        h2 {
+            text-transform: capitalize;
+        }
+    }
 
-    .module-selectors {
+    .pattern-selectors {
         .font-size( small )
     }
 
-    .module-example {
+    .pattern-example {
         margin: 1em 2em;
         background: #444;
         padding: .5em;

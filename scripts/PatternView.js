@@ -1,32 +1,35 @@
+/**
+ @filespec PatternView - the view which depicts a Pattern in the styleboard
+ */
 define(['appState'], function (appState) {
 
-    var ModuleView = Backbone.View.extend({
+    var PatternView = Backbone.View.extend({
 
         initialize: function () {
             var view = this,
-                module = view.model,
-                example = module.getDefinition({ type: 'example', index: 0 });
+                pattern = view.model,
+                example = pattern.getDefinition({ type: 'example', index: 0 });
 
             appState.set('example', example);
         },
 
         render: function () {
             var view = this,
-                mod = view.model,
-                name = mod.get('name'),
-                selectors = mod.get('selectors'),
-                definitions = mod.get('definitions');
+                pat = view.model,
+                name = pat.get('name').replace('.',''),
+                selectors = pat.get('selectors'),
+                definitions = pat.get('definitions');
 
             view.$el.mk( 'header',
                          [ 'h2', name] ,
-                         ['ul.comma-.module-selectors'].concat( _.keys(selectors).sort().map( function(s) {
-                               return ['li', code(s)]; 
+                         ['ul.comma-.pattern-selectors'].concat( selectors.map( function(s) {
+                               return ['li', code( s.toCSS() )]; 
                            })) 
                        );
 
             definitions.forEach( function (defn) {
                 var type = defn.get('type'),
-                    attrs = { 'class': 'module-' + type };
+                    attrs = { 'class': 'pattern-' + type };
                 switch ( type ) {
                 case 'description':
                     view.$el.mk( 'p', defn.get('text') );
@@ -38,8 +41,8 @@ define(['appState'], function (appState) {
                 default:
                     view.$el.mk( 'section', attrs,
                                  [ 'header',
-                                   [ 'label', type]],
-                                   [ 'h3', defn.get('name')]
+                                   [ 'label', type],
+                                   [ 'h3', defn.get('name')]]
                                );
                 }
             });
@@ -48,7 +51,7 @@ define(['appState'], function (appState) {
         },
 
         events: {
-            'click .module-example': 'uiSelectExample'
+            'click .pattern-example': 'uiSelectExample'
         },
 
         uiSelectExample: function (event) {
@@ -65,5 +68,5 @@ define(['appState'], function (appState) {
         return $.mk('code', text);
     }
 
-    return ModuleView;
+    return PatternView;
 });

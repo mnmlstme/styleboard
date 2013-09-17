@@ -22,7 +22,7 @@ define( function () {
                     if ( err ) {
                         console.warn( err );
                     } else {
-                        console.log('Read ' + tree.rules.length + " rules.");
+                        console.log('Read ' + tree.rules.length + " rules...");
                         done( tree.rules );
                     }
                 });

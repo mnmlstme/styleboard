@@ -3,14 +3,14 @@ require(['Dictionary', 'Analyzer', 'Parser',
 function( Dictionary, Analyzer, Parser,
           DictionaryView, RenderedView, MarkupView ) {
 
-    new StyleBoard( { cssUrl: "samples/core-styles.css" } );
+    new StyleBoard( { cssUrl: "styles/styleboard.css" } );
 
     function StyleBoard( opts ) {
         var sb = this,
         env = {},
         cssUrl = opts.cssUrl || 'samples/home.css',
         $dictionaryView = $('#dictionaryView'),
-        $currentModule = $('#currentModule'),
+        $currentPattern = $('#currentPattern'),
         $selectors = $('#selectors'),
         dictionary = new Dictionary();
         analyzer = new Analyzer( dictionary ),

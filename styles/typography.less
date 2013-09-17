@@ -46,6 +46,36 @@ body {
     .font();
     line-height: 1.5;
 
+    article, 
+    article& {
+        > header {
+            padding-bottom: .5em;
+            margin-bottom: .5em;
+        }
+    }
+
+    section {
+        > header {
+            padding-top: 1em;
+        }
+    }
+
+    header {
+        h2 {
+            .font( header, xlarge, high );
+        }
+        
+        h3 {
+            .font( header, large, highlight-1 );
+        }
+        
+        label {
+            & + h1, & + h2, & + h3 {
+                margin-top: -.25em;
+            }
+        }
+    }
+
     label {
         .font( header, xsmall, highlight-3 );
     }
@@ -59,14 +89,6 @@ body {
         white-space: pre;
     }
 
-    h2 {
-        .font( header, xlarge, high );
-    }
-
-    h3 {
-        .font( header, large, highlight-1 );
-    }
-
     ul {
         &:extend( .list all );
     }
@@ -74,4 +96,5 @@ body {
     dl { &:extend( .list.definition- all ); }
     dt { &:extend( .list .list-term ); }
     dd { &:extend( .list-definition ); }
+
 }

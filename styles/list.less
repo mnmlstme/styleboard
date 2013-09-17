@@ -1,12 +1,15 @@
 @import "util";
 
+/** A simple list */
 .list {
-    
+
+    /* no style */
+
     > * {
         list-style: none;
     }
 
-    &.bullet {
+    &.bullet- {
         @margin: 1em;
         margin-left: @margin;
         > * + *::before {
@@ -42,7 +45,14 @@
     }
 
     .list-definition {
+        /* ns */
     }
 
 }
+
+
+
+
+
+
 

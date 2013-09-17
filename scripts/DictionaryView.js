@@ -1,4 +1,7 @@
-define(["ModuleView", "appState"], function ( ModuleView, appState ) {
+/**
+ @filespec DictionaryView - view of the dictionary of all patterns in styleboard
+ */
+define(["PatternView", "appState"], function ( PatternView, appState ) {
 
     var DictionaryView = Backbone.View.extend({
 
@@ -7,14 +10,14 @@ define(["ModuleView", "appState"], function ( ModuleView, appState ) {
                 $el = view.$el,
                 dict = view.model;
 
-            view.$moduleList = $el.find('.dictionary-list');
+            view.$patternList = $el.find('.dictionary-list');
             view.$namedTab = $el.find('.frame-tabs > li:eq(1)');
             view.$current = $el.find('.dictionary-entry');
 
-            dict.on('add', view.addModule, view);
+            dict.on('add', view.addPattern, view);
 
-            appState.on('change:module', function (model, value) {
-                view.renderModule( value );
+            appState.on('change:pattern', function (model, value) {
+                view.renderPattern( value );
             });
         },
 
@@ -23,28 +26,29 @@ define(["ModuleView", "appState"], function ( ModuleView, appState ) {
                 dict = view.model;
 
             dict.sort
-            dict.each( function (mod) {
-                view.addModule( mod, dict );
+            dict.each( function (pat) {
+                view.addPattern( pat, dict );
             });
 
             return view;
         },
 
-        renderModule: function ( mod ) {
+        renderPattern: function ( pat ) {
             var view = this,
                 dict = view.model;
             
-            view.$namedTab.text( mod.get('name') );
+            view.$namedTab.text( pat.get('name') );
             view.$current.empty();
-            (new ModuleView({
+            (new PatternView({
                 el: view.$current,
-                model: mod
+                model: pat
             })).render();
         },
 
-        addModule: function ( mod, dict, options ) {
-            var view = this;
-            view.$moduleList.mk( 'li', mod.get('name') );
+        addPattern: function ( pat, dict, options ) {
+            var view = this,
+                name = pat.get('name').replace('.','');
+            view.$patternList.mk( 'li', name );
         },
 
         events: {
@@ -65,9 +69,9 @@ define(["ModuleView", "appState"], function ( ModuleView, appState ) {
                 dict = view.model,
                 $target = $(event.target),
                 index = $target.index(),
-                mod = dict.at(index);
+                pat = dict.at(index);
 
-            appState.set('module', mod);
+            appState.set('pattern', pat);
             view.selectPane( 1 );
         },
 

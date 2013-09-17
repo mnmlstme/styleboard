@@ -10,7 +10,7 @@ Using modular CSS conventions (such as [SMACSS](http://smacss.com)),
 **StyleBoard** will find patterns in the CSS and build a styleguide for those patterns,
 including live HTML examples of the patterns.
 Additional documentation and examples can be explicitly declared in the
-CSS comments using `@` tags.
+CSS comments using [[StyleDoc]] tags.
 The styleguide is maintained entirely in the CSS file(s), so there is no
 external documentation to keep in sync.
 
