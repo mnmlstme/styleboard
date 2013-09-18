@@ -22,3 +22,7 @@ it creates controls to let you cycle through viewing the variations.
 Affordances are also made to allow viewing the examples at different screen sizes,
 or within different styling contexts (background, fonts, constrained width).
 
+## Try It Now!
+
+Just clone the git repo and open `index.html` in your browser.  With the default
+configuration, **StyleBoard** builds a styleguide for its own CSS.

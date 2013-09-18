@@ -218,6 +218,10 @@ code.combinator {
 /** 
  A styleguide entry for a pattern.
 */
+.pattern {
+  /* */
+
+}
 .pattern > header {
   background: #393633;
 }
