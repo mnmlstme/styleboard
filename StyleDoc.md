@@ -1,9 +1,11 @@
 StyleDoc Syntax
 ====
 
-StyleDoc declarations are embedded in CSS comments.  Only those comments that begin with `/** ` are parsed for StyleDoc declarations.
+StyleDoc declarations are embedded in CSS comments.  Only those comments that begin with `/** ` are parsed for StyleDoc declarations.  All declarations within the same comment block are considered to pertain to the same rule and its CSS selector(s).
 
-All declarations within the same comment block are considered to pertain to the same subject CSS selector (or comma-separated list of selectors).  Unless a comment block includes a `@selector` tag, it will be attached to the next CSS selector in the file.
+A comment not nested within a CSS rule refers to the next rule.  A comment nested within the `{ ... }` of a rule refers to that rule.  (Note that when using LESS or Sass to generate CSS, this means StyleDoc coments should in general occur _inside_ rules, so that they are not associated with an enclosing scope.)
+
+A comment block may instead reference other selector(s) by naming the selector(s) after a `@pattern`, `@modifier`, `@state`, `@member`, or `@helper` tag.  This allows StyleDoc comments to reside in a separate file from the CSS itself.
 
 Any text in a StyleDoc comment which is not part of a StyleDoc tag is considered descriptive text and will be appended to the description of the current pattern.
 
@@ -17,24 +19,23 @@ Declare a section within which successive patterns will be grouped.  Nested subs
 
 `@pattern` [_selector_ [, _selector_]*]
 
-Declare the selector(s) to be a CSS Pattern.  Also sets this pattern as the current pattern, to which successive declarations may refer. If no _selector_ is given the next selector in the CSS input stream is used.
-
+Declare the selector(s) to be a CSS Pattern.  Also sets this pattern as the current pattern, to which successive declarations may refer. 
 
 `@modifier` [_selector_ [, _selector_]*]
 
-Declare the selector(s) to be a modifier of the current pattern.  A modifier is a class which must be applied to the same element as the pattern class, and serves to modify or refine the pattern's style.  If no _selector_ is given, one is derived from next selector in the CSS input stream. 
+Declare the selector(s) to be a modifier of the current pattern.  A modifier is a class which must be applied to the same element as the pattern class, and serves to modify or refine the pattern's style.
 
 `@state` [_selector_ [, _selector_]*]
 
-Declare the selector(s) to be a state.  States are similar to modifiers, but intended for representing dynamic changes to a pattern.  If no _selector_ is given, one is derived from the next selector in the CSS input stream. 
+Declare the selector(s) to be a state.  States are similar to modifiers, but intended for representing dynamic changes to a pattern.
 
 `@member` [_selector_ [, _selector_]*]
 
-Declare the selector(s) to be a member of the current pattern.  A member is a class applied to a sub-element of a pattern to describe its role within the pattern.  If no _selector_ is given, one is derived from the next selector in the CSS input stream. 
+Declare the selector(s) to be a member of the current pattern.  A member is a class applied to a sub-element of a pattern to describe its role within the pattern.
 
 `@helper` [_selector_ [, _selector_]*]
 
-Declare the selector(s) to be helper classes of the current pattern.  A helper class interacts with the pattern but need not be applied only to sub-elements.   Often a helper class is applied to an ancestor node of the pattern's root element, to establish a context or scope for the pattern. If no _selector_ is given the next selector in the CSS input stream is used. 
+Declare the selector(s) to be helper classes of the current pattern.  A helper class interacts with the pattern but need not be applied only to sub-elements.   Often a helper class is applied to an ancestor node of the pattern's root element, to establish a context or scope for the pattern.
 
 `@example` [ _title_ ]
 

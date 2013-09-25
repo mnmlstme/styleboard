@@ -8,7 +8,7 @@ define(['appState'], function (appState) {
         initialize: function () {
             var view = this,
                 pattern = view.model,
-                example = pattern.getDefinition({ type: 'example', index: 0 });
+                example = pattern.getDeclaration({ type: 'example', index: 0 });
 
             appState.set('example', example);
         },
@@ -18,7 +18,7 @@ define(['appState'], function (appState) {
                 pat = view.model,
                 name = pat.get('name').replace('.',''),
                 selectors = pat.get('selectors'),
-                definitions = pat.get('definitions');
+                declarations = pat.get('declarations');
 
             view.$el.mk( 'header',
                          [ 'h2', name] ,
@@ -27,27 +27,36 @@ define(['appState'], function (appState) {
                            })) 
                        );
 
-            definitions.forEach( function (defn) {
+            view.renderDeclarations( declarations );
+
+            return view;
+        },
+
+        renderDeclarations: function ( declarations, $parent ) {
+            var view = this;
+            $parent = $parent || view.$el;
+            declarations.forEach( function (defn) {
                 var type = defn.get('type'),
                     attrs = { 'class': 'pattern-' + type };
                 switch ( type ) {
                 case 'description':
-                    view.$el.mk( 'p', defn.get('text') );
+                    $parent.mk( 'p', defn.get('text') );
                     break;
                 case 'example':
-                    view.$el.mk( 'div', attrs, defn.get('title') || 'View' )
+                    $parent.mk( 'div', attrs, defn.get('title') || 'View' )
                         .data( 'example', defn );
                     break;
                 default:
-                    view.$el.mk( 'section', attrs,
-                                 [ 'header',
-                                   [ 'label', type],
-                                   [ 'h3', defn.get('name')]]
-                               );
+                    view.renderDeclarations( 
+                        defn.get('declarations'),
+                        $parent.mk( 'section', attrs,
+                                     [ 'header',
+                                       [ 'label', type],
+                                       [ 'h3', defn.get('name')]] )
+                    );
                 }
             });
 
-            return view;
         },
 
         events: {

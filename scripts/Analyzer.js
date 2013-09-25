@@ -32,7 +32,7 @@ define(['Declaration'], function (Declaration) {
                 ateot: /^\s*(@[a-z-]+.*)?$/
             };
 
-        anal.analyze = function ( nodes ) {
+        anal.analyze = function analyze ( nodes ) {
             var decls = [],
                 pending = null,
                 pattern = null;
@@ -41,9 +41,19 @@ define(['Declaration'], function (Declaration) {
                 switch ( node.type ) {
                 case 'Ruleset':
                     pending = pending || new Declaration();
+                    /* parse comments nested within the ruleset */
+                    node.rules.filter( function (node) {
+                        return node.type === 'Comment' &&
+                            regex.cmtfirst.exec( node.value );
+                    }).map( function (node) {
+                        pending = pending || new Declaration();
+                        parseTags( node.value, pending );
+                    });
                     node.selectors.forEach( function ( selector ) {
                         pending.addSelector( selector );
                     });
+                    decls.push( pending );
+                    pending = null;
                     break;
                 case 'Comment':
                     if (regex.cmtfirst.exec( node.value )) {
@@ -62,7 +72,6 @@ define(['Declaration'], function (Declaration) {
             // Pass 2 - Identify Patterns and add them to the Dictionary
             decls.forEach( function( decl ) {
                 var selectors = decl.get('selectors'),
-                    name = selectors[0].elements[0].value,
                     patternSelectors = selectors.filter( function (sel) {
                         return sel.elements.length === 1 && 
                             (!options.semanticInference || 
@@ -70,15 +79,20 @@ define(['Declaration'], function (Declaration) {
                     });
                 // Pattern inferencing
                 if ( !decl.get('type') &&
+                     patternSelectors.length &&
                      !options.explicitPatterns && 
-                     (options.structuralInference || options.semanticInference ) &&
-                     patternSelectors.length ) {
+                     (options.structuralInference || options.semanticInference ) ) {
                     decl.set('type', 'pattern');
                     decl.set('selectors', patternSelectors);
                 }
                 // add patterns to dictionary
                 if ( decl.get('type') === 'pattern' ) {
-                    dictionary.entry(name).merge(decl);
+                    patternSelectors.forEach( function (selector) {
+                        var name = patternName( selector.elements[0].value );
+                        dictionary.entry( name )
+                            .merge( decl )
+                            .set( 'selectors', [selector] );
+                    });
                 }
             });
             // Pass 3 - Process declarations and infer relations
@@ -92,7 +106,7 @@ define(['Declaration'], function (Declaration) {
                 case 'member':
                 case 'state':
                 case 'helper':
-                    if ( pattern ) pattern.define(type, decl);
+                    if ( pattern ) pattern.define(type, decl.get('name'), decl);
                     break;
                 case undefined:
                     if (options.structuralInference || options.semanticInference) {
@@ -162,34 +176,62 @@ define(['Declaration'], function (Declaration) {
             var sem = options.semanticInference,
                 str = options.structuralInference,
                 selectors = decl.get('selectors');
+
             selectors.forEach( function(selector) {
                 var elements = selector.elements.slice(0),
                     root = elements.shift().value,
                     current = root,
                     atRoot = true,
-                    pattern = dictionary.findBySelector(root),
-                    matches;
-
+                    pattern = dictionary.findByName( patternName(root) ),
+                    matches,
+                    modifierList = [],
+                    isState = false,
+                    member,
+                    attrs;
                 if ( pattern ) {
                     while ( elements.length ) {
                         atRoot = atRoot && elements[0].combinator.value === '';
-                        current = elements.shift().value;
+                        current = elements.shift().value,
+                        attrs = decl.toJSON();
                         // TODO: also look for semantic inferences that are not structural
-                        if ( sem && atRoot && ( matches = regex.modifier.exec(current) )) {
-                            pattern.define( 'modifier', matches[1], decl );
-                        } else if ( sem && atRoot && ( matches = regex.state.exec(current) )) {
-                            pattern.define( 'state', matches[1], decl );
+                        if ( sem && atRoot &&
+                             ( matches = regex.modifier.exec(current) )) {
+                            modifierList.unshift( matches[1] );
+                            isState = false;
+                        } else if ( sem && atRoot &&
+                                    ( matches = regex.state.exec(current) )) {
+                            modifierList.unshift( matches[1] );
+                            isState = true;
                         } else if ( sem && !atRoot &&
                                     ( matches = regex.member.exec(current) ) &&
                                     dictionary.findByName(matches[2]) === pattern ){
-                            pattern.define( 'member', matches[1], decl );
+                            member = matches[1];
                         } else if ( str && !sem && pattern &&
                                     ( matches = regex.classname.exec(current) )) {
-                            pattern.define( atRoot ? 'modifier' : 'member', matches[1], decl );
+                            if (atRoot) {
+                                modifierList.unshift(matches[1]);
+                                isState = false;
+                            } else {
+                                member = matches[1];
+                            }
                         }
+                    }
+                    if ( member ) {
+                        pattern.define( 'member', member, attrs );
+                    } 
+                    if ( modifierList.length ) {
+                        pattern.define( isState ? 'state' : 'modifier', 
+                                        modifierList.join(' '), 
+                                        member ? {} : attrs );
                     }
                 }
             });
+        }
+
+        function patternName( string ) {
+            var matches = regex.classname.exec( string ) ||
+                regex.tagname.exec( string );
+            return matches ? matches[1] : string;
         }
     }
 

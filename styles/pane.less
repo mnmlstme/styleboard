@@ -4,30 +4,35 @@
     width: 100%;
 }
 
+/** A rectangular region of the screen */
 .pane {
     background: @background-color;
     color: @body-color;
     border-width: 1px;
     border-style: solid;
     border-color: @border-hi-color @border-lo-color @border-lo-color @border-hi-color;
-    padding: .5em;
+}
 
-    &.scrollable- {
-        overflow-x: hidden;
-        overflow-y: scroll;
-    }
+/** A pane with vertically scrolling content */
+.pane.scrollable- {
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
 
 .frame {
+    /** A container for one or more panes */
     nav {
+        /** Navigation bar for the frame */
         .font( nav, xsmall );
     }
     &.split- {
+        /** A frame which is split into two panes */
         position: relative;
         > * {
             position: absolute;
         }
         &.horizontal- {
+            /** A frame which is split horizontally */
             > * {
                 width: 50%;
                 height: 100%;
@@ -48,19 +53,23 @@
                 }
             }
         }
-        &.vertical- > * {
-            width: 100%;
-            height: 50%;
-            left: 0;
-            &:first-child { top: 0; }
-            &:last-child { bottom: 0; }
+        &.vertical- {
+            /** A frame which is split vertically */
+            > * {
+                width: 100%;
+                height: 50%;
+                left: 0;
+                &:first-child { top: 0; }
+                &:last-child { bottom: 0; }
+            }
         }
     }
 
     &.tabbed- {
+        /** A frame with tabs to select alternate panes to view. */ 
         position: relative;
         ul.frame-tabs {
-            background: @background-alt-color;
+            background: @background-color;
             color: @body-color;
             white-space: nowrap;
             padding: 0 .25em;
@@ -81,6 +90,7 @@
             }
         }
         ul.frame-panes {
+            /** A list of panes to show in a `tabbed-` frame */
             > li {
                 display: none;
                 &.is-active {

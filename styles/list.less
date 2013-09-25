@@ -1,9 +1,7 @@
 @import "util";
 
-/** A simple list */
 .list {
-
-    /* no style */
+    /** A simple list */
 
     > * {
         list-style: none;
@@ -39,13 +37,14 @@
     }
 
     .list-term {
+        /** a term in a definition list */
         float: left;
         margin-left: -6em;
         .font( header, inherit, highlight-1 );
     }
 
     .list-definition {
-        /* ns */
+        /** the definition for a term in a definition list */
     }
 
 }

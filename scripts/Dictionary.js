@@ -8,29 +8,20 @@ define(['Declaration'], function (Declaration) {
 
         model: Declaration,
 
-        entry: function entry( nameOrSelector ) {
+        entry: function entry( name ) {
             var dict = this,
-                selector = nameOrSelector[0] === '.' ? nameOrSelector : '.' + nameOrSelector,
-                result = dict.findBySelector( selector );
+                result = dict.findByName( name );
 
             if (!result) {
-                result = new Declaration({ name: selector, selectors: [selector]});
+                result = new Declaration({ name: name });
                 dict.add(result);
             }
 
             return result;
         },
 
-        findBySelector: function findBySelector( selector ) {
-            return this.find( function (entry) {
-                return _.find( entry.get('selectors'), function (sel) {
-                    return sel.elements[0].value === selector;
-                });
-            });
-        },
-
         findByName: function findByName( name ) {
-            return this.findBySelector( '.' + name );
+            return this.findWhere({ 'name': name });
         },
 
         comparator: function comparator( dict ) {

@@ -40,7 +40,8 @@ function( Dictionary, Analyzer, Parser,
             $li = $selectors.mk('li.' + type);
             switch (type) {
             case 'ruleset':
-                rule.selectors.forEach( function (selector) {
+                rule.selectors.forEach( function (selector, index) {
+                    if( index ) $li.mk('code.separator', ', ');
                     selector.elements.forEach( function (el, i) {
                         if (i && el.combinator.value !== '') 
                             $li.mk('code.combinator', el.combinator.value );

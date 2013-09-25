@@ -1,8 +1,7 @@
 @import "reset.css";
-/** A simple list */
 .list,
 .typography ul {
-  /* no style */
+  /** A simple list */
 
 }
 .list > *,
@@ -51,6 +50,8 @@
 .list .list-term,
 .typography ul .list-term,
 .typography dt {
+  /** a term in a definition list */
+
   float: left;
   margin-left: -6em;
   font-family: Helvetica, Arial, sans-serif;
@@ -59,25 +60,42 @@
 }
 .list .list-definition,
 .typography ul .list-definition {
-  /* ns */
+  /** the definition for a term in a definition list */
 
 }
 body {
   -webkit-font-smoothing: antialiased;
 }
 .typography {
-  font-family: 'Lucida Grande', 'Lucida Sans Unicode', serif;
+  font-family: 'Georgia', serif;
   font-size: 16px;
   color: #dddddd;
   line-height: 1.5;
 }
-.typography article > header,
-article.typography > header {
-  padding-bottom: .5em;
-  margin-bottom: .5em;
+.typography article,
+article.typography {
+  padding: 0.5em;
 }
-.typography section > header {
-  padding-top: 1em;
+.typography section {
+  margin-top: 2em;
+}
+.typography header {
+  margin: -0.5em -0.5em 0;
+  padding: 0.5em 0.5em 0;
+  position: relative;
+  background: -webkit-radial-gradient(50% 0, 50% 50px, rgba(255, 255, 255, 0.2), transparent);
+  text-shadow: 1px 1px rgba(0, 0, 0, 0.5);
+}
+.typography header::before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  border-bottom: 1px solid #000;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 .typography header h2 {
   font-family: Helvetica, Arial, sans-serif;
@@ -100,12 +118,12 @@ article.typography > header {
   color: #99cf50;
 }
 .typography pre {
-  font-family: 'Lucida Console', 'Monaco', monospace;
+  font-family: 'Courier', 'Courier New', monospace;
   font-size: 14px;
   color: #dddddd;
 }
 .typography code {
-  font-family: 'Lucida Console', 'Monaco', monospace;
+  font-family: 'Courier', 'Courier New', monospace;
   font-size: inherit;
   color: #cf6a4c;
   white-space: pre;
@@ -115,28 +133,41 @@ article.typography > header {
   height: 100%;
   width: 100%;
 }
+/** A rectangular region of the screen */
 .pane {
   background: #282624;
   color: #dddddd;
   border-width: 1px;
   border-style: solid;
   border-color: #333333 #222222 #222222 #333333;
-  padding: .5em;
 }
+/** A pane with vertically scrolling content */
 .pane.scrollable- {
   overflow-x: hidden;
   overflow-y: scroll;
 }
+.frame {
+  /** A container for one or more panes */
+
+}
 .frame nav {
+  /** Navigation bar for the frame */
+
   font-family: 'Helvetica Narrow', Helvetica, Arial, sans-serif;
   font-size: 12px;
   color: #dddddd;
 }
 .frame.split- {
+  /** A frame which is split into two panes */
+
   position: relative;
 }
 .frame.split- > * {
   position: absolute;
+}
+.frame.split-.horizontal- {
+  /** A frame which is split horizontally */
+
 }
 .frame.split-.horizontal- > * {
   width: 50%;
@@ -155,6 +186,10 @@ article.typography > header {
 .frame.split-.horizontal-.one-two- > :last-child {
   width: 66.66666666666666%;
 }
+.frame.split-.vertical- {
+  /** A frame which is split vertically */
+
+}
 .frame.split-.vertical- > * {
   width: 100%;
   height: 50%;
@@ -167,10 +202,11 @@ article.typography > header {
   bottom: 0;
 }
 .frame.tabbed- {
+  /** A frame with tabs to select alternate panes to view. */
   position: relative;
 }
 .frame.tabbed- ul.frame-tabs {
-  background: #393633;
+  background: #282624;
   color: #dddddd;
   white-space: nowrap;
   padding: 0 .25em;
@@ -190,16 +226,22 @@ article.typography > header {
 .frame.tabbed- ul.frame-tabs > li:empty {
   visibility: hidden;
 }
+.frame.tabbed- ul.frame-panes {
+  /** A list of panes to show in a `tabbed-` frame */
+
+}
 .frame.tabbed- ul.frame-panes > li {
   display: none;
 }
 .frame.tabbed- ul.frame-panes > li.is-active {
   display: block;
 }
+/*
+  Styles for formatting code.  Eventually this will be used for highlighting code
+*/
 code,
 pre {
-  line-height: 1.25em;
-  font-family: 'Lucida Console', 'Monaco', monospace;
+  font-family: 'Courier', 'Courier New', monospace;
   font-size: 14px;
   color: #dddddd;
 }
@@ -208,6 +250,9 @@ code + code {
 }
 code.combinator {
   color: #cf6a4c;
+}
+code.separator {
+  color: #99cf50;
 }
 .example {
   border: 1px solid #444444;
@@ -221,9 +266,6 @@ code.combinator {
 .pattern {
   /* */
 
-}
-.pattern > header {
-  background: #393633;
 }
 .pattern > header h2 {
   text-transform: capitalize;

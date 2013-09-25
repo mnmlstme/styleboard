@@ -10,53 +10,67 @@ define(['Definition'], function (Definition) {
 
     var Declaration = Backbone.Model.extend({
 
-        initialize: function () {
+        initialize: function ( attrs ) {
             var decl = this;
 
-            decl.set('selectors', []);
-            decl.set('definitions', new Backbone.Collection());
+            attrs = attrs || {};
+
+            attrs.selectors || decl.set('selectors', []);
+            attrs.declarations || decl.set('declarations', new Backbone.Collection());
         },
 
         addSelector: function (selector) {
+            var decl = this;
             if ( !_.isObject(selector) ) {
                 // TODO: this only handles single-element selectors
                 selector = new Selector( [ new Element( '', selector, 0 ) ] );
             }
-            this.get('selectors').push(selector);
+
+            decl.get('selectors').push(selector);
+            return decl;
         },
 
         merge: function (other) {
             var decl = this,
-                selectors = decl.get('selectors');
-            
-            other.get('selectors').forEach( function (candidate) {
-                var exists = _(selectors).find( function (existing) {
-                        return existing.toCSS() === candidate.toCSS();
-                    });
-                if (!exists) selectors.push( candidate );
-            });
-            decl.get('definitions').add( other.get('definitions').models );
+                oldSelectors = decl.get('selectors');
+            decl.set('selectors', oldSelectors.length ? 
+                     _.intersection( oldSelectors, other.get('selectors' ) ):
+                     other.get('selectors').slice(0) );
+
+            decl.get('declarations').add( other.get('declarations').models );
+
+            if( decl.get('text') || other.get('text') ) {
+                decl.set('text', (decl.get('text') || '' ) + (other.get('text') || ''));
+            }
+
+            return decl;
         },
 
-        define: function ( type, nameOrAttrs, addlAttrs ) {
+        define: function ( type, name, attrs ) {
+            attrs = attrs || _.isObject(name) && name || {};
+            name = !_.isObject(name) ? name : attrs.name;
+
             var decl = this,
-                named = !_.isObject( nameOrAttrs ),
-                name = named ? nameOrAttrs: undefined,
-                index = decl.get('definitions').where({ type: type }).length;
-                attrs = _.extend( { type: type, index: index },
-                              named ? {name: name} : nameOrAttrs,
-                                      addlAttrs ),
-                prior = named && decl.getDefinition({type: type, name: name});
+                index = decl.get('declarations').where({ type: type }).length,
+                prior = decl.getDeclaration({ type: type, name: name }),
+                subdecl = new Declaration( 
+                    _.extend( { type: type, index: index, name: name }, attrs ) 
+                );
+
+console.warn('define', prior ? 'ADD' : 'NEW', decl.get('name'), type, name, attrs );
+debugger;
 
             if ( prior ) {
-                prior.merge( attrs );
+                prior.merge( subdecl );
             } else {
-                decl.get('definitions').add( new Definition(attrs) );
+                decl.get('declarations').add( subdecl );
             }
+            
+            return decl;
         },
 
-        getDefinition: function ( attrs ) {
-            return this.get('definitions').findWhere( attrs );
+        getDeclaration: function ( attrs ) {
+            return this.get('declarations').findWhere( attrs );
         },
 
     }); // end of Declaration model
