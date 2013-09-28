@@ -1,4 +1,10 @@
 @import "reset.css";
+
+@import url(http://fonts.googleapis.com/css?family=Oxygen:400,300,700);
+
+@import url(http://fonts.googleapis.com/css?family=Source+Code+Pro);
+
+@import url(http://fonts.googleapis.com/css?family=Lato:300,400);
 .list,
 .typography ul {
   /** A simple list */
@@ -54,7 +60,8 @@
 
   float: left;
   margin-left: -6em;
-  font-family: Helvetica, Arial, sans-serif;
+  font-family: Oxygen, Helvetica, Arial, sans-serif;
+  font-weight: 400;
   font-size: inherit;
   color: #e9c063;
 }
@@ -67,7 +74,11 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 .typography {
-  font-family: 'Georgia', serif;
+  /** Applies standard typographical formatting conventions
+        to HTML tags inside. */
+
+  font-family: Oxygen, Tahoma, Geneva, sans-serif;
+  font-weight: 300;
   font-size: 16px;
   color: #dddddd;
   line-height: 1.5;
@@ -83,7 +94,6 @@ article.typography {
   margin: -0.5em -0.5em 0;
   padding: 0.5em 0.5em 0;
   position: relative;
-  background: -webkit-radial-gradient(50% 0, 50% 50px, rgba(255, 255, 255, 0.2), transparent);
   text-shadow: 1px 1px rgba(0, 0, 0, 0.5);
 }
 .typography header::before {
@@ -98,35 +108,32 @@ article.typography {
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 .typography header h2 {
-  font-family: Helvetica, Arial, sans-serif;
+  font-family: Oxygen, Helvetica, Arial, sans-serif;
+  font-weight: 400;
   font-size: 24px;
   color: #ffffff;
 }
 .typography header h3 {
-  font-family: Helvetica, Arial, sans-serif;
+  font-family: Oxygen, Helvetica, Arial, sans-serif;
+  font-weight: 400;
   font-size: 20px;
   color: #e9c063;
 }
-.typography header label + h1,
-.typography header label + h2,
-.typography header label + h3 {
-  margin-top: -0.25em;
-}
-.typography label {
-  font-family: Helvetica, Arial, sans-serif;
-  font-size: 12px;
-  color: #99cf50;
-}
 .typography pre {
-  font-family: 'Courier', 'Courier New', monospace;
+  font-family: 'Source Code Pro', 'Courier', 'Courier New', monospace;
+  font-weight: 400;
   font-size: 14px;
   color: #dddddd;
 }
 .typography code {
-  font-family: 'Courier', 'Courier New', monospace;
+  font-family: 'Source Code Pro', 'Courier', 'Courier New', monospace;
+  font-weight: 400;
   font-size: inherit;
   color: #cf6a4c;
-  white-space: pre;
+}
+.typography ul {
+  /** List formatting */
+
 }
 .pane,
 .frame {
@@ -141,19 +148,53 @@ article.typography {
   border-style: solid;
   border-color: #333333 #222222 #222222 #333333;
 }
-/** A pane with vertically scrolling content */
-.pane.scrollable- {
-  overflow-x: hidden;
+/** A pane with scrolling content */
+.scrollable-.pane {
+  overflow-x: scroll;
   overflow-y: scroll;
+}
+.scrollable-.pane.vertically- {
+  overflow-x: hidden;
+}
+.scrollable-.pane.horizontally- {
+  overflow-y: hidden;
+}
+.scrollable-.pane::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.scrollable-.pane::-webkit-scrollbar-track,
+.scrollable-.pane::-webkit-scrollbar-corner {
+  background: transparent;
+}
+.scrollable-.pane::-webkit-scrollbar-thumb {
+  background: #666666;
+  border-radius: 4px;
+  border: 2px solid #282624;
 }
 .frame {
   /** A container for one or more panes */
+
+  /**
+       @example A basic frame with one pane
+       <div class="frame">
+         <div class="pane">
+           <p>Lorem ipsum dolor sit amet, 
+             consectetur adipiscing elit.</p>
+           <p>Duis tempor risus vitae
+             nulla commodo tempus.</p>
+           <p>Praesent semper arcu quis
+             diam aliquam aliquam.</p> 
+         </div>
+       </div>
+    */
 
 }
 .frame nav {
   /** Navigation bar for the frame */
 
-  font-family: 'Helvetica Narrow', Helvetica, Arial, sans-serif;
+  font-family: Lato, Helvetica, Arial, sans-serif;
+  font-weight: 300;
   font-size: 12px;
   color: #dddddd;
 }
@@ -166,7 +207,22 @@ article.typography {
   position: absolute;
 }
 .frame.split-.horizontal- {
-  /** A frame which is split horizontally */
+  /** A frame which is split horizontally.
+                By default the frame is split equally (1:1)
+                */
+
+  /**
+               @example Two panes side-by-side
+               <div class="horizontal- split- frame">
+                   <div class="pane">
+                       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                       <p>Duis tempor risus vitae nulla commodo tempus.</p>
+                   </div>
+                   <div class="pane">
+                       <p>Praesent semper arcu quis diam aliquam aliquam.</p> 
+                   </div>
+               </div>
+               */
 
 }
 .frame.split-.horizontal- > * {
@@ -180,6 +236,10 @@ article.typography {
 .frame.split-.horizontal- > :last-child {
   right: 0;
 }
+.frame.split-.horizontal-.one-two- {
+  /** Split the frame 1:2 */
+
+}
 .frame.split-.horizontal-.one-two- > :first-child {
   width: 33.33333333333333%;
 }
@@ -187,7 +247,9 @@ article.typography {
   width: 66.66666666666666%;
 }
 .frame.split-.vertical- {
-  /** A frame which is split vertically */
+  /** A frame which is split vertically.
+                By default the frame is split equally (1:1)
+                */
 
 }
 .frame.split-.vertical- > * {
@@ -202,7 +264,18 @@ article.typography {
   bottom: 0;
 }
 .frame.tabbed- {
-  /** A frame with tabs to select alternate panes to view. */
+  /** A frame with tabs to select alternate panes to view.
+            @example Two tabs
+            <div class="tabbed- frame">
+              <ul class="frame-tabs">
+                <li class="is-active">One
+                <li>Two
+              </ul>
+              <ul class="frame-panes">
+                <li class="pane is-active">This is pane One
+                <li class="pane">This is pane Two
+            </div>
+        */
   position: relative;
 }
 .frame.tabbed- ul.frame-tabs {
@@ -241,7 +314,8 @@ article.typography {
 */
 code,
 pre {
-  font-family: 'Courier', 'Courier New', monospace;
+  font-family: 'Source Code Pro', 'Courier', 'Courier New', monospace;
+  font-weight: 400;
   font-size: 14px;
   color: #dddddd;
 }
@@ -249,10 +323,10 @@ code + code {
   margin-left: 2px;
 }
 code.combinator {
-  color: #cf6a4c;
+  color: #99cf50;
 }
 code.separator {
-  color: #99cf50;
+  color: #e9c063;
 }
 .example {
   border: 1px solid #444444;
@@ -260,18 +334,28 @@ code.separator {
   padding: 1em;
   width: 75%;
 }
-/** 
- A styleguide entry for a pattern.
-*/
 .pattern {
-  /* */
+  /** A styleguide entry for a pattern. */
 
 }
-.pattern > header h2 {
+.pattern .pattern-role {
+  font-family: Oxygen, Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  color: #99cf50;
+}
+.pattern .pattern-role + h2,
+.pattern .pattern-role + h3 {
+  margin-top: -0.25em;
+}
+.pattern h2 {
   text-transform: capitalize;
 }
 .pattern .pattern-selectors {
-  font-size: 14px;
+  font-size: 12px;
+}
+.pattern .pattern-selectors code {
+  color: #666666;
 }
 .pattern .pattern-example {
   margin: 1em 2em;
@@ -325,7 +409,8 @@ body {
   margin: 0;
 }
 #dictionaryView .dictionary-list {
-  font-family: Helvetica, Arial, sans-serif;
+  font-family: Oxygen, Helvetica, Arial, sans-serif;
+  font-weight: 400;
   font-size: 16px;
   color: #dddddd;
 }

@@ -5,6 +5,7 @@
 define(['Declaration'], function (Declaration) {
 
     options = {
+        /* TODO: implement the opposite cases */
         strictSyntax: true,              // ignore comments not beginning with /**
         structuralInference: true,       // infer relations by analyzing selectors
         semanticInference: true,         // infer relations by applying naming conventions
@@ -25,7 +26,7 @@ define(['Declaration'], function (Declaration) {
                 member: /^\.(([a-z]+)\-[a-z-]+)$/,  //  pattern name '-' member name
                 helper: /^\.(([a-z]+)\-[a-z-]+)$/,  //  pattern name '-' helper name
                 state: /^(is-[a-z-]+)$/,            // 'is-' prefix
-                cmtfirst: /^\s*\/\*+\s*/,
+                cmtfirst: /^\s*\/\*\*\s*/,
                 cmtmiddle: /^(\s*\*+\s?)?/,
                 cmtlast:  /\s*\*+\/\s*$/,
                 atcommand: /^\s*@([a-z-]+)\s*(.*)\s*$/,
@@ -188,12 +189,13 @@ define(['Declaration'], function (Declaration) {
                     isState = false,
                     member,
                     attrs;
+
                 if ( pattern ) {
                     while ( elements.length ) {
                         atRoot = atRoot && elements[0].combinator.value === '';
                         current = elements.shift().value,
                         attrs = decl.toJSON();
-                        // TODO: also look for semantic inferences that are not structural
+                        // TODO: also look for semantic inferences that are not struct
                         if ( sem && atRoot &&
                              ( matches = regex.modifier.exec(current) )) {
                             modifierList.unshift( matches[1] );

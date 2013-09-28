@@ -1,23 +1,34 @@
 @import "color";
 @import "list";
 
-.font-family ( body ) {
-    font-family: 'Georgia', serif;
+@import url(http://fonts.googleapis.com/css?family=Oxygen:400,300,700);
+@import url(http://fonts.googleapis.com/css?family=Source+Code+Pro);
+@import url(http://fonts.googleapis.com/css?family=Lato:300,400);
+
+.font-weight ( @weight: 400 ) {
 }
 
-.font-family ( header ) {
-    font-family: Helvetica, Arial, sans-serif;
+.font-family ( body, @weight: 300 ) {
+    font-family: Oxygen, Tahoma, Geneva, sans-serif;
+    font-weight: @weight;
 }
 
-.font-family ( code ) {
-    font-family: 'Courier', 'Courier New', monospace;
+.font-family ( header, @weight: 400 ) {
+    font-family: Oxygen, Helvetica, Arial, sans-serif;
+    font-weight: @weight;
 }
 
-.font-family ( nav ) {
-    font-family: 'Helvetica Narrow', Helvetica, Arial, sans-serif;
+.font-family ( code, @weight: 400 ) {
+    font-family: 'Source Code Pro', 'Courier', 'Courier New', monospace;
+    font-weight: @weight;
 }
 
-.font-family ( symbol ) {
+.font-family ( nav, @weight: 300 ) {
+    font-family: Lato, Helvetica, Arial, sans-serif;
+    font-weight: @weight;
+}
+
+.font-family ( symbol, @weight: normal ) {
     font-family: 'Symbol', symbol;
 }
 
@@ -37,11 +48,19 @@
     .color( @color );
 }
 
+.font ( @family, @weight, @size, @color ) {
+    .font-family( @family );
+    .font-size( @size );
+    .color( @color );
+}
+
 body {
     -webkit-font-smoothing: antialiased;
 }
 
 .typography {
+    /** Applies standard typographical formatting conventions
+        to HTML tags inside. */
 
     @padding: .5em;
 
@@ -61,7 +80,6 @@ body {
         margin: -@padding -@padding 0;
         padding: @padding @padding 0;
         position: relative; // for ::before content
-        background: -webkit-radial-gradient(50% 0, 50% 50px, rgba(255,255,255,.2), transparent );
         text-shadow: 1px 1px rgba(0,0,0,0.5);
         &::before {
             content: '';
@@ -75,22 +93,12 @@ body {
             box-shadow: 0 1px 2px rgba(0,0,0,0.5);
         }
         h2 {
-            .font( header, xlarge, high );
+            .font( header, xlarge, hi );
         }
         
         h3 {
-            .font( header, large, highlight-1 );
+            .font( header, large, alpha );
         }
-        
-        label {
-            & + h1, & + h2, & + h3 {
-                margin-top: -.25em;
-            }
-        }
-    }
-
-    label {
-        .font( header, xsmall, highlight-3 );
     }
 
     pre {
@@ -98,11 +106,11 @@ body {
     }
 
     code {
-        .font( code, inherit, highlight-2 );
-        white-space: pre;
+        .font( code, inherit, beta );
     }
 
     ul {
+        /** List formatting */
         &:extend( .list all );
     }
 

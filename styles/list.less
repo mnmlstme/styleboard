@@ -12,7 +12,7 @@
         margin-left: @margin;
         > * + *::before {
             display: block;
-            .font( symbol, inherit, highlight-1 );
+            .font( symbol, inherit, alpha );
             content: '•';
             width: -@margin;
             margin-left: -@margin;
@@ -40,7 +40,7 @@
         /** a term in a definition list */
         float: left;
         margin-left: -6em;
-        .font( header, inherit, highlight-1 );
+        .font( header, inherit, alpha );
     }
 
     .list-definition {

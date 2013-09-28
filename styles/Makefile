@@ -6,7 +6,7 @@ LESSFILES= \
 	code.less \
 	list.less \
 	pattern.less \
-	palette.less \
+	color.less \
 	pane.less \
 	typography.less \
 	util.less

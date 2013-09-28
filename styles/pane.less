@@ -1,3 +1,4 @@
+@import "color";
 
 .pane, .frame {
     height: 100%;
@@ -13,14 +14,48 @@
     border-color: @border-hi-color @border-lo-color @border-lo-color @border-hi-color;
 }
 
-/** A pane with vertically scrolling content */
-.pane.scrollable- {
-    overflow-x: hidden;
+/** A pane with scrolling content */
+.scrollable-.pane {
+    overflow-x: scroll;
     overflow-y: scroll;
+    &.vertically- {
+        overflow-x: hidden;
+    }
+    &.horizontally- {
+        overflow-y: hidden;
+    }
+    &::-webkit-scrollbar {
+        width: 8px;   // for vertical scrollbar
+        height: 8px;  // for horizontal scrollbar
+    }
+    &::-webkit-scrollbar-track,
+    &::-webkit-scrollbar-corner {
+        background: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+        background: @body-lo-color;
+        border-radius: 4px;
+        border: 2px solid @background-color;
+    }
 }
 
 .frame {
     /** A container for one or more panes */
+
+    /**
+       @example A basic frame with one pane
+       <div class="frame">
+         <div class="pane">
+           <p>Lorem ipsum dolor sit amet, 
+             consectetur adipiscing elit.</p>
+           <p>Duis tempor risus vitae
+             nulla commodo tempus.</p>
+           <p>Praesent semper arcu quis
+             diam aliquam aliquam.</p> 
+         </div>
+       </div>
+    */
+
     nav {
         /** Navigation bar for the frame */
         .font( nav, xsmall );
@@ -32,7 +67,21 @@
             position: absolute;
         }
         &.horizontal- {
-            /** A frame which is split horizontally */
+            /** A frame which is split horizontally.
+                By default the frame is split equally (1:1)
+                */
+            /**
+               @example Two panes side-by-side
+               <div class="horizontal- split- frame">
+                   <div class="pane">
+                       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                       <p>Duis tempor risus vitae nulla commodo tempus.</p>
+                   </div>
+                   <div class="pane">
+                       <p>Praesent semper arcu quis diam aliquam aliquam.</p> 
+                   </div>
+               </div>
+               */
             > * {
                 width: 50%;
                 height: 100%;
@@ -45,6 +94,7 @@
                 right: 0;
             }
             &.one-two- {
+                /** Split the frame 1:2 */
                 > :first-child {
                     width: 1/3 * 100%;
                 }
@@ -54,7 +104,9 @@
             }
         }
         &.vertical- {
-            /** A frame which is split vertically */
+            /** A frame which is split vertically.
+                By default the frame is split equally (1:1)
+                */
             > * {
                 width: 100%;
                 height: 50%;
@@ -66,7 +118,18 @@
     }
 
     &.tabbed- {
-        /** A frame with tabs to select alternate panes to view. */ 
+        /** A frame with tabs to select alternate panes to view.
+            @example Two tabs
+            <div class="tabbed- frame">
+              <ul class="frame-tabs">
+                <li class="is-active">One
+                <li>Two
+              </ul>
+              <ul class="frame-panes">
+                <li class="pane is-active">This is pane One
+                <li class="pane">This is pane Two
+            </div>
+        */ 
         position: relative;
         ul.frame-tabs {
             background: @background-color;
@@ -81,8 +144,8 @@
                 border: 1px solid @border-color;
                 cursor: pointer;
                 &.is-active {
-                    color: @hl-color-1;
-                    border-color: @hl-color-1;
+                    .color( alpha );
+                    border-color: @color-alpha;
                 }
                 &:empty {
                     visibility: hidden;

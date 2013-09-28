@@ -2,7 +2,9 @@
   Styles for formatting code.  Eventually this will be used for highlighting code
 */
 
-  code, pre {
+@import "color";
+
+code, pre {
     .font( code, small );
 }
 
@@ -11,11 +13,11 @@ code + code {
 }
 
 code.combinator {
-    color: @hl-color-2;
+    .color( gamma );
 }
 
 code.separator {
-    color: @hl-color-3;
+    .color( alpha );
 }
 
 .example {

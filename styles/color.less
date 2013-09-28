@@ -6,20 +6,18 @@
 @border-color: #444;
 @border-hi-color: #333;
 @border-lo-color: #222;
-@hl-color-1: #e9c063;
-@hl-color-2: #cf6a4c;
-@hl-color-3: #99cf50;
-@hl-color-4: #65b042;
-@hl-color-5: #3387cc;
+@color-alpha: #e9c063; // yellow
+@color-beta: #cf6a4c;  // red
+@color-gamma: #99cf50; // green
+@color-delta: #3387cc; // blue
 
 .color ( body ) { color: @body-color; }
-.color ( low )  { color: @body-lo-color; }
-.color ( high ) { color: @body-hi-color; }
+.color ( lo )  { color: @body-lo-color; }
+.color ( hi ) { color: @body-hi-color; }
 
-.color ( highlight-1 )  { color: @hl-color-1; }
-.color ( highlight-2 )  { color: @hl-color-2; }
-.color ( highlight-3 )  { color: @hl-color-3; }
-.color ( highlight-4 )  { color: @hl-color-4; }
-.color ( highlight-5 )  { color: @hl-color-5; }
+.color ( alpha )  { color: @color-alpha; }
+.color ( beta )  { color: @color-beta; }
+.color ( gamma )  { color: @color-gamma; }
+.color ( delta )  { color: @color-delta; }
 
-.glow ( highlight-1 )  { box-shadow: 0 0 2px @hl-color-1; }
+.glow ( alpha )  { box-shadow: 0 0 2px @color-alpha; }

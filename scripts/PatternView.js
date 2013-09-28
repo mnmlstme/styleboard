@@ -17,14 +17,14 @@ define(['appState'], function (appState) {
             var view = this,
                 pat = view.model,
                 name = pat.get('name').replace('.',''),
-                selectors = pat.get('selectors'),
+                selectors = pat.get('selectors').map( function(s) {
+                       return ['li', code( s.toCSS() )];
+                }),
                 declarations = pat.get('declarations');
 
             view.$el.mk( 'header',
                          [ 'h2', name] ,
-                         ['ul.comma-.pattern-selectors'].concat( selectors.map( function(s) {
-                               return ['li', code( s.toCSS() )]; 
-                           })) 
+                         ['ul.comma-.pattern-selectors'].concat( selectors )
                        );
 
             view.renderDeclarations( declarations );
@@ -37,6 +37,9 @@ define(['appState'], function (appState) {
             $parent = $parent || view.$el;
             declarations.forEach( function (defn) {
                 var type = defn.get('type'),
+                    selectors = defn.get('selectors').map( function(s) {
+                        return ['li', code( s.toCSS() )];
+                    }),
                     attrs = { 'class': 'pattern-' + type };
                 switch ( type ) {
                 case 'description':
@@ -51,8 +54,9 @@ define(['appState'], function (appState) {
                         defn.get('declarations'),
                         $parent.mk( 'section', attrs,
                                      [ 'header',
-                                       [ 'label', type],
-                                       [ 'h3', defn.get('name')]] )
+                                       [ 'p.pattern-role', type],
+                                       [ 'h3', defn.get('name')],
+                                       ['ul.comma-.pattern-selectors'].concat( selectors )])
                     );
                 }
             });

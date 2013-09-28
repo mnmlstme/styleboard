@@ -1,19 +1,24 @@
+@import "color";
 
-/** 
- A styleguide entry for a pattern.
-*/
 .pattern {
+    /** A styleguide entry for a pattern. */
 
-    /* */
-
-    > header {
-        h2 {
-            text-transform: capitalize;
+    .pattern-role {
+        .font( header, xsmall, gamma );
+        +h2, +h3 {
+            margin-top: -.25em;
         }
     }
-
+    
+    h2 {
+        text-transform: capitalize;
+    }
+    
     .pattern-selectors {
-        .font-size( small )
+        .font-size( xsmall );
+        code {
+            .color( lo );
+        }
     }
 
     .pattern-example {
@@ -25,8 +30,8 @@
         font-style: oblique;
         cursor: pointer;
         &:hover {
-            .color( highlight-1 );
-            .glow( highlight-1 );
+            .color( alpha );
+            .glow( alpha );
         }
     }
 

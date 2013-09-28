@@ -31,11 +31,9 @@ define(['Definition'], function (Definition) {
         },
 
         merge: function (other) {
-            var decl = this,
-                oldSelectors = decl.get('selectors');
-            decl.set('selectors', oldSelectors.length ? 
-                     _.intersection( oldSelectors, other.get('selectors' ) ):
-                     other.get('selectors').slice(0) );
+            var decl = this;
+
+            decl.set('selectors', decl.get('selectors') || other.get('selectors') );
 
             decl.get('declarations').add( other.get('declarations').models );
 
@@ -56,9 +54,6 @@ define(['Definition'], function (Definition) {
                 subdecl = new Declaration( 
                     _.extend( { type: type, index: index, name: name }, attrs ) 
                 );
-
-console.warn('define', prior ? 'ADD' : 'NEW', decl.get('name'), type, name, attrs );
-debugger;
 
             if ( prior ) {
                 prior.merge( subdecl );
