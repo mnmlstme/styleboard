@@ -1,28 +1,30 @@
 /*
-  Styles for formatting code.  Eventually this will be used for highlighting code
+  Styles for formatting code.
 */
 
+@import "typography";
 @import "color";
 
-code, pre {
+.code,
+code,
+pre {
+    /** A section of computer code */
     .font( code, small );
 }
 
-code + code {
-    margin-left: 2px;
+.code,
+pre {
+    background: @inv-background-color;
+    color: @inv-body-color;
 }
 
-code.combinator {
-    .color( gamma );
+code {
+    &.combinator- {
+        padding: 0 .5em;
+        .color( gamma );
+    }
+    &.separator- {
+        .color( alpha );
+    }
 }
 
-code.separator {
-    .color( alpha );
-}
-
-.example {
-    border: 1px solid @border-color;
-    border-radius: 3px;
-    padding: 1em;
-    width: 75%;
-}

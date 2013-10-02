@@ -5,6 +5,7 @@
 
     .pattern-role {
         .font( header, xsmall, gamma );
+        text-shadow: 1px 1px rgba(0,0,0,0.5);
         +h2, +h3 {
             margin-top: -.25em;
         }
@@ -22,16 +23,16 @@
     }
 
     .pattern-example {
-        margin: 1em 2em;
-        background: #444;
+        margin: 1em 0;
+        background: @background-alt-color;
         padding: .5em;
-        border-radius: 2px;
-        border: 1px solid #555;
+        border-radius: 1px;
+        border: 1px solid @border-color;
         font-style: oblique;
         cursor: pointer;
         &:hover {
-            .color( alpha );
-            .glow( alpha );
+            .color( hi );
+            border-color: #333;
         }
     }
 

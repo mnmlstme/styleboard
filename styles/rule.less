@@ -1,0 +1,38 @@
+/**
+   Styles for presenting (CSS) rules
+*/
+
+@import "typography";
+
+.rule {
+    .font( code, small );
+    + .rule {
+        margin-top: 1em;
+    }
+
+    .rule-selectors {
+        > li {
+            &::after {
+                content: ',';
+                }
+            &:last-child::after {
+                content: ' {';
+            }
+        }
+    }
+
+    .rule-declarations {
+        > li {
+            margin-left: 2em;
+        }
+        &::after {
+            display: block;
+            content: '}';
+        }
+    }
+
+    .rule-comment {
+        display: none;
+    }
+
+}

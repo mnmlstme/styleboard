@@ -23,7 +23,7 @@
   display: block;
   font-family: 'Symbol', symbol;
   font-size: inherit;
-  color: #e9c063;
+  color: #f19914;
   content: '•';
   width: -1em;
   margin-left: -1em;
@@ -63,7 +63,7 @@
   font-family: Oxygen, Helvetica, Arial, sans-serif;
   font-weight: 400;
   font-size: inherit;
-  color: #e9c063;
+  color: #f19914;
 }
 .list .list-definition,
 .typography ul .list-definition {
@@ -80,50 +80,40 @@ body {
   font-family: Oxygen, Tahoma, Geneva, sans-serif;
   font-weight: 300;
   font-size: 16px;
-  color: #dddddd;
-  line-height: 1.5;
+  color: #333333;
+  background: #f8f8f8;
 }
 .typography article,
 article.typography {
   padding: 0.5em;
+  padding-left: 2.5em;
 }
 .typography section {
   margin-top: 2em;
 }
 .typography header {
-  margin: -0.5em -0.5em 0;
-  padding: 0.5em 0.5em 0;
-  position: relative;
-  text-shadow: 1px 1px rgba(0, 0, 0, 0.5);
-}
-.typography header::before {
-  content: '';
-  display: block;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 0;
-  border-bottom: 1px solid #000;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  margin-left: -2em;
+  margin-bottom: 0.5em;
+  line-height: 1.25;
 }
 .typography header h2 {
   font-family: Oxygen, Helvetica, Arial, sans-serif;
   font-weight: 400;
   font-size: 24px;
-  color: #ffffff;
+  color: #000000;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
 }
 .typography header h3 {
   font-family: Oxygen, Helvetica, Arial, sans-serif;
   font-weight: 400;
   font-size: 20px;
-  color: #e9c063;
+  color: #f19914;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
 }
 .typography pre {
   font-family: 'Source Code Pro', 'Courier', 'Courier New', monospace;
   font-weight: 400;
   font-size: 14px;
-  color: #dddddd;
 }
 .typography code {
   font-family: 'Source Code Pro', 'Courier', 'Courier New', monospace;
@@ -142,11 +132,9 @@ article.typography {
 }
 /** A rectangular region of the screen */
 .pane {
-  background: #282624;
-  color: #dddddd;
   border-width: 1px;
   border-style: solid;
-  border-color: #333333 #222222 #222222 #333333;
+  border-color: rgba(255, 255, 255, 0.5) rgba(0, 0, 0, 0.5) rgba(0, 0, 0, 0.5) rgba(255, 255, 255, 0.5);
 }
 /** A pane with scrolling content */
 .scrollable-.pane {
@@ -160,17 +148,16 @@ article.typography {
   overflow-y: hidden;
 }
 .scrollable-.pane::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 .scrollable-.pane::-webkit-scrollbar-track,
 .scrollable-.pane::-webkit-scrollbar-corner {
   background: transparent;
 }
 .scrollable-.pane::-webkit-scrollbar-thumb {
-  background: #666666;
-  border-radius: 4px;
-  border: 2px solid #282624;
+  background: rgba(150, 150, 150, 0.5);
+  border-radius: 1px;
 }
 .frame {
   /** A container for one or more panes */
@@ -193,6 +180,7 @@ article.typography {
 .frame nav {
   /** Navigation bar for the frame */
 
+  background: #282624;
   font-family: Lato, Helvetica, Arial, sans-serif;
   font-weight: 300;
   font-size: 12px;
@@ -279,8 +267,6 @@ article.typography {
   position: relative;
 }
 .frame.tabbed- ul.frame-tabs {
-  background: #282624;
-  color: #dddddd;
   white-space: nowrap;
   padding: 0 .25em;
 }
@@ -288,13 +274,12 @@ article.typography {
   display: inline-block;
   padding: .25em;
   margin: .25em;
-  background: #282624;
-  border: 1px solid #444444;
+  border: 1px solid rgba(0, 0, 0, 0.25);
   cursor: pointer;
 }
 .frame.tabbed- ul.frame-tabs > li.is-active {
-  color: #e9c063;
-  border-color: #e9c063;
+  color: #f19914;
+  border-color: #f19914;
 }
 .frame.tabbed- ul.frame-tabs > li:empty {
   visibility: hidden;
@@ -310,29 +295,28 @@ article.typography {
   display: block;
 }
 /*
-  Styles for formatting code.  Eventually this will be used for highlighting code
+  Styles for formatting code.
 */
+.code,
 code,
 pre {
+  /** A section of computer code */
+
   font-family: 'Source Code Pro', 'Courier', 'Courier New', monospace;
   font-weight: 400;
   font-size: 14px;
+}
+.code,
+pre {
+  background: #282624;
   color: #dddddd;
 }
-code + code {
-  margin-left: 2px;
+code.combinator- {
+  padding: 0 .5em;
+  color: #76d81b;
 }
-code.combinator {
-  color: #99cf50;
-}
-code.separator {
-  color: #e9c063;
-}
-.example {
-  border: 1px solid #444444;
-  border-radius: 3px;
-  padding: 1em;
-  width: 75%;
+code.separator- {
+  color: #f19914;
 }
 .pattern {
   /** A styleguide entry for a pattern. */
@@ -342,7 +326,8 @@ code.separator {
   font-family: Oxygen, Helvetica, Arial, sans-serif;
   font-weight: 400;
   font-size: 12px;
-  color: #99cf50;
+  color: #76d81b;
+  text-shadow: 1px 1px rgba(0, 0, 0, 0.5);
 }
 .pattern .pattern-role + h2,
 .pattern .pattern-role + h3 {
@@ -358,17 +343,44 @@ code.separator {
   color: #666666;
 }
 .pattern .pattern-example {
-  margin: 1em 2em;
-  background: #444;
+  margin: 1em 0;
+  background: #eeeeee;
   padding: .5em;
-  border-radius: 2px;
-  border: 1px solid #555;
+  border-radius: 1px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
   font-style: oblique;
   cursor: pointer;
 }
 .pattern .pattern-example:hover {
-  color: #e9c063;
-  box-shadow: 0 0 2px #e9c063;
+  color: #000000;
+  border-color: #333;
+}
+/**
+   Styles for presenting (CSS) rules
+*/
+.rule {
+  font-family: 'Source Code Pro', 'Courier', 'Courier New', monospace;
+  font-weight: 400;
+  font-size: 14px;
+}
+.rule + .rule {
+  margin-top: 1em;
+}
+.rule .rule-selectors > li::after {
+  content: ',';
+}
+.rule .rule-selectors > li:last-child::after {
+  content: ' {';
+}
+.rule .rule-declarations > li {
+  margin-left: 2em;
+}
+.rule .rule-declarations::after {
+  display: block;
+  content: '}';
+}
+.rule .rule-comment {
+  display: none;
 }
 body {
   position: fixed;
@@ -412,7 +424,6 @@ body {
   font-family: Oxygen, Helvetica, Arial, sans-serif;
   font-weight: 400;
   font-size: 16px;
-  color: #dddddd;
 }
 #dictionaryView .dictionary-list > li {
   margin: .5em 0;

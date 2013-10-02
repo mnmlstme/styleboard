@@ -7,8 +7,6 @@
 
 /** A rectangular region of the screen */
 .pane {
-    background: @background-color;
-    color: @body-color;
     border-width: 1px;
     border-style: solid;
     border-color: @border-hi-color @border-lo-color @border-lo-color @border-hi-color;
@@ -25,17 +23,16 @@
         overflow-y: hidden;
     }
     &::-webkit-scrollbar {
-        width: 8px;   // for vertical scrollbar
-        height: 8px;  // for horizontal scrollbar
+        width: 6px;   // for vertical scrollbar
+        height: 6px;  // for horizontal scrollbar
     }
     &::-webkit-scrollbar-track,
     &::-webkit-scrollbar-corner {
         background: transparent;
     }
     &::-webkit-scrollbar-thumb {
-        background: @body-lo-color;
-        border-radius: 4px;
-        border: 2px solid @background-color;
+        background: rgba( 150, 150, 150, 0.5);
+        border-radius: 1px;
     }
 }
 
@@ -58,7 +55,8 @@
 
     nav {
         /** Navigation bar for the frame */
-        .font( nav, xsmall );
+        background: @inv-background-color;
+        .font( nav, xsmall, inv );
     }
     &.split- {
         /** A frame which is split into two panes */
@@ -132,15 +130,12 @@
         */ 
         position: relative;
         ul.frame-tabs {
-            background: @background-color;
-            color: @body-color;
             white-space: nowrap;
             padding: 0 .25em;
             > li {
                 display: inline-block;
                 padding: .25em;
                 margin: .25em;
-                background: @background-color;
                 border: 1px solid @border-color;
                 cursor: pointer;
                 &.is-active {

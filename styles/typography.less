@@ -42,14 +42,18 @@
 .font-size ( large ) { font-size: 1.25 * @font-size-base; }
 .font-size ( xlarge ) { font-size: 1.5 * @font-size-base; }
 
-.font ( @family: body, @size: medium, @color: body ) {
+.font ( @family: body, @size: medium ) {
     .font-family( @family );
     .font-size( @size );
+}
+
+.font ( @family, @size, @color ) {
+    .font( @family, @size );
     .color( @color );
 }
 
 .font ( @family, @weight, @size, @color ) {
-    .font-family( @family );
+    .font-family( @family, @weight );
     .font-size( @size );
     .color( @color );
 }
@@ -63,13 +67,15 @@ body {
         to HTML tags inside. */
 
     @padding: .5em;
+    @indent: 2em;
 
-    .font();
-    line-height: 1.5;
+    .font( body, medium, body );
+    background: @background-color;
 
     article, 
     article& {
         padding: @padding;
+        padding-left: (@indent + @padding);
     }
 
     section {
@@ -77,27 +83,19 @@ body {
     }
 
     header {
-        margin: -@padding -@padding 0;
-        padding: @padding @padding 0;
-        position: relative; // for ::before content
-        text-shadow: 1px 1px rgba(0,0,0,0.5);
-        &::before {
-            content: '';
-            display: block;
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 0;
-            border-bottom: 1px solid #000;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.5);
-        }
+
+        margin-left: -@indent;
+        margin-bottom: @padding;
+        line-height: 1.25;
+
         h2 {
             .font( header, xlarge, hi );
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
         }
         
         h3 {
             .font( header, large, alpha );
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
         }
     }
 

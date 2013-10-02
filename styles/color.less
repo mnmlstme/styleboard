@@ -1,17 +1,25 @@
-@background-color: #282624;
-@background-alt-color: #393633;
-@body-color: #ddd;
+@background-color: #f8f8f8;
+@background-alt-color: #eee;
+@body-color: #333;
 @body-lo-color: #666;
-@body-hi-color: #fff;
-@border-color: #444;
-@border-hi-color: #333;
-@border-lo-color: #222;
-@color-alpha: #e9c063; // yellow
+@body-hi-color: #000;
+
+@border-color: rgba(0,0,0,.25);
+@border-hi-color: rgba(255,255,255,0.5);
+@border-lo-color: rgba(0,0,0,0.5);
+
+@color-alpha: #f19914; // orange
 @color-beta: #cf6a4c;  // red
-@color-gamma: #99cf50; // green
+@color-gamma: #76d81b; // green
 @color-delta: #3387cc; // blue
 
+@inv-background-color: #282624;
+@inv-background-alt-color: #393633;
+@inv-body-color: #ddd;
+@inv-body-hi-color: #fff;
+
 .color ( body ) { color: @body-color; }
+.color ( inv ) { color: @inv-body-color; }
 .color ( lo )  { color: @body-lo-color; }
 .color ( hi ) { color: @body-hi-color; }
 

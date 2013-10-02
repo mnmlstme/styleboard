@@ -41,8 +41,8 @@ define(['Declaration'], function (Declaration) {
             nodes.forEach( function (node) {
                 switch ( node.type ) {
                 case 'Ruleset':
-                    pending = pending || new Declaration();
-                    /* parse comments nested within the ruleset */
+                    pending = pending || new Declaration({ rules: [node] });
+                    // parse comments nested within the ruleset
                     node.rules.filter( function (node) {
                         return node.type === 'Comment' &&
                             regex.cmtfirst.exec( node.value );
@@ -107,7 +107,9 @@ define(['Declaration'], function (Declaration) {
                 case 'member':
                 case 'state':
                 case 'helper':
-                    if ( pattern ) pattern.define(type, decl.get('name'), decl);
+                    if ( pattern ) {
+                        pattern.define(type, decl.get('name'), decl);
+                    }
                     break;
                 case undefined:
                     if (options.structuralInference || options.semanticInference) {
