@@ -5,6 +5,8 @@
 @import url(http://fonts.googleapis.com/css?family=Source+Code+Pro);
 
 @import url(http://fonts.googleapis.com/css?family=Lato:300,400);
+
+@import "../graphics/fontcustom/fontcustom.css";
 body {
   -webkit-font-smoothing: antialiased;
 }
@@ -60,6 +62,43 @@ article.typography {
 .typography ul {
   /** List formatting */
 
+}
+/** Icons. Implemented as an icon font using fontcustom.
+    @example
+    <i class="presentation- icon">Present</i>
+*/
+.icon {
+  display: inline-block;
+  height: 1em;
+  width: 1em;
+  font-family: "fontcustom";
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  text-decoration: inherit;
+  overflow: hidden;
+}
+.icon::before {
+  display: inline-block;
+  content: "X";
+  height: 1em;
+  width: 1em;
+}
+.icon.presentation- {
+  /** A presentation on projection screen.
+
+           @example
+           <i class="presentation- icon">Present</i>
+
+           (Praveen Francis, 1986, Public Domain)
+           */
+
+}
+.icon.presentation-::before {
+  content: "\f100";
 }
 .list,
 .typography ul {
@@ -318,22 +357,28 @@ input[type="button"].iconic-,
 input[type="submit"].iconic-,
 input[type="reset"].iconic-,
 .button.iconic- {
-  /** A button which contains an icon, and possibly some text
+  /** A button which contains an icon.  If there is also text, the text
+        must be wrapped in its own `<span>`.
         @example An iconic button
         There is an icon inside this
-        <button class="iconic-"><i class="icon"></i></button>
-        and <button class="iconic-"><i class="icon"></i>Also This</button>
+        <button class="iconic-"><i class="presentation- icon"></i></button>
+        and <button class="iconic-"><i class="presentation- icon"></i>
+        <span>Also This</span></button>
         button.
         */
 
 }
-button.iconic- .icon,
-input[type="button"].iconic- .icon,
-input[type="submit"].iconic- .icon,
-input[type="reset"].iconic- .icon,
-.button.iconic- .icon {
-  font-size: 1.25em;
-  vertical-align: bottom;
+button.iconic- .icon + *,
+input[type="button"].iconic- .icon + *,
+input[type="submit"].iconic- .icon + *,
+input[type="reset"].iconic- .icon + *,
+.button.iconic- .icon + *,
+* + button.iconic- .icon,
+* + input[type="button"].iconic- .icon,
+* + input[type="submit"].iconic- .icon,
+* + input[type="reset"].iconic- .icon,
+* + .button.iconic- .icon {
+  margin-left: .25em;
 }
 .pane,
 .frame {

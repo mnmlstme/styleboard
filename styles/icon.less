@@ -1,0 +1,42 @@
+/** Icons. Implemented as an icon font using fontcustom.
+    @example
+    <i class="presentation- icon">Present</i>
+*/
+
+// TODO: create a LESS template for fontcustom
+@import "../graphics/fontcustom/fontcustom.css";
+
+.icon {
+    display: inline-block;
+    height: 1em;
+    width: 1em;
+    font-family: "fontcustom";
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    text-decoration: inherit;
+    overflow: hidden;
+
+    &::before { 
+        display: inline-block;
+        content: "X";
+        height: 1em;
+        width: 1em;
+    }
+
+    &.presentation- { 
+        /** A presentation on projection screen.
+
+           @example
+           <i class="presentation- icon">Present</i>
+
+           (Praveen Francis, 1986, Public Domain)
+           */
+        &::before { content: "\f100"; }
+    }
+
+}
+

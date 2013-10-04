@@ -89,17 +89,22 @@ input[type="reset"],
     }
 
     &.iconic- {
-    /** A button which contains an icon, and possibly some text
+    /** A button which contains an icon.  If there is also text, the text
+        must be wrapped in its own `<span>`.
         @example An iconic button
         There is an icon inside this
-        <button class="iconic-"><i class="icon"></i></button>
-        and <button class="iconic-"><i class="icon"></i>Also This</button>
+        <button class="iconic-"><i class="presentation- icon"></i></button>
+        and <button class="iconic-"><i class="presentation- icon"></i>
+        <span>Also This</span></button>
         button.
         */
 
         .icon {
-            font-size: @lineht;
-            vertical-align: bottom;
+            & + *,
+            * + & { 
+                margin-left: .25em;
+            }
         }
+
     }
 }

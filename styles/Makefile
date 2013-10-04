@@ -8,6 +8,7 @@ LESSFILES= \
 	typography.less \
 	pane.less \
 	list.less \
+	icon.less \
 	button.less \
 	code.less \
 	rule.less \

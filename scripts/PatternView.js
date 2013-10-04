@@ -47,7 +47,9 @@ define(['appState'], function (appState) {
                     $parent.mk( 'p', defn.get('text') );
                     break;
                 case 'example':
-                    $parent.mk( 'button', attrs, defn.get('title') || 'Example' )
+                    $parent.mk( 'button.iconic-', attrs, 
+                                ['i.presentation-.icon', 'Present Example'],
+                                ['span', defn.get('title') || 'Example' ] )
                         .data( 'example', defn );
                     break;
                 default:
@@ -82,7 +84,7 @@ define(['appState'], function (appState) {
 
         uiClickExample: function uiClickExample(event) {
             var view = this,
-                $target = $(event.target),
+                $target = $(event.currentTarget),
                 example = $target.data('example');
 
             appState.set('example', example);
