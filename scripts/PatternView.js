@@ -3,6 +3,9 @@
  */
 define(['appState'], function (appState) {
 
+    var KEY_PREVIOUS = 80,
+        KEY_NEXT = 78;
+
     var PatternView = Backbone.View.extend({
 
         initialize: function () {
@@ -10,8 +13,15 @@ define(['appState'], function (appState) {
                 pattern = view.model,
                 example = pattern.getDeclaration({ type: 'example', index: 0 });
 
+            view.examples = [];
+
             appState.set('example', example);
             appState.on('change:example', view.updateExampleIsActive, view);
+
+            // TODO: we need to remove this when the view is detached
+            $(document).keydown( function (event) {
+                view.uiKeydown(event);
+            });
         },
 
         render: function () {
@@ -47,6 +57,7 @@ define(['appState'], function (appState) {
                     $parent.mk( 'p', defn.get('text') );
                     break;
                 case 'example':
+                    view.examples.push( defn );
                     $parent.mk( 'button.iconic-', attrs, 
                                 ['i.presentation-.icon', 'Present Example'],
                                 ['span', defn.get('title') || 'Example' ] )
@@ -89,6 +100,31 @@ define(['appState'], function (appState) {
 
             appState.set('example', example);
         },
+
+        uiKeydown: function uiKeydown(event) {
+            var view = this,
+                pattern = view.model,
+                index = view.examples.indexOf( appState.get('example') ),
+                original = index,
+                length = view.examples.length;
+
+            if ( !length ) return;
+
+            switch ( event.which ) { 
+            case KEY_PREVIOUS:
+                index = index - 1;
+                break;
+            case KEY_NEXT:
+                index = index + 1;
+                break;
+            }
+
+            if ( index < 0 ) index = 0;
+            if ( index >= length ) index = length - 1;
+            if ( index !== original ) {
+                appState.set('example', view.examples[index] );
+            }
+        }
 
     });
 
