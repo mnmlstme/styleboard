@@ -16,7 +16,7 @@ define(['appState'], function (appState) {
             view.$title = view.$('h2');
             
             // TODO: make the default context configurable
-            view.context = 'typography';
+            // view.context = 'typography';
 
             appState.on('change:example', function( appState, example ) {
                 view.setModel( example );

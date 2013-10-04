@@ -646,7 +646,7 @@ body {
   -moz-box-sizing: border-box;
 }
 #sandbox {
-  background: #cccccc url(../graphics/checkerboard.svg);
+  background: #ffffff url(../graphics/checkerboard.svg);
   border: none;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5) inset;
 }
