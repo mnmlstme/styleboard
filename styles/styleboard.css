@@ -183,8 +183,8 @@ input[type="button"],
 input[type="submit"],
 input[type="reset"],
 .button {
-  /** @example A simple button.
-        <button>Do it!</button>
+  /** @example A basic button
+        You can <button>Click this</button> if you like.
      */
 
   display: inline-block;
@@ -228,12 +228,13 @@ input[type="submit"]:active,
 input[type="reset"]:active,
 .button:active {
   /** A button which is currently in the “on” or active state.
-            @example An active button.
-            <button class="is-active">Do it!</button>
+            @example An active button
+            You have <button class="is-active">Clicked this</button> already.
             */
 
-  color: #9b3314;
-  border-color: #9b3314;
+  color: #f19914;
+  border-color: #f19914;
+  background: #393633;
 }
 button[disabled],
 input[type="button"][disabled],
@@ -246,8 +247,8 @@ input[type="submit"].is-disabled,
 input[type="reset"].is-disabled,
 .button.is-disabled {
   /** A button which has been disabled and is not currently clickable.
-            @example A disabled button.
-            <button class="is-disabled">Do it!</button>
+            @example A disabled button
+            You <button class="is-disabled">Cannot click this</button> button.
             */
 
   opacity: .5;
@@ -272,8 +273,9 @@ input[type="submit"].primary-,
 input[type="reset"].primary-,
 .button.primary- {
   /** The primary call to action in a dialog.
-            @example A primary button.
-            <button class="primary-">Do it!</button>
+            @example A primary button
+            You probably want <button class="primary-">This button</button>
+            and not <button>This other one</button>.
             */
 
   color: #ffffff;
@@ -285,7 +287,7 @@ input[type="submit"].link-,
 input[type="reset"].link-,
 .button.link- {
   /** A button which is styled to look like a link.
-            @example A link button.
+            @example A link button
             This may look like a link but it's really
             a <button class="link-">button</button> in disguise.
             */
@@ -304,8 +306,8 @@ input[type="submit"].delete-,
 input[type="reset"].delete-,
 .button.delete- {
   /** A delete button or similarly dangerous action.
-            @example A delete button.
-            <button class="delete-">Delete</button>
+            @example A delete button
+            Be careful of <button class="delete-">This Dangerous</button> button.
             */
 
   color: #ffffff;
@@ -317,8 +319,11 @@ input[type="submit"].iconic-,
 input[type="reset"].iconic-,
 .button.iconic- {
   /** A button which contains an icon, and possibly some text
-        @example An iconic button.
-        <button class="iconic-"><i class="icon"></i>Draw</button>
+        @example An iconic button
+        There is an icon inside this
+        <button class="iconic-"><i class="icon"></i></button>
+        and <button class="iconic-"><i class="icon"></i>Also This</button>
+        button.
         */
 
 }
@@ -550,16 +555,10 @@ code.separator {
 }
 .pattern .pattern-example {
   margin: 1em 0;
-  background: #eeeeee;
-  padding: .5em;
-  border-radius: 1px;
-  border: 1px solid rgba(0, 0, 0, 0.25);
-  font-style: oblique;
-  cursor: pointer;
-}
-.pattern .pattern-example:hover {
-  color: #000000;
-  border-color: #333;
+  padding-left: .5em;
+  padding-right: .5em;
+  width: 100%;
+  text-align: left;
 }
 /**
    Styles for presenting (CSS) rules

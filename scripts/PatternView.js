@@ -11,6 +11,7 @@ define(['appState'], function (appState) {
                 example = pattern.getDeclaration({ type: 'example', index: 0 });
 
             appState.set('example', example);
+            appState.on('change:example', view.updateExampleIsActive, view);
         },
 
         render: function () {
@@ -46,7 +47,7 @@ define(['appState'], function (appState) {
                     $parent.mk( 'p', defn.get('text') );
                     break;
                 case 'example':
-                    $parent.mk( 'div', attrs, defn.get('title') || 'Example' )
+                    $parent.mk( 'button', attrs, defn.get('title') || 'Example' )
                         .data( 'example', defn );
                     break;
                 default:
@@ -60,14 +61,26 @@ define(['appState'], function (appState) {
                     );
                 }
             });
+            view.updateExampleIsActive();
+        },
 
+        updateExampleIsActive: function () {
+            var view = this,
+                example = appState.get('example');
+
+            view.$('.pattern-example').each( function() {
+                var $example = $(this);
+
+                $example.toggleClass( 'is-active',
+                                      $example.data('example') === example );
+            });
         },
 
         events: {
-            'click .pattern-example': 'uiSelectExample'
+            'click .pattern-example': 'uiClickExample'
         },
 
-        uiSelectExample: function (event) {
+        uiClickExample: function uiClickExample(event) {
             var view = this,
                 $target = $(event.target),
                 example = $target.data('example');
