@@ -46,7 +46,7 @@ define(['appState'], function (appState) {
                     $parent.mk( 'p', defn.get('text') );
                     break;
                 case 'example':
-                    $parent.mk( 'div', attrs, defn.get('title') || 'View' )
+                    $parent.mk( 'div', attrs, defn.get('title') || 'Example' )
                         .data( 'example', defn );
                     break;
                 default:
@@ -55,8 +55,8 @@ define(['appState'], function (appState) {
                         $parent.mk( 'section', attrs,
                                      [ 'header',
                                        [ 'p.pattern-role', type],
-                                       [ 'h3', defn.get('name')],
-                                       ['ul.comma-.pattern-selectors'].concat( selectors )])
+                                       [ 'h3', defn.get('name')]
+                                     ])
                     );
                 }
             });

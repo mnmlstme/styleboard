@@ -39,8 +39,8 @@
 .font-size ( xsmall ) { font-size: 0.75 * @font-size-base; }
 .font-size ( small ) { font-size: 0.875 * @font-size-base; }
 .font-size ( medium ) { font-size: @font-size-base; }
-.font-size ( large ) { font-size: 1.25 * @font-size-base; }
-.font-size ( xlarge ) { font-size: 1.5 * @font-size-base; }
+.font-size ( large ) { font-size: 1.33 * @font-size-base; }
+.font-size ( xlarge ) { font-size: 2.0 * @font-size-base; }
 
 .font ( @family: body, @size: medium ) {
     .font-family( @family );
@@ -89,13 +89,14 @@ body {
         line-height: 1.25;
 
         h2 {
-            .font( header, xlarge, hi );
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+            .font( header, xlarge, alpha );
+            .glow( alpha );
         }
         
         h3 {
-            .font( header, large, alpha );
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+            .font( header, large, beta );
+            .glow( beta );
+            letter-spacing: -.05em;
         }
     }
 

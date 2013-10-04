@@ -1,0 +1,100 @@
+/** A clickable control with a single on-click action */
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+.button {
+    /** @example A simple button.
+        <button>Do it!</button>
+     */
+    @lineht: 1.25em;
+    display: inline-block;
+    padding: .25em;
+    vertical-align: baseline;
+    outline: none;
+    .font( nav );
+    background: @background-alt-color;
+    .color( body );
+    line-height: @lineht;
+    text-align: center;
+    white-space: nowrap;
+    cursor: pointer;
+    border: 1px solid @border-color;
+    border-radius: 1px;
+
+    &:hover,
+    &:focus {
+        text-decoration: none;
+        .color( hi );
+        border-color: @body-hi-color;
+    }
+
+    &.is-active,
+    &:active {
+        /** A button which is currently in the “on” or active state.
+            @example An active button.
+            <button class="is-active">Do it!</button>
+            */
+        .color( gamma );
+        border-color: @color-gamma;
+    }
+
+    &[disabled],
+    &.is-disabled {
+        /** A button which has been disabled and is not currently clickable.
+            @example A disabled button.
+            <button class="is-disabled">Do it!</button>
+            */
+        opacity: .5;
+        cursor: default;
+        &:hover { // no hover effects if disabled
+            color: inherit;
+            border-color: @border-color;
+        }
+    }
+
+    &.primary- {
+        /** The primary call to action in a dialog.
+            @example A primary button.
+            <button class="primary-">Do it!</button>
+            */
+        color: @inv-body-hi-color;
+        background: @color-alpha;
+    }
+
+    &.link- {
+        /** A button which is styled to look like a link.
+            @example A link button.
+            This may look like a link but it's really
+            a <button class="link-">button</button> in disguise.
+            */
+        .color( alpha );
+        .glow( alpha );
+        font-family: inherit;
+        font-weight: 500;
+        padding: 0;
+        border-color: transparent;
+        background: transparent;
+    }
+
+    &.delete- {
+        /** A delete button or similarly dangerous action.
+            @example A delete button.
+            <button class="delete-">Delete</button>
+            */
+        color: @inv-body-hi-color;
+        background: @color-danger;
+    }
+
+    &.iconic- {
+    /** A button which contains an icon, and possibly some text
+        @example An iconic button.
+        <button class="iconic-"><i class="icon"></i>Draw</button>
+        */
+
+        .icon {
+            font-size: @lineht;
+            vertical-align: bottom;
+        }
+    }
+}

@@ -8,10 +8,13 @@
 @border-hi-color: rgba(255,255,255,0.5);
 @border-lo-color: rgba(0,0,0,0.5);
 
-@color-alpha: #f19914; // orange
-@color-beta: #cf6a4c;  // red
-@color-gamma: #76d81b; // green
-@color-delta: #3387cc; // blue
+@color-alpha: #105c9b; // blue
+@color-beta: #3a6b0c; // green
+@color-gamma: #9b3314;  // red
+@color-delta: #f19914; // orange
+
+@color-danger: @color-gamma;
+@color-success: @color-beta;
 
 @inv-background-color: #282624;
 @inv-background-alt-color: #393633;
@@ -28,4 +31,7 @@
 .color ( gamma )  { color: @color-gamma; }
 .color ( delta )  { color: @color-delta; }
 
-.glow ( alpha )  { box-shadow: 0 0 2px @color-alpha; }
+.glow ( alpha )  { text-shadow: 0 0 .15em lighten(@color-alpha, 50%); }
+.glow ( beta )  { text-shadow: 0 0 .15em lighten(@color-beta, 50%); }
+.glow ( gamma )  { text-shadow: 0 0 .15em lighten(@color-gamma, 50%); }
+.glow ( delta )  { text-shadow: 0 0 .15em lighten(@color-delta, 50%); }

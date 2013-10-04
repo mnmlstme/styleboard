@@ -5,71 +5,6 @@
 @import url(http://fonts.googleapis.com/css?family=Source+Code+Pro);
 
 @import url(http://fonts.googleapis.com/css?family=Lato:300,400);
-.list,
-.typography ul {
-  /** A simple list */
-
-}
-.list > *,
-.typography ul > * {
-  list-style: none;
-}
-.list.bullet-,
-.typography ul.bullet- {
-  margin-left: 1em;
-}
-.list.bullet- > * + *::before,
-.typography ul.bullet- > * + *::before {
-  display: block;
-  font-family: 'Symbol', symbol;
-  font-size: inherit;
-  color: #f19914;
-  content: '•';
-  width: -1em;
-  margin-left: -1em;
-}
-.list.comma- > *,
-.typography ul.comma- > * {
-  display: inline-block;
-}
-.list.comma- > * + *::before,
-.typography ul.comma- > * + *::before {
-  content: ', ';
-}
-.list.definition-,
-.typography ul.definition-,
-.typography dl {
-  padding-left: 6em;
-}
-.list.definition-::after,
-.typography ul.definition-::after,
-.typography dl::after {
-  content: '';
-  display: block;
-  clear: both;
-}
-.list.definition- > *,
-.typography ul.definition- > *,
-.typography dl > * {
-  margin-bottom: 1em;
-}
-.list .list-term,
-.typography ul .list-term,
-.typography dt {
-  /** a term in a definition list */
-
-  float: left;
-  margin-left: -6em;
-  font-family: Oxygen, Helvetica, Arial, sans-serif;
-  font-weight: 400;
-  font-size: inherit;
-  color: #f19914;
-}
-.list .list-definition,
-.typography ul .list-definition {
-  /** the definition for a term in a definition list */
-
-}
 body {
   -webkit-font-smoothing: antialiased;
 }
@@ -99,16 +34,17 @@ article.typography {
 .typography header h2 {
   font-family: Oxygen, Helvetica, Arial, sans-serif;
   font-weight: 400;
-  font-size: 24px;
-  color: #000000;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+  font-size: 32px;
+  color: #105c9b;
+  text-shadow: 0 0 0.15em #b3d8f7;
 }
 .typography header h3 {
   font-family: Oxygen, Helvetica, Arial, sans-serif;
   font-weight: 400;
-  font-size: 20px;
-  color: #f19914;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  font-size: 21.28px;
+  color: #3a6b0c;
+  text-shadow: 0 0 0.15em #b9f185;
+  letter-spacing: -0.05em;
 }
 .typography pre {
   font-family: 'Source Code Pro', 'Courier', 'Courier New', monospace;
@@ -119,11 +55,280 @@ article.typography {
   font-family: 'Source Code Pro', 'Courier', 'Courier New', monospace;
   font-weight: 400;
   font-size: inherit;
-  color: #cf6a4c;
+  color: #3a6b0c;
 }
 .typography ul {
   /** List formatting */
 
+}
+.list,
+.typography ul {
+  /**
+       A simple list.  Items are arranged vertically, with no decoration.
+        @example
+        <ul class="list">
+          <li>2½ oz gin
+          <li>½ oz dry vermouth
+          <li>1 green olive
+          <li>Angostura bitters
+        </ul>
+     */
+
+}
+.list > *,
+.typography ul > * {
+  list-style: none;
+}
+.list.bullet-,
+.typography ul.bullet- {
+  /**
+           A bulleted list.  Items are arranged vertically with colored bullets.
+           @example
+           <ul class="bullet- list">
+             <li>2½ oz gin
+             <li>½ oz dry vermouth
+             <li>1 green olive
+             <li>Angostura bitters (optional)
+           </ul>
+        */
+
+  margin-left: 1em;
+}
+.list.bullet- > *::before,
+.typography ul.bullet- > *::before {
+  display: inline-block;
+  font-family: 'Symbol', symbol;
+  font-size: inherit;
+  color: #105c9b;
+  content: '•';
+  width: 1em;
+  margin-left: -1em;
+}
+.list.comma-,
+.typography ul.comma- {
+  /**
+           A comma-separated list.  Items are set inline, as a line of text, with commas between.
+           @example 
+           <ul class="comma- list">
+             <li>2½ oz gin
+             <li>½ oz dry vermouth
+             <li>1 green olive
+             <li>Angostura bitters (optional)
+           </ul>
+        */
+
+}
+.list.comma- > *,
+.typography ul.comma- > * {
+  display: inline-block;
+}
+.list.comma- > * + *::before,
+.typography ul.comma- > * + *::before {
+  content: ', ';
+}
+.list.definition-,
+.typography ul.definition-,
+.typography dl {
+  /**
+           A definition list.  The list items ae terms, each of which may
+           have one or more definitions.
+
+           @example
+           <dl class="definition- list">
+             <dt class="list-term">2½ oz gin
+             <dd class="list-definition">Vodka may be substituted
+             <dt class="list-term">½ oz dry vermouth
+             <dd class="list-definition">Use very little, just enough to coat the ice cubes
+             <dt class="list-term">1 green olive
+             <dd class="list-definition">Or a lemon twist
+             <dt class="list-term">Angostura bitters (optional)
+             <dd class="list-definition">Or orange bitters
+           </dl>
+           */
+
+  padding-left: 6em;
+}
+.list.definition-::after,
+.typography ul.definition-::after,
+.typography dl::after {
+  content: '';
+  display: block;
+  clear: both;
+}
+.list.definition- > *,
+.typography ul.definition- > *,
+.typography dl > * {
+  margin-bottom: 1em;
+}
+.list .list-term,
+.typography ul .list-term,
+.typography dt {
+  /** A term in a definition list. */
+
+  float: left;
+  margin-left: -6em;
+  font-family: Oxygen, Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  font-size: inherit;
+  color: #105c9b;
+}
+.list .list-definition,
+.typography ul .list-definition {
+  /** The definition for a term in a definition list. */
+
+}
+/** A clickable control with a single on-click action */
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+.button {
+  /** @example A simple button.
+        <button>Do it!</button>
+     */
+
+  display: inline-block;
+  padding: .25em;
+  vertical-align: baseline;
+  outline: none;
+  font-family: Lato, Helvetica, Arial, sans-serif;
+  font-weight: 300;
+  font-size: 16px;
+  background: #eeeeee;
+  color: #333333;
+  line-height: 1.25em;
+  text-align: center;
+  white-space: nowrap;
+  cursor: pointer;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 1px;
+}
+button:hover,
+input[type="button"]:hover,
+input[type="submit"]:hover,
+input[type="reset"]:hover,
+.button:hover,
+button:focus,
+input[type="button"]:focus,
+input[type="submit"]:focus,
+input[type="reset"]:focus,
+.button:focus {
+  text-decoration: none;
+  color: #000000;
+  border-color: #000000;
+}
+button.is-active,
+input[type="button"].is-active,
+input[type="submit"].is-active,
+input[type="reset"].is-active,
+.button.is-active,
+button:active,
+input[type="button"]:active,
+input[type="submit"]:active,
+input[type="reset"]:active,
+.button:active {
+  /** A button which is currently in the “on” or active state.
+            @example An active button.
+            <button class="is-active">Do it!</button>
+            */
+
+  color: #9b3314;
+  border-color: #9b3314;
+}
+button[disabled],
+input[type="button"][disabled],
+input[type="submit"][disabled],
+input[type="reset"][disabled],
+.button[disabled],
+button.is-disabled,
+input[type="button"].is-disabled,
+input[type="submit"].is-disabled,
+input[type="reset"].is-disabled,
+.button.is-disabled {
+  /** A button which has been disabled and is not currently clickable.
+            @example A disabled button.
+            <button class="is-disabled">Do it!</button>
+            */
+
+  opacity: .5;
+  cursor: default;
+}
+button[disabled]:hover,
+input[type="button"][disabled]:hover,
+input[type="submit"][disabled]:hover,
+input[type="reset"][disabled]:hover,
+.button[disabled]:hover,
+button.is-disabled:hover,
+input[type="button"].is-disabled:hover,
+input[type="submit"].is-disabled:hover,
+input[type="reset"].is-disabled:hover,
+.button.is-disabled:hover {
+  color: inherit;
+  border-color: rgba(0, 0, 0, 0.25);
+}
+button.primary-,
+input[type="button"].primary-,
+input[type="submit"].primary-,
+input[type="reset"].primary-,
+.button.primary- {
+  /** The primary call to action in a dialog.
+            @example A primary button.
+            <button class="primary-">Do it!</button>
+            */
+
+  color: #ffffff;
+  background: #105c9b;
+}
+button.link-,
+input[type="button"].link-,
+input[type="submit"].link-,
+input[type="reset"].link-,
+.button.link- {
+  /** A button which is styled to look like a link.
+            @example A link button.
+            This may look like a link but it's really
+            a <button class="link-">button</button> in disguise.
+            */
+
+  color: #105c9b;
+  text-shadow: 0 0 0.15em #b3d8f7;
+  font-family: inherit;
+  font-weight: 500;
+  padding: 0;
+  border-color: transparent;
+  background: transparent;
+}
+button.delete-,
+input[type="button"].delete-,
+input[type="submit"].delete-,
+input[type="reset"].delete-,
+.button.delete- {
+  /** A delete button or similarly dangerous action.
+            @example A delete button.
+            <button class="delete-">Delete</button>
+            */
+
+  color: #ffffff;
+  background: #9b3314;
+}
+button.iconic-,
+input[type="button"].iconic-,
+input[type="submit"].iconic-,
+input[type="reset"].iconic-,
+.button.iconic- {
+  /** A button which contains an icon, and possibly some text
+        @example An iconic button.
+        <button class="iconic-"><i class="icon"></i>Draw</button>
+        */
+
+}
+button.iconic- .icon,
+input[type="button"].iconic- .icon,
+input[type="submit"].iconic- .icon,
+input[type="reset"].iconic- .icon,
+.button.iconic- .icon {
+  font-size: 1.25em;
+  vertical-align: bottom;
 }
 .pane,
 .frame {
@@ -310,13 +515,14 @@ pre {
 pre {
   background: #282624;
   color: #dddddd;
+  line-height: 1.15;
 }
-code.combinator- {
+code.combinator {
   padding: 0 .5em;
-  color: #76d81b;
+  color: #9b3314;
 }
-code.separator- {
-  color: #f19914;
+code.separator {
+  color: #105c9b;
 }
 .pattern {
   /** A styleguide entry for a pattern. */
@@ -326,8 +532,8 @@ code.separator- {
   font-family: Oxygen, Helvetica, Arial, sans-serif;
   font-weight: 400;
   font-size: 12px;
-  color: #76d81b;
-  text-shadow: 1px 1px rgba(0, 0, 0, 0.5);
+  color: #9b3314;
+  text-shadow: 0 0 0.15em #f6c6b8;
 }
 .pattern .pattern-role + h2,
 .pattern .pattern-role + h3 {
@@ -393,9 +599,10 @@ body {
 }
 * {
   box-sizing: border-box;
+  -moz-box-sizing: border-box;
 }
 #sandbox {
-  background: #ffffff url(../graphics/checkerboard.svg);
+  background: #cccccc url(../graphics/checkerboard.svg);
   border: none;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5) inset;
 }
@@ -405,7 +612,7 @@ body {
   left: 0;
   font-size: 83.33333333333334%;
   padding: 1em;
-  color: #aaa;
+  color: #666;
 }
 #sandbox iframe {
   position: absolute;

@@ -14,20 +14,33 @@ define(['appState'], function (appState) {
 
             view.$body = view.$('iframe').contents().find('body');
             view.$title = view.$('h2');
+            
+            // TODO: make the default context configurable
+            view.context = 'typography';
 
             appState.on('change:example', function( appState, example ) {
                 view.setModel( example );
             });
+
+            appState.on('change:context', function( appState, context ) {
+                view.setContext( context );
+            });
         },
 
-        setModel: function ( example ) {
+        setContext: function setContext( classes ) {
+            var view = this;
+            view.context = classes;
+            view.updateContext();
+        },
+
+        setModel: function setModel ( example ) {
             var view = this;
 
             view.model = example;
             view.render();
         },
 
-        render: function () {
+        render: function render () {
             var view = this,
                 example = view.model,
                 title = example ? example.get('title') : '',
@@ -35,7 +48,14 @@ define(['appState'], function (appState) {
 
             view.$title.text( title );
             view.$body.empty().html( html );
-        }
+            view.updateContext();
+        },
+
+        updateContext: function updateContext() {
+            var view = this;
+            view.$body.attr('class', view.context);
+        },
+
 
     }); // end of view RenderedView
 

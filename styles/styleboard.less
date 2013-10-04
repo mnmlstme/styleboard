@@ -1,6 +1,8 @@
 @import "reset.css";
 @import "color";
 @import "typography";
+@import "list";
+@import "button";
 @import "pane";
 @import "code";
 @import "pattern";
@@ -18,10 +20,11 @@ body {
 
 * {
     box-sizing: border-box;
+    -moz-box-sizing: border-box;
 }
 
 #sandbox {
-    background: white url(../graphics/checkerboard.svg);
+    background: #ccc url(../graphics/checkerboard.svg);
     border: none;
     box-shadow: 0 0 5px rgba(0,0,0,0.5) inset;
     h2 {
@@ -30,7 +33,7 @@ body {
         left: 0;
         font-size: 10/12 * 100%;
         padding: 1em;
-        color: #aaa;
+        color: #666;
     }
     iframe {
         position: absolute;

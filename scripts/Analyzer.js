@@ -25,7 +25,7 @@ define(['Declaration'], function (Declaration) {
                 modifier: /^\.([a-z-]+\-)$/,        // trailing hyphen
                 member: /^\.(([a-z]+)\-[a-z-]+)$/,  //  pattern name '-' member name
                 helper: /^\.(([a-z]+)\-[a-z-]+)$/,  //  pattern name '-' helper name
-                state: /^(is-[a-z-]+)$/,            // 'is-' prefix
+                state: /^\.(is-[a-z-]+)$/,            // 'is-' prefix
                 cmtfirst: /^\s*\/\*\*\s*/,
                 cmtmiddle: /^(\s*\*+\s?)?/,
                 cmtlast:  /\s*\*+\/\s*$/,

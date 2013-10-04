@@ -3,14 +3,15 @@
 CSSFILES=reset.css
 
 LESSFILES= \
-	code.less \
-	list.less \
-	pattern.less \
-	rule.less \
+	util.less \
 	color.less \
-	pane.less \
 	typography.less \
-	util.less
+	pane.less \
+	list.less \
+	button.less \
+	code.less \
+	rule.less \
+	pattern.less
 
 all: styleboard.css
 
