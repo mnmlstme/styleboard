@@ -68,14 +68,22 @@ define(['appState'], function (appState) {
 
         updateExampleIsActive: function () {
             var view = this,
-                example = appState.get('example');
+                example = appState.get('example'),
+                $examples = view.$('.pattern-example'),
+                $active = $examples.filter( function () {
+                    return $(this).data('example') === example;
+                }),
+                viewOffset = view.$el.offset(),
+                activeOffset = $active.offset(),
+                relativeOffset = activeOffset.top - viewOffset.top - $active.outerWidth()/2;
 
-            view.$('.pattern-example').each( function() {
-                var $example = $(this);
+            $examples.removeClass('is-active');
+            $active.addClass('is-active');
 
-                $example.toggleClass( 'is-active',
-                                      $example.data('example') === example );
-            });
+            // scroll to current example
+            view.$el.animate({
+                scrollTop: relativeOffset - view.$el.outerWidth()/2 
+            }, 200 );
         },
 
         events: {
