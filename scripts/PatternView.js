@@ -79,7 +79,8 @@ define(['appState'], function (appState) {
         },
 
         events: {
-            'click .pattern-example': 'uiClickExample'
+            'click .pattern-example': 'uiClickExample',
+            'mouseenter .pattern-example': 'uiClickExample'
         },
 
         uiClickExample: function uiClickExample(event) {
