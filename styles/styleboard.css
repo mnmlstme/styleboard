@@ -270,9 +270,7 @@ input[type="reset"]:active,
             You have <button class="is-active">Clicked this</button> already.
             */
 
-  color: #f19914;
-  border-color: #f19914;
-  background: #393633;
+  background: #f19914;
 }
 button[disabled],
 input[type="button"][disabled],
