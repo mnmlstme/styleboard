@@ -3,8 +3,6 @@
  */
 define(['appState'], function (appState) {
 
-    var MIN_SCROLL_DISTANCE = 200;
-
     var PatternView = Backbone.View.extend({
 
         initialize: function () {
@@ -43,7 +41,7 @@ define(['appState'], function (appState) {
                 $last = view.$el.children().last(),
                 offset = $last.position().top + scrollTop,
                 height = $last.outerHeight(),
-                minContentHeight = paneHeight + MIN_SCROLL_DISTANCE;
+                minContentHeight = paneHeight * 1.5;
 
             view.paddedContentHeight =
                 view.contentHeight = offset + height;
