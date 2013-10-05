@@ -7,9 +7,15 @@
 
 /** A rectangular region of the screen */
 .pane {
+    background: @background-color;
     border-width: 1px;
     border-style: solid;
     border-color: @border-hi-color @border-lo-color @border-lo-color @border-hi-color;
+
+    &.dark- {
+        background: @inv-background-color;
+        color: @inv-body-color;
+    }
 }
 
 /** A pane with scrolling content */
