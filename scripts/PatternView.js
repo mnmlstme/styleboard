@@ -3,6 +3,8 @@
  */
 define(['appState'], function (appState) {
 
+    var MIN_SCROLL_DISTANCE = 200;
+
     var PatternView = Backbone.View.extend({
 
         initialize: function () {
@@ -14,7 +16,7 @@ define(['appState'], function (appState) {
             appState.on('change:example', view.updateExampleIsActive, view);
         },
 
-        render: function () {
+        render: function render() {
             var view = this,
                 pat = view.model,
                 name = pat.get('name').replace('.',''),
@@ -29,11 +31,31 @@ define(['appState'], function (appState) {
                        );
 
             view.renderDeclarations( declarations );
+            view.updateContentHeight();
 
             return view;
         },
 
-        renderDeclarations: function ( declarations, $parent ) {
+        updateContentHeight: function updateContentHeight() {
+            var view = this,
+                scrollTop = view.$el.scrollTop(),
+                paneHeight = view.$el.outerHeight();
+                $last = view.$el.children().last(),
+                offset = $last.position().top + scrollTop,
+                height = $last.outerHeight(),
+                minContentHeight = paneHeight + MIN_SCROLL_DISTANCE;
+
+            view.paddedContentHeight =
+                view.contentHeight = offset + height;
+
+            if( view.contentHeight < minContentHeight ) {
+                view.$el.mk('footer')
+                    .height(minContentHeight - view.contentHeight);
+                view.paddedContentHeight = minContentHeight;
+            }
+        },
+
+        renderDeclarations: function renderDeclarations( declarations, $parent ) {
             var view = this;
             $parent = $parent || view.$el;
             declarations.forEach( function (defn) {
@@ -79,7 +101,8 @@ define(['appState'], function (appState) {
         },
 
         events: {
-            'click .pattern-example': 'uiClickExample'
+            'click .pattern-example': 'uiClickExample',
+            'scroll': 'uiTrackScrolling'
         },
 
         uiClickExample: function uiClickExample(event) {
@@ -89,6 +112,28 @@ define(['appState'], function (appState) {
 
             appState.set('example', example);
         },
+
+        uiTrackScrolling: function uiTrackScrolling(event) {
+            var view = this,
+                scrollTop = this.$el.scrollTop(),
+                paneHeight = this.$el.outerHeight(),
+                trackPoint = view.contentHeight * scrollTop /
+                    (view.paddedContentHeight-paneHeight),
+                $examples = view.$('.pattern-example'),
+                $current;
+
+            $examples.each( function () {
+                var $xmp = $(this),
+                    offset = $xmp.position().top + scrollTop;
+                if ( offset >= trackPoint ) {
+                    $current = $xmp;
+                    return false;
+                }
+            });
+            
+            $current = $current || $examples.last();
+            appState.set('example', $current.data('example'));
+        }
 
     });
 

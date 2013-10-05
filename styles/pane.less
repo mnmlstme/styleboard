@@ -155,10 +155,17 @@
         }
         ul.frame-panes {
             /** A list of panes to show in a `tabbed-` frame */
+            position: relative; // for panes
+            overflow: hidden;
+            height: 100%;
+            width: 100%;
             > li {
-                display: none;
+                position: absolute;
+                height: 100%;
+                width: 100%;
+                left: 100%;
                 &.is-active {
-                    display: block;
+                    left: 0;
                 }
             }
         }

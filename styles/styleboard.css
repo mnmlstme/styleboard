@@ -18,7 +18,6 @@ body {
   /** Applies standard typographical formatting conventions
         to HTML tags inside. */
 
-  background: #f8f8f8;
 }
 .typography article,
 article.typography {
@@ -387,9 +386,14 @@ input[type="reset"].iconic- .icon + *,
 }
 /** A rectangular region of the screen */
 .pane {
+  background: #f8f8f8;
   border-width: 1px;
   border-style: solid;
   border-color: rgba(255, 255, 255, 0.5) rgba(0, 0, 0, 0.5) rgba(0, 0, 0, 0.5) rgba(255, 255, 255, 0.5);
+}
+.pane.dark- {
+  background: #282624;
+  color: #dddddd;
 }
 /** A pane with scrolling content */
 .scrollable-.pane {
@@ -542,12 +546,19 @@ input[type="reset"].iconic- .icon + *,
 .frame.tabbed- ul.frame-panes {
   /** A list of panes to show in a `tabbed-` frame */
 
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
 }
 .frame.tabbed- ul.frame-panes > li {
-  display: none;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  left: 100%;
 }
 .frame.tabbed- ul.frame-panes > li.is-active {
-  display: block;
+  left: 0;
 }
 /*
   Styles for formatting code.
@@ -563,8 +574,6 @@ pre {
 }
 .code,
 pre {
-  background: #282624;
-  color: #dddddd;
   line-height: 1.15;
 }
 code.combinator {
