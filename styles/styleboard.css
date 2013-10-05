@@ -18,7 +18,6 @@ body {
   /** Applies standard typographical formatting conventions
         to HTML tags inside. */
 
-  background: #f8f8f8;
 }
 .typography article,
 article.typography {
@@ -271,9 +270,7 @@ input[type="reset"]:active,
             You have <button class="is-active">Clicked this</button> already.
             */
 
-  color: #f19914;
-  border-color: #f19914;
-  background: #393633;
+  background: #f19914;
 }
 button[disabled],
 input[type="button"][disabled],
@@ -387,9 +384,14 @@ input[type="reset"].iconic- .icon + *,
 }
 /** A rectangular region of the screen */
 .pane {
+  background: #f8f8f8;
   border-width: 1px;
   border-style: solid;
   border-color: rgba(255, 255, 255, 0.5) rgba(0, 0, 0, 0.5) rgba(0, 0, 0, 0.5) rgba(255, 255, 255, 0.5);
+}
+.pane.dark- {
+  background: #282624;
+  color: #dddddd;
 }
 /** A pane with scrolling content */
 .scrollable-.pane {
@@ -563,8 +565,6 @@ pre {
 }
 .code,
 pre {
-  background: #282624;
-  color: #dddddd;
   line-height: 1.15;
 }
 code.combinator {
