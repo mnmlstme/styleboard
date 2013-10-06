@@ -377,13 +377,10 @@ input[type="reset"].iconic- .icon + *,
 * + .button.iconic- .icon {
   margin-left: .25em;
 }
-.pane,
-.frame {
-  height: 100%;
-  width: 100%;
-}
 /** A rectangular region of the screen */
 .pane {
+  height: 100%;
+  width: 100%;
   background: #f8f8f8;
   border-width: 1px;
   border-style: solid;
@@ -433,6 +430,8 @@ input[type="reset"].iconic- .icon + *,
        </div>
     */
 
+  height: 100%;
+  width: 100%;
 }
 .frame nav {
   /** Navigation bar for the frame */
