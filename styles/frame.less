@@ -24,7 +24,7 @@
     nav {
         /** Navigation bar for the frame */
         background: @inv-background-color;
-        .font( nav, xsmall, inv );
+        .font( nav, inherit, inv );
     }
     &.split- {
         /** A frame which is split into two panes */
@@ -96,20 +96,25 @@
                 <li class="pane">This is pane Two
             </div>
         */ 
+
+        @tabHeight: 2em;
+
         position: relative;
 
         ul.frame-tabs {
             white-space: nowrap;
-            padding: 0 .25em;
+            padding: .25em;
+            height: @tabHeight;
             > li {
                 display: inline-block;
                 padding: .25em;
                 margin: .25em;
-                border: 1px solid @border-color;
+                outline: 1px solid @border-color;
                 cursor: pointer;
+                .font-size( xsmall );
                 &.is-active {
                     .color( delta );
-                    border-color: @color-delta;
+                    outline-color: @color-delta;
                 }
                 &:empty {
                     visibility: hidden;
@@ -119,6 +124,8 @@
 
         ul.frame-panes {
             /** A list of panes to show in a `tabbed-` frame */
+            height: 100%;
+            padding-bottom: @tabHeight; // overflows frame, pushed down by tabs
             > li {
                 display: none;
                 &.is-active {
