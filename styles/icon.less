@@ -27,6 +27,14 @@
         width: 1em;
     }
 
+    &.circle- {
+        /** A filled circle */
+        &::before { content: "\f100"; }
+    }
+    &.opencircle- {
+        /** An unfilled circle */
+        &::before { content: "\f101"; }
+    }
     &.presentation- { 
         /** A presentation on projection screen.
 
@@ -35,7 +43,7 @@
 
            (Praveen Francis, 1986, Public Domain)
            */
-        &::before { content: "\f100"; }
+        &::before { content: "\f102"; }
     }
 
 }

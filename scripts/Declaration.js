@@ -77,6 +77,25 @@ define(['Definition'], function (Definition) {
             return this.get('declarations').findWhere( attrs );
         },
 
+        getExamples: function getExamples() {
+            var list = [];
+            getExamplesRecursive( this );
+            return list;
+
+            function getExamplesRecursive( decl ) {
+                var subdecls = decl.get('declarations');
+                if ( subdecls ) {
+                    subdecls.each( function (subdecl) {
+                        if ( subdecl.get('type') === 'example' ) {
+                            list.push(subdecl);
+                        } else {
+                            getExamplesRecursive( subdecl );
+                        }
+                    });
+                }
+            }
+       },
+
     }); // end of Declaration model
 
     return Declaration;

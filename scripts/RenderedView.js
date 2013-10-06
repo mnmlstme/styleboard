@@ -16,7 +16,7 @@ define(['appState'], function (appState) {
             view.$title = view.$('h2');
             
             // TODO: make the default context configurable
-            // view.context = 'typography';
+            view.context = '';
 
             appState.on('change:example', function( appState, example ) {
                 view.setModel( example );
@@ -25,10 +25,12 @@ define(['appState'], function (appState) {
             appState.on('change:context', function( appState, context ) {
                 view.setContext( context );
             });
+
         },
 
         setContext: function setContext( classes ) {
             var view = this;
+
             view.context = classes;
             view.updateContext();
         },
@@ -55,7 +57,6 @@ define(['appState'], function (appState) {
             var view = this;
             view.$body.attr('class', view.context);
         },
-
 
     }); // end of view RenderedView
 

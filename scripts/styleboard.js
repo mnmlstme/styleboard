@@ -1,7 +1,9 @@
 require(['Dictionary', 'Analyzer', 'Parser',
-         'DictionaryView', 'RenderedView', 'MarkupView', 'RulesView'], 
+         'DictionaryView', 'RenderedView', 'ScrubberView',
+         'MarkupView', 'RulesView'], 
 function( Dictionary, Analyzer, Parser,
-          DictionaryView, RenderedView, MarkupView, RulesView ) {
+          DictionaryView, RenderedView, ScrubberView,
+          MarkupView, RulesView ) {
 
     new StyleBoard( { cssUrl: "styles/styleboard.css" } );
 
@@ -24,6 +26,9 @@ function( Dictionary, Analyzer, Parser,
             (new RenderedView({
                 el: $('#sandbox'),
                 cssUrl: cssUrl
+            })).render();
+            (new ScrubberView({
+                el: $('#scrubber')
             })).render();
             (new MarkupView({
                 el: $('#example')

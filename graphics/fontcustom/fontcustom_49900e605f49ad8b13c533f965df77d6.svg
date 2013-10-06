@@ -1,31 +1,35 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" >
 <!--
-2013-10-4: Created.
+2013-10-5: Created.
 -->
 <svg xmlns="http://www.w3.org/2000/svg">
 <metadata>
-Created by FontForge 20120731 at Fri Oct  4 12:55:08 2013
+Created by FontForge 20120731 at Sat Oct  5 13:43:36 2013
  By Ken Kubiak
 Created by Ken Kubiak with FontForge 2.0 (http://fontforge.sf.net)
 </metadata>
 <defs>
-<font id="fontcustom" horiz-adv-x="351" >
+<font id="fontcustom" horiz-adv-x="256" >
   <font-face 
     font-family="fontcustom"
     font-weight="500"
     font-stretch="normal"
     units-per-em="512"
-    panose-1="2 0 6 9 0 0 0 0 0 0"
+    panose-1="2 0 6 3 0 0 0 0 0 0"
     ascent="448"
     descent="-64"
     bbox="0 -19 351 403"
     underline-thickness="25.6"
     underline-position="-51.2"
-    unicode-range="U+F100-F100"
+    unicode-range="U+F100-F102"
   />
     <missing-glyph />
     <glyph glyph-name="uniF100" unicode="&#xf100;" 
+d="M0 192c0 85 43 128 128 128s128 -43 128 -128s-43 -128 -128 -128s-128 43 -128 128z" />
+    <glyph glyph-name="uniF101" unicode="&#xf101;" 
+d="M26 192c0 71 31 102 102 102s102 -31 102 -102s-31 -102 -102 -102s-102 31 -102 102zM0 192c0 -83 45 -128 128 -128s128 45 128 128s-45 128 -128 128s-128 -45 -128 -128z" />
+    <glyph glyph-name="uniF102" unicode="&#xf102;" horiz-adv-x="351" 
 d="M307 374c24 0 44 -20 44 -44v-191c0 -24 -20 -44 -44 -44h-86l85 -85c7 -7 7 -17 0 -24c-3 -3 -8 -5 -12 -5s-9 2 -12 5l-107 107l-106 -107c-3 -3 -8 -5 -12 -5s-9 2 -12 5c-7 7 -7 17 0 24l85 85h-86c-24 0 -44 20 -44 44v191c0 24 20 44 44 44h263zM317 139v0v177
 h-283v-177c0 -6 4 -10 10 -10h263c6 0 10 4 10 10zM146 383c-5 0 -9 5 -9 10s4 10 9 10h58c5 0 10 -5 10 -10s-5 -10 -10 -10h-58z" />
   </font>

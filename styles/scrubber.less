@@ -1,0 +1,21 @@
+.scrubber {
+    position: relative;
+
+    > li {
+        width: 1.5em;
+        text-align: center;
+        display: inline-block;
+        color: #666;
+        cursor: pointer;
+        .transition( transform, .2s );
+        i.icon { 
+            &:extend( .icon.opencircle- all );
+        }
+        &.is-active i.icon { 
+            &:extend( .icon.circle- all ); 
+        }
+        &:hover {
+            .transform( scale(1.55) );
+        }
+    }
+}

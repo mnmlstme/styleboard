@@ -7,6 +7,9 @@
 @import url(http://fonts.googleapis.com/css?family=Lato:300,400);
 
 @import "../graphics/fontcustom/fontcustom.css";
+/*
+  CSS3 utility mixins
+*/
 body {
   font-family: Oxygen, Tahoma, Geneva, sans-serif;
   font-weight: 300;
@@ -86,6 +89,24 @@ article.typography {
   height: 1em;
   width: 1em;
 }
+.icon.circle-,
+.scrubber > li.is-active i.icon {
+  /** A filled circle */
+
+}
+.icon.circle-::before,
+.scrubber > li.is-active i.icon::before {
+  content: "\f100";
+}
+.icon.opencircle-,
+.scrubber > li i.icon {
+  /** An unfilled circle */
+
+}
+.icon.opencircle-::before,
+.scrubber > li i.icon::before {
+  content: "\f101";
+}
 .icon.presentation- {
   /** A presentation on projection screen.
 
@@ -97,7 +118,7 @@ article.typography {
 
 }
 .icon.presentation-::before {
-  content: "\f100";
+  content: "\f102";
 }
 .list,
 .typography ul {
@@ -377,6 +398,26 @@ input[type="reset"].iconic- .icon + *,
 * + .button.iconic- .icon {
   margin-left: .25em;
 }
+.scrubber {
+  position: relative;
+}
+.scrubber > li {
+  width: 1.5em;
+  text-align: center;
+  display: inline-block;
+  color: #666;
+  cursor: pointer;
+  -webkit-transition: -webkit-transform 0.2s;
+  -moz-transition: -moz-transform 0.2s;
+  -webkit-transition: transform 0.2s;
+  -moz-transition: transform 0.2s;
+  transition: transform 0.2s;
+}
+.scrubber > li:hover {
+  -webkit-transform: scale(1.55);
+  -moz-transform: scale(1.55);
+  transform: scale(1.55);
+}
 .pane,
 .frame {
   height: 100%;
@@ -632,33 +673,24 @@ code.separator {
 .rule .rule-comment {
   display: none;
 }
-body {
-  position: fixed;
-  top: 0;
-  left: 0;
-  margin: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-* {
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-}
-#sandbox {
+/**
+   An area for displaying rendered views of examples on an artboard.
+*/
+.sandbox {
   background: #ffffff url(../graphics/checkerboard.svg);
   border: none;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5) inset;
+  position: relative;
 }
-#sandbox h2 {
+.sandbox h2 {
   position: absolute;
-  bottom: 0;
+  bottom: 1em;
   left: 0;
-  font-size: 83.33333333333334%;
+  font-size: 14px;
   padding: 1em;
   color: #666;
 }
-#sandbox iframe {
+.sandbox iframe {
   position: absolute;
   top: 0;
   left: 0;
@@ -667,9 +699,23 @@ body {
   border: none;
   padding: 64px;
 }
-#selectors {
-  padding: 10px;
+.sandbox .sandbox-scrubber {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  -moz-transform: translateX(-50%);
+  transform: translateX(-50%);
+  font-size: 12px;
+}
+body {
+  position: fixed;
+  top: 0;
+  left: 0;
   margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 #dictionaryView .dictionary-list {
   font-family: Oxygen, Helvetica, Arial, sans-serif;
