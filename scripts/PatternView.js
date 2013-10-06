@@ -111,11 +111,30 @@ define(['appState'], function (appState) {
         uiScroll: function uiScroll( event ) {
             if ( !this.isScrolling ) return;
             var view = this,
-                y = view.coordinates( event ).y;
+                scrollTop = this.$el.scrollTop(),
+                trackPoint = view.coordinates( event ).y,
+                $examples = view.$('.pattern-example'),
+                $current;
 
             view.$scrollmark
                 .addClass('is-active')
-                .css({ top: y + 'px' });
+                .css({ top: trackPoint + 'px' });
+
+           $examples.each( function () {
+               var $xmp = $(this),
+                   offset = $xmp.position().top + scrollTop;
+               // find the last example above trackPoint
+               if ( offset < trackPoint ) {
+                   $current = $xmp;
+               }
+               if ( offset >= trackPoint ) {
+                   return false;
+               }
+           });
+
+           $current = $current || $examples.last();
+           appState.set('example', $current.data('example'));
+
         },
 
         uiStopScrolling: function uiStartScrolling( event ) {
