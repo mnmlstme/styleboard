@@ -85,9 +85,10 @@ define(['appState'], function (appState) {
 
         events: {
             'click .pattern-example': 'uiClickExample',
-            'click .pane-scrollmargin': 'uiStartScrolling',
+            'click .pane-scrollmargin': 'uiStartScroll',
             'mousemove .pane-scrollmargin': 'uiScroll',
-            'mouseleave .pane-scrollmargin': 'uiStopScrolling'
+            'mouseleave .pane-scrollmargin': 'uiStopScroll',
+            'mouseenter .pane-scrollmargin': 'uiResumeScroll'
         },
 
         uiClickExample: function uiClickExample( event ) {
@@ -98,7 +99,7 @@ define(['appState'], function (appState) {
             appState.set('example', example);
         },
 
-        uiStartScrolling: function uiStartScrolling( event ) {
+        uiStartScroll: function uiStartScroll( event ) {
             var view = this;
 
             event.stopPropagation();
@@ -134,16 +135,26 @@ define(['appState'], function (appState) {
 
            $current = $current || $examples.last();
            appState.set('example', $current.data('example'));
-
         },
 
-        uiStopScrolling: function uiStartScrolling( event ) {
+        uiStopScroll: function uiStopScroll( event ) {
             var view = this;
 
-            view.isScrolling = false;
-            view.uiScroll( event );
+            if ( view.isScrolling ) {
+                view.uiScroll( event );
+                view.isScrolling = false;
+            }
             view.$scrollmark
                 .removeClass('is-active');
+        },
+
+        uiResumeScroll: function uiResumeScroll( event ) {
+            var view = this;
+
+            if ( view.$scrollmark.is('.is-visible') ) {
+                view.$scrollmark
+                    .addClass('is-active');
+            }
         },
 
         coordinates: function coordinates( e ) {
