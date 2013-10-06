@@ -7,6 +7,7 @@ LESSFILES= \
 	color.less \
 	typography.less \
 	pane.less \
+	frame.less \
 	list.less \
 	icon.less \
 	button.less \
