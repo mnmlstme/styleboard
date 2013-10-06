@@ -567,6 +567,9 @@ pre {
 pre {
   line-height: 1.15;
 }
+section.code {
+  padding: .5em;
+}
 code.combinator {
   padding: 0 .5em;
   color: #9b3314;
