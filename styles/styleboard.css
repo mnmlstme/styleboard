@@ -392,8 +392,8 @@ input[type="reset"].iconic- .icon + *,
 }
 /** A pane with scrolling content */
 .scrollable-.pane {
-  overflow-x: scroll;
-  overflow-y: scroll;
+  overflow-x: auto;
+  overflow-y: auto;
 }
 .scrollable-.pane.vertically- {
   overflow-x: hidden;
@@ -439,7 +439,7 @@ input[type="reset"].iconic- .icon + *,
   background: #282624;
   font-family: Lato, Helvetica, Arial, sans-serif;
   font-weight: 300;
-  font-size: 12px;
+  font-size: inherit;
   color: #dddddd;
 }
 .frame.split- {
@@ -524,18 +524,20 @@ input[type="reset"].iconic- .icon + *,
 }
 .frame.tabbed- ul.frame-tabs {
   white-space: nowrap;
-  padding: 0 .25em;
+  padding: .25em;
+  height: 2em;
 }
 .frame.tabbed- ul.frame-tabs > li {
   display: inline-block;
   padding: .25em;
   margin: .25em;
-  border: 1px solid rgba(0, 0, 0, 0.25);
+  outline: 1px solid rgba(0, 0, 0, 0.25);
   cursor: pointer;
+  font-size: 12px;
 }
 .frame.tabbed- ul.frame-tabs > li.is-active {
   color: #f19914;
-  border-color: #f19914;
+  outline-color: #f19914;
 }
 .frame.tabbed- ul.frame-tabs > li:empty {
   visibility: hidden;
@@ -543,6 +545,8 @@ input[type="reset"].iconic- .icon + *,
 .frame.tabbed- ul.frame-panes {
   /** A list of panes to show in a `tabbed-` frame */
 
+  height: 100%;
+  padding-bottom: 2em;
 }
 .frame.tabbed- ul.frame-panes > li {
   display: none;
