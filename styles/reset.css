@@ -50,6 +50,7 @@ table {
 /* Begin local reset code */
 hr {
     margin: 0;
+    border: none;
 }
 * {
     box-sizing: border-box;

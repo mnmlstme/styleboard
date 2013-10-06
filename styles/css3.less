@@ -1,0 +1,29 @@
+/*
+  CSS3 utility mixins
+*/
+
+.transform ( @spec ) {
+    -webkit-transform: @spec;
+    -moz-transform: @spec;
+    transform: @spec;
+}
+
+.transition ( transform, @duration ) {
+    -webkit-transition: -webkit-transform @duration;
+    -moz-transition: -moz-transform @duration;
+}
+
+.transition ( @prop, @duration ) {
+    -webkit-transition: @prop @duration;
+    -moz-transition: @prop @duration;
+    transition: @prop @duration;
+}
+
+.radial ( @startColor: #555, @endColor: #333, @center: 50% 50%,
+          @radius: farthest-side, @bgColor: transparent ) {
+        background: @bgColor -webkit-gradient(radial, @center, 0, @radius, 100, from(@startColor), to(@endColor)); // Safari 4-5, Chrome 1-9
+        background: @bgColor -webkit-radial-gradient( @center, @radius, @startColor, @endColor ); // Safari 5.1+, Chrome 10+
+        background: @bgColor -moz-radial-gradient( @center, @radius, @startColor, @endColor ); // FF 3.6+
+        background: @bgColor -ms-radial-gradient( @center, @radius, @startColor, @endColor ); // IE10
+        background: @bgColor radial-gradient( @center, @radius, @startColor, @endColor ); // standard
+}

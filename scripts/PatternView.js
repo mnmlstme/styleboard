@@ -8,10 +8,13 @@ define(['appState'], function (appState) {
         initialize: function () {
             var view = this,
                 pattern = view.model,
-                example = pattern.getDeclaration({ type: 'example', index: 0 });
+                example = pattern.getDeclaration({ type: 'example', index: 0 }),
+                $pane = view.$el.closest('.pane');
 
             appState.set('example', example);
             appState.on('change:example', view.updateExampleIsActive, view);
+
+            view.$scrollmark = $pane.find('.pane-scrollmark');
         },
 
         render: function () {
@@ -29,6 +32,8 @@ define(['appState'], function (appState) {
                        );
 
             view.renderDeclarations( declarations );
+
+            view.$scrollmargin = view.$el.mk( '.pane-scrollmargin' );
 
             return view;
         },
@@ -79,16 +84,70 @@ define(['appState'], function (appState) {
         },
 
         events: {
-            'click .pattern-example': 'uiClickExample'
+            'click .pattern-example': 'uiClickExample',
+            'click .pane-scrollmargin': 'uiStartScrolling',
+            'mousemove .pane-scrollmargin': 'uiScroll',
+            'mouseleave .pane-scrollmargin': 'uiStopScrolling'
         },
 
-        uiClickExample: function uiClickExample(event) {
+        uiClickExample: function uiClickExample( event ) {
             var view = this,
                 $target = $(event.currentTarget),
                 example = $target.data('example');
 
             appState.set('example', example);
         },
+
+        uiStartScrolling: function uiStartScrolling( event ) {
+            var view = this;
+
+            event.stopPropagation();
+            view.isScrolling = true;
+            view.$scrollmark
+                .addClass('is-visible');
+            view.uiScroll( event );
+        },
+
+        uiScroll: function uiScroll( event ) {
+            if ( !this.isScrolling ) return;
+            var view = this,
+                y = view.coordinates( event ).y;
+
+            view.$scrollmark
+                .addClass('is-active')
+                .css({ top: y + 'px' });
+        },
+
+        uiStopScrolling: function uiStartScrolling( event ) {
+            var view = this;
+
+            view.isScrolling = false;
+            view.uiScroll( event );
+            view.$scrollmark
+                .removeClass('is-active');
+        },
+
+        coordinates: function coordinates( e ) {
+           var view = this,
+               viewOffset = view.$el.offset(),
+               pos = {};
+           // after http://www.quirksmode.org/js/events_properties.html#position
+           // TODO: is all this still necessary w/ modern browsers?
+           if (e.pageX || e.pageY) {
+               pos = { x:e.pageX, y:e.pageY };
+           } else if (e.clientX || e.clientY) {
+               pos = {
+                   x:e.clientX + document.body.scrollLeft + 
+                       document.documentElement.scrollLeft,
+                   y:e.clientY + document.body.scrollTop +
+                       document.documentElement.scrollTop
+               };
+           }
+           return { 
+               x: pos.x - viewOffset.left,
+               y: pos.y - viewOffset.top
+           };
+       }
 
     });
 

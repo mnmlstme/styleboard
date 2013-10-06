@@ -7,6 +7,9 @@
 @import url(http://fonts.googleapis.com/css?family=Lato:300,400);
 
 @import "../graphics/fontcustom/fontcustom.css";
+/*
+  CSS3 utility mixins
+*/
 body {
   font-family: Oxygen, Tahoma, Geneva, sans-serif;
   font-weight: 300;
@@ -397,6 +400,7 @@ input[type="reset"].iconic- .icon + *,
 .pane {
   height: 100%;
   width: 100%;
+  position: relative;
   background: #f8f8f8;
   border-width: 1px;
   border-style: solid;
@@ -451,6 +455,52 @@ input[type="reset"].iconic- .icon + *,
 .pane.scrollable-::-webkit-scrollbar-thumb {
   background: rgba(150, 150, 150, 0.5);
   border-radius: 1px;
+}
+.pane .pane-content {
+  position: relative;
+  z-index: 1;
+}
+.pane .pane-scrollmark {
+  /** A visual and user-positionable marker to set the current reading
+            location in a pane. */
+
+  display: none;
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding-bottom: 25%;
+  border-top: 1px solid rgba(240, 240, 179, 0.5);
+  background: transparent -webkit-gradient(radial, 100% 100%, 0, farthest-corner, 100, from(transparent 50%), to(rgba(250, 250, 185, 0.5)));
+  background: transparent -webkit-radial-gradient(100% 100%, farthest-corner, transparent 50%, rgba(250, 250, 185, 0.5));
+  background: transparent -moz-radial-gradient(100% 100%, farthest-corner, transparent 50%, rgba(250, 250, 185, 0.5));
+  background: transparent -ms-radial-gradient(100% 100%, farthest-corner, transparent 50%, rgba(250, 250, 185, 0.5));
+  background: transparent radial-gradient(100% 100%, farthest-corner, transparent 50%, rgba(250, 250, 185, 0.5));
+}
+.pane .pane-scrollmark.is-visible {
+  display: block;
+}
+.pane .pane-scrollmark.is-active {
+  background: transparent -webkit-gradient(radial, 100% 100%, 0, farthest-corner, 100, from(transparent 50%), to(rgba(250, 250, 0, 0.8)));
+  background: transparent -webkit-radial-gradient(100% 100%, farthest-corner, transparent 50%, rgba(250, 250, 0, 0.8));
+  background: transparent -moz-radial-gradient(100% 100%, farthest-corner, transparent 50%, rgba(250, 250, 0, 0.8));
+  background: transparent -ms-radial-gradient(100% 100%, farthest-corner, transparent 50%, rgba(250, 250, 0, 0.8));
+  background: transparent radial-gradient(100% 100%, farthest-corner, transparent 50%, rgba(250, 250, 0, 0.8));
+}
+.pane .pane-scrollmargin {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 2em;
+  cursor: ns-resize;
+  z-index: 2;
+}
+.pane .pane-scrollmargin:hover {
+  border-right: 1px solid rgba(221, 221, 221, 0.3);
+  background: rgba(221, 221, 221, 0.2);
 }
 .frame {
   /** A container for one or more panes */
@@ -685,10 +735,6 @@ body {
   width: 100%;
   height: 100%;
   overflow: hidden;
-}
-* {
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
 }
 #sandbox {
   background: #ffffff url(../graphics/checkerboard.svg);
