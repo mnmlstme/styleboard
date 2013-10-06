@@ -377,7 +377,23 @@ input[type="reset"].iconic- .icon + *,
 * + .button.iconic- .icon {
   margin-left: .25em;
 }
-/** A rectangular region of the screen */
+/** A rectangular region of the screen. 
+    @example
+    <div class="pane">
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus
+      tortor dolor, sollicitudin sit amet nibh ac, suscipit ultrices
+      augue. Nullam dictum mauris eu mi lacinia consectetur. Proin sit amet
+      nisl ipsum.
+      <p>Praesent vulputate luctus risus, nec venenatis neque
+      consectetur a. Pellentesque in sapien eu diam tincidunt fringilla in
+      vehicula lacus. Donec at rhoncus neque. Cras molestie sem tortor, sit
+      amet venenatis lectus auctor sed.
+      <p>Aenean adipiscing euismod lorem, non
+      euismod purus aliquet non. Sed ullamcorper vestibulum congue. Proin at
+      ligula faucibus, lobortis elit eu, sagittis magna. Sed volutpat lacus
+      ut varius dictum.
+    </div>
+    */
 .pane {
   height: 100%;
   width: 100%;
@@ -387,29 +403,52 @@ input[type="reset"].iconic- .icon + *,
   border-color: rgba(255, 255, 255, 0.5) rgba(0, 0, 0, 0.5) rgba(0, 0, 0, 0.5) rgba(255, 255, 255, 0.5);
 }
 .pane.dark- {
+  /** A pane with a dark background (inverted colors).
+            @example
+            <div class="dark- pane">
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus
+              tortor dolor, sollicitudin sit amet nibh ac, suscipit ultrices
+              augue. Nullam dictum mauris eu mi lacinia consectetur. Proin sit amet
+              nisl ipsum.
+              <p>Praesent vulputate luctus risus, nec venenatis neque
+              consectetur a. Pellentesque in sapien eu diam tincidunt fringilla in
+              vehicula lacus. Donec at rhoncus neque. Cras molestie sem tortor, sit
+              amet venenatis lectus auctor sed.
+              <p>Aenean adipiscing euismod lorem, non
+              euismod purus aliquet non. Sed ullamcorper vestibulum congue. Proin at
+              ligula faucibus, lobortis elit eu, sagittis magna. Sed volutpat lacus
+              ut varius dictum.
+            </div>
+            */
+
   background: #282624;
   color: #dddddd;
 }
-/** A pane with scrolling content */
-.scrollable-.pane {
+.pane.scrollable- {
+  /** A pane with scrolling content (in both directions). */
+
   overflow-x: auto;
   overflow-y: auto;
 }
-.scrollable-.pane.vertically- {
+.pane.scrollable-.vertically- {
+  /** A pane with vertically scrolling content. */
+
   overflow-x: hidden;
 }
-.scrollable-.pane.horizontally- {
+.pane.scrollable-.horizontally- {
+  /** A pane with horizontally scrolling content. */
+
   overflow-y: hidden;
 }
-.scrollable-.pane::-webkit-scrollbar {
+.pane.scrollable-::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
-.scrollable-.pane::-webkit-scrollbar-track,
-.scrollable-.pane::-webkit-scrollbar-corner {
+.pane.scrollable-::-webkit-scrollbar-track,
+.pane.scrollable-::-webkit-scrollbar-corner {
   background: transparent;
 }
-.scrollable-.pane::-webkit-scrollbar-thumb {
+.pane.scrollable-::-webkit-scrollbar-thumb {
   background: rgba(150, 150, 150, 0.5);
   border-radius: 1px;
 }
