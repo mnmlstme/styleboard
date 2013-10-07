@@ -21,9 +21,7 @@
     height: 100%;
     width: 100%;
     background: @background-color;
-    border-width: 1px;
-    border-style: solid;
-    border-color: @border-hi-color @border-lo-color @border-lo-color @border-hi-color;
+    box-shadow: inset 1px 1px @border-hi-color, inset -1px -1px @border-lo-color;
 
     &.dark- {
         /** A pane with a dark background (inverted colors).

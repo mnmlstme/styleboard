@@ -47,9 +47,10 @@ define(['appState'], function (appState) {
                     $parent.mk( 'p', defn.get('text') );
                     break;
                 case 'example':
-                    $parent.mk( 'button.iconic-', attrs, 
-                                ['i.presentation-.icon', 'Present Example'],
-                                ['span', defn.get('title') || 'Example' ] )
+                    $parent.mk( 'button', attrs,
+                                ['strong', "View:"],
+                                ' ',
+                                ['span', defn.get('title') || "Example"] )
                         .data( 'example', defn );
                     break;
                 default:

@@ -377,6 +377,13 @@ input[type="reset"].iconic- .icon + *,
 * + .button.iconic- .icon {
   margin-left: .25em;
 }
+button strong,
+input[type="button"] strong,
+input[type="submit"] strong,
+input[type="reset"] strong,
+.button strong {
+  font-weight: 400;
+}
 /** A rectangular region of the screen. 
     @example
     <div class="pane">
@@ -398,9 +405,7 @@ input[type="reset"].iconic- .icon + *,
   height: 100%;
   width: 100%;
   background: #f8f8f8;
-  border-width: 1px;
-  border-style: solid;
-  border-color: rgba(255, 255, 255, 0.5) rgba(0, 0, 0, 0.5) rgba(0, 0, 0, 0.5) rgba(255, 255, 255, 0.5);
+  box-shadow: inset 1px 1px rgba(255, 255, 255, 0.5), inset -1px -1px rgba(0, 0, 0, 0.5);
 }
 .pane.dark- {
   /** A pane with a dark background (inverted colors).
@@ -649,6 +654,7 @@ code.separator {
   padding-right: .5em;
   width: 100%;
   text-align: left;
+  background-image: url(../graphics/checkerboard.svg );
 }
 /**
    Styles for presenting (CSS) rules
