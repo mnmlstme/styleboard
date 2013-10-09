@@ -1,0 +1,36 @@
+/** Color swatches.
+    @example
+    <i class="white- swatch></i> White
+*/
+
+.swatch {
+    display: inline-block;
+    position: relative;
+    height: 1em;
+    width: 1em;
+    // checkboard on white, so we can see opacity
+    background: #fff url( ../graphics/checkerboard.svg );
+    background-position: center;
+
+    &::before {
+        content: "";
+        display: inline-block;
+        height: 100%;
+        width: 100%;
+    }
+
+    .color ( @color ) {
+        &::before { 
+            background-color: @color;
+        }
+    }
+
+    .size ( @size ) {
+        font-size: @size;
+    }
+
+    &.transparent- { .color( transparent ); }
+    &.white- { .color( #fff ); }
+    &.black- { .color( #000 ); }
+
+}

@@ -1,0 +1,43 @@
+/**
+   An overlay with a pointer to refer to a button or control. Used for dropdown menus and popup dialogs.
+
+@example
+<div class="popover-context">
+  <button>Save</button>
+  <div class="popover">
+     ... save dialog
+  </div>
+</div>
+*/
+
+@import "css3";
+@import "color";
+
+.dropdown-context {
+    /** Establishes a context relative to which the (descendant) 
+        dropdown will be positioned.
+        */
+    position: relative;
+    // The dropdown-context is usually a button or glyph, but needs to
+    // contain a div to, which is the dropdown itself
+    display: inline-block;
+}
+
+.dropdown {
+    display: none; // .is-active will display it
+    position: absolute; // relative to .popover-context
+    left: 50%; // TODO: provide mixin(s) to change this
+    top: 100%;
+    .transform( translateX( -50% ) );
+    background-color: @inv-background-alt-color;
+    border: 1px solid @border-color;
+    box-shadow: 0px 2px 2px fade( #000, 20% );
+    z-index: 5;
+
+    // Modifiers
+
+    &.is-active {
+        display: block;
+    }
+    
+}

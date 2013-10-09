@@ -7,6 +7,9 @@
 @import url(http://fonts.googleapis.com/css?family=Lato:300,400);
 
 @import "../graphics/fontcustom/fontcustom.css";
+/*
+  CSS3 utility mixins
+*/
 body {
   font-family: Oxygen, Tahoma, Geneva, sans-serif;
   font-weight: 300;
@@ -83,8 +86,9 @@ article.typography {
 .icon::before {
   display: inline-block;
   content: "X";
-  height: 1em;
-  width: 1em;
+  text-align: center;
+  height: 100%;
+  width: 100%;
 }
 .icon.presentation- {
   /** A presentation on projection screen.
@@ -98,6 +102,33 @@ article.typography {
 }
 .icon.presentation-::before {
   content: "\f100";
+}
+/** Color swatches.
+    @example
+    <i class="white- swatch></i> White
+*/
+.swatch {
+  display: inline-block;
+  position: relative;
+  height: 1em;
+  width: 1em;
+  background: #ffffff url(../graphics/checkerboard.svg );
+  background-position: center;
+}
+.swatch::before {
+  content: "";
+  display: inline-block;
+  height: 100%;
+  width: 100%;
+}
+.swatch.transparent-::before {
+  background-color: transparent;
+}
+.swatch.white-::before {
+  background-color: #ffffff;
+}
+.swatch.black-::before {
+  background-color: #000000;
 }
 .list,
 .typography ul {
@@ -214,6 +245,38 @@ article.typography {
 .typography ul .list-definition {
   /** The definition for a term in a definition list. */
 
+}
+/**
+   A horizontal, packed arrangement of items, such buttons or tools
+
+@example A tool bar
+   <ul class="tool- bar">
+     <li>A
+     <li>B
+     <li>C
+   </ul>
+
+When creating the items in the list, care should be take to not have any
+incidental whitespace between the <li> elements.  A good way to ensure this
+is to *not* provide the </li> tag, allowing the next <li> (or the </ul>) to
+implicitly close the <li>.
+*/
+.bar {
+  font-family: Lato, Helvetica, Arial, sans-serif;
+  font-weight: 300;
+  font-size: 12px;
+}
+.bar > * {
+  display: inline-block;
+}
+.bar .button,
+.bar button {
+  font-size: inherit;
+}
+.bar.tool- .button,
+.bar.tool- button {
+  background: transparent;
+  color: inherit;
 }
 /** A clickable control with a single on-click action */
 button,
@@ -384,6 +447,64 @@ input[type="reset"] strong,
 .button strong {
   font-weight: 400;
 }
+button .swatch,
+input[type="button"] .swatch,
+input[type="submit"] .swatch,
+input[type="reset"] .swatch,
+.button .swatch {
+  font-size: 1.25em;
+}
+/**
+   A vertical arrangement of actions or options from which the user may choose.
+   */
+.menu > li {
+  padding: .25em .5em;
+  line-height: 1.5em;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.menu > li:hover {
+  color: #f19914;
+}
+.menu > li .swatch {
+  font-size: 1.5em;
+  vertical-align: -0.25em;
+}
+/**
+   An overlay with a pointer to refer to a button or control. Used for dropdown menus and popup dialogs.
+
+@example
+<div class="popover-context">
+  <button>Save</button>
+  <div class="popover">
+     ... save dialog
+  </div>
+</div>
+*/
+.dropdown-context {
+  /** Establishes a context relative to which the (descendant) 
+        dropdown will be positioned.
+        */
+
+  position: relative;
+  display: inline-block;
+}
+.dropdown {
+  display: none;
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  -webkit-transform: translateX(-50%);
+  -moz-transform: translateX(-50%);
+  transform: translateX(-50%);
+  background-color: #393633;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2);
+  z-index: 5;
+}
+.dropdown.is-active {
+  display: block;
+}
 /** A rectangular region of the screen. 
     @example
     <div class="pane">
@@ -402,10 +523,12 @@ input[type="reset"] strong,
     </div>
     */
 .pane {
+  position: relative;
   height: 100%;
   width: 100%;
   background: #f8f8f8;
-  box-shadow: inset 1px 1px rgba(255, 255, 255, 0.5), inset -1px -1px rgba(0, 0, 0, 0.5);
+  box-shadow: inset 1px 1px 1px rgba(255, 255, 255, 0.5), inset -1px -1px 1px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
 }
 .pane.dark- {
   /** A pane with a dark background (inverted colors).
@@ -480,11 +603,27 @@ input[type="reset"] strong,
 .frame nav {
   /** Navigation bar for the frame */
 
+  height: 2em;
+  line-height: 2em;
   background: #282624;
+  box-shadow: inset 1px 1px 1px rgba(255, 255, 255, 0.5), inset -1px -1px 1px rgba(0, 0, 0, 0.5);
   font-family: Lato, Helvetica, Arial, sans-serif;
   font-weight: 300;
   font-size: inherit;
   color: #dddddd;
+}
+.frame nav .nav-left {
+  float: left;
+}
+.frame nav .nav-right {
+  float: right;
+}
+.frame nav + .pane,
+.frame nav + .frame-panes {
+  padding-bottom: 2em;
+}
+.frame nav ul.frame-tabs {
+  height: 100%;
 }
 .frame.split- {
   /** A frame which is split into two panes */
@@ -555,10 +694,12 @@ input[type="reset"] strong,
   /** A frame with tabs to select alternate panes to view.
             @example Two tabs
             <div class="tabbed- frame">
-              <ul class="frame-tabs">
-                <li class="is-active">One
-                <li>Two
-              </ul>
+              <nav>
+                <ul class="frame-tabs">
+                  <li class="is-active">One
+                  <li>Two
+                </ul>
+              </nav>
               <ul class="frame-panes">
                 <li class="pane is-active">This is pane One
                 <li class="pane">This is pane Two
@@ -569,15 +710,13 @@ input[type="reset"] strong,
 .frame.tabbed- ul.frame-tabs {
   white-space: nowrap;
   padding: .25em;
-  height: 2em;
 }
 .frame.tabbed- ul.frame-tabs > li {
   display: inline-block;
-  padding: .25em;
-  margin: .25em;
-  outline: 1px solid rgba(0, 0, 0, 0.25);
   cursor: pointer;
   font-size: 12px;
+  line-height: 2em;
+  margin: 0 .5em;
 }
 .frame.tabbed- ul.frame-tabs > li.is-active {
   color: #f19914;
@@ -590,7 +729,6 @@ input[type="reset"] strong,
   /** A list of panes to show in a `tabbed-` frame */
 
   height: 100%;
-  padding-bottom: 2em;
 }
 .frame.tabbed- ul.frame-panes > li {
   display: none;
@@ -655,6 +793,7 @@ code.separator {
   width: 100%;
   text-align: left;
   background-image: url(../graphics/checkerboard.svg );
+  background-position: center;
 }
 /**
    Styles for presenting (CSS) rules
@@ -692,14 +831,18 @@ body {
   height: 100%;
   overflow: hidden;
 }
-* {
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
+#settings h1 {
+  font-family: Lato, Helvetica, Arial, sans-serif;
+  font-weight: 300;
+  font-size: 21.28px;
+  color: #dddddd;
+  margin: 0 .25em;
 }
 #sandbox {
   background: #ffffff url(../graphics/checkerboard.svg);
   border: none;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5) inset;
+  padding: 2em 2em 4em 2em;
 }
 #sandbox h2 {
   position: absolute;
@@ -710,13 +853,9 @@ body {
   color: #666;
 }
 #sandbox iframe {
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
-  border: none;
-  padding: 64px;
+  border: 1px dotted rgba(0, 0, 0, 0.2);
 }
 #selectors {
   padding: 10px;

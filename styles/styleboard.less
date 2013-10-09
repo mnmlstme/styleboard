@@ -1,9 +1,15 @@
 @import "reset.css";
+@import "util";
+@import "css3";
 @import "color";
 @import "typography";
 @import "icon";
+@import "swatch";
 @import "list";
+@import "bar";
 @import "button";
+@import "menu";
+@import "dropdown";
 @import "pane";
 @import "frame";
 @import "code";
@@ -20,10 +26,18 @@ body {
     overflow: hidden;
 }
 
+#settings {
+    h1 {
+        .font(nav, large, inv);
+        margin: 0 .25em;
+    }
+}
+
 #sandbox {
     background: #fff url(../graphics/checkerboard.svg);
     border: none;
     box-shadow: 0 0 5px rgba(0,0,0,0.5) inset;
+    padding: 2em 2em 4em 2em;
     h2 {
         position: absolute;
         bottom: 0;
@@ -33,13 +47,9 @@ body {
         color: #666;
     }
     iframe {
-        position: absolute;
-        top: 0;
-        left: 0;
         width: 100%;
         height: 100%;
-        border: none;
-        padding: 64px;
+        border: 1px dotted rgba(0,0,0,0.2);
     }
 }
 

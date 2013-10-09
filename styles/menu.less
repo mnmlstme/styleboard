@@ -1,0 +1,24 @@
+/**
+   A vertical arrangement of actions or options from which the user may choose.
+   */
+.menu {
+
+    > li {
+        @lineht: 1.5em;
+
+        padding: .25em .5em;
+        line-height: @lineht;
+        cursor: pointer;
+        white-space: nowrap;
+
+        &:hover {
+            .color( delta );
+        }
+
+        .swatch {
+            .swatch > .size( @lineht );
+            vertical-align: -.25em;
+        }
+
+    }
+}

@@ -23,9 +23,36 @@
 
     nav {
         /** Navigation bar for the frame */
+
+        @navHeight: 2em;
+
+        height: @navHeight;
+        line-height: @navHeight;
         background: @inv-background-color;
+        box-shadow: inset 1px 1px 1px @border-hi-color,
+                    inset -1px -1px 1px @border-lo-color;
+
         .font( nav, inherit, inv );
+
+        .nav-left { 
+            float: left;
+        }
+
+        .nav-right { 
+            float: right;
+        }
+
+        + .pane,
+        + .frame-panes {
+            // steal the nav height from the following pane
+            padding-bottom: @navHeight;
+        }
+        
+        ul.frame-tabs {
+            height: 100%;
+        }
     }
+
     &.split- {
         /** A frame which is split into two panes */
         position: relative;
@@ -87,31 +114,29 @@
         /** A frame with tabs to select alternate panes to view.
             @example Two tabs
             <div class="tabbed- frame">
-              <ul class="frame-tabs">
-                <li class="is-active">One
-                <li>Two
-              </ul>
+              <nav>
+                <ul class="frame-tabs">
+                  <li class="is-active">One
+                  <li>Two
+                </ul>
+              </nav>
               <ul class="frame-panes">
                 <li class="pane is-active">This is pane One
                 <li class="pane">This is pane Two
             </div>
         */ 
 
-        @tabHeight: 2em;
-
         position: relative;
 
         ul.frame-tabs {
             white-space: nowrap;
             padding: .25em;
-            height: @tabHeight;
             > li {
                 display: inline-block;
-                padding: .25em;
-                margin: .25em;
-                outline: 1px solid @border-color;
                 cursor: pointer;
                 .font-size( xsmall );
+                line-height: 2em;
+                margin: 0 .5em;
                 &.is-active {
                     .color( delta );
                     outline-color: @color-delta;
@@ -125,7 +150,6 @@
         ul.frame-panes {
             /** A list of panes to show in a `tabbed-` frame */
             height: 100%;
-            padding-bottom: @tabHeight; // overflows frame, pushed down by tabs
             > li {
                 display: none;
                 &.is-active {

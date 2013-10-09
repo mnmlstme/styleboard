@@ -18,10 +18,13 @@
     </div>
     */
 .pane {
+    position: relative; // any positioning inside should be relative to frame
     height: 100%;
     width: 100%;
     background: @background-color;
-    box-shadow: inset 1px 1px @border-hi-color, inset -1px -1px @border-lo-color;
+    box-shadow: inset 1px 1px 1px @border-hi-color,
+                inset -1px -1px 1px @border-lo-color;
+    overflow: hidden;
 
     &.dark- {
         /** A pane with a dark background (inverted colors).

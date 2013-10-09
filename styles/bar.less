@@ -1,0 +1,36 @@
+/**
+   A horizontal, packed arrangement of items, such buttons or tools
+
+@example A tool bar
+   <ul class="tool- bar">
+     <li>A
+     <li>B
+     <li>C
+   </ul>
+
+When creating the items in the list, care should be take to not have any
+incidental whitespace between the <li> elements.  A good way to ensure this
+is to *not* provide the </li> tag, allowing the next <li> (or the </ul>) to
+implicitly close the <li>.
+*/
+
+.bar {
+
+    .font( nav, xsmall );
+
+    > * {
+        display: inline-block;
+    }
+
+    .button, button {
+        font-size: inherit;
+    }
+
+    &.tool- {
+        .button, button {
+            background: transparent;
+            color: inherit;
+        }
+    }
+
+}

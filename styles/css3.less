@@ -1,0 +1,25 @@
+/*
+  CSS3 utility mixins
+*/
+
+.box-sizing ( @spec ) {
+    -moz-box-sizing: @spec;
+    box-sizing: @spec;
+}
+
+.transform ( @spec ) {
+    -webkit-transform: @spec;
+    -moz-transform: @spec;
+    transform: @spec;
+}
+
+.transition ( transform, @duration ) {
+    -webkit-transition: -webkit-transform @duration;
+    -moz-transition: -moz-transform @duration;
+}
+
+.transition ( @prop, @duration ) {
+    -webkit-transition: @prop @duration;
+    -moz-transition: @prop @duration;
+    transition: @prop @duration;
+}

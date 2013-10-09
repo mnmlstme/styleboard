@@ -1,7 +1,9 @@
 require(['Dictionary', 'Analyzer', 'Parser',
-         'DictionaryView', 'RenderedView', 'MarkupView', 'RulesView'], 
+         'DictionaryView', 'RenderedView', 'MarkupView', 'RulesView',
+         'SettingsView'], 
 function( Dictionary, Analyzer, Parser,
-          DictionaryView, RenderedView, MarkupView, RulesView ) {
+          DictionaryView, RenderedView, MarkupView, RulesView,
+          SettingsView ) {
 
     new StyleBoard( { cssUrl: "styles/styleboard.css" } );
 
@@ -30,6 +32,9 @@ function( Dictionary, Analyzer, Parser,
             })).render();
             (new RulesView({
                 el: $('#sources')
+            })).render();
+            (new SettingsView({
+                el: $('#settings')
             })).render();
         });
 
