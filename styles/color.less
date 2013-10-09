@@ -19,12 +19,16 @@
 @inv-background-color: #282624;
 @inv-background-alt-color: #393633;
 @inv-body-color: #ddd;
+@inv-body-lo-color: #aaa;
 @inv-body-hi-color: #fff;
 
 .color ( body ) { color: @body-color; }
-.color ( inv ) { color: @inv-body-color; }
 .color ( lo )  { color: @body-lo-color; }
 .color ( hi ) { color: @body-hi-color; }
+
+.color ( inv ) { color: @inv-body-color; }
+.color ( inv-lo ) { color: @inv-body-lo-color; }
+.color ( inv-hi ) { color: @inv-body-hi-color; }
 
 .color ( alpha )  { color: @color-alpha; }
 .color ( beta )  { color: @color-beta; }

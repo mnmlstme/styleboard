@@ -13,6 +13,12 @@
     transform: @spec;
 }
 
+.transform-origin ( @spec ) {
+    -webkit-transform-origin: @spec;
+    -moz-transform-origin: @spec;
+    transform-origin: @spec;
+}
+
 .transition ( transform, @duration ) {
     -webkit-transition: -webkit-transform @duration;
     -moz-transition: -moz-transform @duration;

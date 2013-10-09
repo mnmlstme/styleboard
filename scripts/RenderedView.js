@@ -73,7 +73,7 @@ define(['appState'], function (appState) {
 
         updateSettings: function updateSettings() {
             var view = this,
-                iFrameSettings = ['width', 'height'];
+                iFrameSettings = ['width', 'height', 'transform'];
 
             view.$body.css( _(view.settings).omit(iFrameSettings) );
             view.$iframe.css( _(view.settings).pick(iFrameSettings) );

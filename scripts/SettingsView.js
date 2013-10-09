@@ -6,7 +6,8 @@ define(['appState'], function (appState) {
     var defaultSettings = {
         "background-color": "transparent",
         "font-size": "16px",
-        "width": "100%"
+        "width": "100%",
+        "transform": "scale(1)"
     }
 
     var SettingsView = Backbone.View.extend({
