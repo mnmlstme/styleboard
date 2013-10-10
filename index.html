@@ -29,10 +29,10 @@
                 </ul>
             </div>
             <div class="vertical- split- frame">
-                <div class="frame">
-                    <nav id="settings">
-                        <h1 class="nav-left">Styleboard</h1>
-                        <ul class="tool- bar nav-right">
+                <div class="headered- frame">
+                    <nav id="settings" class="frame-header">
+                        <h1 class="frame-header-left">Styleboard</h1>
+                        <ul class="tool- bar frame-header-right">
                             <li class="dropdown-context selector" data-select="transform">
                                 <button></button>
                                 <ul class="dropdown menu">
@@ -82,11 +82,13 @@
                                     <li data-option="30px">30px
                                 </ul>
                         </ul>
+
                     </nav>
-                    <section id="sandbox" class="pane">
-                        <h2></h2>
-                        <iframe src="about:blank"></iframe>
-                    </section>
+                    <div class="scrollable- pane">
+                        <section id="sandbox">
+                            <iframe src="about:blank"></iframe>
+                        </section>
+                    </div>
                 </div>
                 <div class="horizontal- split- frame">
                     <section class="code dark- scrollable- pane">

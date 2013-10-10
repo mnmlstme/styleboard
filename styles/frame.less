@@ -2,10 +2,9 @@
 @import "typography";
 
 .frame {
-    /** A container for one or more panes */
+    /** A container for one or more panes.
 
-    /**
-       @example A basic frame with one pane
+       @example A basic frame with one pane.
        <div class="frame">
          <div class="pane">
            <p>Lorem ipsum dolor sit amet, 
@@ -18,44 +17,54 @@
        </div>
     */
 
+    @headerHeight: 2em;
+
     height: 100%;
     width: 100%;
 
-    nav {
-        /** Navigation bar for the frame */
+    // most variants require elements be positioned relative to the frame.
+    position: relative;
 
-        @navHeight: 2em;
+    &.headered- {
+        /** A frame which has a header at the top.  The header might include
+            a title, navigation, or tools, for example.
 
-        height: @navHeight;
-        line-height: @navHeight;
+            @example A frame with a title bar.
+            <div class="headered- frame">
+              <h1 class="frame-header">Lorem Ipsum</h1>
+              <div class="pane">
+                <p>Lorem ipsum dolor sit amet, 
+                consectetur adipiscing elit.</p>
+              </div>
+            </div
+         */
+        padding-top: @headerHeight;
+    }
+
+    .frame-header,
+    .frame-tabs {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: @headerHeight;
+        line-height: @headerHeight;
+        width: 100%;
         background: @inv-background-color;
         box-shadow: inset 1px 1px 1px @border-hi-color,
                     inset -1px -1px 1px @border-lo-color;
-
         .font( nav, inherit, inv );
+    }
+    
+    .frame-header-left { 
+        float: left;
+    }
 
-        .nav-left { 
-            float: left;
-        }
-
-        .nav-right { 
-            float: right;
-        }
-
-        + .pane,
-        + .frame-panes {
-            // steal the nav height from the following pane
-            padding-bottom: @navHeight;
-        }
-        
-        ul.frame-tabs {
-            height: 100%;
-        }
+    .frame-header-right { 
+        float: right;
     }
 
     &.split- {
         /** A frame which is split into two panes */
-        position: relative;
         > * {
             position: absolute;
         }
@@ -125,17 +134,15 @@
                 <li class="pane">This is pane Two
             </div>
         */ 
+        padding-top: @headerHeight;
 
-        position: relative;
-
-        ul.frame-tabs {
+        .frame-tabs {
             white-space: nowrap;
             padding: .25em;
-            > li {
+            > * {
                 display: inline-block;
                 cursor: pointer;
                 .font-size( xsmall );
-                line-height: 2em;
                 margin: 0 .5em;
                 &.is-active {
                     .color( delta );
@@ -147,10 +154,10 @@
             }
         }
 
-        ul.frame-panes {
+        .frame-panes {
             /** A list of panes to show in a `tabbed-` frame */
             height: 100%;
-            > li {
+            > * {
                 display: none;
                 &.is-active {
                     display: block;

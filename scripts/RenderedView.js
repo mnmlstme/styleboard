@@ -73,10 +73,13 @@ define(['appState'], function (appState) {
 
         updateSettings: function updateSettings() {
             var view = this,
-                iFrameSettings = ['width', 'height', 'transform'];
+                iFrameSettings = ['width', 'height'],
+                sandboxSettings = ['transform'];
 
-            view.$body.css( _(view.settings).omit(iFrameSettings) );
             view.$iframe.css( _(view.settings).pick(iFrameSettings) );
+            view.$el.css( _(view.settings).pick(sandboxSettings) );
+            view.$body.css( _(view.settings).omit(iFrameSettings.concat(sandboxSettings)) );
+
         }
 
 

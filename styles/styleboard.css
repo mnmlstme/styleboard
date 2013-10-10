@@ -581,10 +581,9 @@ input[type="reset"] .swatch,
   border-radius: 1px;
 }
 .frame {
-  /** A container for one or more panes */
+  /** A container for one or more panes.
 
-  /**
-       @example A basic frame with one pane
+       @example A basic frame with one pane.
        <div class="frame">
          <div class="pane">
            <p>Lorem ipsum dolor sit amet, 
@@ -599,12 +598,32 @@ input[type="reset"] .swatch,
 
   height: 100%;
   width: 100%;
+  position: relative;
 }
-.frame nav {
-  /** Navigation bar for the frame */
+.frame.headered- {
+  /** A frame which has a header at the top.  The header might include
+            a title, navigation, or tools, for example.
 
+            @example A frame with a title bar.
+            <div class="headered- frame">
+              <h1 class="frame-header">Lorem Ipsum</h1>
+              <div class="pane">
+                <p>Lorem ipsum dolor sit amet, 
+                consectetur adipiscing elit.</p>
+              </div>
+            </div
+         */
+
+  padding-top: 2em;
+}
+.frame .frame-header,
+.frame .frame-tabs {
+  position: absolute;
+  top: 0;
+  left: 0;
   height: 2em;
   line-height: 2em;
+  width: 100%;
   background: #282624;
   box-shadow: inset 1px 1px 1px rgba(255, 255, 255, 0.5), inset -1px -1px 1px rgba(0, 0, 0, 0.5);
   font-family: Lato, Helvetica, Arial, sans-serif;
@@ -612,23 +631,15 @@ input[type="reset"] .swatch,
   font-size: inherit;
   color: #dddddd;
 }
-.frame nav .nav-left {
+.frame .frame-header-left {
   float: left;
 }
-.frame nav .nav-right {
+.frame .frame-header-right {
   float: right;
-}
-.frame nav + .pane,
-.frame nav + .frame-panes {
-  padding-bottom: 2em;
-}
-.frame nav ul.frame-tabs {
-  height: 100%;
 }
 .frame.split- {
   /** A frame which is split into two panes */
 
-  position: relative;
 }
 .frame.split- > * {
   position: absolute;
@@ -705,35 +716,34 @@ input[type="reset"] .swatch,
                 <li class="pane">This is pane Two
             </div>
         */
-  position: relative;
+  padding-top: 2em;
 }
-.frame.tabbed- ul.frame-tabs {
+.frame.tabbed- .frame-tabs {
   white-space: nowrap;
   padding: .25em;
 }
-.frame.tabbed- ul.frame-tabs > li {
+.frame.tabbed- .frame-tabs > * {
   display: inline-block;
   cursor: pointer;
   font-size: 12px;
-  line-height: 2em;
   margin: 0 .5em;
 }
-.frame.tabbed- ul.frame-tabs > li.is-active {
+.frame.tabbed- .frame-tabs > *.is-active {
   color: #f19914;
   outline-color: #f19914;
 }
-.frame.tabbed- ul.frame-tabs > li:empty {
+.frame.tabbed- .frame-tabs > *:empty {
   visibility: hidden;
 }
-.frame.tabbed- ul.frame-panes {
+.frame.tabbed- .frame-panes {
   /** A list of panes to show in a `tabbed-` frame */
 
   height: 100%;
 }
-.frame.tabbed- ul.frame-panes > li {
+.frame.tabbed- .frame-panes > * {
   display: none;
 }
-.frame.tabbed- ul.frame-panes > li.is-active {
+.frame.tabbed- .frame-panes > *.is-active {
   display: block;
 }
 /*
@@ -842,7 +852,12 @@ body {
   background: #ffffff url(../graphics/checkerboard.svg);
   border: none;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5) inset;
-  padding: 2em 2em 4em 2em;
+  padding: 2em;
+  height: 100%;
+  width: 100%;
+  -webkit-transform-origin: top left;
+  -moz-transform-origin: top left;
+  transform-origin: top left;
 }
 #sandbox h2 {
   position: absolute;
@@ -855,10 +870,7 @@ body {
 #sandbox iframe {
   width: 100%;
   height: 100%;
-  border: 1px dotted rgba(0, 0, 0, 0.2);
-  -webkit-transform-origin: top left;
-  -moz-transform-origin: top left;
-  transform-origin: top left;
+  outline: 1px dotted rgba(0, 0, 0, 0.2);
 }
 #selectors {
   padding: 10px;
