@@ -1,5 +1,7 @@
 define(['appState'], function (appState) {
 
+    var CHECKERBOARD_SIZE = 16;
+
     var RenderedView = Backbone.View.extend({
 
         initialize: function ( options ) {
@@ -15,6 +17,7 @@ define(['appState'], function (appState) {
             view.$iframe = view.$('iframe');
             view.$body = view.$iframe.contents().find('body');
             view.$title = view.$('h2');
+            view.$pane = view.$el.closest('.pane');
 
             view.settings = {};
             
@@ -76,10 +79,28 @@ define(['appState'], function (appState) {
                 iFrameSettings = ['width', 'height'],
                 sandboxSettings = ['transform'];
 
-            view.$iframe.css( _(view.settings).pick(iFrameSettings) );
             view.$el.css( _(view.settings).pick(sandboxSettings) );
+            view.$iframe.css( _(view.settings).pick(iFrameSettings) );
             view.$body.css( _(view.settings).omit(iFrameSettings.concat(sandboxSettings)) );
+            view.updateTransform( view.settings.transform );
+        },
 
+        updateTransform: function updateTransform( transform ) {
+            transform = transform || "";
+            var view = this,
+                scaleMatch = transform.match( /^scale\(([0-9.]+)\)$/ ),
+                scale = scaleMatch ? 1 * scaleMatch[1] : 1;
+            
+            view.$pane.css({ 'background-size': CHECKERBOARD_SIZE * scale + 'px' });
+
+            view.updateIFrameHeight();
+        },
+        
+        updateIFrameHeight: function updateIFrameHeight() {
+            var view = this;
+            
+            view.$iframe.css( 'height', ''); // let the <body> determine it's own height
+            view.$iframe.css( 'height', view.$body.outerHeight() );
         }
 
 

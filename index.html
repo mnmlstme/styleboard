@@ -10,7 +10,7 @@
         <script src="http://cdnjs.cloudflare.com/ajax/libs/less.js/1.4.1/less.min.js"></script>
         <script src="lib/mkay.js"></script>
     </head>
-    <body>
+    <body class="styleboard">
         <div class="horizontal- one-two- split- frame">
             <div id="dictionaryView" class="tabbed- frame">
                 <nav>
@@ -47,8 +47,8 @@
                             <li class="dropdown-context selector" data-select="width">
                                 <button></button>
                                 <ul class="dropdown menu">
-                                    <li data-option="100%">100%
                                     <li data-option="320px">320px
+                                    <li data-option="480px">480px
                                     <li data-option="768px">768px
                                     <li data-option="1024px">1024px
                                 </ul>
@@ -84,7 +84,7 @@
                         </ul>
 
                     </nav>
-                    <div class="scrollable- pane">
+                    <div id="sandboxPane" class="scrollable- pane">
                         <section id="sandbox">
                             <iframe src="about:blank"></iframe>
                         </section>

@@ -19,7 +19,41 @@ body {
 }
 .typography {
   /** Applies standard typographical formatting conventions
-        to HTML tags inside. */
+        to HTML tags inside.
+@example An article with typography applied.
+    <article class="typography">
+      <header>
+        <h1>Lorem ipsum</h1>
+      </header>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus
+      tortor dolor, sollicitudin sit amet nibh ac, suscipit ultrices
+      augue. Nullam dictum mauris eu mi lacinia consectetur. Proin sit amet
+      nisl ipsum.
+      <ul>
+        <li>Praesent vulputate luctus risus
+        <li>nec venenatis neque
+        <li>consectetur
+      </ul>
+      <ol>
+        <li>Pellentesque
+        <li>in sapien
+        <li>eu diam
+      </ol>
+      <dl>
+        <dt>Incidunt
+        <dd>fringilla in vehicula lacus.
+        <dt>Donec
+        <dd>at rhoncus neque.
+        <dt>Cras
+        <dd>molestie sem tortor, sit
+        amet venenatis lectus auctor sed.
+      </dl>
+      <p>Aenean adipiscing euismod lorem, non
+      euismod purus aliquet non. Sed ullamcorper vestibulum congue. Proin at
+      ligula faucibus, lobortis elit eu, sagittis magna. Sed volutpat lacus
+      ut varius dictum.
+    </article>
+    */
 
 }
 .typography article,
@@ -49,6 +83,12 @@ article.typography {
   color: #3a6b0c;
   text-shadow: 0 0 0.15em #b9f185;
   letter-spacing: -0.05em;
+}
+.typography p,
+.typography ul,
+.typography ol,
+.typography dl {
+  margin-top: 1em;
 }
 .typography pre {
   font-family: 'Source Code Pro', 'Courier', 'Courier New', monospace;
@@ -297,12 +337,14 @@ input[type="reset"],
   font-size: 16px;
   background: #eeeeee;
   color: #333333;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 1px;
   line-height: 1.25em;
   text-align: center;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   cursor: pointer;
-  border: 1px solid rgba(0, 0, 0, 0.25);
-  border-radius: 1px;
 }
 button:hover,
 input[type="button"]:hover,
@@ -507,7 +549,7 @@ input[type="reset"] .swatch,
 }
 /** A rectangular region of the screen. 
     @example
-    <div class="pane">
+    <div class="pane typography">
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus
       tortor dolor, sollicitudin sit amet nibh ac, suscipit ultrices
       augue. Nullam dictum mauris eu mi lacinia consectetur. Proin sit amet
@@ -533,7 +575,7 @@ input[type="reset"] .swatch,
 .pane.dark- {
   /** A pane with a dark background (inverted colors).
             @example
-            <div class="dark- pane">
+            <div class="dark- pane typography">
               <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus
               tortor dolor, sollicitudin sit amet nibh ac, suscipit ultrices
               augue. Nullam dictum mauris eu mi lacinia consectetur. Proin sit amet
@@ -832,7 +874,7 @@ code.separator {
 .rule .rule-comment {
   display: none;
 }
-body {
+body.styleboard {
   position: fixed;
   top: 0;
   left: 0;
@@ -848,13 +890,16 @@ body {
   color: #aaaaaa;
   margin: 0 .25em;
 }
-#sandbox {
+#sandboxPane {
   background: #ffffff url(../graphics/checkerboard.svg);
-  border: none;
+  background-size: 16px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5) inset;
-  padding: 2em;
-  height: 100%;
-  width: 100%;
+}
+#sandbox {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 32px;
   -webkit-transform-origin: top left;
   -moz-transform-origin: top left;
   transform-origin: top left;
@@ -868,8 +913,9 @@ body {
   color: #666;
 }
 #sandbox iframe {
-  width: 100%;
-  height: 100%;
+  width: 480px;
+  min-height: 100px;
+  height: 50%;
   outline: 1px dotted rgba(0, 0, 0, 0.2);
 }
 #selectors {
