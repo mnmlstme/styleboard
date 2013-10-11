@@ -1,6 +1,9 @@
 /** Icons. Implemented as an icon font using fontcustom.
-    @example
-    <i class="presentation- icon">Present</i>
+
+@example
+<ul class="list">
+<li><i class="pagesize- icon"></i>  Page Size <code>pagesize</code>
+</ul>
 */
 
 // TODO: create a LESS template for fontcustom
@@ -22,22 +25,30 @@
 
     &::before { 
         display: inline-block;
-        content: "X";
+        content: "\f100"; // default [X] icon
         text-align: center;
         height: 100%;
         width: 100%;
     }
 
-    &.presentation- { 
-        /** A presentation on projection screen.
-
-           @example
-           <i class="presentation- icon">Present</i>
-
-           (Praveen Francis, 1986, Public Domain)
-           */
-        &::before { content: "\f100"; }
+    // set the size of the icon by changing the font-size.
+    .size ( @sz ) {
+        font-size: @sz;
     }
 
+    &.fontsize- { 
+        /** Page Size icon. */
+        &::before { content: "\f101"; }
+    }
+
+    &.pagesize- { 
+        /** Page Size icon. */
+        &::before { content: "\f102"; }
+    }
+
+    &.scale- { 
+        /** Scale icon. */
+        &::before { content: "\f103"; }
+    }
 }
 

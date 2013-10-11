@@ -106,8 +106,11 @@ article.typography {
 
 }
 /** Icons. Implemented as an icon font using fontcustom.
-    @example
-    <i class="presentation- icon">Present</i>
+
+@example
+<ul class="list">
+<li><i class="pagesize- icon"></i>  Page Size <code>pagesize</code>
+</ul>
 */
 .icon {
   display: inline-block;
@@ -125,23 +128,31 @@ article.typography {
 }
 .icon::before {
   display: inline-block;
-  content: "X";
+  content: "\f100";
   text-align: center;
   height: 100%;
   width: 100%;
 }
-.icon.presentation- {
-  /** A presentation on projection screen.
-
-           @example
-           <i class="presentation- icon">Present</i>
-
-           (Praveen Francis, 1986, Public Domain)
-           */
+.icon.fontsize- {
+  /** Page Size icon. */
 
 }
-.icon.presentation-::before {
-  content: "\f100";
+.icon.fontsize-::before {
+  content: "\f101";
+}
+.icon.pagesize- {
+  /** Page Size icon. */
+
+}
+.icon.pagesize-::before {
+  content: "\f102";
+}
+.icon.scale- {
+  /** Scale icon. */
+
+}
+.icon.scale-::before {
+  content: "\f103";
 }
 /** Color swatches.
     @example
@@ -304,7 +315,6 @@ implicitly close the <li>.
 .bar {
   font-family: Lato, Helvetica, Arial, sans-serif;
   font-weight: 300;
-  font-size: 12px;
 }
 .bar > * {
   display: inline-block;
@@ -312,6 +322,8 @@ implicitly close the <li>.
 .bar .button,
 .bar button {
   font-size: inherit;
+  margin: 0;
+  border-width: 0;
 }
 .bar.tool- .button,
 .bar.tool- button {
@@ -324,9 +336,15 @@ input[type="button"],
 input[type="submit"],
 input[type="reset"],
 .button {
+  /**
+        @example A button an icon in it
+        You can <button><i class="scale- icon"></i><span>Zoom</span></button>
+        if you like.
+     */
+
   /** @example A basic button
         You can <button>Click this</button> if you like.
-     */
+        */
 
   display: inline-block;
   padding: .25em;
@@ -334,12 +352,12 @@ input[type="reset"],
   outline: none;
   font-family: Lato, Helvetica, Arial, sans-serif;
   font-weight: 300;
-  font-size: 16px;
+  font-size: inherit;
   background: #eeeeee;
   color: #333333;
   border: 1px solid rgba(0, 0, 0, 0.25);
   border-radius: 1px;
-  line-height: 1.25em;
+  line-height: 1.3333333333333333em;
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
@@ -454,33 +472,57 @@ input[type="reset"].delete-,
   color: #ffffff;
   background: #9b3314;
 }
-button.iconic-,
-input[type="button"].iconic-,
-input[type="submit"].iconic-,
-input[type="reset"].iconic-,
-.button.iconic- {
-  /** A button which contains an icon.  If there is also text, the text
-        must be wrapped in its own `<span>`.
-        @example An iconic button
-        There is an icon inside this
-        <button class="iconic-"><i class="presentation- icon"></i></button>
-        and <button class="iconic-"><i class="presentation- icon"></i>
-        <span>Also This</span></button>
-        button.
-        */
-
+button .icon,
+input[type="button"] .icon,
+input[type="submit"] .icon,
+input[type="reset"] .icon,
+.button .icon {
+  font-size: 1.3333333333333333em;
 }
-button.iconic- .icon + *,
-input[type="button"].iconic- .icon + *,
-input[type="submit"].iconic- .icon + *,
-input[type="reset"].iconic- .icon + *,
-.button.iconic- .icon + *,
-* + button.iconic- .icon,
-* + input[type="button"].iconic- .icon,
-* + input[type="submit"].iconic- .icon,
-* + input[type="reset"].iconic- .icon,
-* + .button.iconic- .icon {
+button .swatch,
+input[type="button"] .swatch,
+input[type="submit"] .swatch,
+input[type="reset"] .swatch,
+.button .swatch {
+  font-size: 1.3333333333333333em;
+}
+button .icon,
+input[type="button"] .icon,
+input[type="submit"] .icon,
+input[type="reset"] .icon,
+.button .icon,
+button .swatch,
+input[type="button"] .swatch,
+input[type="submit"] .swatch,
+input[type="reset"] .swatch,
+.button .swatch {
+  vertical-align: -0.25em;
   margin-left: .25em;
+  margin-right: .25em;
+}
+button .icon:first-child,
+input[type="button"] .icon:first-child,
+input[type="submit"] .icon:first-child,
+input[type="reset"] .icon:first-child,
+.button .icon:first-child,
+button .swatch:first-child,
+input[type="button"] .swatch:first-child,
+input[type="submit"] .swatch:first-child,
+input[type="reset"] .swatch:first-child,
+.button .swatch:first-child {
+  margin-left: 0;
+}
+button .icon:last-child,
+input[type="button"] .icon:last-child,
+input[type="submit"] .icon:last-child,
+input[type="reset"] .icon:last-child,
+.button .icon:last-child,
+button .swatch:last-child,
+input[type="button"] .swatch:last-child,
+input[type="submit"] .swatch:last-child,
+input[type="reset"] .swatch:last-child,
+.button .swatch:last-child {
+  margin-right: 0;
 }
 button strong,
 input[type="button"] strong,
@@ -488,13 +530,6 @@ input[type="submit"] strong,
 input[type="reset"] strong,
 .button strong {
   font-weight: 400;
-}
-button .swatch,
-input[type="button"] .swatch,
-input[type="submit"] .swatch,
-input[type="reset"] .swatch,
-.button .swatch {
-  font-size: 1.25em;
 }
 /**
    A vertical arrangement of actions or options from which the user may choose.
@@ -508,9 +543,25 @@ input[type="reset"] .swatch,
 .menu > li:hover {
   color: #f19914;
 }
+.menu > li .icon,
+.menu > li .swatch {
+  vertical-align: -0.25em;
+  margin-left: .25em;
+  margin-right: .25em;
+}
+.menu > li .icon:first-child,
+.menu > li .swatch:first-child {
+  margin-left: 0;
+}
+.menu > li .icon:last-child,
+.menu > li .swatch:last-child {
+  margin-right: 0;
+}
+.menu > li .icon {
+  font-size: 1.5em;
+}
 .menu > li .swatch {
   font-size: 1.5em;
-  vertical-align: -0.25em;
 }
 /**
    An overlay with a pointer to refer to a button or control. Used for dropdown menus and popup dialogs.
@@ -523,29 +574,54 @@ input[type="reset"] .swatch,
   </div>
 </div>
 */
-.dropdown-context {
-  /** Establishes a context relative to which the (descendant) 
-        dropdown will be positioned.
-        */
-
-  position: relative;
-  display: inline-block;
-}
 .dropdown {
+  display: inline-block;
+  position: relative;
+}
+.dropdown .dropdown-pane {
   display: none;
   position: absolute;
-  left: 50%;
   top: 100%;
-  -webkit-transform: translateX(-50%);
-  -moz-transform: translateX(-50%);
-  transform: translateX(-50%);
+  min-width: 100%;
   background-color: #393633;
   border: 1px solid rgba(0, 0, 0, 0.25);
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  -webkit-transition: opacity 0.2s;
+  -moz-transition: opacity 0.2s;
+  transition: opacity 0.2s;
   z-index: 5;
 }
-.dropdown.is-active {
+.dropdown.left-aligned- {
+  /** Align the pane with the left edge of the control. */
+
+  text-align: left;
+}
+.dropdown.left-aligned- .dropdown-pane {
+  left: 0;
+}
+.dropdown.right-aligned- {
+  /** Align the pane with the right edge of the control. */
+
+  text-align: right;
+}
+.dropdown.right-aligned- .dropdown-pane {
+  right: 0;
+}
+.dropdown.centered- {
+  /** Align the center of the pane with the center of the control. */
+
+  text-align: center;
+}
+.dropdown.centered- .dropdown-pane {
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  -moz-transform: translateX(-50%);
+  transform: translateX(-50%);
+}
+.dropdown:hover .dropdown-pane {
   display: block;
+  opacity: 1;
 }
 /** A rectangular region of the screen. 
     @example

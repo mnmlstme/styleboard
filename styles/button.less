@@ -4,15 +4,20 @@ input[type="button"],
 input[type="submit"],
 input[type="reset"],
 .button {
+    /**
+        @example A button an icon in it
+        You can <button><i class="scale- icon"></i><span>Zoom</span></button>
+        if you like.
+     */
     /** @example A basic button
         You can <button>Click this</button> if you like.
-     */
-    @lineht: 1.25em;
+        */
+    @lineht: (4em/3);
     display: inline-block;
     padding: .25em;
     vertical-align: baseline;
     outline: none;
-    .font( nav );
+    .font( nav, inherit );
     background: @background-alt-color;
     .color( body );
     border: 1px solid @border-color;
@@ -87,31 +92,25 @@ input[type="reset"],
         color: @inv-body-hi-color;
         background: @color-danger;
     }
+    
+    .icon {
+        .icon > .size( @lineht );
+    }
 
-    &.iconic- {
-    /** A button which contains an icon.  If there is also text, the text
-        must be wrapped in its own `<span>`.
-        @example An iconic button
-        There is an icon inside this
-        <button class="iconic-"><i class="presentation- icon"></i></button>
-        and <button class="iconic-"><i class="presentation- icon"></i>
-        <span>Also This</span></button>
-        button.
-        */
+    .swatch {
+        .swatch > .size( @lineht );
+    }
 
-        .icon {
-            & + *,
-            * + & { 
-                margin-left: .25em;
-            }
-        }
+    .icon, .swatch {
+        vertical-align: -.25em;
+        margin-left: .25em;
+        &:first-child { margin-left: 0; }
+        margin-right: .25em;
+        &:last-child { margin-right: 0; }
     }
 
     strong {
         font-weight: 400;
     }
 
-    .swatch {
-        .swatch > .size( @lineht );
-    }
 }

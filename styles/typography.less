@@ -42,7 +42,11 @@
 .font-size ( large ) { font-size: 1.33 * @font-size-base; }
 .font-size ( xlarge ) { font-size: 2.0 * @font-size-base; }
 
-.font ( @family: body, @size: medium ) {
+.font ( @family: body ) {
+    .font-family( @family );
+}
+
+.font ( @family, @size ) {
     .font-family( @family );
     .font-size( @size );
 }

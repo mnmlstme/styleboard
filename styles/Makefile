@@ -1,6 +1,7 @@
 # Makefile for LESS files
 
-CSSFILES=reset.css
+CSSFILES=reset.css \
+	    ../graphics/fontcustom/fontcustom.css
 
 LESSFILES= \
 	util.less \

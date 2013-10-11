@@ -13,31 +13,53 @@
 @import "css3";
 @import "color";
 
-.dropdown-context {
-    /** Establishes a context relative to which the (descendant) 
-        dropdown will be positioned.
-        */
-    position: relative;
-    // The dropdown-context is usually a button or glyph, but needs to
-    // contain a div to, which is the dropdown itself
-    display: inline-block;
-}
-
 .dropdown {
-    display: none; // .is-active will display it
-    position: absolute; // relative to .popover-context
-    left: 50%; // TODO: provide mixin(s) to change this
-    top: 100%;
-    .transform( translateX( -50% ) );
-    background-color: @inv-background-alt-color;
-    border: 1px solid @border-color;
-    box-shadow: 0px 2px 2px fade( #000, 20% );
-    z-index: 5;
 
-    // Modifiers
+    display: inline-block;
+    position: relative;
 
-    &.is-active {
-        display: block;
+    .dropdown-pane {
+        display: none; // will display on hover
+        position: absolute;
+        top: 100%; // left/right set by modifier
+        min-width: 100%;
+        background-color: @inv-background-alt-color;
+        border: 1px solid @border-color;
+        box-shadow: 0px 2px 2px fade( #000, 20% );
+        opacity: 0;
+        .transition( opacity, .2s );
+        z-index: 5;
     }
-    
+
+    &.left-aligned- {
+        /** Align the pane with the left edge of the control. */
+        text-align: left;
+        .dropdown-pane {
+            left: 0;
+        }
+    }
+
+    &.right-aligned- {
+        /** Align the pane with the right edge of the control. */
+        text-align: right;
+        .dropdown-pane {
+            right: 0;
+        }
+    }
+
+    &.centered- {
+        /** Align the center of the pane with the center of the control. */
+        text-align: center;
+        .dropdown-pane {
+            left: 50%;
+            .transform( translateX(-50%); );
+        }
+    }
+
+    &:hover {
+        .dropdown-pane {
+            display: block;
+            opacity: 1;
+        }
+    }
 }

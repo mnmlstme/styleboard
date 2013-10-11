@@ -15,9 +15,20 @@
             .color( delta );
         }
 
+        .icon, .swatch {
+            vertical-align: -.25em;
+            margin-left: .25em;
+            &:first-child { margin-left: 0; }
+            margin-right: .25em;
+            &:last-child { margin-right: 0; }
+        }
+
+        .icon {
+            .icon > .size( @lineht );
+        }
+
         .swatch {
             .swatch > .size( @lineht );
-            vertical-align: -.25em;
         }
 
     }

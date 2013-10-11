@@ -41,12 +41,19 @@ define(['appState'], function (appState) {
             _(view.settings).each( function ( value, key ) {
                 var $selector = view.$('.selector[data-select="' + key + '"]'),
                     $button = $selector.find('button'),
-                    $option = $selector.find('[data-option="' + value + '"]'),
-                    $swatch = $option.find('.swatch');
+                    $value = $button.find('.selector-value'),
+                    $swatch = $button.find('.swatch'),
+                    $option = $selector.find('[data-option="' + value + '"]');
 
                 if ( $swatch.length ) {
-                    $button.empty().append( $swatch.clone() );
-                } else {
+                    $swatch.replaceWith( $option.find('.swatch').clone() );
+                }
+
+                if ( $value.length ) {
+                    $value.text( $option.text() );
+                }
+
+                if ( !$swatch.length && !value.length ) {
                     $button.text( $option.text() );
                 }
             });
