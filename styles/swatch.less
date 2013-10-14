@@ -4,6 +4,10 @@
 */
 
 .swatch {
+
+    .color( transparent );
+    .size( 1.5em );
+
     display: inline-block;
     position: relative;
     height: 1em;
@@ -19,6 +23,12 @@
         width: 100%;
     }
 
+    &.transparent- { .color( transparent ); }
+    &.white- { .color( #fff ); }
+    &.black- { .color( #000 ); }
+
+    // mixins
+
     .color ( @color ) {
         &::before { 
             background-color: @color;
@@ -28,9 +38,5 @@
     .size ( @size ) {
         font-size: @size;
     }
-
-    &.transparent- { .color( transparent ); }
-    &.white- { .color( #fff ); }
-    &.black- { .color( #000 ); }
 
 }

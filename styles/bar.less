@@ -18,8 +18,12 @@ implicitly close the <li>.
 
     .font( nav );
 
-    > * {
+    > li {
         display: inline-block;
+        vertical-align: top;
+        padding: 0 .25em;
+        border-left: 1px solid @border-hi-color;
+        border-right: 1px solid @border-lo-color;
     }
 
     .button, button {

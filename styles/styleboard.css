@@ -125,6 +125,7 @@ article.typography {
   -webkit-font-smoothing: antialiased;
   text-decoration: inherit;
   overflow: hidden;
+  font-size: 1.5em;
 }
 .icon::before {
   display: inline-block;
@@ -159,12 +160,16 @@ article.typography {
     <i class="white- swatch></i> White
 */
 .swatch {
+  font-size: 1.5em;
   display: inline-block;
   position: relative;
   height: 1em;
   width: 1em;
   background: #ffffff url(../graphics/checkerboard.svg );
   background-position: center;
+}
+.swatch::before {
+  background-color: transparent;
 }
 .swatch::before {
   content: "";
@@ -316,8 +321,12 @@ implicitly close the <li>.
   font-family: Lato, Helvetica, Arial, sans-serif;
   font-weight: 300;
 }
-.bar > * {
+.bar > li {
   display: inline-block;
+  vertical-align: top;
+  padding: 0 .25em;
+  border-left: 1px solid rgba(153, 153, 153, 0.5);
+  border-right: 1px solid rgba(0, 0, 0, 0.5);
 }
 .bar .button,
 .bar button {
@@ -357,7 +366,7 @@ input[type="reset"],
   color: #333333;
   border: 1px solid rgba(0, 0, 0, 0.25);
   border-radius: 1px;
-  line-height: 1.3333333333333333em;
+  line-height: 1.5em;
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
@@ -476,27 +485,13 @@ button .icon,
 input[type="button"] .icon,
 input[type="submit"] .icon,
 input[type="reset"] .icon,
-.button .icon {
-  font-size: 1.3333333333333333em;
-}
-button .swatch,
-input[type="button"] .swatch,
-input[type="submit"] .swatch,
-input[type="reset"] .swatch,
-.button .swatch {
-  font-size: 1.3333333333333333em;
-}
-button .icon,
-input[type="button"] .icon,
-input[type="submit"] .icon,
-input[type="reset"] .icon,
 .button .icon,
 button .swatch,
 input[type="button"] .swatch,
 input[type="submit"] .swatch,
 input[type="reset"] .swatch,
 .button .swatch {
-  vertical-align: -0.25em;
+  vertical-align: bottom;
   margin-left: .25em;
   margin-right: .25em;
 }
@@ -545,7 +540,7 @@ input[type="reset"] strong,
 }
 .menu > li .icon,
 .menu > li .swatch {
-  vertical-align: -0.25em;
+  vertical-align: bottom;
   margin-left: .25em;
   margin-right: .25em;
 }
@@ -556,12 +551,6 @@ input[type="reset"] strong,
 .menu > li .icon:last-child,
 .menu > li .swatch:last-child {
   margin-right: 0;
-}
-.menu > li .icon {
-  font-size: 1.5em;
-}
-.menu > li .swatch {
-  font-size: 1.5em;
 }
 /**
    An overlay with a pointer to refer to a button or control. Used for dropdown menus and popup dialogs.
@@ -578,6 +567,14 @@ input[type="reset"] strong,
   display: inline-block;
   position: relative;
 }
+.dropdown:hover {
+  background: #393633;
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.35);
+}
+.dropdown:hover button,
+.dropdown:hover .button {
+  color: #f19914;
+}
 .dropdown .dropdown-pane {
   display: none;
   position: absolute;
@@ -585,11 +582,8 @@ input[type="reset"] strong,
   min-width: 100%;
   background-color: #393633;
   border: 1px solid rgba(0, 0, 0, 0.25);
+  border-top: none;
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2);
-  opacity: 0;
-  -webkit-transition: opacity 0.2s;
-  -moz-transition: opacity 0.2s;
-  transition: opacity 0.2s;
   z-index: 5;
 }
 .dropdown.left-aligned- {
@@ -621,7 +615,6 @@ input[type="reset"] strong,
 }
 .dropdown:hover .dropdown-pane {
   display: block;
-  opacity: 1;
 }
 /** A rectangular region of the screen. 
     @example
@@ -645,7 +638,7 @@ input[type="reset"] strong,
   height: 100%;
   width: 100%;
   background: #f8f8f8;
-  box-shadow: inset 1px 1px 1px rgba(255, 255, 255, 0.5), inset -1px -1px 1px rgba(0, 0, 0, 0.5);
+  box-shadow: inset 1px 1px 1px rgba(153, 153, 153, 0.5), inset -1px -1px 1px rgba(0, 0, 0, 0.5);
   overflow: hidden;
 }
 .pane.dark- {
@@ -743,11 +736,11 @@ input[type="reset"] strong,
   line-height: 2em;
   width: 100%;
   background: #282624;
-  box-shadow: inset 1px 1px 1px rgba(255, 255, 255, 0.5), inset -1px -1px 1px rgba(0, 0, 0, 0.5);
+  box-shadow: inset 1px 1px 1px rgba(153, 153, 153, 0.5), inset -1px -1px 1px rgba(0, 0, 0, 0.5);
   font-family: Lato, Helvetica, Arial, sans-serif;
   font-weight: 300;
   font-size: inherit;
-  color: #dddddd;
+  color: #aaaaaa;
 }
 .frame .frame-header-left {
   float: left;

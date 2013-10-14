@@ -1,0 +1,40 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" >
+<!--
+2013-10-14: Created.
+-->
+<svg xmlns="http://www.w3.org/2000/svg">
+<metadata>
+Created by FontForge 20120731 at Mon Oct 14 04:56:23 2013
+ By Ken Kubiak
+Created by Ken Kubiak with FontForge 2.0 (http://fontforge.sf.net)
+</metadata>
+<defs>
+<font id="fontcustom" horiz-adv-x="469" >
+  <font-face 
+    font-family="fontcustom"
+    font-weight="500"
+    font-stretch="normal"
+    units-per-em="512"
+    panose-1="2 0 6 3 0 0 0 0 0 0"
+    ascent="448"
+    descent="-64"
+    bbox="0 -43 477 427"
+    underline-thickness="25.6"
+    underline-position="-51.2"
+    unicode-range="U+F100-F103"
+  />
+    <missing-glyph />
+    <glyph glyph-name="uniF100" unicode="&#xf100;" 
+d="M459 405v0h10v-426h-6h6v-22h-469v22h11v0h-11v426h15v0h-15v22h469v-22h-10zM437 405h-401l201 -200zM252 190l196 -196v392zM41 -21h392l-196 196zM222 190l-201 200v-401zM222 190z" />
+    <glyph glyph-name="uniF101" unicode="&#xf101;" horiz-adv-x="477" 
+d="M422 68v248h-35l45 85l45 -85h-34v-248h34l-45 -85l-45 85h35zM422 68zM240 405v22h235v-22h-235zM240 -43v21h235v-21h-235zM166 97l-66 127l-66 -127h-34l82 151l-74 136h34l59 -113l58 113h33l-74 -136l83 -151h-35zM286 54c-2 -9 -6 -16 -9 -23s-6 -12 -11 -17
+s-10 -7 -16 -10s-14 -4 -22 -4c-4 0 -9 0 -13 1s-7 1 -10 2l4 24c2 -1 5 -1 8 -2s6 -1 9 -1c9 0 16 4 20 9s8 13 11 22l10 35l-66 208h32l49 -170h1l44 170h31zM286 54z" />
+    <glyph glyph-name="uniF102" unicode="&#xf102;" horiz-adv-x="470" 
+d="M0 235v192h22v-192h-22zM448 235v192h22v-192h-22zM21 93h1v-136h-22v146v1l111 109v0h337v-21h-328v1v0zM470 -32v0v245h-22v-234h-426v-22h448v11zM470 -32zM0 213h81l-22 -21h-59v21zM0 192h22v-39l-22 -19v58zM0 192zM111 384h248v34l85 -45l-85 -44v34h-248v-34
+l-85 44l85 45v-34zM111 384z" />
+    <glyph glyph-name="uniF103" unicode="&#xf103;" 
+d="M0 427h192v-22h-192v22zM192 427h21v-192h-21v192zM0 235h213v-22h-213v22zM0 405h21v-170h-21v170zM0 405zM43 192h21v-235h-21v235zM448 363h21v-384h-21v384zM235 384h234v-21h-234v21zM64 -21v-22h405v22h-405zM64 -21zM337 3l30 28l-105 120l-27 -29v70h69l-29 -26
+l121 -106l31 38v-98zM337 3z" />
+  </font>
+</defs></svg>

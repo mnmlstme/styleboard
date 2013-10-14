@@ -12,7 +12,7 @@ input[type="reset"],
     /** @example A basic button
         You can <button>Click this</button> if you like.
         */
-    @lineht: (4em/3);
+    @lineht: 1.5em;
     display: inline-block;
     padding: .25em;
     vertical-align: baseline;
@@ -93,16 +93,8 @@ input[type="reset"],
         background: @color-danger;
     }
     
-    .icon {
-        .icon > .size( @lineht );
-    }
-
-    .swatch {
-        .swatch > .size( @lineht );
-    }
-
     .icon, .swatch {
-        vertical-align: -.25em;
+        vertical-align: bottom;
         margin-left: .25em;
         &:first-child { margin-left: 0; }
         margin-right: .25em;
