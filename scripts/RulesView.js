@@ -30,7 +30,7 @@ define( function () {
             $list.empty();
 
             if ( pattern ) {
-                pattern.get('rules').forEach( function (node) {
+                pattern.getValues('rule').forEach( function (node) {
                     var type = node.type.toLowerCase(),
                         $rule = $list.mk('li.rule.' + type + '-' ),
                         $selectors = $rule.mk('ul.rule-selectors'),
