@@ -1,19 +1,19 @@
 /**
- @filespec Dictionary - Collection of patterns identified by name/selector
+ @filespec Dictionary - Collection of pattern definitions identified by name/selector
  */
 
-define(['Declaration'], function (Declaration) {
+define(['Definition'], function (Definition) {
 
     var Dictionary = Backbone.Collection.extend({
 
-        model: Declaration,
+        model: Definition,
 
         entry: function entry( name ) {
             var dict = this,
                 result = dict.findByName( name );
 
             if (!result) {
-                result = new Declaration({ name: name });
+                result = new Definition({ name: name });
                 dict.add(result);
             }
 
@@ -24,8 +24,8 @@ define(['Declaration'], function (Declaration) {
             return this.findWhere({ 'name': name });
         },
 
-        comparator: function comparator( dict ) {
-            return dict.get('name');
+        comparator: function comparator( defn ) {
+            return defn.get('name');
         }
 
     }); // end of Dictionary collection

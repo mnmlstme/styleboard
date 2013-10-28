@@ -3,15 +3,15 @@
  */
 define(['appState'], function (appState) {
 
-    var KEY_PREVIOUS = 80,
-        KEY_NEXT = 78;
+    var KEY_PREVIOUS = 80,  // p
+        KEY_NEXT = 78;      // n
 
     var PatternView = Backbone.View.extend({
 
         initialize: function () {
             var view = this,
                 pattern = view.model,
-                example = pattern.getDeclaration({ type: 'example', index: 0 });
+                example = pattern.getFirst('example');
 
             view.examples = [];
 
@@ -28,51 +28,58 @@ define(['appState'], function (appState) {
             var view = this,
                 pat = view.model,
                 name = pat.get('name').replace('.',''),
-                selectors = pat.get('selectors').map( function(s) {
+                selectors = pat.getValues('selector').map( function(s) {
                        return ['li', code( s.toCSS() )];
-                }),
-                declarations = pat.get('declarations');
+                });
 
             view.$el.mk( 'header',
                          [ 'h2', name] ,
                          ['ul.comma-.pattern-selectors'].concat( selectors )
                        );
 
-            view.renderDeclarations( declarations );
+            view.renderDeclarations( pat );
 
             return view;
         },
 
-        renderDeclarations: function ( declarations, $parent ) {
-            var view = this;
+        renderDeclarations: function ( definition, $parent ) {
+            var view = this,
+                declarations = definition.getDeclarations(),
+                $section;
+
             $parent = $parent || view.$el;
-            declarations.forEach( function (defn) {
-                var type = defn.get('type'),
-                    selectors = defn.get('selectors').map( function(s) {
-                        return ['li', code( s.toCSS() )];
-                    }),
-                    attrs = { 'class': 'pattern-' + type };
-                switch ( type ) {
-                case 'description':
-                    $parent.mk( 'p', defn.get('text') );
+            declarations.forEach( function (decl) {
+                var key = decl.key,
+                    value = decl.value,
+                    attrs = { 'class': 'pattern-' + key };
+                switch ( key ) {
+                case 'text':
+                    $parent.mk( 'p', value );
                     break;
                 case 'example':
-                    view.examples.push( defn );
-                    $parent.mk( 'button', attrs,
-                                ['strong', "View:"],
-                                ' ',
-                                ['span', defn.get('title') || "Example"] )
-                        .data( 'example', defn );
+                    view.examples.push( value );
+                    $parent.mk(
+                        'button', attrs,
+                        ['strong', "View:"],
+                        ' ',
+                        ['span', value.title || "Example"] )
+                        .data( 'example', value );
+                    break;
+                case 'modifier':
+                case 'state':
+                case 'member':
+                case 'helper':
+                    $section = $parent.mk( 
+                        'section', attrs,
+                        [ 'header',
+                          [ 'p.pattern-role', value.get('type')],
+                          [ 'h3', value.get('name')]
+                        ]);
+                    view.renderDeclarations( value, $section );
                     break;
                 default:
-                    view.renderDeclarations( 
-                        defn.get('declarations'),
-                        $parent.mk( 'section', attrs,
-                                     [ 'header',
-                                       [ 'p.pattern-role', type],
-                                       [ 'h3', defn.get('name')]
-                                     ])
-                    );
+                    // ignore
+                    break;
                 }
             });
             view.updateExampleIsActive();

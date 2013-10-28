@@ -3,7 +3,7 @@ define( function () {
         opts = opts || {};
         var parser = this;
     
-        parser.load = function ( url, done ) {
+        parser.load = function load ( url, done ) {
             $.ajax({ 
                 url: url, 
                 dataType: 'text',
@@ -11,12 +11,12 @@ define( function () {
                     alert("Failed " + status + ": " + error);
                 },
                 success: function( data, status, xhr ) {
-                    parse(data, done);
+                    parser.parse(data, done);
                 }
             });
         };
     
-        function parse(data, done) {
+        parser.parse = function parse(data, done) {
             new less.Parser( opts )
                 .parse( data, function (err, tree ) {
                     if ( err ) {
@@ -27,7 +27,8 @@ define( function () {
                     }
                 });
         }
-    
+
+        return parser;
     }
 
     return Parser;

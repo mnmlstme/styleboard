@@ -1,0 +1,111 @@
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>QUnit Test—StyleBoard</title>
+        <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone-min.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/less.js/1.4.1/less.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/qunit/1.12.0/qunit.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/qunit/1.12.0/qunit.min.css">
+    </head>
+    <body>
+        <div id="qunit"></div>
+        <div id="qunit-fixture"></div>     
+
+        <style id="implicitPattern">
+            .foo { }
+        </style>
+
+        <style id="invalidPatternName">
+            .foo-bar { }
+        </style>
+
+        <style id="explicitPattern">
+            /** @pattern .foo */
+        </style>
+
+        <style id="explicitInvalidPattern">
+            /** @pattern */
+            .foo-bar { }
+        </style>
+
+        <style id="descriptionBefore">
+            /** This is a foo. */
+            .foo { }
+        </style>
+
+        <style id="descriptionInside">
+            .foo {
+                /** This is a foo. */ 
+            }
+        </style>
+
+        <style id="descriptionBeforeAndInside">
+            /** This is a foo. */
+            .foo {
+                /** nice.
+                */ }
+        </style>
+
+        <style id="twoLineParagraph">
+            /** @pattern .foo
+            This is line 1.
+            This is line 2. */
+        </style>
+
+        <style id="twoParagraphs">
+            /** @pattern .foo
+            This is paragraph 1.
+
+            This is paragraph 2. */
+        </style>
+
+        <style id="anExample">
+            /** @pattern .foo
+            @example This is an example.
+            <xmp>An Example</xmp>
+            */
+        </style>
+
+        <style id="modifierConvention">
+            .foo {}
+            .foo.bar- { /** This is a bar foo. */ }
+        </style>
+
+        <style id="modifierNoConvention">
+            .foo {}
+            .foo.bar {}
+        </style>
+
+        <style id="doubleModifier">
+            .foo {}
+            .foo.bar-.baz- {}
+        </style>
+
+        <style id="memberConvention">
+            .foo {}
+            .foo .foo-bar { /** This is a bar of a foo. */ }
+        </style>
+
+        <style id="memberNoConvention">
+            .foo {}
+            .foo .bar {}
+        </style>
+
+        <style id="directMemberConvention">
+            .foo {}
+            .foo > .foo-bar {}
+        </style>
+
+        <style id="deepMemberConvention">
+            .foo {}
+            .foo section.bar ul.baz .foo-bar {}
+        </style>
+
+        <script data-main="scripts/test" src="scripts/require.js"></script>
+
+    </body>
+</html>
+
+

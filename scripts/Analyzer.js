@@ -2,118 +2,128 @@
  @filespec Analyzer - parse CSS and comments and extract patterns
  */
 
-define(['Declaration'], function (Declaration) {
+define(['Definition'], function (Definition) {
 
-    options = {
+    var options = {
         /* TODO: implement the opposite cases */
         strictSyntax: true,              // ignore comments not beginning with /**
+        explicitPatterns: false,         // don't infer patterns, they must be
+                                         // documented, either with text or @pattern
         structuralInference: true,       // infer relations by analyzing selectors
-        semanticInference: true,         // infer relations by applying naming conventions
-        warnNaming: true,                // flag apparent violations of naming conventions
-        explicitPatterns: false          // don't infer patterns, they must be documented
+        semanticInference: false,        // infer relations by applying naming conventions
+        strictConventions: true,         // only infer patterns and relations that
+                                         // follow conventions
+        warnConventions: true,           // flag violations of naming conventions
                                          // (relations within patterns will still be inferred)
     };
 
-    function Analyzer( dictionary ) {
+    // global dependences on LESS:
+    var Selector = less.tree.Selector,
+        Element = less.tree.Element;
+
+    function Analyzer( dictionary, opts ) {
         var anal = this,
             regex = {
-                classname: /^\.([a-zA-Z][a-zA-Z0-9-_]+)$/,
-                tagname: /^([a-z]+)$/,
-                pseudo: /^::?([a-z-]+)$/,
-                // TODO: make some of these regexes be configuration options
-                pattern: /^\.([a-z]+)$/,            // lowercase, no hyphens
-                modifier: /^\.([a-z-]+\-)$/,        // trailing hyphen
-                member: /^\.(([a-z]+)\-[a-z-]+)$/,  //  pattern name '-' member name
-                helper: /^\.(([a-z]+)\-[a-z-]+)$/,  //  pattern name '-' helper name
-                state: /^\.(is-[a-z-]+)$/,            // 'is-' prefix
-                cmtfirst: /^\s*\/\*\*\s*/,
-                cmtmiddle: /^(\s*\*+\s?)?/,
-                cmtlast:  /\s*\*+\/\s*$/,
-                atcommand: /^\s*@([a-z-]+)\s*(.*)\s*$/,
-                ateot: /^\s*(@[a-z-]+.*)?$/
+                classname:      /^\.([a-zA-Z][a-zA-Z0-9-_]+)$/,
+                tagname:        /^([a-z]+)$/,
+                pseudo:         /^::?([a-z-]+)$/,
+                cmtfirst:       /^\s*\/\*\*\s*/,
+                cmtmiddle:      /^(\s*\*+\s?)?/,
+                cmtlast:        /\s*\*+\/\s*$/,
+                atcommand:      /^\s*@([a-z-]+)\s*(.*)\s*$/,
+                ateot:          /^\s*(@[a-z-]+.*)?$/,
+                empty:          /^\s*$/,
+                // TODO: make convention regexes be configuration options
+                pattern:        /^\.([a-z]+)$/,                 // lowercase, no hyphens
+                modifier:       /^\.([a-z-]+\-)$/,              // trailing hyphen
+                member:         /^\.(([a-z]+)\-[a-z-]+)$/,      // pattern name '-' member name
+                helper:         /^\.(([a-z]+)\-[a-z-]+)$/,      // pattern name '-' helper name
+                state:          /^\.(is-[a-z-]+)$/              // 'is-' prefix
             };
 
         anal.analyze = function analyze ( nodes ) {
-            var decls = [],
+            var defns = [],
                 pending = null,
                 pattern = null;
-            // Pass 1 - Associate comments with rules, generating Declarations
+            // Pass 1 - Associate comments with rules, generating Definitions
             nodes.forEach( function (node) {
+                pending = pending || new Definition();
                 switch ( node.type ) {
                 case 'Ruleset':
-                    pending = pending || new Declaration({ rules: [node] });
-                    // parse comments nested within the ruleset
-                    node.rules.filter( function (node) {
-                        return node.type === 'Comment' &&
-                            regex.cmtfirst.exec( node.value );
-                    }).map( function (node) {
-                        pending = pending || new Declaration();
-                        parseTags( node.value, pending );
-                    });
                     node.selectors.forEach( function ( selector ) {
-                        pending.addSelector( selector );
+                        pending.declare('selector', selector);
                     });
-                    decls.push( pending );
-                    pending = null;
+                    node.rules.filter( function (rule) {
+                        return rule.type === 'Comment';
+                    }).map( function (rule) {
+                        parseComment( rule.value, pending );
+                    });
+                    pending.declare('rule', node);
                     break;
                 case 'Comment':
-                    if (regex.cmtfirst.exec( node.value )) {
-                        pending = pending || new Declaration();
-                        parseTags( node.value, pending );
-                    }
+                    parseComment( node.value, pending );
                     break;
                 default:
                     // ignore all other nodes
                 }
-                if ( pending && pending.get('selectors').length ) {
-                    decls.push( pending );
+                if ( pending.declares('selector') ) {
+                    defns.push( pending );
                     pending = null;
                 }
             });
             // Pass 2 - Identify Patterns and add them to the Dictionary
-            decls.forEach( function( decl ) {
-                var selectors = decl.get('selectors'),
+            defns.forEach( function( defn ) {
+                var selectors = defn.getValues('selector'),
                     patternSelectors = selectors.filter( function (sel) {
-                        return sel.elements.length === 1 && 
-                            (!options.semanticInference || 
-                             regex.pattern.exec( sel.elements[0].value ));
-                    });
-                // Pattern inferencing
-                if ( !decl.get('type') &&
-                     patternSelectors.length &&
+                        return sel.elements.length === 1;
+                    }),
+                    name;
+
+                if ( !defn.get('type') && 
                      !options.explicitPatterns && 
                      (options.structuralInference || options.semanticInference ) ) {
-                    decl.set('type', 'pattern');
-                    decl.set('selectors', patternSelectors);
+                    // Pattern inferencing
+                    if ( options.structuralInference && options.strictConventions ||
+                         options.semanticInference ) {
+                        // only allow patterns which match regex
+                        patternSelectors = patternSelectors.filter( function (sel) {
+                            return regex.pattern.exec( sel.elements[0].value );
+                        });
+                    }
+                    if ( patternSelectors.length ) {
+                        defn.set('type', 'pattern');
+                        patternSelectors.forEach( function (sel) {
+                            defn.declare('selector', createSelector(sel) );
+                        });
+                    }
                 }
                 // add patterns to dictionary
-                if ( decl.get('type') === 'pattern' ) {
-                    patternSelectors.forEach( function (selector) {
-                        var name = patternName( selector.elements[0].value );
-                        dictionary.entry( name )
-                            .merge( decl )
-                            .set( 'selectors', [selector] );
-                    });
+                if ( defn.get('type') === 'pattern' ) {
+                    name = patternName( patternSelectors[0].toCSS() );
+                    defn.set('name', name );
+                    dictionary.entry( name ).merge( defn );
                 }
+
             });
             // Pass 3 - Process declarations and infer relations
-            decls.forEach( function( decl ) {
-                var type = decl.get('type');
+            defns.forEach( function( defn ) {
+                var type = defn.get('type');
                 switch (type) {
                 case 'pattern':
-                    pattern = decl;
+                    pattern = defn;
                     break;
                 case 'modifier':
                 case 'member':
                 case 'state':
                 case 'helper':
+                    // explicit definitions
                     if ( pattern ) {
-                        pattern.define(type, decl.get('name'), decl);
+                        pattern.declare( type, defn );
                     }
                     break;
                 case undefined:
                     if (options.structuralInference || options.semanticInference) {
-                        parseSelectors( decl );
+                        parseSelectors( defn );
                     }
                     break;
                 }
@@ -122,12 +132,14 @@ define(['Declaration'], function (Declaration) {
 
         return anal;
 
-        function parseTags( comment, decl ) {
-            var  lines = comment.split('\n').slice(0, -1)
+        function parseComment( comment, defn ) {
+            if ( options.strictSyntax && !regex.cmtfirst.exec( comment )) return;
+
+            var  lines = comment.trim().split('\n')
                     .map( function ( line, i, list ) {
                         if ( i === 0 ) line = line.replace( regex.cmtfirst, '' );
                         if ( i === list.length-1 ) line = line.replace( regex.cmtlast, '' );
-                        if ( i > 0 && i < list.length-1 ) line = line.replace( regex.cmtmiddle, '' );
+                        if ( i > 0 && i <= list.length-1 ) line = line.replace( regex.cmtmiddle, '' );
                         return line;
                     }),
                 line, matches;
@@ -141,18 +153,22 @@ define(['Declaration'], function (Declaration) {
                     case 'state':
                     case 'helper':
                     case 'pattern':
-                        decl.set('type', matches[1]);
+                        defn.set('type', matches[1]);
                         // TODO: parse comma-separated selector list
-                        if ( matches[2] ) decl.addSelector( matches[2] );
+                        if ( matches[2] )
+                            defn.declare( 'selector', createSelector(matches[2]) );
                         break;
                     case 'example': 
-                        decl.define('example', { html: contentsOfBlock(), title: matches[2] });
+                        defn.declare( 'example', new Backbone.Model({ 
+                            title: matches[2],
+                            html: contentsOfBlock()
+                        }));
                         break;
                     default:
                         console.warn('unrecognized styledoc tag @' + matches[1]);
                     }
-                } else {
-                    decl.define('description', { text: contentsOfBlock(line) });
+                } else if ( ! regex.empty.exec(line) ) {
+                    defn.declare( 'text', contentsOfBlock(line) );
                 }
             }
     
@@ -174,11 +190,14 @@ define(['Declaration'], function (Declaration) {
                 return content.join('\n');
             }
         }
-    
-        function parseSelectors( decl ) {
+
+        function parseSelectors( defn ) {
             var sem = options.semanticInference,
                 str = options.structuralInference,
-                selectors = decl.get('selectors');
+                cnv = options.strictConventions,
+                modRegex = cnv ? regex.modifier : regex.classname,
+                memRegex = cnv ? regex.member : regex.classname,
+                selectors = defn.getValues('selector');
 
             selectors.forEach( function(selector) {
                 var elements = selector.elements.slice(0),
@@ -196,47 +215,54 @@ define(['Declaration'], function (Declaration) {
                     while ( elements.length ) {
                         atRoot = atRoot && elements[0].combinator.value === '';
                         current = elements.shift().value,
-                        attrs = decl.toJSON();
+                        attrs = defn.toJSON();
                         // TODO: also look for semantic inferences that are not struct
-                        if ( sem && atRoot &&
-                             ( matches = regex.modifier.exec(current) )) {
-                            modifierList.unshift( matches[1] );
-                            isState = false;
-                        } else if ( sem && atRoot &&
-                                    ( matches = regex.state.exec(current) )) {
-                            modifierList.unshift( matches[1] );
-                            isState = true;
-                        } else if ( sem && !atRoot &&
-                                    ( matches = regex.member.exec(current) ) &&
-                                    dictionary.findByName(matches[2]) === pattern ){
-                            member = matches[1];
-                        } else if ( str && !sem && pattern &&
-                                    ( matches = regex.classname.exec(current) )) {
-                            if (atRoot) {
-                                modifierList.unshift(matches[1]);
-                                isState = false;
+                        if ( str ) {
+                            if ( atRoot ) {
+                                if ( (matches = modRegex.exec(current)) ) {
+                                    modifierList.push( matches[1] );
+                                    isState = false;
+                                } else if ( (matches = regex.state.exec(current)) ) {
+                                    modifierList.push( matches[1] );
+                                    isState = true;
+                                }
                             } else {
-                                member = matches[1];
+                                if ( (matches = memRegex.exec(current)) &&
+                                     (!cnv || dictionary.findByName(matches[2]) === pattern ) ) {
+                                    member = matches[1];
+                                }
                             }
                         }
                     }
+
                     if ( member ) {
-                        pattern.define( 'member', member, attrs );
+                        attrs.type = 'member';
+                        attrs.name = member;
+                        pattern.define( attrs );
                     } 
+
                     if ( modifierList.length ) {
-                        pattern.define( isState ? 'state' : 'modifier', 
-                                        modifierList.join(' '), 
-                                        member ? {} : attrs );
+                        if ( member ) attrs = {};
+                        attrs.type = isState ? 'state' : 'modifier';
+                        attrs.name = modifierList.join(' ');
+                        pattern.define( attrs );
                     }
                 }
             });
         }
 
         function patternName( string ) {
+            string = string.trim();
             var matches = regex.classname.exec( string ) ||
                 regex.tagname.exec( string );
             return matches ? matches[1] : string;
         }
+
+        function createSelector( string ) {
+            // TODO: this only handles single-element selectors
+            return new Selector( [ new Element( '', string, 0 ) ] );
+        }
+
     }
 
     return Analyzer;
