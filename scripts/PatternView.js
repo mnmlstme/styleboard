@@ -60,9 +60,7 @@ define(['appState'], function (appState) {
                     view.examples.push( value );
                     $parent.mk(
                         'button', attrs,
-                        ['strong', "View:"],
-                        ' ',
-                        ['span', value.title || "Example"] )
+                        value.get('title') || "Example" )
                         .data( 'example', value );
                     break;
                 case 'modifier':
