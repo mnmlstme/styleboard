@@ -9,9 +9,10 @@ define(['appState'], function (appState) {
                 doc = view.$('iframe')[0].contentWindow.document;
 
             doc.open();
-            doc.write('<html lang="en"><head><meta charset="utf-8">' + 
+            doc.write('<html lang="en"><head><meta charset="utf-8">' +
                       '<link rel="stylesheet" type="text/css" href="' + options.cssUrl + '">' +
-                      '</head><body></body></html>');
+                      '</head><body style="background: transparent; font-size: 100%">' +
+                      '</body></html>');
             doc.close();
 
             view.$iframe = view.$('iframe');
@@ -20,7 +21,7 @@ define(['appState'], function (appState) {
             view.$pane = view.$el.closest('.pane');
 
             view.settings = {};
-            
+
             // TODO: make the default context configurable
             // view.context = 'typography';
 
@@ -90,15 +91,15 @@ define(['appState'], function (appState) {
             var view = this,
                 scaleMatch = transform.match( /^scale\(([0-9.]+)\)$/ ),
                 scale = scaleMatch ? 1 * scaleMatch[1] : 1;
-            
+
             view.$pane.css({ 'background-size': CHECKERBOARD_SIZE * scale + 'px' });
 
             view.updateIFrameHeight();
         },
-        
+
         updateIFrameHeight: function updateIFrameHeight() {
             var view = this;
-            
+
             view.$iframe.css( 'height', ''); // let the <body> determine it's own height
             view.$iframe.css( 'height', view.$body.outerHeight() );
         }

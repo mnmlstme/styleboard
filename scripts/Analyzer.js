@@ -4,7 +4,7 @@
 
 define(['Definition'], function (Definition) {
 
-    var options = {
+    var defaults = {
         /* TODO: implement the opposite cases */
         strictSyntax: true,              // ignore comments not beginning with /**
         explicitPatterns: false,         // don't infer patterns, they must be
@@ -21,7 +21,8 @@ define(['Definition'], function (Definition) {
     var Selector = less.tree.Selector,
         Element = less.tree.Element;
 
-    function Analyzer( dictionary, opts ) {
+    function Analyzer( dictionary, options ) {
+        options = _.defaults( options || {}, defaults );
         var anal = this,
             regex = {
                 classname:      /^\.([a-zA-Z][a-zA-Z0-9-_]+)$/,
@@ -204,7 +205,7 @@ define(['Definition'], function (Definition) {
                     root = elements.shift().value,
                     current = root,
                     atRoot = true,
-                    pattern = dictionary.findByName( patternName(root) ),
+                    pattern = _.isString(root) && dictionary.findByName( patternName(root) ),
                     matches,
                     modifierList = [],
                     isState = false,

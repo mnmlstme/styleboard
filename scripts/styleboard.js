@@ -1,20 +1,49 @@
 require(['Dictionary', 'Analyzer', 'Parser',
          'DictionaryView', 'RenderedView', 'MarkupView', 'RulesView',
-         'SettingsView'], 
+         'SettingsView'],
 function( Dictionary, Analyzer, Parser,
           DictionaryView, RenderedView, MarkupView, RulesView,
           SettingsView ) {
 
-    new StyleBoard( { cssUrl: "styles/styleboard.css" } );
+    // copy this JSON into ../styleboard.config to configure styleboard.
+    var configs = {
+        'default': 'styleboard',
+        'styleboard': {
+            'cssUrl': 'styles/styleboard.css',
+            'options': {}
+        }
+    };
 
-    function StyleBoard( opts ) {
+    $.ajax({
+        dataType: 'json',
+        url: '../styleboard.config',
+        success: function ( jsonObject ) {
+            console.log("Read configuration from styleboard.config");
+            configs = jsonObject;
+        },
+        error: function ( jqxhr, status, error ) {
+            console.warn( "No configuration: " + status + "(" + error + ")" );
+        },
+        complete: function () {
+            var config = configs['default'];
+
+            if ( !_.isObject(config) ) {
+                // then it's the name of the default config
+                config = configs[config];
+            }
+
+            new StyleBoard( config );
+        }
+    });
+
+    function StyleBoard( config ) {
         var sb = this,
-        cssUrl = opts.cssUrl || 'samples/home.css',
+        cssUrl = config.cssUrl || 'samples/home.css',
         $dictionaryView = $('#dictionaryView'),
         $currentPattern = $('#currentPattern'),
         $selectors = $('#selectors'),
         dictionary = new Dictionary();
-        analyzer = new Analyzer( dictionary ),
+        analyzer = new Analyzer( dictionary, config.options ),
         parser = new Parser();
 
         parser.load( cssUrl, function (rules) {
