@@ -9,10 +9,14 @@ define(['appState'], function (appState) {
                 doc = view.$('iframe')[0].contentWindow.document;
 
             doc.open();
-            doc.write('<html lang="en"><head><meta charset="utf-8">' +
+            doc.write('<html lang="en" style="height: auto">' +
+                      '<head>' +
+                      '<meta charset="utf-8">' +
                       '<link rel="stylesheet" type="text/css" href="' + options.cssUrl + '">' +
-                      '</head><body style="background: transparent; font-size: 100%">' +
-                      '</body></html>');
+                      '</head>' +
+                      '<body style="background: transparent; font-size: 100%; height: auto">' +
+                      '</body>' +
+                      '</html>');
             doc.close();
 
             view.$iframe = view.$('iframe');
