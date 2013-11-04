@@ -67,7 +67,7 @@ define(['appState'], function (appState) {
                 case 'state':
                 case 'member':
                 case 'helper':
-                    $section = $parent.mk( 
+                    $section = $parent.mk(
                         'section', attrs,
                         [ 'header',
                           [ 'p.pattern-role', value.get('type')],
@@ -126,7 +126,7 @@ define(['appState'], function (appState) {
 
             if ( !length ) return;
 
-            switch ( event.which ) { 
+            switch ( event.which ) {
             case KEY_PREVIOUS:
                 index = index - 1;
                 break;

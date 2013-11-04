@@ -6,7 +6,7 @@ define(['appState'], function (appState) {
     var defaultSettings = {
         "background-color": "transparent",
         "font-size": "16px",
-        "width": "480px",
+        "width": "1024px",
         "transform": "scale(1)"
     }
 
@@ -29,7 +29,7 @@ define(['appState'], function (appState) {
             view.settings = JSON.parse(settingsJSON);
             view.updateSettings();
         },
-        
+
         render: function () {
             this.updateSettings();
         },
@@ -58,7 +58,7 @@ define(['appState'], function (appState) {
                 }
             });
         },
-        
+
         events: {
             "click .tool-.bar > *": "uiClickTool",
             "click .menu > li":     "uiSelectOption"
@@ -84,6 +84,6 @@ define(['appState'], function (appState) {
         }
 
     });
-    
+
     return SettingsView;
 });

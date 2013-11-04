@@ -54,7 +54,7 @@ body.styleboard {
         color: #666;
     }
     iframe {
-        width: 480px;
+        width: 1024px;
         min-height: 100px;
         height: 50%;
         outline: 1px dotted rgba(0,0,0,0.2);
@@ -70,7 +70,9 @@ body.styleboard {
     .dictionary-list {
         .font( header, medium );
         > li {
-            margin: .5em 0;
+            & + li {
+                margin-top: .5em;
+            }
             cursor: pointer;
             text-transform: capitalize;
         }
