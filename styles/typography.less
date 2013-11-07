@@ -108,7 +108,7 @@ body {
     @padding: .5em;
     @indent: 2em;
 
-    article, 
+    article,
     article& {
         padding: @padding;
         padding-left: (@indent + @padding);
@@ -128,7 +128,7 @@ body {
             .font( header, xlarge, alpha );
             .glow( alpha );
         }
-        
+
         h3 {
             .font( header, large, beta );
             .glow( beta );
@@ -138,6 +138,14 @@ body {
 
     p, ul, ol, dl {
         margin-top: 1em;
+    }
+
+    p {
+        line-height: 1.4;
+    }
+
+    ul, ol, dl {
+        line-height: 1.2;
     }
 
     pre {
