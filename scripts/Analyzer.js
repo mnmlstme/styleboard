@@ -59,7 +59,6 @@ define(['Definition'], function (Definition) {
                     }).map( function (rule) {
                         parseComment( rule.value, pending );
                     });
-                    pending.declare('rule', node);
                     break;
                 case 'Comment':
                     parseComment( node.value, pending );
@@ -80,8 +79,8 @@ define(['Definition'], function (Definition) {
                     }),
                     name;
 
-                if ( !defn.get('type') && 
-                     !options.explicitPatterns && 
+                if ( !defn.get('type') &&
+                     !options.explicitPatterns &&
                      (options.structuralInference || options.semanticInference ) ) {
                     // Pattern inferencing
                     if ( options.structuralInference && options.strictConventions ||
@@ -128,6 +127,23 @@ define(['Definition'], function (Definition) {
                     }
                     break;
                 }
+            });
+            // Pass 4 - add rules which mention a pattern to the pattern
+            nodes.forEach( function( node ) {
+                var selectors = node.selectors || [],
+                    addedTo = {};
+                selectors.forEach( function ( sel ) {
+                    sel.elements.forEach( function ( element ) {
+                        var matches = regex.classname.exec( element.value ),
+                            name, entry;
+                        if ( matches &&
+                             !addedTo[(name = matches[1])] &&
+                             (entry = dictionary.findByName( name )) ){
+                            addedTo[name] = true;
+                            entry.declare( 'rule', node );
+                        }
+                    });
+                });
             });
         };
 

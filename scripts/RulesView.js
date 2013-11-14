@@ -35,7 +35,7 @@ define( function () {
                         $rule = $list.mk('li.rule.' + type + '-' ),
                         $selectors = $rule.mk('ul.rule-selectors'),
                         $declarations = $rule.mk('ul.rule-declarations');
-                    
+
                     switch (type) {
                     case 'ruleset':
                         node.selectors.forEach( function (selector, index) {
