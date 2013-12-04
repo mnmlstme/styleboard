@@ -554,23 +554,17 @@ input[type="reset"] strong,
   display: inline-block;
   position: relative;
 }
-.dropdown:hover {
-  background: #393633;
-  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.35);
-}
-.dropdown:hover button,
-.dropdown:hover .button {
-  color: #f19914;
-}
 .dropdown .dropdown-pane {
   display: none;
   position: absolute;
   top: 100%;
   min-width: 100%;
-  background-color: #393633;
+  background-color: rgba(57, 54, 51, 0.9);
+  color: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.25);
   border-top: none;
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2);
+  text-shadow: 1px 1px #000;
   z-index: 5;
 }
 .dropdown.left-aligned- {
@@ -596,6 +590,13 @@ input[type="reset"] strong,
   -webkit-transform: translateX(-50%);
   -moz-transform: translateX(-50%);
   transform: translateX(-50%);
+}
+.dropdown:hover {
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.35);
+}
+.dropdown:hover button,
+.dropdown:hover .button {
+  color: #f19914;
 }
 .dropdown:hover .dropdown-pane {
   display: block;
@@ -786,6 +787,24 @@ input[type="reset"] strong,
 }
 .frame.split-.vertical- > *:last-child {
   bottom: 0;
+}
+.frame.split-.vertical-.one-two- {
+  /** Split the frame 1:2 */
+}
+.frame.split-.vertical-.one-two- > :first-child {
+  height: 33.33333333333333%;
+}
+.frame.split-.vertical-.one-two- > :last-child {
+  height: 66.66666666666666%;
+}
+.frame.split-.vertical-.two-one- {
+  /** Split the frame 2:1 */
+}
+.frame.split-.vertical-.two-one- > :first-child {
+  height: 66.66666666666666%;
+}
+.frame.split-.vertical-.two-one- > :last-child {
+  height: 33.33333333333333%;
 }
 .frame.tabbed- {
   /** A frame with tabs to select alternate panes to view.
