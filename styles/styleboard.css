@@ -889,9 +889,6 @@ code.separator {
 .pattern .pattern-role + h3 {
   margin-top: -0.25em;
 }
-.pattern h2 {
-  text-transform: capitalize;
-}
 .pattern .pattern-selectors {
   font-size: 12px;
 }

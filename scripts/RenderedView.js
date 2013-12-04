@@ -15,7 +15,7 @@ define(['appState'], function (appState) {
                       '<link rel="stylesheet" type="text/css" href="styles/dummy.css">' +
                       '<link rel="stylesheet" type="text/css" href="' + options.cssUrl + '">' +
                       '</head>' +
-                      '<body style="background: #fff; font-size: 100%; height: auto">' +
+                      '<body style="background: #fff; font-size: 100%; height: auto; overflow:auto">' +
                       '</body>' +
                       '</html>');
             doc.close();
@@ -89,6 +89,7 @@ define(['appState'], function (appState) {
             view.$iframe.css( _(view.settings).pick(iFrameSettings) );
             view.$body.css( _(view.settings).omit(iFrameSettings.concat(sandboxSettings)) );
             view.updateTransform( view.settings.transform );
+            view.updateIFrameHeight();
         },
 
         updateTransform: function updateTransform( transform ) {
@@ -98,8 +99,6 @@ define(['appState'], function (appState) {
                 scale = scaleMatch ? 1 * scaleMatch[1] : 1;
 
             view.$pane.css({ 'background-size': CHECKERBOARD_SIZE * scale + 'px' });
-
-            view.updateIFrameHeight();
         },
 
         updateIFrameHeight: function updateIFrameHeight() {
