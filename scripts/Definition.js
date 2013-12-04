@@ -31,7 +31,7 @@ define( function () {
             var model = this,
                 key = attrs.type,
                 name = attrs.name,
-                
+
                 defn = model.getDefinition( key, name );
 
             if ( !defn ) {
@@ -49,7 +49,7 @@ define( function () {
         getDeclarations : function getDeclarations() {
             return this.get('decls');
         },
-        
+
         getValues: function getEach( key ) {
             return this.getDeclarations()
                 .filter( function (decl) { return decl.key === key; } )

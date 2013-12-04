@@ -12,9 +12,10 @@ define(['appState'], function (appState) {
             doc.write('<html lang="en" style="height: auto">' +
                       '<head>' +
                       '<meta charset="utf-8">' +
+                      '<link rel="stylesheet" type="text/css" href="styles/dummy.css">' +
                       '<link rel="stylesheet" type="text/css" href="' + options.cssUrl + '">' +
                       '</head>' +
-                      '<body style="background: transparent; font-size: 100%; height: auto">' +
+                      '<body style="background: #fff; font-size: 100%; height: auto">' +
                       '</body>' +
                       '</html>');
             doc.close();

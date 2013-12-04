@@ -165,18 +165,22 @@ define(['Definition'], function (Definition) {
                 line = lines.shift();
                 if  (( matches = regex.atcommand.exec( line ) )) {
                     switch ( matches[1] ) {
+                    case 'pattern':
                     case 'member':
                     case 'modifier':
                     case 'state':
                     case 'helper':
-                    case 'pattern':
+                        if( defn.has('type') && defn.get('type') !== matches[1] ) {
+                            console.warn('changing type from ', defn.get('type'),
+                                         ' to ', matches[1], ' on ', defn );
+                        }
                         defn.set('type', matches[1]);
                         // TODO: parse comma-separated selector list
                         if ( matches[2] )
                             defn.declare( 'selector', createSelector(matches[2]) );
                         break;
-                    case 'example': 
-                        defn.declare( 'example', new Backbone.Model({ 
+                    case 'example':
+                        defn.declare( 'example', new Backbone.Model({
                             title: matches[2],
                             html: contentsOfBlock()
                         }));
@@ -188,7 +192,7 @@ define(['Definition'], function (Definition) {
                     defn.declare( 'text', contentsOfBlock(line) );
                 }
             }
-    
+
             function contentsOfBlock( firstLine ) {
                 var content = [],
                     leader = Infinity;
