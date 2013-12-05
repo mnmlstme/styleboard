@@ -12,12 +12,13 @@ Author URI: http://mnmlst.me
 
 /* Shortcode syntax:
 
-   [styleboard pattern="button"]
-   [styleboard link pattern="button"]
-   [styleboard link pattern="button" text="This is a Button"]
-   [styleboard_link pattern="button"]This is a <strong>Button</strong>[/styleboard_link]
+   [styleboard button]
+   [styleboard pattern=button]
 
-   [styleboard embed pattern="button"]
+   [styleboard button mode=link]
+   [styleboard button mode=link text="This is a Button"]
+
+   [styleboard_link button]This is a <strong>Button</strong>[/styleboard_link]
 
 */
 
@@ -25,27 +26,50 @@ add_shortcode("styleboard", "styleboard_handler");
 add_shortcode("styleboard_link", "styleboard_link_handler");
 
 function styleboard_handler( $atts ) {
-    return styleboard_link_handler( $atts, $atts['text'] );
-}
-
-function styleboard_link_handler( $atts, $text ) {
-    $url = '/styleboard/';
-
-    $mode = $atts[1];
-    $mode = $mode ? $mode : 'link';
-
-    $pattern = $atts['pattern'];
-
-    if( $pattern ) {
-        $url = $url . '#' . $pattern;
-        $text = $text ? $text : $pattern;
+    if ( !$atts['mode'] ) {
+        $atts['mode'] = 'embed';
     }
 
-    $text = $text ? $text : 'Styleboard';
+    return $atts['mode'] === 'embed' ?
+        styleboard_embed_handler( $atts ) :
+        styleboard_link_handler( $atts, $atts['text'] );
+}
 
-    $html_output = '<a href="' . $url . '">' . $text . '</a>';
+function styleboard_embed_handler( $atts ) {
+    $width = $atts['width'] ? $atts['width'] : "100%";
+    $height = $atts['height'] ? $atts['height'] : "300";
 
-    return $html_output;
+    return  '<iframe src="' . styleboard_url($atts) . '"' .
+        ' style="width:' . $width . ';height:' . $height . 'px"' .
+        '></iframe>';
+}
+
+function styleboard_link_handler( $atts, $content ) {
+    if ( !$content ) {
+        $pattern = styleboard_pattern($atts);
+        $content =  $pattern ? $pattern : 'Styleboard';
+    }
+
+    return '<a href="' . styleboard_url($atts) . '">' . $content . '</a>';
+}
+
+function styleboard_pattern( $atts ) {
+    return $atts['pattern'] ? $atts['pattern'] : $atts[0];
+}
+
+function styleboard_url( $atts ) {
+    $url = '/styleboard/';
+    $pattern = styleboard_pattern($atts);
+
+    if ( $atts['mode'] === 'embed' ) {
+        $url = $url . 'embed.html';
+    }
+
+    if ( $pattern ) {
+        $url = $url . '#' . $pattern;
+    }
+
+    return $url;
 }
 
 ?>

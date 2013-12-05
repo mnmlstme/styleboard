@@ -182,6 +182,12 @@ article.typography {
 .swatch.white-::before {
   background-color: #ffffff;
 }
+.swatch.off-white-::before {
+  background-color: #f4f4f4;
+}
+.swatch.grey-75-::before {
+  background-color: #c0c0c0;
+}
 .swatch.black-::before {
   background-color: #000000;
 }
@@ -979,8 +985,6 @@ body.styleboard {
 }
 #sandbox iframe {
   width: 1024px;
-  min-height: 100px;
-  height: 50%;
   outline: 1px dotted rgba(0, 0, 0, 0.2);
 }
 #dictionaryView .dictionary-list {
@@ -993,4 +997,13 @@ body.styleboard {
 }
 #dictionaryView .dictionary-list > li + li {
   margin-top: .5em;
+}
+.embedded-.styleboard #settings {
+  opacity: 0;
+  transition: opacity .5s;
+  -moz-transition: opacity .5s;
+  -webkit-transition: opacity .5s;
+}
+.embedded-.styleboard #settings:hover {
+  opacity: 1;
 }

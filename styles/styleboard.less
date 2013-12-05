@@ -47,8 +47,6 @@ body.styleboard {
     .transform-origin( top left );
     iframe {
         width: 1024px;
-        min-height: 100px;
-        height: 50%;
         outline: 1px dotted rgba(0,0,0,0.2);
     }
 }
@@ -61,6 +59,19 @@ body.styleboard {
                 margin-top: .5em;
             }
             cursor: pointer;
+        }
+    }
+}
+
+.embedded-.styleboard {
+
+    #settings {
+        opacity: 0;
+        transition: opacity .5s;
+        -moz-transition: opacity .5s;
+        -webkit-transition: opacity .5s;
+        &:hover {
+            opacity: 1;
         }
     }
 }
