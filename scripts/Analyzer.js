@@ -15,6 +15,7 @@ define(['Definition'], function (Definition) {
                                          // follow conventions
         warnConventions: true,           // flag violations of naming conventions
                                          // (relations within patterns will still be inferred)
+        namingConventions: {}            // override the regexes used to match naming convention
     };
 
     // global dependences on LESS:
@@ -34,13 +35,16 @@ define(['Definition'], function (Definition) {
                 atcommand:      /^\s*@([a-z-]+)\s*(.*)\s*$/,
                 ateot:          /^\s*(@[a-z-]+.*)?$/,
                 empty:          /^\s*$/,
-                // TODO: make convention regexes be configuration options
                 pattern:        /^\.([a-z]+)$/,                 // lowercase, no hyphens
                 modifier:       /^\.([a-z-]+\-)$/,              // trailing hyphen
                 member:         /^\.(([a-z]+)\-[a-z-]+)$/,      // pattern name '-' member name
                 helper:         /^\.(([a-z]+)\-[a-z-]+)$/,      // pattern name '-' helper name
                 state:          /^\.(is-[a-z-]+)$/              // 'is-' prefix
             };
+
+        _.each( options.namingConventions, function ( value, key ) {
+            regex[key] = new RegExp( value );
+        });
 
         anal.analyze = function analyze ( nodes ) {
             var defns = [],
@@ -105,7 +109,7 @@ define(['Definition'], function (Definition) {
                 }
 
             });
-            // Pass 3 - Process declarations and infer relations
+            // Pass 3 - Process definitions and infer relations
             defns.forEach( function( defn ) {
                 var type = defn.get('type');
                 switch (type) {
@@ -260,7 +264,7 @@ define(['Definition'], function (Definition) {
                         attrs.type = 'member';
                         attrs.name = member;
                         pattern.define( attrs );
-                    } 
+                    }
 
                     if ( modifierList.length ) {
                         if ( member ) attrs = {};
