@@ -36,7 +36,7 @@ define(["PatternView", "appState"], function ( PatternView, appState ) {
         renderPattern: function ( pat ) {
             var view = this,
                 dict = view.model;
-            
+
             view.$namedTab.text( pat.get('name') );
             view.$current.empty();
             (new PatternView({
