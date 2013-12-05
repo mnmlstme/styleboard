@@ -10,12 +10,10 @@ define(['appState'], function (appState) {
 
         initialize: function () {
             var view = this,
-                pattern = view.model,
-                example = pattern.getFirst('example');
+                pattern = view.model;
 
             view.examples = [];
 
-            appState.set('example', example);
             appState.on('change:example', view.updateExampleIsActive, view);
 
             // TODO: we need to remove this when the view is detached

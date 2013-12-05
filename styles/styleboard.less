@@ -37,33 +37,20 @@ body.styleboard {
     background: #fff url(../graphics/checkerboard.svg);
     background-size: 16px;
     box-shadow: 0 0 5px rgba(0,0,0,0.5) inset;
+    padding: 0;
 }
 
 #sandbox {
     position: absolute;
     top: 0;
     left: 0;
-    padding: 32px;
     .transform-origin( top left );
-    h2 {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        font-size: 10/12 * 100%;
-        padding: 1em;
-        color: #666;
-    }
     iframe {
         width: 1024px;
         min-height: 100px;
         height: 50%;
         outline: 1px dotted rgba(0,0,0,0.2);
     }
-}
-
-#selectors {
-    padding: 10px;
-    margin: 0;
 }
 
 #dictionaryView {

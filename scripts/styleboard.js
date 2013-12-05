@@ -1,7 +1,7 @@
-require(['Dictionary', 'Analyzer', 'Parser',
+require(['Dictionary', 'Analyzer', 'Parser', 'TabbedFrameView',
          'DictionaryView', 'RenderedView', 'MarkupView', 'RulesView',
          'SettingsView', 'appState'],
-function( Dictionary, Analyzer, Parser,
+function( Dictionary, Analyzer, Parser, TabbedFrameView,
           DictionaryView, RenderedView, MarkupView, RulesView,
           SettingsView, appState) {
 
@@ -40,9 +40,6 @@ function( Dictionary, Analyzer, Parser,
     function StyleBoard( config, hash ) {
         var sb = this,
             cssUrl = config.cssUrl || 'samples/home.css',
-            $dictionaryView = $('#dictionaryView'),
-            $currentPattern = $('#currentPattern'),
-            $selectors = $('#selectors'),
             dictionary = new Dictionary();
             analyzer = new Analyzer( dictionary, config.options ),
             parser = new Parser();
@@ -50,26 +47,41 @@ function( Dictionary, Analyzer, Parser,
         parser.load( cssUrl, function (rules) {
             analyzer.analyze( rules );
 
-            (new DictionaryView({
-                el: $('#dictionaryView'),
-                model: dictionary
-            })).render();
-            (new RenderedView({
-                el: $('#sandbox'),
-                cssUrl: cssUrl
-            })).render();
-            (new MarkupView({
-                el: $('#example')
-            })).render();
-            (new RulesView({
-                el: $('#sources')
-            })).render();
-            (new SettingsView({
-                el: $('#settings')
-            })).render();
+            // initialize each view, if it exists in the markup
+
+            $('#dictionaryView').each( function () {
+                (new DictionaryView({ el: $(this), model: dictionary })).render();
+            });
+
+            $('#tabbedView').each( function () {
+                (new TabbedFrameView({ el: $(this) })).render();
+            });
+
+            $('#sandbox').each( function () {
+                (new RenderedView({ el: $(this), cssUrl: cssUrl })).render();
+            });
+
+            $('#example').each( function () {
+                (new MarkupView({ el: $(this) })).render();
+            });
+
+            $('#sources').each( function () {
+                (new RulesView({ el: $('#sources') })).render();
+            });
+
+            $('#settings').each( function () {
+                (new SettingsView({ el: $('#settings') })).render();
+            });
+
+            $('#openInStyleboard').each( function () {
+                var $a = $(this);
+                appState.on('change:pattern', function (model, pattern) {
+                    $a.attr('href', './#' + pattern.get('name'));
+                });
+            });
 
             if ( hash )
-                appState.set( 'pattern', dictionary.findByName( hash.slice(1) ) );
+                appState.set('pattern', dictionary.findByName( hash.slice(1) ) );
 
         });
 

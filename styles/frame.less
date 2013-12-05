@@ -53,6 +53,17 @@
         box-shadow: inset 1px 1px 1px @border-hi-color,
                     inset -1px -1px 1px @border-lo-color;
         .font( nav, inherit, inv-lo );
+        a {
+            color: inherit;
+            text-decoration: inherit;
+        }
+        small {
+            font-size: 75%;
+        }
+    }
+
+    .frame-header h1 {
+        margin: 0 .5em;
     }
 
     .frame-header-left {
@@ -80,7 +91,7 @@
                        <p>Duis tempor risus vitae nulla commodo tempus.</p>
                    </div>
                    <div class="pane">
-                       <p>Praesent semper arcu quis diam aliquam aliquam.</p> 
+                       <p>Praesent semper arcu quis diam aliquam aliquam.</p>
                    </div>
                </div>
                */
@@ -144,12 +155,10 @@
 
         .frame-tabs {
             white-space: nowrap;
-            padding: .25em;
             > * {
                 display: inline-block;
                 cursor: pointer;
-                .font-size( xsmall );
-                margin: 0 .5em;
+                padding: 0 .5em;
                 &.is-active {
                     .color( delta );
                     outline-color: @color-delta;
@@ -158,6 +167,13 @@
                     visibility: hidden;
                 }
             }
+        }
+
+        .frame-header .frame-tabs {
+            // if tabs are inside a header, float them inside the header
+            position: static;
+            width: auto;
+            float: left;
         }
 
         .frame-panes {

@@ -324,6 +324,7 @@ implicitly close the <li>.
 .bar .button,
 .bar button {
   font-size: inherit;
+  font-weight: inherit;
   margin: 0;
   border-width: 0;
 }
@@ -723,6 +724,18 @@ input[type="reset"] strong,
   font-size: inherit;
   color: #aaaaaa;
 }
+.frame .frame-header a,
+.frame .frame-tabs a {
+  color: inherit;
+  text-decoration: inherit;
+}
+.frame .frame-header small,
+.frame .frame-tabs small {
+  font-size: 75%;
+}
+.frame .frame-header h1 {
+  margin: 0 .5em;
+}
 .frame .frame-header-left {
   float: left;
 }
@@ -747,7 +760,7 @@ input[type="reset"] strong,
                        <p>Duis tempor risus vitae nulla commodo tempus.</p>
                    </div>
                    <div class="pane">
-                       <p>Praesent semper arcu quis diam aliquam aliquam.</p> 
+                       <p>Praesent semper arcu quis diam aliquam aliquam.</p>
                    </div>
                </div>
                */
@@ -825,13 +838,11 @@ input[type="reset"] strong,
 }
 .frame.tabbed- .frame-tabs {
   white-space: nowrap;
-  padding: .25em;
 }
 .frame.tabbed- .frame-tabs > * {
   display: inline-block;
   cursor: pointer;
-  font-size: 12px;
-  margin: 0 .5em;
+  padding: 0 .5em;
 }
 .frame.tabbed- .frame-tabs > *.is-active {
   color: #f19914;
@@ -839,6 +850,11 @@ input[type="reset"] strong,
 }
 .frame.tabbed- .frame-tabs > *:empty {
   visibility: hidden;
+}
+.frame.tabbed- .frame-header .frame-tabs {
+  position: static;
+  width: auto;
+  float: left;
 }
 .frame.tabbed- .frame-panes {
   /** A list of panes to show in a `tabbed-` frame */
@@ -951,33 +967,21 @@ body.styleboard {
   background: #ffffff url(../graphics/checkerboard.svg);
   background-size: 16px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5) inset;
+  padding: 0;
 }
 #sandbox {
   position: absolute;
   top: 0;
   left: 0;
-  padding: 32px;
   -webkit-transform-origin: top left;
   -moz-transform-origin: top left;
   transform-origin: top left;
-}
-#sandbox h2 {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  font-size: 83.33333333333334%;
-  padding: 1em;
-  color: #666;
 }
 #sandbox iframe {
   width: 1024px;
   min-height: 100px;
   height: 50%;
   outline: 1px dotted rgba(0, 0, 0, 0.2);
-}
-#selectors {
-  padding: 10px;
-  margin: 0;
 }
 #dictionaryView .dictionary-list {
   font-family: Oxygen, Helvetica, Arial, sans-serif;

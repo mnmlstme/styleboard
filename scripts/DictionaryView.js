@@ -1,9 +1,10 @@
 /**
  @filespec DictionaryView - view of the dictionary of all patterns in styleboard
  */
-define(["PatternView", "appState"], function ( PatternView, appState ) {
+define(["PatternView", "TabbedFrameView", "appState"],
+function ( PatternView, TabbedFrameView, appState ) {
 
-    var DictionaryView = Backbone.View.extend({
+    var DictionaryView = TabbedFrameView.extend({
 
         initialize: function () {
             var view = this,
@@ -16,8 +17,8 @@ define(["PatternView", "appState"], function ( PatternView, appState ) {
 
             dict.on('add', view.addPattern, view);
 
-            appState.on('change:pattern', function (model, value) {
-                view.selectPattern( value );
+            appState.on('change:pattern', function (model, pattern) {
+                view.selectPattern( pattern );
             });
         },
 
@@ -51,17 +52,10 @@ define(["PatternView", "appState"], function ( PatternView, appState ) {
             view.$patternList.mk( 'li', name );
         },
 
-        events: {
-            'click .frame-tabs > li': 'uiSelectPane',
-            'click .dictionary-list > li': 'uiSelectEntry'
-        },
-
-        uiSelectPane: function (event) {
-            var view = this,
-                $target = $(event.target),
-                index = $target.index();
-
-            view.selectPane( index );
+        events: function () {
+            return _.extend({}, TabbedFrameView.prototype.events, {
+                'click .dictionary-list > li': 'uiSelectEntry'
+            });
         },
 
         uiSelectEntry: function (event) {
@@ -80,21 +74,7 @@ define(["PatternView", "appState"], function ( PatternView, appState ) {
             view.selectPane( 1 );
         },
 
-        selectPane: function ( index ) {
-            var view = this;
-
-            activateNth( view.$('.frame-tabs > li'), index );
-            activateNth( view.$('.frame-panes > li'), index );
-        }
-
     }); // end of DictionaryView view
-
-    function activateNth( $list, index ) {
-        $list
-            .removeClass('is-active')
-          .eq(index)
-            .addClass('is-active');
-    }
 
     return DictionaryView;
 });
