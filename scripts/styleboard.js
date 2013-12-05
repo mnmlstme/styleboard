@@ -1,9 +1,9 @@
 require(['Dictionary', 'Analyzer', 'Parser',
          'DictionaryView', 'RenderedView', 'MarkupView', 'RulesView',
-         'SettingsView'],
+         'SettingsView', 'appState'],
 function( Dictionary, Analyzer, Parser,
           DictionaryView, RenderedView, MarkupView, RulesView,
-          SettingsView ) {
+          SettingsView, appState) {
 
     // copy this JSON into ../styleboard.config to configure styleboard.
     var configs = {
@@ -32,22 +32,24 @@ function( Dictionary, Analyzer, Parser,
                 config = configs[config];
             }
 
-            new StyleBoard( config );
+            new StyleBoard( config, window.location.hash );
+
         }
     });
 
-    function StyleBoard( config ) {
+    function StyleBoard( config, hash ) {
         var sb = this,
-        cssUrl = config.cssUrl || 'samples/home.css',
-        $dictionaryView = $('#dictionaryView'),
-        $currentPattern = $('#currentPattern'),
-        $selectors = $('#selectors'),
-        dictionary = new Dictionary();
-        analyzer = new Analyzer( dictionary, config.options ),
-        parser = new Parser();
+            cssUrl = config.cssUrl || 'samples/home.css',
+            $dictionaryView = $('#dictionaryView'),
+            $currentPattern = $('#currentPattern'),
+            $selectors = $('#selectors'),
+            dictionary = new Dictionary();
+            analyzer = new Analyzer( dictionary, config.options ),
+            parser = new Parser();
 
         parser.load( cssUrl, function (rules) {
             analyzer.analyze( rules );
+
             (new DictionaryView({
                 el: $('#dictionaryView'),
                 model: dictionary
@@ -65,6 +67,10 @@ function( Dictionary, Analyzer, Parser,
             (new SettingsView({
                 el: $('#settings')
             })).render();
+
+            if ( hash )
+                appState.set( 'pattern', dictionary.findByName( hash.slice(1) ) );
+
         });
 
         return sb;

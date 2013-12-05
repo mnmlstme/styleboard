@@ -17,7 +17,7 @@ define(["PatternView", "appState"], function ( PatternView, appState ) {
             dict.on('add', view.addPattern, view);
 
             appState.on('change:pattern', function (model, value) {
-                view.renderPattern( value );
+                view.selectPattern( value );
             });
         },
 
@@ -70,8 +70,13 @@ define(["PatternView", "appState"], function ( PatternView, appState ) {
                 $target = $(event.target),
                 index = $target.index(),
                 pat = dict.at(index);
+            view.selectPattern( pat );
+        },
 
-            appState.set('pattern', pat);
+        selectPattern: function ( pattern ) {
+            var view = this;
+
+            view.renderPattern( pattern );
             view.selectPane( 1 );
         },
 

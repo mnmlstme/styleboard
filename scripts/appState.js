@@ -2,7 +2,7 @@ define( function () {
 
 /**
  * @name AppState
- * @constructor 
+ * @constructor
  * @param attrs.pattern {Pattern}   the pattern currently being viewed
  * @param attrs.example {Example}   the example curently being viewed
  */

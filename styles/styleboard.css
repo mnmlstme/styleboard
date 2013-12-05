@@ -986,7 +986,6 @@ body.styleboard {
 }
 #dictionaryView .dictionary-list > li {
   cursor: pointer;
-  text-transform: capitalize;
 }
 #dictionaryView .dictionary-list > li + li {
   margin-top: .5em;
