@@ -5,11 +5,11 @@
     <defs></defs>
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
         <g id="pagesize" sketch:type="MSArtboardGroup" fill="#000000">
-            <rect d="M1,1 L1,10 L2,10 L2,1 L1,1 Z M1,1" id="left-leader" sketch:type="MSShapeGroup" x="1" y="1" width="1" height="9"></rect>
-            <rect d="M22,1 L22,10 L23,10 L23,1 L22,1 Z M22,1" id="right-leader" sketch:type="MSShapeGroup" x="22" y="1" width="1" height="9"></rect>
-            <path d="M1.944259,16.6231239 L6.59743015,11.9699527 L6.59743015,11.9699527 L6.61011641,12 L21.9999999,12 L21.9999999,11 L6.18790691,11 L6.19819607,11.0243698 L0.980957017,16.140625 L1,16.159668 L1,23 L2,23 L2,16.652159 L1.944259,16.6231239 Z M23,22.5 L23,23 L2,23 L2,22 L22,22 L22,11 L23,11 L23,22.5 L23,22.5 Z M23,22.5" id="Rectangle-26" sketch:type="MSShapeGroup"></path>
-            <path d="M1,11 L1,12 L3.76472974,12 L4.79378247,11 L1,11 Z M1,12 L1,14.739502 L2,13.828776 L2,12 L1,12 Z M1,12" id="Rectangle-24" sketch:type="MSShapeGroup"></path>
-            <path d="M6.2,3 L6.2,1.4 L2.2,3.5 L6.2,5.6 L6.2,4 L17.8,4 L17.8,5.6 L21.8,3.5 L17.8,1.4 L17.8,3 L6.2,3 Z M6.2,3" id="dimension-arrow" sketch:type="MSShapeGroup"></path>
+            <rect id="left-leader" sketch:type="MSShapeGroup" x="1" y="1" width="1" height="9"></rect>
+            <rect id="right-leader" sketch:type="MSShapeGroup" x="22" y="1" width="1" height="9"></rect>
+            <path d="M3,21 L21,21 L21,13 L21,13 L7.01978444,13 L3,17.0197844 L3,21 Z M2.5,23 L23,23 L23,22 L23,22 L23,11 L21.5,11 L6.18790691,11 L6.18790691,11.0034504 L1.06009103,16.1312663 L1,16.1312663 L1,23 L2.5,23 Z" id="Rectangle-26" sketch:type="MSShapeGroup"></path>
+            <path d="M1,11 L1,12 L3.76472974,12 L4.79378247,11 L1,11 Z M1,12 L1,14.739502 L2,13.828776 L2,12 L1,12 Z" id="Rectangle-24" sketch:type="MSShapeGroup"></path>
+            <path d="M6.2,3 L6.2,1.4 L2.2,3.5 L6.2,5.6 L6.2,4 L17.8,4 L17.8,5.6 L21.8,3.5 L17.8,1.4 L17.8,3 L6.2,3 Z" id="dimension-arrow" sketch:type="MSShapeGroup"></path>
         </g>
     </g>
 </svg>

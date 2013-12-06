@@ -67,6 +67,17 @@ body.styleboard {
 
 .embedded-.styleboard {
 
+    #openInStyleboard {
+        color: fade( @inv-body-lo-color, 0% );
+        .transition( color, .5s );
+        &:hover {
+            color: @inv-body-lo-color;
+        }
+        .icon {
+            color: @inv-body-lo-color;
+        }
+    }
+
     #settings {
         opacity: 0;
         .transition( opacity, .5s );

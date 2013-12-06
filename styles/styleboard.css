@@ -1,7 +1,11 @@
 @import "reset.css";
+
 @import url(https://fonts.googleapis.com/css?family=Oxygen:400,300,700);
+
 @import url(https://fonts.googleapis.com/css?family=Source+Code+Pro);
+
 @import url(https://fonts.googleapis.com/css?family=Lato:300,400);
+
 @import "../graphics/fontcustom/fontcustom.css";
 /*
   CSS3 utility mixins
@@ -50,6 +54,7 @@ body {
       ut varius dictum.
     </article>
     */
+
 }
 .typography article,
 article.typography {
@@ -106,6 +111,7 @@ article.typography {
 }
 .typography ul {
   /** List formatting */
+
 }
 /** Icons. Implemented as an icon font using fontcustom.
 
@@ -123,8 +129,7 @@ article.typography {
   text-transform: none;
   -webkit-font-smoothing: antialiased;
   text-decoration: inherit;
-  overflow: hidden;
-  font-size: 1.5em;
+  font-size: 1.25em;
 }
 .icon::before {
   display: inline-block;
@@ -135,6 +140,7 @@ article.typography {
 .icon.circle-,
 .scrubber .scrubber-selector > li.is-active i.icon {
   /** Filled Circle (bullet) */
+
 }
 .icon.circle-::before,
 .scrubber .scrubber-selector > li.is-active i.icon::before {
@@ -142,29 +148,40 @@ article.typography {
 }
 .icon.fontsize- {
   /** Page Size icon. */
+
 }
 .icon.fontsize-::before {
   content: "\f102";
 }
+.icon.fullscreen- {
+  /** Expand to full screen icon. */
+
+}
+.icon.fullscreen-::before {
+  content: "\f103";
+}
 .icon.opencircle-,
 .scrubber .scrubber-selector > li i.icon {
   /** Circle */
+
 }
 .icon.opencircle-::before,
 .scrubber .scrubber-selector > li i.icon::before {
-  content: "\f103";
+  content: "\f104";
 }
 .icon.pagesize- {
   /** Page Size icon. */
+
 }
 .icon.pagesize-::before {
-  content: "\f104";
+  content: "\f105";
 }
 .icon.scale- {
   /** Scale icon. */
+
 }
 .icon.scale-::before {
-  content: "\f105";
+  content: "\f106";
 }
 /** Color swatches.
     @example
@@ -215,6 +232,7 @@ article.typography {
           <li>Angostura bitters
         </ul>
      */
+
 }
 .list > *,
 .typography ul > * {
@@ -232,6 +250,7 @@ article.typography {
              <li>Angostura bitters (optional)
            </ul>
         */
+
   margin-left: 1em;
 }
 .list.bullet- > *::before,
@@ -256,6 +275,7 @@ article.typography {
              <li>Angostura bitters (optional)
            </ul>
         */
+
 }
 .list.comma- > *,
 .typography ul.comma- > * {
@@ -284,6 +304,7 @@ article.typography {
              <dd class="list-definition">Or orange bitters
            </dl>
            */
+
   padding-left: 6em;
 }
 .list.definition-::after,
@@ -302,6 +323,7 @@ article.typography {
 .typography ul .list-term,
 .typography dt {
   /** A term in a definition list. */
+
   float: left;
   margin-left: -6em;
   font-family: Oxygen, Helvetica, Arial, sans-serif;
@@ -312,6 +334,7 @@ article.typography {
 .list .list-definition,
 .typography ul .list-definition {
   /** The definition for a term in a definition list. */
+
 }
 /**
    A horizontal, packed arrangement of items, such buttons or tools
@@ -362,9 +385,11 @@ input[type="reset"],
         You can <button><i class="scale- icon"></i><span>Zoom</span></button>
         if you like.
      */
+
   /** @example A basic button
         You can <button>Click this</button> if you like.
         */
+
   display: inline-block;
   padding: .25em;
   vertical-align: baseline;
@@ -412,6 +437,7 @@ input[type="reset"]:active,
             @example An active button
             You have <button class="is-active">Clicked this</button> already.
             */
+
   background: #f19914;
 }
 button[disabled],
@@ -428,6 +454,7 @@ input[type="reset"].is-disabled,
             @example A disabled button
             You <button class="is-disabled">Cannot click this</button> button.
             */
+
   opacity: .5;
   cursor: default;
 }
@@ -454,6 +481,7 @@ input[type="reset"].primary-,
             You probably want <button class="primary-">This button</button>
             and not <button>This other one</button>.
             */
+
   color: #ffffff;
   background: #105c9b;
 }
@@ -467,6 +495,7 @@ input[type="reset"].link-,
             This may look like a link but it's really
             a <button class="link-">button</button> in disguise.
             */
+
   color: #105c9b;
   text-shadow: 0 0 0.15em #b3d8f7;
   font-family: inherit;
@@ -484,6 +513,7 @@ input[type="reset"].delete-,
             @example A delete button
             Be careful of <button class="delete-">This Dangerous</button> button.
             */
+
   color: #ffffff;
   background: #9b3314;
 }
@@ -588,6 +618,7 @@ input[type="reset"] strong,
 }
 .dropdown.left-aligned- {
   /** Align the pane with the left edge of the control. */
+
   text-align: left;
 }
 .dropdown.left-aligned- .dropdown-pane {
@@ -595,6 +626,7 @@ input[type="reset"] strong,
 }
 .dropdown.right-aligned- {
   /** Align the pane with the right edge of the control. */
+
   text-align: right;
 }
 .dropdown.right-aligned- .dropdown-pane {
@@ -602,6 +634,7 @@ input[type="reset"] strong,
 }
 .dropdown.centered- {
   /** Align the center of the pane with the center of the control. */
+
   text-align: center;
 }
 .dropdown.centered- .dropdown-pane {
@@ -696,20 +729,24 @@ input[type="reset"] strong,
               ut varius dictum.
             </div>
             */
+
   background: #282624;
   color: #dddddd;
 }
 .pane.scrollable- {
   /** A pane with scrolling content (in both directions). */
+
   overflow-x: auto;
   overflow-y: auto;
 }
 .pane.scrollable-.vertically- {
   /** A pane with vertically scrolling content. */
+
   overflow-x: hidden;
 }
 .pane.scrollable-.horizontally- {
   /** A pane with horizontally scrolling content. */
+
   overflow-y: hidden;
 }
 .pane.scrollable-::-webkit-scrollbar {
@@ -740,6 +777,7 @@ input[type="reset"] strong,
          </div>
        </div>
     */
+
   height: 100%;
   width: 100%;
   position: relative;
@@ -757,6 +795,7 @@ input[type="reset"] strong,
               </div>
             </div
          */
+
   padding-top: 2em;
 }
 .frame .frame-header,
@@ -815,6 +854,7 @@ input[type="reset"] strong,
               <p class="frame-footer">Lorem Ipsum</p>
             </div
          */
+
   padding-bottom: 1.2em;
 }
 .frame .frame-footer {
@@ -843,6 +883,7 @@ input[type="reset"] strong,
 }
 .frame.split- {
   /** A frame which is split into two panes */
+
 }
 .frame.split- > * {
   position: absolute;
@@ -851,6 +892,7 @@ input[type="reset"] strong,
   /** A frame which is split horizontally.
                 By default the frame is split equally (1:1)
                 */
+
   /**
                @example Two panes side-by-side
                <div class="horizontal- split- frame">
@@ -863,6 +905,7 @@ input[type="reset"] strong,
                    </div>
                </div>
                */
+
 }
 .frame.split-.horizontal- > * {
   width: 50%;
@@ -877,6 +920,7 @@ input[type="reset"] strong,
 }
 .frame.split-.horizontal-.one-two- {
   /** Split the frame 1:2 */
+
 }
 .frame.split-.horizontal-.one-two- > :first-child {
   width: 33.33333333333333%;
@@ -888,6 +932,7 @@ input[type="reset"] strong,
   /** A frame which is split vertically.
                 By default the frame is split equally (1:1)
                 */
+
 }
 .frame.split-.vertical- > * {
   width: 100%;
@@ -902,6 +947,7 @@ input[type="reset"] strong,
 }
 .frame.split-.vertical-.one-two- {
   /** Split the frame 1:2 */
+
 }
 .frame.split-.vertical-.one-two- > :first-child {
   height: 33.33333333333333%;
@@ -911,6 +957,7 @@ input[type="reset"] strong,
 }
 .frame.split-.vertical-.two-one- {
   /** Split the frame 2:1 */
+
 }
 .frame.split-.vertical-.two-one- > :first-child {
   height: 66.66666666666666%;
@@ -933,6 +980,7 @@ input[type="reset"] strong,
                 <li class="pane">This is pane Two
             </div>
         */
+
   padding-top: 2em;
 }
 .frame.tabbed- .frame-tabs {
@@ -952,6 +1000,7 @@ input[type="reset"] strong,
 }
 .frame.tabbed- .frame-panes {
   /** A list of panes to show in a `tabbed-` frame */
+
   height: 100%;
 }
 .frame.tabbed- .frame-panes > * {
@@ -967,6 +1016,7 @@ input[type="reset"] strong,
 code,
 pre {
   /** A section of computer code */
+
   font-family: 'Source Code Pro', 'Courier', 'Courier New', monospace;
   font-weight: 400;
   font-size: 14px;
@@ -987,6 +1037,7 @@ code.separator {
 }
 .pattern {
   /** A styleguide entry for a pattern. */
+
 }
 .pattern .pattern-role {
   font-family: Oxygen, Helvetica, Arial, sans-serif;
@@ -1088,6 +1139,18 @@ body.styleboard {
 }
 #dictionaryView .dictionary-list > li + li {
   margin-top: .5em;
+}
+.embedded-.styleboard #openInStyleboard {
+  color: rgba(170, 170, 170, 0);
+  -webkit-transition: color 0.5s;
+  -moz-transition: color 0.5s;
+  transition: color 0.5s;
+}
+.embedded-.styleboard #openInStyleboard:hover {
+  color: #aaaaaa;
+}
+.embedded-.styleboard #openInStyleboard .icon {
+  color: #aaaaaa;
 }
 .embedded-.styleboard #settings {
   opacity: 0;
