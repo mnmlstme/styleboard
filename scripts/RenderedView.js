@@ -5,48 +5,24 @@ define(['appState'], function (appState) {
     var RenderedView = Backbone.View.extend({
 
         initialize: function ( options ) {
-            var view = this,
-                doc = view.$('iframe')[0].contentWindow.document;
+            var view = this;
 
-            doc.open();
-            doc.write('<html lang="en" style="height: auto">' +
-                      '<head>' +
-                      '<meta charset="utf-8">' +
-                      '<link rel="stylesheet" type="text/css" href="styles/dummy.css">' +
-                      '<link rel="stylesheet" type="text/css" href="' + options.cssUrl + '">' +
-                      '</head>' +
-                      '<body style="background: #fff; font-size: 100%; height: auto; overflow:auto">' +
-                      '</body>' +
-                      '</html>');
-            doc.close();
-
+            view.cssUrl = options.cssUrl;
             view.$iframe = view.$('iframe');
-            view.$body = view.$iframe.contents().find('body');
-            view.$title = view.$('h2');
             view.$pane = view.$el.closest('.pane');
-
             view.settings = {};
 
-            // TODO: make the default context configurable
-            // view.context = 'typography';
+            view.$iframe.load( function () {
+                view.updateSettings();
+            });
 
             appState.on('change:example', function( appState, example ) {
                 view.setModel( example );
             });
 
-            appState.on('change:context', function( appState, context ) {
-                view.setContext( context );
-            });
-
             appState.on('change:settings', function( appState, settingsJSON ) {
                 view.setSettings( settingsJSON );
             });
-        },
-
-        setContext: function setContext( classes ) {
-            var view = this;
-            view.context = classes;
-            view.updateContext();
         },
 
         setModel: function setModel ( example ) {
@@ -65,31 +41,38 @@ define(['appState'], function (appState) {
 
         render: function render () {
             var view = this,
-                example = view.model,
-                title = example ? example.get('title') : '',
-                html = example ? example.get('html') : '';
+                doc = view.$iframe[0].contentWindow.document,
+                example = view.model;
 
-            view.$title.text( title );
-            view.$body.empty().html( html );
-            view.updateContext();
-            view.updateSettings();
-        },
-
-        updateContext: function updateContext() {
-            var view = this;
-            view.$body.attr('class', view.context);
+            if (example) {
+                doc.open();
+                doc.write('<html lang="en" style="height: auto">' +
+                          '<head>' +
+                          '<meta charset="utf-8">' +
+                          '<link rel="stylesheet" type="text/css" href="styles/dummy.css">' +
+                          '<link rel="stylesheet" type="text/css" href="' + view.cssUrl + '">' +
+                          '</head>' +
+                          '<body style="background: #fff; font-size: 100%; height: auto; overflow:auto">' +
+                          example.get('html') +
+                          '</body>' +
+                          '</html>');
+                doc.close();
+            }
         },
 
         updateSettings: function updateSettings() {
             var view = this,
-                iFrameSettings = ['width', 'height'],
+                $body = view.$iframe.contents().find('body'),
+                iFrameSettings = ['width'],
                 sandboxSettings = ['transform'];
 
-            view.$el.css( _(view.settings).pick(sandboxSettings) );
-            view.$iframe.css( _(view.settings).pick(iFrameSettings) );
-            view.$body.css( _(view.settings).omit(iFrameSettings.concat(sandboxSettings)) );
-            view.updateTransform( view.settings.transform );
-            view.updateIFrameHeight();
+            if ( $body.children().length ) {
+                $body.css( _(view.settings).omit(iFrameSettings.concat(sandboxSettings)) );
+                view.$iframe.css( _(view.settings).pick(iFrameSettings) );
+                view.$iframe.css( 'height', $body.outerHeight() );
+                view.$el.css( _(view.settings).pick(sandboxSettings) );
+                view.updateTransform( view.settings.transform );
+            }
         },
 
         updateTransform: function updateTransform( transform ) {
@@ -100,14 +83,6 @@ define(['appState'], function (appState) {
 
             view.$pane.css({ 'background-size': CHECKERBOARD_SIZE * scale + 'px' });
         },
-
-        updateIFrameHeight: function updateIFrameHeight() {
-            var view = this;
-
-            view.$iframe.css( 'height', ''); // let the <body> determine it's own height
-            view.$iframe.css( 'height', view.$body.outerHeight() );
-        }
-
 
     }); // end of view RenderedView
 

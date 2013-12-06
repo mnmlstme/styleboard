@@ -739,14 +739,24 @@ input[type="reset"] strong,
 .frame .frame-tabs small {
   font-size: 75%;
 }
+.frame .frame-header .frame-tabs {
+  position: static;
+  width: auto;
+  float: left;
+}
 .frame .frame-header h1 {
+  float: left;
   margin: 0 .5em;
 }
 .frame .frame-header-left {
-  float: left;
+  position: absolute;
+  left: 0;
+  top: 0;
 }
 .frame .frame-header-right {
-  float: right;
+  position: absolute;
+  right: 0;
+  top: 0;
 }
 .frame.split- {
   /** A frame which is split into two panes */
@@ -856,11 +866,6 @@ input[type="reset"] strong,
 }
 .frame.tabbed- .frame-tabs > *:empty {
   visibility: hidden;
-}
-.frame.tabbed- .frame-header .frame-tabs {
-  position: static;
-  width: auto;
-  float: left;
 }
 .frame.tabbed- .frame-panes {
   /** A list of panes to show in a `tabbed-` frame */

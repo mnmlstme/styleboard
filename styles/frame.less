@@ -62,16 +62,30 @@
         }
     }
 
-    .frame-header h1 {
-        margin: 0 .5em;
+    .frame-header {
+        .frame-tabs {
+            // if tabs are inside a header, float them inside the header
+            position: static;
+            width: auto;
+            float: left;
+        }
+
+        h1 {
+            float: left;
+            margin: 0 .5em;
+        }
     }
 
     .frame-header-left {
-        float: left;
+        position: absolute;
+        left: 0;
+        top: 0;
     }
 
     .frame-header-right {
-        float: right;
+        position: absolute;
+        right: 0;
+        top: 0;
     }
 
     &.split- {
@@ -167,13 +181,6 @@
                     visibility: hidden;
                 }
             }
-        }
-
-        .frame-header .frame-tabs {
-            // if tabs are inside a header, float them inside the header
-            position: static;
-            width: auto;
-            float: left;
         }
 
         .frame-panes {
