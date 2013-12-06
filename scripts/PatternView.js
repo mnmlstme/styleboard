@@ -3,9 +3,6 @@
  */
 define(['appState'], function (appState) {
 
-    var KEY_PREVIOUS = 80,  // p
-        KEY_NEXT = 78;      // n
-
     var PatternView = Backbone.View.extend({
 
         initialize: function () {
@@ -16,10 +13,6 @@ define(['appState'], function (appState) {
 
             appState.on('change:example', view.updateExampleIsActive, view);
 
-            // TODO: we need to remove this when the view is detached
-            $(document).keydown( function (event) {
-                view.uiKeydown(event);
-            });
         },
 
         render: function () {
@@ -113,31 +106,6 @@ define(['appState'], function (appState) {
                 example = $target.data('example');
 
             appState.set('example', example);
-        },
-
-        uiKeydown: function uiKeydown(event) {
-            var view = this,
-                pattern = view.model,
-                index = view.examples.indexOf( appState.get('example') ),
-                original = index,
-                length = view.examples.length;
-
-            if ( !length ) return;
-
-            switch ( event.which ) {
-            case KEY_PREVIOUS:
-                index = index - 1;
-                break;
-            case KEY_NEXT:
-                index = index + 1;
-                break;
-            }
-
-            if ( index < 0 ) index = 0;
-            if ( index >= length ) index = length - 1;
-            if ( index !== original ) {
-                appState.set('example', view.examples[index] );
-            }
         }
 
     });

@@ -36,11 +36,11 @@ function styleboard_handler( $atts ) {
 }
 
 function styleboard_embed_handler( $atts ) {
-    $width = $atts['width'] ? $atts['width'] : "100%";
-    $height = $atts['height'] ? $atts['height'] : "300";
+    $width = $atts['width'] ? $atts['width'] : '100%';
+    $height = $atts['height'] ? $atts['height'] : '400px';
 
     return  '<iframe class="styleboard-embed" src="' . styleboard_url($atts) . '"' .
-        ' style="width:' . $width . ';height:' . $height . 'px"' .
+        ' style="width:' . $width . ';height:' . $height . '"' .
         '></iframe>';
 }
 

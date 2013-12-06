@@ -116,14 +116,11 @@ article.typography {
 */
 .icon {
   display: inline-block;
-  height: 1em;
-  width: 1em;
   font-family: "fontcustom";
   font-style: normal;
   font-weight: normal;
   font-variant: normal;
   text-transform: none;
-  line-height: 1;
   -webkit-font-smoothing: antialiased;
   text-decoration: inherit;
   overflow: hidden;
@@ -133,26 +130,41 @@ article.typography {
   display: inline-block;
   content: "\f100";
   text-align: center;
-  height: 100%;
-  width: 100%;
+  vertical-align: middle;
+}
+.icon.circle-,
+.scrubber .scrubber-selector > li.is-active i.icon {
+  /** Filled Circle (bullet) */
+}
+.icon.circle-::before,
+.scrubber .scrubber-selector > li.is-active i.icon::before {
+  content: "\f101";
 }
 .icon.fontsize- {
   /** Page Size icon. */
 }
 .icon.fontsize-::before {
-  content: "\f101";
+  content: "\f102";
+}
+.icon.opencircle-,
+.scrubber .scrubber-selector > li i.icon {
+  /** Circle */
+}
+.icon.opencircle-::before,
+.scrubber .scrubber-selector > li i.icon::before {
+  content: "\f103";
 }
 .icon.pagesize- {
   /** Page Size icon. */
 }
 .icon.pagesize-::before {
-  content: "\f102";
+  content: "\f104";
 }
 .icon.scale- {
   /** Scale icon. */
 }
 .icon.scale-::before {
-  content: "\f103";
+  content: "\f105";
 }
 /** Color swatches.
     @example
@@ -608,6 +620,38 @@ input[type="reset"] strong,
 .dropdown:hover .dropdown-pane {
   display: block;
 }
+.scrubber {
+  position: relative;
+  line-height: 1.2em;
+}
+.scrubber .scrubber-title {
+  font-size: 75%;
+  margin: 0 .5em;
+}
+.scrubber .scrubber-selector {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  font-size: 50%;
+  margin: 0 .5em;
+}
+.scrubber .scrubber-selector > li {
+  width: 1.5em;
+  text-align: center;
+  display: inline-block;
+  color: #666;
+  cursor: pointer;
+  -webkit-transition: -webkit-transform 0.2s;
+  -moz-transition: -moz-transform 0.2s;
+  -webkit-transition: transform 0.2s;
+  -moz-transition: transform 0.2s;
+  transition: transform 0.2s;
+}
+.scrubber .scrubber-selector > li:hover {
+  -webkit-transform: scale(1.5);
+  -moz-transform: scale(1.5);
+  transform: scale(1.5);
+}
 /** A rectangular region of the screen. 
     @example
     <div class="pane typography">
@@ -757,6 +801,45 @@ input[type="reset"] strong,
   position: absolute;
   right: 0;
   top: 0;
+}
+.frame.footered- {
+  /** A frame which has a header at the top.  The header might include
+            a title, navigation, or tools, for example.
+
+            @example A frame with a title bar.
+            <div class="footered- frame">
+              <div class="pane">
+                <p>Lorem ipsum dolor sit amet,
+                consectetur adipiscing elit.</p>
+              </div>
+              <p class="frame-footer">Lorem Ipsum</p>
+            </div
+         */
+  padding-bottom: 1.2em;
+}
+.frame .frame-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 1.2em;
+  line-height: 1.2em;
+  width: 100%;
+  background: #282624;
+  box-shadow: inset 1px 1px 1px rgba(153, 153, 153, 0.5), inset -1px -1px 1px rgba(0, 0, 0, 0.5);
+  font-family: Lato, Helvetica, Arial, sans-serif;
+  font-weight: 300;
+  font-size: inherit;
+  color: #aaaaaa;
+}
+.frame .frame-footer-left {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+.frame .frame-footer-right {
+  position: absolute;
+  bottom: 0;
+  right: 0;
 }
 .frame.split- {
   /** A frame which is split into two panes */
@@ -967,6 +1050,9 @@ body.styleboard {
   height: 100%;
   overflow: hidden;
 }
+#settings {
+  background: #282624;
+}
 #settings h1 {
   font-family: Lato, Helvetica, Arial, sans-serif;
   font-weight: 300;
@@ -1005,9 +1091,9 @@ body.styleboard {
 }
 .embedded-.styleboard #settings {
   opacity: 0;
-  transition: opacity .5s;
-  -moz-transition: opacity .5s;
-  -webkit-transition: opacity .5s;
+  -webkit-transition: opacity 0.5s;
+  -moz-transition: opacity 0.5s;
+  transition: opacity 0.5s;
 }
 .embedded-.styleboard #settings:hover {
   opacity: 1;

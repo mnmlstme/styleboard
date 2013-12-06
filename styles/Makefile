@@ -17,6 +17,7 @@ LESSFILES= \
 	button.less \
 	menu.less \
 	dropdown.less \
+	scrubber.less \
 	code.less \
 	rule.less \
 	pattern.less

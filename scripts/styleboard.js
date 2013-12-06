@@ -1,9 +1,9 @@
 require(['Dictionary', 'Analyzer', 'Parser', 'TabbedFrameView',
          'DictionaryView', 'RenderedView', 'MarkupView', 'RulesView',
-         'SettingsView', 'appState'],
+         'ScrubberView', 'SettingsView', 'appState'],
 function( Dictionary, Analyzer, Parser, TabbedFrameView,
           DictionaryView, RenderedView, MarkupView, RulesView,
-          SettingsView, appState) {
+          ScrubberView, SettingsView, appState) {
 
     // copy this JSON into ../styleboard.config to configure styleboard.
     var configs = {
@@ -71,6 +71,10 @@ function( Dictionary, Analyzer, Parser, TabbedFrameView,
 
             $('#settings').each( function () {
                 (new SettingsView({ el: $('#settings') })).render();
+            });
+
+            $('#scrubber').each( function () {
+                (new ScrubberView({ el: $(this) })).render();
             });
 
             $('#openInStyleboard').each( function () {

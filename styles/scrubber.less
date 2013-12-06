@@ -1,0 +1,35 @@
+.scrubber {
+    position: relative;
+    line-height: 1.2em;
+
+    .scrubber-title {
+        font-size: 75%;
+        margin: 0 .5em;
+    }
+
+    .scrubber-selector {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        font-size: 50%;
+        margin: 0 .5em;
+
+        > li {
+            width: 1.5em;
+            text-align: center;
+            display: inline-block;
+            color: #666;
+            cursor: pointer;
+            .transition( transform, .2s );
+            i.icon {
+                &:extend( .icon.opencircle- all );
+            }
+            &.is-active i.icon {
+                &:extend( .icon.circle- all );
+            }
+            &:hover {
+                .transform( scale(1.5) );
+            }
+        }
+    }
+}

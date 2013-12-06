@@ -11,7 +11,7 @@
         <script src="lib/mkay.js"></script>
     </head>
     <body class="embedded- styleboard">
-        <div id="tabbedView" class="headered- tabbed- frame">
+        <div id="tabbedView" class="headered- footered- tabbed- frame">
             <nav class="frame-header">
                 <ul class="frame-tabs bar">
                     <li class="is-active">HTML
@@ -20,7 +20,7 @@
                 </ul>
                 <h1>
                     <a id="openInStyleboard" href="./#" target="styleboard">
-                        <small>view in</small> Styleboard</a>
+                        <small>see docs in</small> Styleboard</a>
                 </h1>
                 <ul id="settings" class="tool- bar frame-header-right">
                     <li class="right-aligned- dropdown selector" data-select="transform">
@@ -108,6 +108,10 @@
                     </div>
                 </li>
             </ul>
+            <footer id="scrubber" class="frame-footer scrubber">
+                <h3 class="scrubber-title"></h3>
+                <ul class="scrubber-selector"></ul>
+            </footer>
         </div>
         <script data-main="scripts/styleboard" src="scripts/require.js"></script>
     </body>

@@ -1,7 +1,7 @@
 @import "reset.css";
 @import "util";
 @import "css3";
-@import "color";
+ @import "color";
 @import "typography";
 @import "icon";
 @import "swatch";
@@ -10,6 +10,7 @@
 @import "button";
 @import "menu";
 @import "dropdown";
+@import "scrubber";
 @import "pane";
 @import "frame";
 @import "code";
@@ -27,6 +28,7 @@ body.styleboard {
 }
 
 #settings {
+    background: @inv-background-color;
     h1 {
         .font( nav, large, inv-lo );
         margin: 0 .25em;
@@ -67,9 +69,7 @@ body.styleboard {
 
     #settings {
         opacity: 0;
-        transition: opacity .5s;
-        -moz-transition: opacity .5s;
-        -webkit-transition: opacity .5s;
+        .transition( opacity, .5s );
         &:hover {
             opacity: 1;
         }

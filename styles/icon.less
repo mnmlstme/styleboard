@@ -11,24 +11,20 @@
 
 .icon {
     display: inline-block;
-    height: 1em;
-    width: 1em;
     font-family: "fontcustom";
     font-style: normal;
     font-weight: normal;
     font-variant: normal;
     text-transform: none;
-    line-height: 1;
     -webkit-font-smoothing: antialiased;
     text-decoration: inherit;
     overflow: hidden;
 
-    &::before { 
+    &::before {
         display: inline-block;
         content: "\f100"; // default [X] icon
         text-align: center;
-        height: 100%;
-        width: 100%;
+        vertical-align: middle;
     }
 
     // set the size of the icon by changing the font-size.
@@ -39,19 +35,29 @@
     // default size is 1.5em (24px for 16px text)
     .size( 1.5em );
 
-    &.fontsize- { 
-        /** Page Size icon. */
+    &.circle- {
+        /** Filled Circle (bullet) */
         &::before { content: "\f101"; }
     }
 
-    &.pagesize- { 
+    &.fontsize- {
         /** Page Size icon. */
         &::before { content: "\f102"; }
     }
 
-    &.scale- { 
-        /** Scale icon. */
+    &.opencircle- {
+        /** Circle */
         &::before { content: "\f103"; }
+    }
+
+    &.pagesize- {
+        /** Page Size icon. */
+        &::before { content: "\f104"; }
+    }
+
+    &.scale- {
+        /** Scale icon. */
+        &::before { content: "\f105"; }
     }
 }
 

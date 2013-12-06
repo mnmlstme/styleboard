@@ -50,7 +50,7 @@ define( function () {
             return this.get('decls');
         },
 
-        getValues: function getEach( key ) {
+        getValues: function getValues( key ) {
             return this.getDeclarations()
                 .filter( function (decl) { return decl.key === key; } )
                 .map( function (decl) { return decl.value; } );
@@ -60,6 +60,29 @@ define( function () {
             var pair = _( this.getDeclarations() ).findWhere({ key: key });
 
             return pair && pair.value;
+        },
+
+        getDeepValues: function getDeepValues( key ) {
+            var model = this,
+                list = [];
+            recursiveGetValues( this );
+            return list;
+
+            function recursiveGetValues( defn ) {
+                defn.getDeclarations().forEach( function (decl) {
+                    switch (decl.key) {
+                    case 'example':
+                        list.push( decl.value );
+                        break;
+                    case 'member':
+                    case 'modifier':
+                        recursiveGetValues( decl.value );
+                        break;
+                    default:
+                        // do nothing
+                    }
+                });
+            }
         },
 
         getDefinition: function getDefinition( key, name ) {

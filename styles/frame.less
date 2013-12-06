@@ -18,6 +18,7 @@
     */
 
     @headerHeight: 2em;
+    @footerHeight: 1.2em;
 
     height: 100%;
     width: 100%;
@@ -86,6 +87,47 @@
         position: absolute;
         right: 0;
         top: 0;
+    }
+
+    &.footered- {
+        /** A frame which has a header at the top.  The header might include
+            a title, navigation, or tools, for example.
+
+            @example A frame with a title bar.
+            <div class="footered- frame">
+              <div class="pane">
+                <p>Lorem ipsum dolor sit amet,
+                consectetur adipiscing elit.</p>
+              </div>
+              <p class="frame-footer">Lorem Ipsum</p>
+            </div
+         */
+        padding-bottom: @footerHeight;
+    }
+
+    .frame-footer {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: @footerHeight;
+        line-height: @footerHeight;
+        width: 100%;
+        background: @inv-background-color;
+        box-shadow: inset 1px 1px 1px @border-hi-color,
+                    inset -1px -1px 1px @border-lo-color;
+        .font( nav, inherit, inv-lo );
+    }
+
+    .frame-footer-left {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+    }
+
+    .frame-footer-right {
+        position: absolute;
+        bottom: 0;
+        right: 0;
     }
 
     &.split- {
