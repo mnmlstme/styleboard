@@ -39,7 +39,7 @@ function styleboard_embed_handler( $atts ) {
     $width = $atts['width'] ? $atts['width'] : "100%";
     $height = $atts['height'] ? $atts['height'] : "300";
 
-    return  '<iframe src="' . styleboard_url($atts) . '"' .
+    return  '<iframe class="styleboard-embed" src="' . styleboard_url($atts) . '"' .
         ' style="width:' . $width . ';height:' . $height . 'px"' .
         '></iframe>';
 }
@@ -50,7 +50,8 @@ function styleboard_link_handler( $atts, $content ) {
         $content =  $pattern ? $pattern : 'Styleboard';
     }
 
-    return '<a href="' . styleboard_url($atts) . '">' . $content . '</a>';
+    return '<a class="styleboard-link" href="' . styleboard_url($atts) . '">' .
+        $content . '</a>';
 }
 
 function styleboard_pattern( $atts ) {
