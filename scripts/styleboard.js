@@ -87,6 +87,11 @@ function( Dictionary, Analyzer, Parser, TabbedFrameView,
             if ( hash )
                 appState.set('pattern', dictionary.findByName( hash.slice(1) ) );
 
+            $(window).on('hashchange', function() {
+                var hash = window.location.hash;
+                appState.set('pattern', dictionary.findByName(hash.slice(1) ) );
+            });
+
         });
 
         return sb;

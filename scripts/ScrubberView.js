@@ -47,10 +47,13 @@ define(['appState'], function (appState) {
 
             view.$selector.empty();
 
-            view.examples.forEach( function (example) {
-                view.$selector.mk( 'li', {}, ['i.icon'] )
-                    .data( 'example', example );
-            });
+            if ( view.examples.length > 1 ) {
+                view.examples.forEach( function (example) {
+                    view.$selector.mk( 'li', {}, ['i.icon'] )
+                        .data( 'example', example );
+                });
+            }
+
             view.updateCurrent();
         },
 
