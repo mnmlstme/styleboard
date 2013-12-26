@@ -35,10 +35,14 @@ define(['appState'], function (appState) {
 
         renderDeclarations: function ( definition, $parent ) {
             var view = this,
+                pat = view.model,
                 declarations = definition.getDeclarations(),
+                scope = { pattern: pat.get('name') },
                 $section;
 
             $parent = $parent || view.$el;
+            scope[definition.get('type')] = definition.get('name');
+
             declarations.forEach( function (decl) {
                 var key = decl.key,
                     value = decl.value,
@@ -52,7 +56,7 @@ define(['appState'], function (appState) {
                     $parent.mk(
                         'button', attrs,
                         value.get('title') || "Example" )
-                        .data( 'example', value );
+                        .data( 'example', value.clone().set('scope', scope) );
                     break;
                 case 'modifier':
                 case 'state':
@@ -77,6 +81,7 @@ define(['appState'], function (appState) {
         updateExampleIsActive: function () {
             var view = this,
                 example = appState.get('example'),
+                scope = appState.get('scope'),
                 $examples = view.$('.pattern-example'),
                 viewOffset = view.$el.offset(),
                 $active = $examples.filter( function () {
@@ -102,10 +107,9 @@ define(['appState'], function (appState) {
 
         uiClickExample: function uiClickExample(event) {
             var view = this,
-                $target = $(event.currentTarget),
-                example = $target.data('example');
+                $target = $(event.currentTarget);
 
-            appState.set('example', example);
+            appState.set('example', $target.data('example'));
         }
 
     });

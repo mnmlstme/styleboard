@@ -65,18 +65,23 @@ define( function () {
         getDeepValues: function getDeepValues( key ) {
             var model = this,
                 list = [];
-            recursiveGetValues( this );
+
+            recursiveGetValues( this, {} );
             return list;
 
-            function recursiveGetValues( defn ) {
+            function recursiveGetValues( defn, scope ) {
+                scope[ defn.get('type') ] = defn.get('name');
                 defn.getDeclarations().forEach( function (decl) {
+                    var value = decl.value;
                     switch (decl.key) {
-                    case 'example':
-                        list.push( decl.value );
-                        break;
                     case 'member':
                     case 'modifier':
-                        recursiveGetValues( decl.value );
+                    case 'state':
+                        recursiveGetValues( value );
+                        break;
+                    case 'example';
+                        // value = value.clone().set('scope', scope );
+                        list.push( value );
                         break;
                     default:
                         // do nothing
