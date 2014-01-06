@@ -30,6 +30,8 @@ define(['appState'], function (appState) {
 
             view.renderDeclarations( pat );
 
+            appState.set('example', view.examples.length ? view.examples[0] : {} );
+
             return view;
         },
 
@@ -46,17 +48,19 @@ define(['appState'], function (appState) {
             declarations.forEach( function (decl) {
                 var key = decl.key,
                     value = decl.value,
-                    attrs = { 'class': 'pattern-' + key };
+                    attrs = { 'class': 'pattern-' + key },
+                    scopedValue;
                 switch ( key ) {
                 case 'text':
                     $parent.mk( 'p', value );
                     break;
                 case 'example':
-                    view.examples.push( value );
+                    scopedValue = value.clone().set('scope', scope);
+                    view.examples.push( scopedValue );
                     $parent.mk(
                         'button', attrs,
                         value.get('title') || "Example" )
-                        .data( 'example', value.clone().set('scope', scope) );
+                        .data( 'example', scopedValue );
                     break;
                 case 'modifier':
                 case 'state':
@@ -75,7 +79,6 @@ define(['appState'], function (appState) {
                     break;
                 }
             });
-            view.updateExampleIsActive();
         },
 
         updateExampleIsActive: function () {
@@ -90,7 +93,7 @@ define(['appState'], function (appState) {
                 activeOffset = $active.offset(),
                 relativeOffset = activeOffset ?
                     ( activeOffset.top - viewOffset.top -
-                      $active.outerWidth()/2 - view.$el.outerWidth()/2 ) : 0;
+                      $active.outerHeight()/2 - view.$el.outerHeight()/2 ) : 0;
 
             $examples.removeClass('is-active');
             $active.addClass('is-active');

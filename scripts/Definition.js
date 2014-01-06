@@ -77,14 +77,15 @@ define( function () {
                     case 'member':
                     case 'modifier':
                     case 'state':
-                        recursiveGetValues( value );
-                        break;
-                    case 'example';
-                        // value = value.clone().set('scope', scope );
-                        list.push( value );
+                        recursiveGetValues( value, _.clone(scope) );
                         break;
                     default:
-                        // do nothing
+                        if ( decl.key === key ) {
+                            if ( key === "example" )
+                                value = value.clone().set('scope', scope );
+                            list.push( value );
+                        }
+                        break;
                     }
                 });
             }
