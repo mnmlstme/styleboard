@@ -8,9 +8,5 @@ define( function () {
  */
     appState = new Backbone.Model();
 
-    appState.on('change:pattern', function (model, pattern) {
-        model.set('example', pattern.getFirst('example'));
-    });
-
     return appState;
 });

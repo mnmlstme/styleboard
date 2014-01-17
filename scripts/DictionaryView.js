@@ -49,22 +49,8 @@ function ( PatternView, TabbedFrameView, appState ) {
         addPattern: function ( pat, dict, options ) {
             var view = this,
                 name = pat.get('name').replace('.','');
-            view.$patternList.mk( 'li', name );
-        },
-
-        events: function () {
-            return _.extend({}, TabbedFrameView.prototype.events, {
-                'click .dictionary-list > li': 'uiSelectEntry'
-            });
-        },
-
-        uiSelectEntry: function (event) {
-            var view = this,
-                dict = view.model,
-                $target = $(event.target),
-                index = $target.index(),
-                pat = dict.at(index);
-            view.selectPattern( pat );
+            view.$patternList.mk( 'li',
+                                  ['a', { href: '#' + name }, name ]);
         },
 
         selectPattern: function ( pattern ) {
