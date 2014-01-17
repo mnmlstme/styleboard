@@ -42,12 +42,9 @@ define(['appState'], function (appState) {
         render: function render () {
             var view = this,
                 doc = view.$iframe[0].contentWindow.document,
-                example = view.model,
-                html, scope;
+                example = view.model;
 
             if (example) {
-                html = example.get('html');
-                scope = example.get('scope') || {};
 
                 doc.open();
                 doc.write('<html lang="en" style="height: auto">' +
@@ -57,7 +54,7 @@ define(['appState'], function (appState) {
                           '<link rel="stylesheet" type="text/css" href="' + view.cssUrl + '">' +
                           '</head>' +
                           '<body style="background: #fff; font-size: 100%; height: auto; overflow:auto">' +
-                          _.template( html, scope ) +
+                          example.expand() +
                           '</body>' +
                           '</html>');
                 doc.close();

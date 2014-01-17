@@ -45,11 +45,6 @@ function( Dictionary, Analyzer, Parser, TabbedFrameView,
             parser = new Parser();
 
         parser.load( cssUrl, function (rules) {
-            _.templateSettings = {
-                interpolate : /\{\{\{(\s*\w+?\s*)\}\}\}/g,
-                escape : /\{\{(\s*\w+?\s*)\}\}(?!\})/g
-            };
-
             analyzer.analyze( rules );
 
             // initialize each view, if it exists in the markup

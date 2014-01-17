@@ -24,7 +24,7 @@ define( function () {
             var view = this,
                 example = view.model;
 
-            view.$pre.text( example ? _.template( example.get('html'), example.get('scope') ) : '' );
+            view.$pre.text( example ? example.expand() : '' );
 
             return view;
         }

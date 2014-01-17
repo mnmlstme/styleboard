@@ -1,7 +1,7 @@
 /**
  @filespec PatternView - the view which depicts a Pattern in the styleboard
  */
-define(['appState'], function (appState) {
+define(['appState', 'Example'], function (appState, Example) {
 
     var PatternView = Backbone.View.extend({
 
@@ -30,7 +30,7 @@ define(['appState'], function (appState) {
 
             view.renderDeclarations( pat );
 
-            appState.set('example', view.examples.length ? view.examples[0] : {} );
+            appState.set('example', view.examples.length ? view.examples[0] : new Example() );
 
             return view;
         },
@@ -49,18 +49,18 @@ define(['appState'], function (appState) {
                 var key = decl.key,
                     value = decl.value,
                     attrs = { 'class': 'pattern-' + key },
-                    scopedValue;
+                    example;
                 switch ( key ) {
                 case 'text':
                     $parent.mk( 'p', value );
                     break;
                 case 'example':
-                    scopedValue = value.clone().set('scope', scope);
-                    view.examples.push( scopedValue );
+                    example = new Example({ code: value.get('html'), scope: scope });
+                    view.examples.push( example );
                     $parent.mk(
                         'button', attrs,
                         value.get('title') || "Example" )
-                        .data( 'example', scopedValue );
+                        .data( 'example', example );
                     break;
                 case 'modifier':
                 case 'state':
