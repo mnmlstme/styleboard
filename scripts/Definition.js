@@ -111,8 +111,10 @@ define([ 'Example' ], function ( Example ) {
             var examples = pattern.get('cached-examples');
             if ( !examples ) {
                 examples = pattern.getDeepValues('example')
-                    .map( function (value) {
-                        return new Example(value.toJSON());
+                    .map( function (value, index) {
+                        var xmp = new Example(value.toJSON());
+                        xmp.set('index', index);
+                        return xmp;
                     });
                 pattern.set('cached-examples', examples);
             }

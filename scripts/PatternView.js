@@ -55,11 +55,13 @@ define(['appState', 'Example'], function (appState, Example) {
                         break;
                     case 'example':
                         // TODO: this relies on order of traversal
-                        example = examples[exampleIndex++];
-                        $parent.mk(
-                            'button', attrs,
-                            value.get('title') || "Example" )
+                        example = examples[exampleIndex];
+                        attrs.href = '#' + pat.get('name') + '/' +
+                            (example.get('slug') || exampleIndex);
+                        $parent.mk( 'a.button', attrs,
+                            example.get('title') || "Example" )
                             .data( 'example', example );
+                        exampleIndex++;
                         break;
                     case 'modifier':
                     case 'state':
@@ -87,32 +89,21 @@ define(['appState', 'Example'], function (appState, Example) {
                 scope = appState.get('scope'),
                 $examples = view.$('.pattern-example'),
                 viewOffset = view.$el.offset(),
+                $pane = view.$el.closest('.pane'),
                 $active = $examples.filter( function () {
                     return $(this).data('example') === example;
                 }),
                 activeOffset = $active.offset(),
                 relativeOffset = activeOffset ?
-                    ( activeOffset.top - viewOffset.top -
-                      $active.outerHeight()/2 - view.$el.outerHeight()/2 ) : 0;
+                    ( activeOffset.top - viewOffset.top - $pane.outerHeight()/2 ) : 0;
 
             $examples.removeClass('is-active');
             $active.addClass('is-active');
 
             // scroll to current example
-            view.$el.animate({
+            $pane.animate({
                 scrollTop: relativeOffset
             }, 200 );
-        },
-
-        events: {
-            'click .pattern-example': 'uiClickExample'
-        },
-
-        uiClickExample: function uiClickExample(event) {
-            var view = this,
-                $target = $(event.currentTarget);
-
-            appState.set('example', $target.data('example'));
         }
 
     });

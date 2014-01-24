@@ -78,8 +78,15 @@ function( Dictionary, Analyzer, Parser, Definition, Example,
 
             $('#openInStyleboard').each( function () {
                 var $a = $(this);
-                appState.on('change:pattern', function (model, pattern) {
-                    $a.attr('href', './#' + pattern.get('name'));
+                appState.on('change', function () {
+                    var pattern = appState.get('pattern'),
+                        example = appState.get('example'),
+                        href = './#' + pattern.get('name');
+                    if ( example ) {
+                        debugger;
+                        href = href + '/' + (example.get('slug') || example.get('index') || '');
+                    }
+                    $a.attr('href', href);
                 });
             });
 
