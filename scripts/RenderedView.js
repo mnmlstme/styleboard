@@ -50,7 +50,6 @@ define(['appState'], function (appState) {
                 doc.write('<html lang="en" style="height: auto">' +
                           '<head>' +
                           '<meta charset="utf-8">' +
-                          '<link rel="stylesheet" type="text/css" href="styles/dummy.css">' +
                           '<link rel="stylesheet" type="text/css" href="' + view.cssUrl + '">' +
                           '</head>' +
                           '<body style="background: #fff; font-size: 100%; height: auto; overflow:auto">' +
@@ -64,8 +63,12 @@ define(['appState'], function (appState) {
         updateSettings: function updateSettings() {
             var view = this,
                 $body = view.$iframe.contents().find('body'),
+                defaultHeight = view.$el.offsetParent().height() -
+                                    2 * view.$el.position().top,
                 iFrameSettings = ['width'],
                 sandboxSettings = ['transform'];
+
+            view.$iframe.css( 'height', defaultHeight ); // used if content is height: 100%
 
             if ( $body.children().length ) {
                 $body.css( _(view.settings).omit(iFrameSettings.concat(sandboxSettings)) );

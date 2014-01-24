@@ -51,6 +51,6 @@ module.exports = function(grunt){
     grunt.loadNpmTasks('grunt-contrib-qunit');
     grunt.loadNpmTasks('grunt-webfont');
 
-    grunt.registerTask('default', ['less', 'webfont']);
+    grunt.registerTask('default', ['webfont', 'less']);
 
 };

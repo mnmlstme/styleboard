@@ -1,7 +1,7 @@
-@import "reset.css";
+@import "reset";
 @import "util";
 @import "css3";
- @import "color";
+@import "color";
 @import "typography";
 @import "icon";
 @import "swatch";
@@ -44,12 +44,17 @@ body.styleboard {
 
 #sandbox {
     position: absolute;
-    top: 0;
+    top: 20px;
     left: 0;
     .transform-origin( top left );
+    width: 100%;
+
     iframe {
+        display: block;
         width: 1024px;
+        height: 100%;
         outline: 1px dotted rgba(0,0,0,0.2);
+        margin: 0 auto
     }
 }
 
@@ -70,6 +75,10 @@ body.styleboard {
             }
         }
     }
+}
+
+#sources {
+    .color( inv-lo );
 }
 
 .embedded-.styleboard {

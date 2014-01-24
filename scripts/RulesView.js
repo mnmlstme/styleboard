@@ -5,8 +5,10 @@ define( function () {
 
     var RulesView = Backbone.View.extend({
 
-        initialize: function () {
+        initialize: function ( options ) {
             var view = this;
+
+            view.dictionary = options.dictionary;
 
             appState.on('change:pattern', function( appState, pattern ) {
                 view.setModel( pattern );
@@ -25,14 +27,16 @@ define( function () {
             var view = this,
                 pattern = view.model,
                 env = {},
-                $list = view.$el;
+                $list = view.$el,
+                keys = ['modifier', 'member', 'state'],
+                patterns = [];
 
             $list.empty();
 
             if ( pattern ) {
                 pattern.getValues('rule').forEach( function (node) {
                     var type = node.type.toLowerCase(),
-                        $rule = $list.mk('li.rule.' + type + '-' ),
+                        $rule = $list.mk('li.highlight.rule.' + type + '-' ),
                         $selectors = $rule.mk('ul.rule-selectors'),
                         $declarations = $rule.mk('ul.rule-declarations');
 
@@ -42,10 +46,24 @@ define( function () {
                             var $selector = $selectors.mk('li');
 
                             selector.elements.forEach( function (el, i) {
-                                if (i && el.combinator.value !== '') 
+                                var type = 'code.element',
+                                    name, pat, type;
+                                if (i && el.combinator.value !== '')
                                     $selector.mk('code.combinator',
                                                  el.combinator.value );
-                                $selector.mk('code.element', el.value);
+                                if ( el.value.charAt(0) === '.' ) {
+                                    name = el.value.slice(1);
+                                    pat = view.dictionary.findByName( name );
+                                    if ( pat ) {
+                                        type = type + '.pattern-.hljs-class';
+                                        patterns.push( pat );
+                                    } else {
+                                        type = type + '.hljs-class';
+                                    }
+                                } else if ( el.value.charAt(0) === ':' ) {
+                                    type = type + '.hljs-pseudo';
+                                }
+                                $selector.mk(type, el.value);
                             });
                         });
 
@@ -58,7 +76,18 @@ define( function () {
                     default:
                         $rule.text( node.toCSS(env) );
                     }
-                    
+                });
+
+                // find all classes related to patterns
+                $list.find('.hljs-class').each( function () {
+                    var $element = $(this),
+                        name = $element.text().slice(1);
+                    patterns.forEach( function (pat) {
+                        var defn = pat.getDefinition(keys, name);
+                        if (defn) {
+                            $element.addClass(defn.get('type') + '-');
+                        }
+                    });
                 });
             }
 
