@@ -4,6 +4,7 @@ define( function () {
      * A code example.
      *
      * @param attrs.code {String}  the code
+     * @param attrs.slug {String}  a human-readable unique (within a pattern) identifier
      * @param attrs.scope {Object} bindings used to expand templates in code
      */
 

@@ -1,9 +1,9 @@
-require(['Dictionary', 'Analyzer', 'Parser', 'Example',
+require(['Dictionary', 'Analyzer', 'Parser', 'Definition', 'Example',
          'TabbedFrameView', 'DictionaryView', 'RenderedView', 'MarkupView', 'RulesView',
-         'ScrubberView', 'SettingsView', 'appState'],
-function( Dictionary, Analyzer, Parser, Example,
+         'FooterView', 'SettingsView', 'appState'],
+function( Dictionary, Analyzer, Parser, Definition, Example,
           TabbedFrameView, DictionaryView, RenderedView, MarkupView, RulesView,
-          ScrubberView, SettingsView, appState) {
+          FooterView, SettingsView, appState) {
 
     // copy this JSON into ../styleboard.config to configure styleboard.
     var configs = {
@@ -18,7 +18,6 @@ function( Dictionary, Analyzer, Parser, Example,
         dataType: 'json',
         url: '../styleboard.config',
         success: function ( jsonObject ) {
-            console.log("Read configuration from styleboard.config");
             configs = jsonObject;
         },
         error: function ( jqxhr, status, error ) {
@@ -73,8 +72,8 @@ function( Dictionary, Analyzer, Parser, Example,
                 (new SettingsView({ el: $('#settings') })).render();
             });
 
-            $('#scrubber').each( function () {
-                (new ScrubberView({ el: $(this) })).render();
+            $('#embedFooter').each( function () {
+                (new FooterView({ el: $(this) })).render();
             });
 
             $('#openInStyleboard').each( function () {
@@ -84,22 +83,57 @@ function( Dictionary, Analyzer, Parser, Example,
                 });
             });
 
-            appState.on('change:pattern', function (model, pattern) {
-                var examples = pattern.getExamples();
-                appState.set( 'example', examples.length ? examples[0] : new Example() );
-            });
-
-            if ( hash )
-                appState.set('pattern', dictionary.findByName( hash.slice(1) ) );
+            if ( hash ) {
+                route( hash.slice(1) );
+            }
 
             $(window).on('hashchange', function() {
                 var hash = window.location.hash;
-                appState.set('pattern', dictionary.findByName(hash.slice(1) ) );
+                route( hash.slice(1) );
             });
 
         });
 
         return sb;
+
+        // Load the state of the app from a string (usually the URL hash)
+        // Possible routes:
+        //    <pattern>              go to pattern, show first example
+        //    <pattern>/<N>          go to example N of pattern
+        //    <pattern>/<slug>       find example by slug for the pattern
+        function route( string ) {
+            var path = string.split('/'),
+                pattern,
+                examples,
+                index,
+                example;
+
+            if ( path.length ) {
+                pattern = dictionary.findByName( path[0] );
+                examples = pattern.getExamples();
+
+                if ( path.length > 1 ) {
+                    if ( path[1].match( /^\d+$/ ) ) {
+                        // example number
+                        index = parseInt( path[1] );
+                        if ( index < examples.length ) {
+                            example = examples[index];
+                        }
+                    } else {
+                        // example slug
+                        example = _(examples).find( function (xmp) {
+                            return xmp.get('slug') === path[1];
+                        });
+                    }
+                } else if ( examples.length ) {
+                    // first example
+                    example = examples[0];
+                }
+            }
+
+            appState.set('pattern', pattern || new Definition() );
+            appState.set('example', example || new Example() );
+        }
 
     }
 

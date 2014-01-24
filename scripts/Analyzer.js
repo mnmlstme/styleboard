@@ -32,7 +32,7 @@ define(['Definition'], function (Definition) {
                 cmtfirst:       /^\s*\/\*\*\s*/,
                 cmtmiddle:      /^(\s*\*+\s?)?/,
                 cmtlast:        /\s*\*+\/\s*$/,
-                atcommand:      /^\s*@([a-z-]+)\s*(.*)\s*$/,
+                atcommand:      /^\s*@([a-z-]+)\s*(\[([a-z][a-z0-9-]*)\])?(.*)\s*$/,
                 ateot:          /^\s*(@[a-z-]+.*)?$/,
                 empty:          /^\s*$/,
                 pattern:        /^\.([a-z]+)$/,                 // lowercase, no hyphens
@@ -163,38 +163,46 @@ define(['Definition'], function (Definition) {
                         if ( i > 0 && i <= list.length-1 ) line = line.replace( regex.cmtmiddle, '' );
                         return line;
                     }),
-                line, matches;
+                line, matches, command, slug, data;
 
             while ( lines.length ) {
                 line = lines.shift();
                 if  (( matches = regex.atcommand.exec( line ) )) {
-                    switch ( matches[1] ) {
+                    command = matches[1];
+                    slug = matches[3];
+                    data = matches[4];
+                    switch ( command ) {
                     case 'pattern':
                     case 'member':
                     case 'modifier':
                     case 'state':
                     case 'helper':
-                        if( defn.has('type') && defn.get('type') !== matches[1] ) {
+                        if( defn.has('type') && defn.get('type') !== command ) {
                             console.warn('changing type from ', defn.get('type'),
                                          ' to ', matches[1], ' on ', defn );
                         }
-                        defn.set('type', matches[1]);
+                        defn.set('type', command);
                         // TODO: parse comma-separated selector list
-                        if ( matches[2] )
-                            defn.declare( 'selector', createSelector(matches[2]) );
+                        if ( data )
+                            defn.declare( 'selector', createSelector(data) );
                         break;
                     case 'example':
                         defn.declare( 'example', new Backbone.Model({
-                            title: matches[2],
-                            html: contentsOfBlock()
+                            slug: slug || stringToSlug( data ),
+                            title: data,
+                            code: contentsOfBlock()
                         }));
                         break;
                     default:
-                        console.warn('unrecognized styledoc tag @' + matches[1]);
+                        console.warn('unrecognized styledoc tag @' + command);
                     }
                 } else if ( ! regex.empty.exec(line) ) {
                     defn.declare( 'text', contentsOfBlock(line) );
                 }
+            }
+
+            function stringToSlug( string ) {
+                return string.toLowerCase().replace(/[^a-z0-9]+/g,'-');
             }
 
             function contentsOfBlock( firstLine ) {

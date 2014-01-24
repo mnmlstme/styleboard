@@ -2,10 +2,10 @@ define( function () {
     function Parser( opts ) {
         opts = opts || {};
         var parser = this;
-    
+
         parser.load = function load ( url, done ) {
-            $.ajax({ 
-                url: url, 
+            $.ajax({
+                url: url,
                 dataType: 'text',
                 error:  function ( xhr, status, error ) {
                     alert("Failed " + status + ": " + error);
@@ -15,14 +15,12 @@ define( function () {
                 }
             });
         };
-    
         parser.parse = function parse(data, done) {
             new less.Parser( opts )
                 .parse( data, function (err, tree ) {
                     if ( err ) {
-                        console.warn( err );
+                        alert( "Failed to parse CSS: " + err );
                     } else {
-                        console.log('Read ' + tree.rules.length + " rules...");
                         done( tree.rules );
                     }
                 });

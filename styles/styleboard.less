@@ -10,7 +10,6 @@
 @import "button";
 @import "menu";
 @import "dropdown";
-@import "scrubber";
 @import "pane";
 @import "frame";
 @import "code";
@@ -50,8 +49,9 @@ body.styleboard {
     width: 100%;
 
     iframe {
+        // TODO: a better way to sync these with index.html
         display: block;
-        width: 1024px;
+        width: 600px;
         height: 100%;
         outline: 1px dotted rgba(0,0,0,0.2);
         margin: 0 auto
@@ -100,5 +100,10 @@ body.styleboard {
         &:hover {
             opacity: 1;
         }
+    }
+
+    .frame-footer > h3 {
+        font-size: 75%;
+        margin: 0 .5em;
     }
 }

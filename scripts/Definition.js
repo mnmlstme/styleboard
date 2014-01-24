@@ -112,10 +112,7 @@ define([ 'Example' ], function ( Example ) {
             if ( !examples ) {
                 examples = pattern.getDeepValues('example')
                     .map( function (value) {
-                        return new Example({
-                            code: value.get('html'),
-                            scope: value.get('scope')
-                        });
+                        return new Example(value.toJSON());
                     });
                 pattern.set('cached-examples', examples);
             }
