@@ -64,8 +64,12 @@ define(['appState'], function (appState) {
         updateSettings: function updateSettings() {
             var view = this,
                 $body = view.$iframe.contents().find('body'),
+                defaultHeight = view.$el.offsetParent().height() -
+                                    2 * view.$el.position().top,
                 iFrameSettings = ['width'],
                 sandboxSettings = ['transform'];
+
+            view.$iframe.css( 'height', defaultHeight ); // used if content is height: 100%
 
             if ( $body.children().length ) {
                 $body.css( _(view.settings).omit(iFrameSettings.concat(sandboxSettings)) );

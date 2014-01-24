@@ -11,8 +11,6 @@ define(['appState'], function (appState) {
             view.$selector = view.$el.find('.scrubber-selector');
             view.$title = view.$el.find('.scrubber-title');
 
-            view.examples = [];
-
             appState.on('change:pattern', function( appState, pattern ) {
                 view.setModel( pattern );
             });
@@ -31,7 +29,6 @@ define(['appState'], function (appState) {
             var view = this;
 
             view.model = pattern;
-            view.examples = pattern.getDeepValues('example');
             view.render();
         },
 
@@ -43,12 +40,14 @@ define(['appState'], function (appState) {
         },
 
         render: function render() {
-            var view = this;
+            var view = this,
+                model = view.model,
+                examples = model ? model.getExamples() : [];
 
             view.$selector.empty();
 
-            if ( view.examples.length > 1 ) {
-                view.examples.forEach( function (example) {
+            if ( examples.length > 1 ) {
+                examples.forEach( function (example) {
                     view.$selector.mk( 'li', {}, ['i.icon'] )
                         .data( 'example', example );
                 });
@@ -89,10 +88,11 @@ define(['appState'], function (appState) {
         uiScrub: function uiScrub( event ) {
             if ( !this.isScrubbing ) return;
             var view = this,
+                examples = view.model.getExamples();
                 x = view.coordinates( event ).x,
-                cellWidth = view.$selector.width() / view.examples.length,
+                cellWidth = view.$selector.width() / examples.length,
                 index = Math.floor( x / cellWidth ),
-                example = view.examples[index];
+                example = examples[index];
 
             if ( example && example !== view.current ) {
                 appState.set('example', example);
@@ -108,9 +108,10 @@ define(['appState'], function (appState) {
 
         uiKeydown: function uiKeydown(event) {
             var view = this,
-                index = view.examples.indexOf( appState.get('example') ),
+                examples = view.model.getExamples(),
+                index = examples.indexOf( appState.get('example') ),
                 original = index,
-                length = view.examples.length;
+                length = examples.length;
 
             if ( !length ) return;
 
@@ -126,7 +127,7 @@ define(['appState'], function (appState) {
             if ( index < 0 ) index = 0;
             if ( index >= length ) index = length - 1;
             if ( index !== original ) {
-                appState.set('example', view.examples[index] );
+                appState.set('example', examples[index] );
             }
         },
 

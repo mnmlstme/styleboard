@@ -6,7 +6,7 @@ define(['appState'], function (appState) {
     var defaultSettings = {
         "background-color": "#fff",
         "font-size": "16px",
-        "width": "1024px",
+        "width": "600px",
         "transform": "scale(1)"
     }
 

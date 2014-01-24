@@ -1,8 +1,8 @@
-require(['Dictionary', 'Analyzer', 'Parser', 'TabbedFrameView',
-         'DictionaryView', 'RenderedView', 'MarkupView', 'RulesView',
+require(['Dictionary', 'Analyzer', 'Parser', 'Example',
+         'TabbedFrameView', 'DictionaryView', 'RenderedView', 'MarkupView', 'RulesView',
          'ScrubberView', 'SettingsView', 'appState'],
-function( Dictionary, Analyzer, Parser, TabbedFrameView,
-          DictionaryView, RenderedView, MarkupView, RulesView,
+function( Dictionary, Analyzer, Parser, Example,
+          TabbedFrameView, DictionaryView, RenderedView, MarkupView, RulesView,
           ScrubberView, SettingsView, appState) {
 
     // copy this JSON into ../styleboard.config to configure styleboard.
@@ -62,11 +62,11 @@ function( Dictionary, Analyzer, Parser, TabbedFrameView,
             });
 
             $('#example').each( function () {
-                (new MarkupView({ el: $(this) })).render();
+                (new MarkupView({ el: $(this), dictionary: dictionary })).render();
             });
 
             $('#sources').each( function () {
-                (new RulesView({ el: $('#sources') })).render();
+                (new RulesView({ el: $('#sources'), dictionary: dictionary })).render();
             });
 
             $('#settings').each( function () {
@@ -82,6 +82,11 @@ function( Dictionary, Analyzer, Parser, TabbedFrameView,
                 appState.on('change:pattern', function (model, pattern) {
                     $a.attr('href', './#' + pattern.get('name'));
                 });
+            });
+
+            appState.on('change:pattern', function (model, pattern) {
+                var examples = pattern.getExamples();
+                appState.set( 'example', examples.length ? examples[0] : new Example() );
             });
 
             if ( hash )

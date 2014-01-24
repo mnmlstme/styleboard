@@ -1,4 +1,4 @@
-define( function () {
+define([ 'Example' ], function ( Example ) {
 
     /**
      * The definition of a pattern or other relation
@@ -91,14 +91,35 @@ define( function () {
             }
         },
 
-        getDefinition: function getDefinition( key, name ) {
-            var pair = _( this.getDeclarations() )
+        getDefinition: function getDefinition( keys, name ) {
+            if ( !_.isArray(keys) ) {
+                keys = [ keys ];
+            }
+            var keys,
+                pair = _( this.getDeclarations() )
                 .find( function( decl ) {
-                    return decl.key === key &&
+                    return _.contains(keys, decl.key) &&
                         decl.value.get('name') === name;
                 });
 
             return pair && pair.value;
+        },
+
+        getExamples: function getExamples() {
+            // TODO: derive a Pattern model which will handle this
+            var pattern = this;
+            var examples = pattern.get('cached-examples');
+            if ( !examples ) {
+                examples = pattern.getDeepValues('example')
+                    .map( function (value) {
+                        return new Example({
+                            code: value.get('html'),
+                            scope: value.get('scope')
+                        });
+                    });
+                pattern.set('cached-examples', examples);
+            }
+            return examples;
         },
 
         declares: function declares( key ) {

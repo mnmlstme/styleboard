@@ -2,12 +2,14 @@
     <head>
         <meta charset="utf-8">
         <title>StyleBoard</title>
-        <link rel="stylesheet" type="text/css" href="styles/styleboard.css">
+        <link rel="stylesheet" type="text/css"
+              href="styles/styleboard.css">
         <script src="https://code.jquery.com/jquery-1.10.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone-min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/1.4.1/less.min.js"></script>
+        <script src="https://yandex.st/highlightjs/8.0/highlight.min.js"></script>
         <script src="lib/mkay.js"></script>
     </head>
     <body class="styleboard">
@@ -110,8 +112,7 @@
                 </div>
                 <div class="horizontal- split- frame">
                     <section class="code dark- scrollable- pane">
-                        <pre id="example">
-                        </pre>
+                        <pre id="example" class="highlight"></pre>
                     </section>
                     <section class="code dark- scrollable- pane">
                         <ul id ="sources"></ul>
