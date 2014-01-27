@@ -16,6 +16,7 @@ function( Dictionary, Analyzer, Parser, Definition, Example,
 
     $.ajax({
         dataType: 'json',
+        cache: false,
         url: '../styleboard.config',
         success: function ( jsonObject ) {
             configs = jsonObject;

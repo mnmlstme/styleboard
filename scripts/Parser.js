@@ -6,6 +6,7 @@ define( function () {
         parser.load = function load ( url, done ) {
             $.ajax({
                 url: url,
+                cache: false,
                 dataType: 'text',
                 error:  function ( xhr, status, error ) {
                     alert("Failed " + status + ": " + error);
