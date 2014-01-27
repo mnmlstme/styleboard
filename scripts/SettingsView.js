@@ -6,7 +6,7 @@ define(['appState'], function (appState) {
     var defaultSettings = {
         "background-color": "#fff",
         "font-size": "16px",
-        "width": "600px",
+        "width": "480px",
         "transform": "scale(1)"
     }
 
@@ -15,7 +15,7 @@ define(['appState'], function (appState) {
         initialize: function () {
             var view = this;
 
-            view.settings = {};
+            view.settings = defaultSettings;
 
             appState.set( 'settings', JSON.stringify(view.settings) );
             appState.on( 'change:settings', function( appState, settingsJSON ) {
@@ -35,8 +35,7 @@ define(['appState'], function (appState) {
         },
 
         updateSettings: function updateSettings() {
-            var view = this,
-                settings = _.defaults( view.settings, defaultSettings );
+            var view = this;
 
             _(view.settings).each( function ( value, key ) {
                 var $selector = view.$('.selector[data-select="' + key + '"]'),

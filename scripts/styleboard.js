@@ -83,7 +83,6 @@ function( Dictionary, Analyzer, Parser, Definition, Example,
                         example = appState.get('example'),
                         href = './#' + pattern.get('name');
                     if ( example ) {
-                        debugger;
                         href = href + '/' + (example.get('slug') || example.get('index') || '');
                     }
                     $a.attr('href', href);
