@@ -22,7 +22,8 @@ define( function () {
           "Maecenas sit amet erat ullamcorper, scelerisque dui vitae, tempor nibh. Morbi non est eget lectus pretium tincidunt eget non purus. Quisque in consectetur ante. Pellentesque in nulla rutrum, iaculis nisl ut, faucibus leo. Maecenas suscipit tellus elit, nec scelerisque quam accumsan sed. Sed consequat ultrices lorem eu bibendum. Aliquam elementum dui vitae ante tempus vehicula. Nulla imperdiet dapibus justo, fringilla gravida ante. Aenean libero turpis, mattis quis gravida sed, facilisis ac nibh. Vivamus sit amet dictum magna. Pellentesque cursus pharetra enim eu convallis. Fusce augue felis, consectetur ac fringilla non, consectetur ac quam."],
         function (text) { return text.split(' '); });
 
-    var functions = {
+    var predefined = {
+        br: '<hr class="styleboard-view-break">',
         lorem: function lorem( para, count, offset ) {
             offset = offset || 0;
             para = para || 0;
@@ -42,7 +43,7 @@ define( function () {
             var model = this,
                 code = model.get('code') || '',
                 scope = model.get('scope') || {},
-                bindings = _.extend( {}, functions, scope, moreScope || {} );
+                bindings = _.extend( {}, predefined, scope, moreScope || {} );
             return code ? _.template( code, bindings, templateSettings ) : '';
         },
 

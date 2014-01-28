@@ -27,10 +27,10 @@ define( function () {
             var view = this,
                 example = view.model,
                 keys = ['modifier', 'member', 'state'],
-                patterns = [];
+                patterns = [],
+                code = example ? highlight( 'xml', example.expand() ).value : '';
 
-            view.$pre
-                .html( example ? highlight( 'xml', example.expand() ).value : '' )
+            view.$pre.html( code )
               // TODO: make this less tied to highlight.js
               .find(".hljs-attribute:contains('class') + .hljs-value")
                 // First find all the patterns used in the example:
@@ -73,6 +73,12 @@ define( function () {
                         }
                     });
                 });
+
+            // Look for artifacts that aren't really part of the example, so we can hide them w/CSS
+            view.$pre.find('.hljs-tag')
+                .filter( function () {
+                    return $(this).find('.hljs-class').text() === 'styleboard-view-break';
+                }).addClass('hidden-');
 
             return view;
         }

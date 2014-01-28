@@ -43,7 +43,7 @@ body.styleboard {
 
 #sandbox {
     position: absolute;
-    top: 20px;
+    top: 0;
     left: 0;
     .transform-origin( top left );
     width: 100%;
@@ -79,6 +79,10 @@ body.styleboard {
 }
 
 .embedded-.styleboard {
+
+    .frame .frame-header h1 {
+        float: right;
+    }
 
     #openInStyleboard {
         color: fade( @inv-body-lo-color, 0% );

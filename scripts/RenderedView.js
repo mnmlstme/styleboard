@@ -51,8 +51,9 @@ define(['appState'], function (appState) {
                           '<head>' +
                           '<meta charset="utf-8">' +
                           '<link rel="stylesheet" type="text/css" href="' + view.cssUrl + '">' +
+                          '<link rel="stylesheet" type="text/css" href="styles/styleboard-view.css">' +
                           '</head>' +
-                          '<body style="background: #fff; font-size: 100%; height: auto; overflow:auto">' +
+                          '<body class="styleboard-view">' +
                           example.expand() +
                           '</body>' +
                           '</html>');

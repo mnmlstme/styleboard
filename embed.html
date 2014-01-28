@@ -15,82 +15,18 @@
         <div id="tabbedView" class="headered- footered- tabbed- frame">
             <nav class="frame-header">
                 <ul class="frame-tabs bar">
-                    <li class="is-active">HTML
+                    <li>HTML
                     <li>CSS
-                    <li>View
+                    <li class="is-active">View
                 </ul>
+                <ul id="settings" class="tool- bar"></ul>
                 <h1>
                     <a id="openInStyleboard" href="./#" target="styleboard">
-                        <i class="fullscreen- icon"></i> Styleboard</a>
+                         Styleboard <i class="fullscreen- icon"></i></a>
                 </h1>
-                <ul id="settings" class="tool- bar frame-header-right">
-                    <li class="right-aligned- dropdown selector" data-select="transform">
-                        <button>
-                            <i class="scale- icon"></i>
-                            <span class="selector-value"></span>
-                        </button>
-                        <ul class="dropdown-pane menu">
-                            <li data-option="scale(.25)">25%
-                            <li data-option="scale(.5)">50%
-                            <li data-option="scale(.75)">75%
-                            <li data-option="scale(1)">100%
-                            <li data-option="scale(1.5)">150%
-                            <li data-option="scale(2)">200%
-                            <li data-option="scale(4)">400%
-                        </ul>
-                    <li class="right-aligned- dropdown selector" data-select="width">
-                        <button>
-                            <i class="pagesize- icon"></i>
-                            <span class="selector-value"></span>
-                        </button>
-                        <ul class="dropdown-pane menu">
-                            <li data-option="320px">320px
-                            <li data-option="480px">480px
-                            <li data-option="568px">568px
-                            <li data-option="600px">600px
-                            <li data-option="768px">768px
-                            <li data-option="800px">800px
-                            <li data-option="1024px">1024px
-                        </ul>
-                    <li class="right-aligned- dropdown selector" data-select="font-size">
-                        <button>
-                            <i class="fontsize- icon"></i>
-                            <span class="selector-value"></span>
-                        </button>
-                        <ul class="dropdown-pane menu">
-                            <li data-option="9px">9px
-                            <li data-option="10px">10px
-                            <li data-option="12px">12px
-                            <li data-option="14px">14px
-                            <li data-option="16px">16px
-                            <li data-option="24px">24px
-                            <li data-option="32px">32px
-                        </ul>
-                   <li class="right-aligned- dropdown selector" data-select="background-color">
-                        <button>
-                            <i class="swatch"></i>
-                        </button>
-                        <ul class="dropdown-pane menu">
-                            <li data-option="transparent">
-                                <span>Transparent</span>
-                                <i class="transparent- swatch"></i>
-                            <li data-option="#fff">
-                                <span>White</span>
-                                <i class="white- swatch"></i>
-                            <li data-option="#f4f4f4">
-                                <span>Off-white</span>
-                                <i class="off-white- swatch"></i>
-                            <li data-option="#c0c0c0">
-                                <span>75% Grey</span>
-                                <i class="grey-75- swatch"></i>
-                            <li data-option="#000">
-                                <span>Black</span>
-                                <i class="black- swatch"></i>
-                        </ul>
-                </ul>
             </nav>
             <ul class="frame-panes">
-                <li class="is-active">
+                <li>
                     <section class="code dark- scrollable- pane">
                         <pre id="example" class="highlight">
                         </pre>
@@ -101,7 +37,7 @@
                         <ul id ="sources"></ul>
                     </section>
                 </li>
-                <li>
+                <li class="is-active">
                     <div id="sandboxPane" class="scrollable- pane">
                         <section id="sandbox">
                             <iframe src="about:blank"></iframe>
