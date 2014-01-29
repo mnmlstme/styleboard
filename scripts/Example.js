@@ -23,7 +23,10 @@ define( function () {
         function (text) { return text.split(' '); });
 
     var predefined = {
-        br: '<hr class="styleboard-view-break">',
+        br: '<hr class="styleboard-layout">',
+        table: '<table class="styleboard-layout"><tr class="styleboard-layout"><td class="styleboard-layout">',
+        row: '<tr class="styleboard-layout">',
+        col: '<td class="styleboard-layout">',
         lorem: function lorem( para, count, offset ) {
             offset = offset || 0;
             para = para || 0;

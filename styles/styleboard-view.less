@@ -5,7 +5,7 @@
     height: auto;
     overflow: auto;
 
-    .styleboard-view-break {
+    hr.styleboard-layout {
         display: block;
         margin-top: 1em;
         clear: both;
@@ -13,4 +13,13 @@
         border: none;
     }
 
+    tr.styleboard-layout {
+        padding-top: 1em;
+        &:first-child { padding-top: 0; }
+    }
+
+    td.styleboard-layout {
+        padding-left: 2em;
+        &:first-child { padding-left: 0; }
+    }
 }

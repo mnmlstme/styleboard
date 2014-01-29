@@ -77,7 +77,7 @@ define( function () {
             // Look for artifacts that aren't really part of the example, so we can hide them w/CSS
             view.$pre.find('.hljs-tag')
                 .filter( function () {
-                    return $(this).find('.hljs-class').text() === 'styleboard-view-break';
+                    return $(this).find('.hljs-class').text() === 'styleboard-layout';
                 }).addClass('hidden-');
 
             return view;
