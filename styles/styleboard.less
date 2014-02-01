@@ -51,7 +51,9 @@ body.styleboard {
     iframe {
         display: block;
         outline: 1px dotted rgba(0,0,0,0.2);
-        margin: 0 auto
+        margin: 0 auto;
+        height: 100%; // overridden inline, but this prevents the border flash
+        width: 100%;
     }
 }
 
