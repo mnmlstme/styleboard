@@ -21,8 +21,8 @@ define(['appState', 'Example'], function (appState, Example) {
                 });
 
             view.$el.mk( 'header',
-                         [ 'h2', name] ,
-                         ['ul.comma-.pattern-selectors'].concat( selectors )
+                         [ 'h2', name]
+                         //, ['ul.comma-.pattern-selectors'].concat( selectors )
                        );
 
             view.renderDeclarations( pat );

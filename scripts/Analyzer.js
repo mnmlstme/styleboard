@@ -239,7 +239,7 @@ define(['Definition'], function (Definition) {
                     atRoot = true,
                     pattern = _.isString(root) && dictionary.findByName( patternName(root) ),
                     matches,
-                    modifierList = [],
+                    modifier,
                     isState = false,
                     member,
                     attrs;
@@ -253,10 +253,10 @@ define(['Definition'], function (Definition) {
                         if ( str ) {
                             if ( atRoot ) {
                                 if ( (matches = modRegex.exec(current)) ) {
-                                    modifierList.push( matches[1] );
+                                    modifier = matches[1];
                                     isState = false;
                                 } else if ( (matches = regex.state.exec(current)) ) {
-                                    modifierList.push( matches[1] );
+                                    modifier = matches[1];
                                     isState = true;
                                 }
                             } else {
@@ -274,10 +274,10 @@ define(['Definition'], function (Definition) {
                         pattern.define( attrs );
                     }
 
-                    if ( modifierList.length ) {
+                    if ( modifier ) {
                         if ( member ) attrs = {};
                         attrs.type = isState ? 'state' : 'modifier';
-                        attrs.name = modifierList.join(' ');
+                        attrs.name = modifier;
                         pattern.define( attrs );
                     }
                 }
