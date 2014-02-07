@@ -67,11 +67,6 @@
             */
         </style>
 
-        <style id="modifierConvention">
-            /** @pattern .foo */
-            .foo.bar- { /** This is a bar foo. */ }
-        </style>
-
         <style id="modifierNoConvention">
             /** @pattern .foo */
             .foo.bar { /** This is NOT a bar foo. */ }
@@ -81,6 +76,19 @@
             .foo.bar { /** This is NOT a bar foo. */ }
         </style>
 
+        <style id="explicitModifier">
+            /** @pattern .foo
+                This is a foo. */
+            /** @modifier .foo.bar-
+                This is a bar foo. */
+        </style>
+
+        <style id="modifierConvention">
+            /** @pattern .foo
+                This is a foo. */
+            .foo.bar- { /** This is a bar foo. */ }
+        </style>
+
         <style id="modifierAfterPattern">
             .foo { /** This is a foo. */ }
             .foo.bar- { /** This is a bar foo. */ }
@@ -88,7 +96,7 @@
 
         <style id="doubleModifier">
             .foo { /** This is a foo. */ }
-            .foo.bar-.baz- { /** This is a baz foo. */ }
+            .foo.another-.bar- { /** This is a bar foo. */ }
         </style>
 
         <style id="memberConvention">
@@ -114,6 +122,25 @@
         <style id="twoPatterns">
             .foo { /** This is a foo. */ }
             .bar { /** This is a bar. */ }
+        </style>
+
+        <style id="closeTwoLevels">
+            .foo { /** This is a foo. */ }
+            .foo .foo-bar { /** This is a bar of a foo. */ }
+            .bar { /** This is a bar. */ }
+        </style>
+
+        <style id="explicitReopenPattern">
+            /** @pattern .foo */
+            /** @pattern .bar */
+            /** @member .foo .foo-bar
+                This is a bar of a foo. */
+        </style>
+
+        <style id="implicitReopenPattern">
+            /** @pattern .foo */
+            .bar { /** This is a bar. */ }
+            .foo .foo-bar { /** This is a bar of a foo. */ }
         </style>
 
         <script data-main="scripts/test" src="scripts/require.js"></script>

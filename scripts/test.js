@@ -82,18 +82,6 @@ function( StyleDoc, Parser ) {
         equal( t.getNodes(nodes[0])[0], '<xmp>An Example</xmp>' );
     });
 
-    T( 'modifierConvention', function (t) {
-        var nodes = t.getNodes( t.findPattern('foo') );
-
-        equal( nodes.length, 1 );
-        equal( t.getType(nodes[0]), 'modifier' );
-        equal( t.getAttr(nodes[0], 'name'), 'bar-' );
-
-        var modNodes = t.getNodes(nodes[0]);
-        equal( modNodes.length, 1 );
-        deepEqual( modNodes[0], ['p', 'This is a bar foo.'] );
-    });
-
     T( 'modifierNoConvention', function (t) {
         var nodes = t.getNodes( t.findPattern('foo') );
 
@@ -108,31 +96,19 @@ function( StyleDoc, Parser ) {
         deepEqual( nodes[0], ['p', 'This is NOT a bar foo.'] );
     });
 
-    T( 'modifierAfterPattern', function (t) {
-        var nodes = t.getNodes( t.findPattern('foo') );
+    [ 'explicitModifier', 'modifierConvention', 'modifierAfterPattern', 'doubleModifier' ]
+        .forEach( function (id) {
+            T( id, function (t) {
+                var nodes = t.getNodes( t.findPattern('foo') );
+                equal( nodes.length, 2 );
+                equal( t.getType(nodes[1]), 'modifier' );
+                equal( t.getAttr(nodes[1], 'name'), 'bar-' );
 
-        equal( nodes.length, 2 );
-        deepEqual( nodes[0], ['p', 'This is a foo.'] );
-        equal( t.getType(nodes[1]), 'modifier' );
-        equal( t.getAttr(nodes[1], 'name'), 'bar-' );
-
-        var modNodes = t.getNodes(nodes[1]);
-        equal( modNodes.length, 1 );
-        deepEqual( modNodes[0], ['p', 'This is a bar foo.'] );
-    });
-
-    T( 'doubleModifier', function (t) {
-        var nodes = t.getNodes( t.findPattern('foo') );
-
-        equal( nodes.length, 2 );
-        deepEqual( nodes[0], ['p', 'This is a foo.'] );
-        equal( t.getType(nodes[1]), 'modifier' );
-        equal( t.getAttr(nodes[1], 'name'), 'baz-' );
-
-        var modNodes = t.getNodes(nodes[1]);
-        equal( modNodes.length, 1 );
-        deepEqual( modNodes[0], ['p', 'This is a baz foo.'] );
-    });
+                var modNodes = t.getNodes(nodes[1]);
+                equal( modNodes.length, 1 );
+                deepEqual( modNodes[0], ['p', 'This is a bar foo.'] );
+            });
+        });
 
     T( 'memberConvention', function (t) {
         var nodes = t.getNodes( t.findPattern('foo') );
@@ -197,6 +173,33 @@ function( StyleDoc, Parser ) {
         deepEqual( nodes[0], ['p', 'This is a bar.'] );
     });
 
+    T( 'closeTwoLevels', function ( t ) {
+        var nodes = t.getNodes();
+
+        equal( nodes.length, 2 );
+        equal( nodes[1], t.findPattern('bar') );
+    });
+
+    [ 'explicitReopenPattern', 'implicitReopenPattern' ]
+        .forEach( function (id) {
+            T( id, function ( t ) {
+                var tree = t.getNodes(),
+                pat = t.findPattern('foo'),
+                nodes = t.getNodes(pat);
+
+                equal( tree.length, 2 );
+                equal( tree[0], pat );
+
+                equal( nodes.length, 1 );
+                equal( t.getType(nodes[0]), 'member' );
+                equal( t.getAttr(nodes[0], 'name'), 'foo-bar' );
+
+                var modNodes = t.getNodes(nodes[0]);
+                equal( modNodes.length, 1 );
+                deepEqual( modNodes[0], ['p', 'This is a bar of a foo.'] );
+            });
+        });
+
     /** Testing function */
     function T( title, /* optional */ opts, testFunction ) {
         if ( ! testFunction && _.isFunction(opts) ) {
@@ -207,7 +210,7 @@ function( StyleDoc, Parser ) {
         console.log("Test #" + title);
 
         var cssString = $('#' + title).text(),
-            parser = new Parser(),
+            parser = new Parser( opts ),
             doc = parser.parse( cssString ),
             t = { doc: doc };
 

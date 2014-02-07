@@ -13,7 +13,7 @@ define( function () {
         doc.patterns = [];
 
         doc.findByName = function findByName( name ) {
-            return node = this.index['pattern'] && this.index['pattern'][name];
+            return doc.findContext({type: 'pattern', name: name });
         };
 
         doc.getCurrent = function getCurrent( type ) {
@@ -26,57 +26,73 @@ define( function () {
             }
         };
 
-        doc.isOpen = function isOpen( type, name ) {
-            return _.find( doc.stack, function (x) {
-                return doc.getType(x) === type &&
-                    doc.getAttr(x, 'name') === name;
-            });
+        doc.isOpen = function isOpen( node ) {
+            return _(doc.stack).contains( node );
         };
 
-        doc.openSection = function openSection( type, attrs ) {
-            var opened = doc.getCurrent(type);
-            if ( opened ) {
-                doc.popToSection( opened );
-                if ( doc.getAttr( opened, 'name' ) !== attrs.name ) {
-                    doc.popSection();
-                    opened = null;
+        doc.findContext = function findContext( context ) {
+            var index = this.index[context.type];
+            return index && index[context.name];
+        }
+
+        doc.openContext = function openContext( list ) {
+            if ( !_.isArray( list ) ) { list = [ list ]; }
+            var node, context;
+            while ( list.length ) {
+                context = list.shift();
+                node = doc.findContext( context );
+                if ( node ) {
+                    if ( !doc.isOpen( node ) ) {
+                        // out-of-order, push stack
+                        doc.stack.unshift( node );
+                    }
+                } else {
+                    node = doc.getCurrent( context.type );
+                    if ( node ) {
+                        doc.closeContext( node );
+                    }
+                    node = doc.insertNode( context.type, context );
+                    doc.stack.unshift( node );
+                    if ( context.name ) {
+                        define( context.type, context.name, node );
+                    }
                 }
             }
-            if ( !opened ) {
-                opened = [ type, _.clone(attrs) ];
-                insert( opened );
-                doc.stack.unshift( opened );
-                if ( attrs.name ) {
-                    define( type, attrs.name, opened );
-                }
-            }
-            return opened;
+            doc.popToContext( node );
+            return node;
         };
 
-        doc.popSection = function popSection() {
+        doc.popContext = function popContext() {
             return doc.stack.shift();
         };
 
-        doc.popToSection = function popToSection( node ) {
-            var current = doc.stack[0]
-            while ( current !== node ) {
-                current = doc.stack.shift();
+        doc.popToContext = function popToContext( node ) {
+            while ( doc.stack[0] !== node ) {
+                doc.stack.shift();
             }
         };
 
-        doc.closeSection = function closeSection( node ) {
-            doc.popToSection( node );
-            doc.popSection();
+        doc.closeContext = function closeContext( node ) {
+            doc.popToContext( node );
+            doc.popContext();
+        };
+
+        doc.insert = function insert( node, parent ) {
+            parent = parent || doc.stack[0];
+            parent.push( node );
         };
 
         doc.addText = function addText( text ) {
-            insert(['p',text]);
+            doc.insert(['p',text]);
         };
 
-        doc.addSection = function addSection( type, attrs, content ) {
-            var section = doc.openSection( type, attrs );
-            insert( content );
-            doc.closeSection( section );
+        doc.insertNode = function insertNode( type, attrs, content ) {
+            var node =  [ type, _.clone(attrs) ];
+            doc.insert(node);
+            if ( content ) {
+                doc.insert( content, node );
+            }
+            return node;
         };
 
         doc.getType = function ( node ) {
@@ -95,10 +111,6 @@ define( function () {
         }
 
         // private
-
-        function insert( node ) {
-            doc.stack[0].push( node );
-        }
 
         function define( type, name, node ) {
             var table = doc.index[type];

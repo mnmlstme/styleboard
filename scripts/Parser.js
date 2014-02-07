@@ -55,7 +55,7 @@ define(['StyleDoc'], function (StyleDoc) {
 
         function buildDoc( doc, nodes ) {
             nodes.forEach( function (node) {
-                var comments, identified;
+                var comments, context;
                 switch ( node.type ) {
                 case 'Comment':
                     parseComment( node.value );
@@ -64,9 +64,9 @@ define(['StyleDoc'], function (StyleDoc) {
                     comments = node.rules.filter( function (rule) {
                         return rule.type === 'Comment';
                     });
-                    identified = comments.length && identifyPattern( node.selectors );
-                    if (identified) {
-                        doc.openSection( identified.type, identified );
+                    context = comments.length && identifyContext( node.selectors );
+                    if (context) {
+                        doc.openContext( context );
                     }
                     comments.map( function (rule) {
                         parseComment( rule.value, node );
@@ -86,7 +86,7 @@ define(['StyleDoc'], function (StyleDoc) {
                         if ( i > 0 && i <= list.length-1 ) line = line.replace( regex.cmtmiddle, '' );
                         return line;
                     }),
-                line, matches, command, slug, data;
+                line, matches, command, slug, data, context;
 
                 while ( lines.length ) {
                     line = lines.shift();
@@ -96,23 +96,24 @@ define(['StyleDoc'], function (StyleDoc) {
                         data = matches[4];
                         switch ( command ) {
                         case 'section':
-                            doc.openSection( command, {
+                            doc.openContext({
+                                type: 'section',
                                 title: data,
                                 name: slug || stringToSlug(data)
                             });
                             break;
-                        case 'pattern':
                         case 'member':
                         case 'modifier':
+                        case 'pattern':
                         case 'state':
                         case 'helper':
-                            doc.openSection( command, {
-                                selector: data,
-                                name: selectorToName( data )
-                            } );
+                            context = identifyContext(data, command);
+                            if ( context ) {
+                                doc.openContext( context );
+                            }
                             break;
                         case 'example':
-                            doc.addSection( command, {
+                            doc.insertNode( command, {
                                 title: data,
                                 name: slug || stringToSlug(data)
                             }, contentsOfBlock() );
@@ -154,59 +155,86 @@ define(['StyleDoc'], function (StyleDoc) {
                 }
             }
 
-            function identifyPattern ( selectors ) {
-                var currentPattern = doc.getCurrent('pattern'),
-                    patternSelector = currentPattern && doc.getAttr(currentPattern, 'selector'),
-                    identified, type, identifiedSelector,
-                    selector, elements, root, current,
-                    atRoot, inPattern, matches;
+            function identifyContext ( selectors, expectedType ) {
+                var identified,
+                    selector, elements, root, atRoot,
+                    patternIdentified, matches;
+
+                if ( _.isString( selectors ) ) {
+                    // TODO: our own neutral format for selectors
+                    //       instead of duck-typing to LESS's
+                    elements = _.flatten( selectors.split(/\s+/).map( function (level, index) {
+                        var list = level.slice(1).split('.').map( function( cls ) {
+                            return { combinator: {value: ''}, value: '.' + cls };
+                        });
+                        if ( index ) {
+                            list[0].combinator.value = ' ';
+                        }
+                        return list;
+                    }));
+                    selectors = [ { elements: elements } ]
+                }
 
                 while ( selectors.length && !identified ) {
                     selector = selectors.shift();
                     elements = selector.elements.slice(0);
                     root = elements.shift().value;
-                    current = root;
                     atRoot = true;
-                    inPattern = _.isString(root) && root === patternSelector;
+                    patternIdentified = null;
 
-                    if ( !inPattern && elements.length === 0 &&
+                    if ( expectedType === 'pattern' &&
+                         (matches = regex.classname.exec(root)) ||
                          (matches = regex.pattern.exec(root)) ) {
-                        identified = matches[1];
-                        identifiedSelector = '.' + identified;
-                        type = 'pattern';
+                        patternIdentified = {
+                            name: matches[1],
+                            selector: root,
+                            type: 'pattern'
+                        };
+                        if ( elements.length === 0 || expectedType === 'pattern' ) {
+                            identified = [ patternIdentified ];
+                        }
                     }
 
-                    if ( inPattern ) {
+                    if ( patternIdentified ) {
                         while ( elements.length ) {
                             atRoot = atRoot && elements[0].combinator.value === '';
                             current = elements.shift().value;
 
-                            if ( atRoot && (matches = regex.modifier.exec(current)) ) {
-                                identified = matches[1];
-                                identifiedSelector = patternSelector + '.' + identified;
-                                type = 'modifier';
-                            }
-
-                            if ( atRoot && (matches = regex.state.exec(current)) ) {
-                                identified = matches[1];
-                                identifiedSelector = patternSelector + '.' + identified;
-                                type = 'state';
-                            }
-
-                            if ( !atRoot && (matches = regex.member.exec(current)) ) {
-                                identified = matches[1];
-                                identifiedSelector = patternSelector + ' .' + identified;
-                                type = 'member';
+                            if ( atRoot ) {
+                                if ( expectedType === 'modifier' &&
+                                     (matches = regex.classname.exec(current)) ||
+                                     (matches = regex.modifier.exec(current)) ) {
+                                    identified = [ patternIdentified, {
+                                        name: matches[1],
+                                        selector: patternIdentified.selector + '.' + matches[1],
+                                        type: 'modifier'
+                                    } ];
+                                }
+                                if ( expectedType === 'state' &&
+                                     (matches = regex.classname.exec(current)) ||
+                                     (matches = regex.state.exec(current)) ) {
+                                    identified = [ patternIdentified, {
+                                        name: matches[1],
+                                        selector: patternIdentified.selector + '.' + matches[1],
+                                        type : 'state'
+                                    } ];
+                                }
+                            } else {
+                                if ( expectedType === 'member' &&
+                                     (matches = regex.classname.exec(current)) ||
+                                     (matches = regex.member.exec(current)) ) {
+                                    identified = [ patternIdentified, {
+                                        name: matches[1],
+                                        selector: patternIdentified.selector + ' .' + matches[1],
+                                        type: 'member'
+                                    } ];
+                                }
                             }
                         }
                     }
                 }
 
-                return identified && {
-                    type: type,
-                    name: identified,
-                    selector: identifiedSelector
-                };
+                return identified;
             }
 
         }
