@@ -102,8 +102,8 @@ define(['StyleDoc'], function (StyleDoc) {
                                 name: slug || stringToSlug(data)
                             });
                             break;
-                        case 'member':
                         case 'modifier':
+                        case 'member':
                         case 'pattern':
                         case 'state':
                         case 'helper':

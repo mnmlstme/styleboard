@@ -37,29 +37,27 @@ define( function () {
 
         doc.openContext = function openContext( list ) {
             if ( !_.isArray( list ) ) { list = [ list ]; }
-            var node, context;
+            var context, target, old;
             while ( list.length ) {
                 context = list.shift();
-                node = doc.findContext( context );
-                if ( node ) {
-                    if ( !doc.isOpen( node ) ) {
-                        // out-of-order, push stack
-                        doc.stack.unshift( node );
-                    }
+                target = doc.findContext( context );
+                if ( target && doc.isOpen( target ) ) {
+                    doc.popToContext( target );
                 } else {
-                    node = doc.getCurrent( context.type );
-                    if ( node ) {
-                        doc.closeContext( node );
+                    old = doc.getCurrent( context.type );
+                    if ( old ) {
+                        doc.closeContext( old );
                     }
-                    node = doc.insertNode( context.type, context );
-                    doc.stack.unshift( node );
-                    if ( context.name ) {
-                        define( context.type, context.name, node );
+                    if ( !target ) {
+                        target = doc.insertNode( context.type, context );
+                        if ( context.name ) {
+                            define( context.type, context.name, target );
+                        }
                     }
+                    doc.stack.unshift( target );
                 }
             }
-            doc.popToContext( node );
-            return node;
+            return target;
         };
 
         doc.popContext = function popContext() {

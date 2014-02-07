@@ -157,6 +157,42 @@ function( StyleDoc, Parser ) {
         deepEqual( modNodes[0], ['p', 'This is a bar of a foo.'] );
     });
 
+    T( 'twoModifiers', function ( t ) {
+        var pat = t.findPattern('foo'),
+            nodes = t.getNodes(pat);
+
+        ok( pat );
+        equal( nodes.length, 2 );
+        equal( t.getType( nodes[0] ), 'modifier' );
+        equal( t.getAttr( nodes[0], 'name' ), 'another-' );
+        equal( t.getType( nodes[1] ), 'modifier' );
+        equal( t.getAttr( nodes[1], 'name' ), 'bar-' );
+    });
+
+    T( 'twoMembers', function ( t ) {
+        var pat = t.findPattern('foo'),
+            nodes = t.getNodes(pat);
+
+        ok( pat );
+        equal( nodes.length, 2 );
+        equal( t.getType( nodes[0] ), 'member' );
+        equal( t.getAttr( nodes[0], 'name' ), 'foo-something' );
+        equal( t.getType( nodes[1] ), 'member' );
+        equal( t.getAttr( nodes[1], 'name' ), 'foo-bar' );
+    });
+
+    T( 'modifierAndMember', function ( t ) {
+        var pat = t.findPattern('foo'),
+            nodes = t.getNodes(pat);
+
+        ok( pat );
+        equal( nodes.length, 2 );
+        equal( t.getType( nodes[0] ), 'modifier' );
+        equal( t.getAttr( nodes[0], 'name' ), 'bar-' );
+        equal( t.getType( nodes[1] ), 'member' );
+        equal( t.getAttr( nodes[1], 'name' ), 'foo-bar' );
+    });
+
     T( 'twoPatterns', function ( t ) {
         var pat = t.findPattern('foo'),
             nodes = t.getNodes(pat);
@@ -197,6 +233,26 @@ function( StyleDoc, Parser ) {
                 var modNodes = t.getNodes(nodes[0]);
                 equal( modNodes.length, 1 );
                 deepEqual( modNodes[0], ['p', 'This is a bar of a foo.'] );
+            });
+        });
+
+    [ 'explicitlyInterleaved', 'implicitlyInterleaved' ]
+        .forEach( function (id) {
+            T( id, function ( t ) {
+                var foo = t.findPattern('foo'),
+                    bar = t.findPattern('bar'),
+                    fooNodes = t.getNodes(foo),
+                    barNodes = t.getNodes(bar);
+
+                equal( t.getNodes().length, 2 );
+
+                equal( fooNodes.length, 2 );
+                equal( t.getType(fooNodes[1]), 'member' );
+                equal( t.getAttr(fooNodes[1], 'name'), 'foo-bar' );
+
+                equal( barNodes.length, 2 );
+                equal( t.getType(barNodes[1]), 'modifier' );
+                equal( t.getAttr(barNodes[1], 'name'), 'foo-' );
             });
         });
 
