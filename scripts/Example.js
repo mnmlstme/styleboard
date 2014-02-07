@@ -1,11 +1,7 @@
-define( function () {
+define(['Context'], function (Context) {
 
     /**
      * A code example.
-     *
-     * @param attrs.code {String}  the code
-     * @param attrs.slug {String}  a human-readable unique (within a pattern) identifier
-     * @param attrs.scope {Object} bindings used to expand templates in code
      */
 
     var templateSettings = {
@@ -40,7 +36,7 @@ define( function () {
         }
     };
 
-    var Example = Backbone.Model.extend({
+    var Example = Context.extend({
 
         expand: function expand( moreScope ) {
             var model = this,

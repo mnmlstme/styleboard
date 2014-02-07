@@ -10,10 +10,14 @@ define( function () {
         doc.tree = ['styledoc',{}]; // JSON-ML
         doc.stack = [ doc.tree ];
         doc.index = {};
-        doc.patterns = [];
 
         doc.findByName = function findByName( name ) {
             return doc.findContext({type: 'pattern', name: name });
+        };
+
+        doc.getAllOfType = function getAllOfType( type ) {
+            var patternIndex = doc.index[ type ];
+            return patternIndex ? _.values(patternIndex) : [];
         };
 
         doc.getCurrent = function getCurrent( type ) {
@@ -93,19 +97,28 @@ define( function () {
             return node;
         };
 
+        doc.getRoot = function () {
+            return doc.tree;
+        };
+
         doc.getType = function ( node ) {
             return node[0];
-        }
+        };
 
         doc.getAttr = function ( node, key ) {
             var attrs = node[1];
             return _.isObject(attrs) && attrs[key];
-        }
+        };
 
         doc.getNodes = function ( node ) {
             node = node || doc.tree;
             var attrs = node[1];
             return node.slice( _.isObject(attrs) ? 2 : 1 );
+        };
+
+        doc.getText = function ( node ) {
+            node = node || doc.tree;
+            return _.isObject(node[1]) ? node[2] : node[1];
         }
 
         // private

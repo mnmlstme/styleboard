@@ -6,8 +6,7 @@ define(['appState', 'Example'], function (appState, Example) {
     var PatternView = Backbone.View.extend({
 
         initialize: function () {
-            var view = this,
-                pattern = view.model;
+            var view = this;
 
             appState.on('change:example', view.updateExampleIsActive, view);
         },
@@ -15,51 +14,43 @@ define(['appState', 'Example'], function (appState, Example) {
         render: function () {
             var view = this,
                 pat = view.model,
-                name = pat.get('name').replace('.',''),
-                selectors = pat.getValues('selector').map( function(s) {
-                       return ['li', code( s.toCSS() )];
-                });
+                name = pat.getName();
 
-            view.$el.mk( 'header',
-                         [ 'h2', name]
-                         //, ['ul.comma-.pattern-selectors'].concat( selectors )
-                       );
+            view.$el.mk( 'header', [ 'h2', name] );
 
-            view.renderDeclarations( pat );
+            view.renderNodes();
 
             return view;
         },
 
-        renderDeclarations: function ( definition ) {
+        renderNodes: function () {
             var view = this,
                 pat = view.model,
                 examples = pat.getExamples(),
                 exampleIndex = 0;
 
-            recursivelyRenderDeclarations( definition, view.$el );
+            recursivelyRenderNodes( pat, view.$el );
 
-            function recursivelyRenderDeclarations ( definition, $parent ) {
-                var declarations = definition.getDeclarations(),
-                    scope = { pattern: pat.get('name') },
+            function recursivelyRenderNodes ( parent, $parent ) {
+                var children = parent.getNodes(),
+                    scope = { pattern: pat.getName() },
                     $section;
-
-                scope[definition.get('type')] = definition.get('name');
-                declarations.forEach( function (decl) {
-                    var key = decl.key,
-                        value = decl.value,
+                scope[ parent.getType() ] = parent.getName();
+                children.forEach( function (node) {
+                    var key = node.getType();
                         attrs = { 'class': 'pattern-' + key },
                         example;
                     switch ( key ) {
-                    case 'text':
-                        $parent.mk( 'p', value );
+                    case 'p':
+                        $parent.mk( 'p', node.getText() );
                         break;
-                    case 'example':
+                    case 'foo-example':
                         // TODO: this relies on order of traversal
                         example = examples[exampleIndex];
-                        attrs.href = '#' + pat.get('name') + '/' +
-                            (example.get('slug') || exampleIndex);
+                        attrs.href = '#' + pat.getName() + '/' +
+                            (example.getAttr('slug') || exampleIndex);
                         $parent.mk( 'a.button', attrs,
-                            example.get('title') || "Example" )
+                            example.getAttr('title') || "Example" )
                             .data( 'example', example );
                         exampleIndex++;
                         break;
@@ -70,10 +61,10 @@ define(['appState', 'Example'], function (appState, Example) {
                         $section = $parent.mk(
                             'section', attrs,
                             [ 'header',
-                              [ 'p.pattern-role', value.get('type')],
-                              [ 'h3', value.get('name')]
+                              [ 'p.pattern-role', node.getType()],
+                              [ 'h3', node.getName()]
                             ]);
-                        recursivelyRenderDeclarations( value, $section );
+                        recursivelyRenderNodes( node, $section );
                         break;
                     default:
                         // ignore

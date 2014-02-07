@@ -33,12 +33,13 @@ define(['StyleDoc'], function (StyleDoc) {
                     alert("Failed " + status + ": " + error);
                 },
                 success: function( data, status, xhr ) {
-                    parser.parse(data, done);
+                    var doc = parser.parse(data);
+                    done( doc );
                 }
             });
         };
 
-        parser.parse = function parse(data) {
+        parser.parse = function parse( data ) {
             var doc = new StyleDoc();
             new less.Parser( opts )
                 .parse( data, function (err, css ) {

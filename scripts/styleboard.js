@@ -1,7 +1,7 @@
-require(['Dictionary', 'Analyzer', 'Parser', 'Definition', 'Example',
+require(['Parser', 'Context', 'Example',
          'TabbedFrameView', 'DictionaryView', 'RenderedView', 'MarkupView', 'RulesView',
          'FooterView', 'SettingsView', 'appState'],
-function( Dictionary, Analyzer, Parser, Definition, Example,
+function( Parser, Context, Example,
           TabbedFrameView, DictionaryView, RenderedView, MarkupView, RulesView,
           FooterView, SettingsView, appState) {
 
@@ -40,12 +40,16 @@ function( Dictionary, Analyzer, Parser, Definition, Example,
     function StyleBoard( config, hash ) {
         var sb = this,
             cssUrl = config.cssUrl || 'samples/home.css',
-            dictionary = new Dictionary();
-            analyzer = new Analyzer( dictionary, config.options ),
             parser = new Parser();
 
-        parser.load( cssUrl, function (rules) {
-            analyzer.analyze( rules );
+        parser.load( cssUrl, function (doc) {
+
+            sb.doc = doc;
+
+            var patterns = doc.getAllOfType('pattern').map( function (node) {
+                return new Context({ doc: doc, node: node });
+            });
+            var dictionary = new Backbone.Collection( patterns );
 
             // initialize each view, if it exists in the markup
 
@@ -62,11 +66,11 @@ function( Dictionary, Analyzer, Parser, Definition, Example,
             });
 
             $('#example').each( function () {
-                (new MarkupView({ el: $(this), dictionary: dictionary })).render();
+                (new MarkupView({ el: $(this), doc: doc })).render();
             });
 
             $('#sources').each( function () {
-                (new RulesView({ el: $('#sources'), dictionary: dictionary })).render();
+                (new RulesView({ el: $('#sources'), doc: doc })).render();
             });
 
             $('#settings').each( function () {
@@ -116,7 +120,7 @@ function( Dictionary, Analyzer, Parser, Definition, Example,
                 example;
 
             if ( path.length ) {
-                pattern = dictionary.findByName( path[0] );
+                pattern = new Context({ doc: sb.doc, node: sb.doc.findByName( path[0] ) });
                 examples = pattern.getExamples();
 
                 if ( path.length > 1 ) {
@@ -138,7 +142,7 @@ function( Dictionary, Analyzer, Parser, Definition, Example,
                 }
             }
 
-            appState.set('pattern', pattern || new Definition() );
+            appState.set('pattern', pattern || new Context({doc: doc}) );
             appState.set('example', example || new Example() );
         }
 

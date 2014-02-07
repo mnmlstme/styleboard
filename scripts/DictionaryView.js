@@ -26,9 +26,8 @@ function ( PatternView, TabbedFrameView, appState ) {
             var view = this,
                 dict = view.model;
 
-            dict.sort
             dict.each( function (pat) {
-                view.addPattern( pat, dict );
+                view.addPattern( pat );
             });
 
             return view;
@@ -46,9 +45,10 @@ function ( PatternView, TabbedFrameView, appState ) {
             })).render();
         },
 
-        addPattern: function ( pat, dict, options ) {
+        addPattern: function ( pat, options ) {
             var view = this,
-                name = pat.get('name').replace('.','');
+                name = pat.getName();
+
             view.$patternList.mk( 'li',
                                   ['a', { href: '#' + name }, name ]);
         },
