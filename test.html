@@ -6,46 +6,45 @@
         <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
         <script src="http://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone-min.js"></script>
         <script src="http://cdnjs.cloudflare.com/ajax/libs/less.js/1.4.1/less.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/qunit/1.12.0/qunit.min.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/qunit/1.12.0/qunit.min.js"></script>
         <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/qunit/1.12.0/qunit.min.css">
     </head>
     <body>
         <div id="qunit"></div>
-        <div id="qunit-fixture"></div>     
+        <div id="qunit-fixture"></div>
 
         <style id="implicitPattern">
-            .foo { }
+            .foo { /** This is a foo. **/ }
         </style>
 
         <style id="invalidPatternName">
-            .foo-bar { }
+            .foo-bar { /** This is NOT a foo-bar. **/ }
         </style>
 
         <style id="explicitPattern">
-            /** @pattern .foo */
+            /** @pattern .foo
+                This is a foo. */
         </style>
 
         <style id="explicitInvalidPattern">
-            /** @pattern */
+            /** @pattern .foo-bar
+                This is a foo-bar. */
             .foo-bar { }
         </style>
 
         <style id="descriptionBefore">
-            /** This is a foo. */
-            .foo { }
+            /** This is outside foo. */
+            .foo { /** This is a foo. **/ }
         </style>
 
-        <style id="descriptionInside">
+        <style id="declarationBefore">
+            /** @pattern .foo
+
+                This is a foo.
+            */
             .foo {
-                /** This is a foo. */ 
+                /** nice. */
             }
-        </style>
-
-        <style id="descriptionBeforeAndInside">
-            /** This is a foo. */
-            .foo {
-                /** nice.
-                */ }
         </style>
 
         <style id="twoLineParagraph">
@@ -69,38 +68,52 @@
         </style>
 
         <style id="modifierConvention">
-            .foo {}
+            /** @pattern .foo */
             .foo.bar- { /** This is a bar foo. */ }
         </style>
 
         <style id="modifierNoConvention">
-            .foo {}
-            .foo.bar {}
+            /** @pattern .foo */
+            .foo.bar { /** This is NOT a bar foo. */ }
+        </style>
+
+        <style id="modifierNoPattern">
+            .foo.bar { /** This is NOT a bar foo. */ }
+        </style>
+
+        <style id="modifierAfterPattern">
+            .foo { /** This is a foo. */ }
+            .foo.bar- { /** This is a bar foo. */ }
         </style>
 
         <style id="doubleModifier">
-            .foo {}
-            .foo.bar-.baz- {}
+            .foo { /** This is a foo. */ }
+            .foo.bar-.baz- { /** This is a baz foo. */ }
         </style>
 
         <style id="memberConvention">
-            .foo {}
+            .foo { /** This is a foo. */ }
             .foo .foo-bar { /** This is a bar of a foo. */ }
         </style>
 
         <style id="memberNoConvention">
-            .foo {}
-            .foo .bar {}
+            .foo { /** This is a foo. */ }
+            .foo .bar { /** This is NOT a bar of a foo. */ }
         </style>
 
         <style id="directMemberConvention">
-            .foo {}
-            .foo > .foo-bar {}
+            .foo { /** This is a foo. */ }
+            .foo > .foo-bar { /** This is a bar of a foo. */ }
         </style>
 
         <style id="deepMemberConvention">
-            .foo {}
-            .foo section.bar ul.baz .foo-bar {}
+            .foo { /** This is a foo. */ }
+            .foo section.bar ul.baz .foo-bar { /** This is a bar of a foo. */ }
+        </style>
+
+        <style id="twoPatterns">
+            .foo { /** This is a foo. */ }
+            .bar { /** This is a bar. */ }
         </style>
 
         <script data-main="scripts/test" src="scripts/require.js"></script>
