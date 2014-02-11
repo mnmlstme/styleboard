@@ -40,8 +40,8 @@ define(['Context'], function (Context) {
 
         expand: function expand( moreScope ) {
             var model = this,
-                code = model.get('code') || '',
-                scope = model.get('scope') || {},
+                code = model.getText() || '',
+                scope = /*model.getScope() ||*/ {},
                 bindings = _.extend( {}, predefined, scope, moreScope || {} );
             return code ? _.template( code, bindings, templateSettings ) : '';
         },

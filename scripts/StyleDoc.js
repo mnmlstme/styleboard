@@ -9,14 +9,15 @@ define( function () {
 
         doc.tree = ['styledoc',{}]; // JSON-ML
         doc.stack = [ doc.tree ];
-        doc.index = {};
+        doc.indexByType = {};
+        doc.indexByPattern = {};
 
         doc.findByName = function findByName( name ) {
             return doc.findContext({type: 'pattern', name: name });
         };
 
         doc.getAllOfType = function getAllOfType( type ) {
-            var patternIndex = doc.index[ type ];
+            var patternIndex = doc.indexByType[ type ];
             return patternIndex ? _.values(patternIndex) : [];
         };
 
@@ -35,7 +36,7 @@ define( function () {
         };
 
         doc.findContext = function findContext( context ) {
-            var index = this.index[context.type];
+            var index = this.indexByType[context.type];
             return index && index[context.name];
         }
 
@@ -136,16 +137,31 @@ define( function () {
         doc.getText = function ( node ) {
             node = node || doc.tree;
             return _.isObject(node[1]) ? node[2] : node[1];
+        };
+
+        doc.getDefinition = function ( pattern, name ) {
+            var patternName = doc.getName(pattern),
+                index = doc.indexByPattern(patternName);
+            return index && index[name];
         }
 
         // private
 
         function define( type, name, node ) {
-            var table = doc.index[type];
-            if ( !table ) {
-                table = doc.index[type] = {};
+            var index = doc.indexByType[type],
+                pattern = doc.getCurrent('pattern'),
+                patternName = pattern && doc.getAttr(pattern, 'name');
+            if ( !index ) {
+                index = doc.indexByType[type] = {};
             }
-            table[name] = node;
+            index[name] = node;
+            if ( pattern ) {
+                index = doc.indexByPattern[patternName];
+                if ( !index ) {
+                    index = doc.indexByPattern[patternName] = {};
+                }
+                index[name] = node;
+            }
         }
 
     }

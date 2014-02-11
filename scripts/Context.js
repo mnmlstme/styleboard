@@ -21,32 +21,40 @@ define( function () {
             return this.get('doc').getAttr( this.get('node'), key );
         },
 
-        getNodes: function () {
+        getNodes: function ( constructor ) {
             var model = this,
                 doc = model.get('doc');
 
+            constructor = constructor || Context;
+
             return doc.getNodes( model.get('node') ).map( function (node) {
-                return new Context({ doc: doc, node: node });
+                return new constructor({ doc: doc, node: node });
             });
         },
 
-        getNodesOfType: function ( type ) {
+        getNodesOfType: function ( type, constructor ) {
             var model = this,
                 doc = model.get('doc');
 
+            constructor = constructor || Context;
+
             return doc.getNodesOfType( model.get('node'), type ).map( function (node) {
-                return new Context({ doc: doc, node: node });
+                return new constructor({ doc: doc, node: node });
             });
+        },
+
+        getDefinition: function ( type, constructor ) {
+            var model = this,
+                doc = model.get('doc');
+
+            constructor = constructor || Context;
+
+            return new constructor({ doc: doc, node: doc.getDefinition( model.get('node'), type )});
         },
 
         getText: function () {
             return this.get('doc').getText( this.get('node') );
         },
-
-        getExamples: function () {
-            // TODO: implement
-            return [];
-        }
 
     });
 

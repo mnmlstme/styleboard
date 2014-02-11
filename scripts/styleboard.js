@@ -121,7 +121,7 @@ function( Parser, Context, Example,
 
             if ( path.length ) {
                 pattern = new Context({ doc: sb.doc, node: sb.doc.findByName( path[0] ) });
-                examples = pattern.getExamples();
+                examples = pattern.getNodesOfType('example', Example);
 
                 if ( path.length > 1 ) {
                     if ( path[1].match( /^\d+$/ ) ) {
@@ -133,7 +133,7 @@ function( Parser, Context, Example,
                     } else {
                         // example slug
                         example = _(examples).find( function (xmp) {
-                            return xmp.get('slug') === path[1];
+                            return xmp.getName() === path[1];
                         });
                     }
                 } else if ( examples.length ) {
@@ -142,8 +142,8 @@ function( Parser, Context, Example,
                 }
             }
 
-            appState.set('pattern', pattern || new Context({doc: doc}) );
-            appState.set('example', example || new Example() );
+            appState.set('pattern', pattern || new Context({doc: sb.doc}) );
+            appState.set('example', example || new Example({doc: sb.doc}) );
         }
 
     }

@@ -1,4 +1,4 @@
-define( function () {
+define(['Context'], function (Context) {
 
     var highlight = hljs.highlight;
 
@@ -7,7 +7,7 @@ define( function () {
         initialize: function ( options ) {
             var view = this;
 
-            view.dictionary = options.dictionary;
+            view.doc = options.doc;
             view.$pre = view.$el;
 
             appState.on('change:example', function( appState, example ) {
@@ -26,7 +26,6 @@ define( function () {
         render: function () {
             var view = this,
                 example = view.model,
-                keys = ['modifier', 'member', 'state'],
                 patterns = [],
                 code = example ? highlight( 'xml', example.expand() ).value : '';
 
@@ -42,7 +41,10 @@ define( function () {
                     $atv.empty();
                     $atv.append('"');
                     classes.forEach( function (name, index ) {
-                        var pat = view.dictionary.findByName( name );
+                        var pat = new Context({
+                            doc: view.doc,
+                            node: view.doc.findByName( name )
+                        });
                         if ( index ) {
                             $atv.append(' ');
                         }
@@ -65,10 +67,10 @@ define( function () {
                         name = name.slice(1);
                     }
                     patterns.forEach( function (pat) {
-                        var defn = pat.getDefinition(keys, name);
+                        var defn = pat.getDefinition(name);
                         if ( defn ) {
                             $class.addClass(defn.get('type') + '-');
-                        } else if ( name === pat.get('name') ) {
+                        } else if ( name === pat.getName() ) {
                             $class.addClass('pattern-');
                         }
                     });

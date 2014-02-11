@@ -26,7 +26,7 @@ define(['appState', 'Example'], function (appState, Example) {
         renderNodes: function () {
             var view = this,
                 pat = view.model,
-                examples = pat.getExamples(),
+                examples = pat.getNodesOfType('example'),
                 exampleIndex = 0;
 
             recursivelyRenderNodes( pat, view.$el );
@@ -44,11 +44,11 @@ define(['appState', 'Example'], function (appState, Example) {
                     case 'p':
                         $parent.mk( 'p', node.getText() );
                         break;
-                    case 'foo-example':
+                    case 'example':
                         // TODO: this relies on order of traversal
                         example = examples[exampleIndex];
                         attrs.href = '#' + pat.getName() + '/' +
-                            (example.getAttr('slug') || exampleIndex);
+                            (example.getAttr('name') || exampleIndex);
                         $parent.mk( 'a.button', attrs,
                             example.getAttr('title') || "Example" )
                             .data( 'example', example );
