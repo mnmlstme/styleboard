@@ -30,6 +30,15 @@ define( function () {
             });
         },
 
+        getNodesOfType: function ( type ) {
+            var model = this,
+                doc = model.get('doc');
+
+            return doc.getNodesOfType( model.get('node'), type ).map( function (node) {
+                return new Context({ doc: doc, node: node });
+            });
+        },
+
         getText: function () {
             return this.get('doc').getText( this.get('node') );
         },

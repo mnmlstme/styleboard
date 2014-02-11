@@ -116,6 +116,23 @@ define( function () {
             return node.slice( _.isObject(attrs) ? 2 : 1 );
         };
 
+        doc.getNodesOfType = function ( parent, type ) {
+            var list = [];
+
+            recursivelyGetNodes( parent );
+            return list;
+
+            function recursivelyGetNodes( parent ) {
+                doc.getNodes(parent).forEach( function (node) {
+                    if ( doc.getType(node) === type ) {
+                        list.push( node );
+                    } else if ( _.isArray( node ) ) {
+                        recursivelyGetNodes( node );
+                    }
+                });
+            }
+        };
+
         doc.getText = function ( node ) {
             node = node || doc.tree;
             return _.isObject(node[1]) ? node[2] : node[1];

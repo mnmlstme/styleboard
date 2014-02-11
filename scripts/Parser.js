@@ -56,7 +56,7 @@ define(['StyleDoc'], function (StyleDoc) {
 
         function buildDoc( doc, nodes ) {
             nodes.forEach( function (node) {
-                var comments, context;
+                var comments, context, code;
                 switch ( node.type ) {
                 case 'Comment':
                     parseComment( node.value );
@@ -72,12 +72,26 @@ define(['StyleDoc'], function (StyleDoc) {
                     comments.map( function (rule) {
                         parseComment( rule.value, node );
                     });
+                    code = node.selectors.map( convertToCss )
+                        .join(',\n');
+                    code += ' {\n';
+                    code += node.rules.filter( function (rule) { return rule.type === 'Rule'; } )
+                        .map( convertToCss )
+                        .map( function (s) { return '  ' + s; } )
+                        .join('\n');
+                    code += '\n}\n';
+                    doc.insertNode('rule', code);
                     break;
                 default:
                     // ignore all other nodes
                 }
             });
 
+            function convertToCss(node) {
+                var code = node.toCSS({});
+                code = code.replace(/^\s+/,'');
+                return code;
+            }
             function parseComment ( comment ) {
 
                 var  lines = comment.trim().split('\n')
@@ -174,6 +188,8 @@ define(['StyleDoc'], function (StyleDoc) {
                         return list;
                     }));
                     selectors = [ { elements: elements } ]
+                } else {
+                    selectors = selectors.slice(0);
                 }
 
                 while ( selectors.length && !identified ) {
