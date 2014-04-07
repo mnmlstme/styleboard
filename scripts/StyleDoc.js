@@ -140,8 +140,8 @@ define( function () {
         };
 
         doc.getDefinition = function ( pattern, name ) {
-            var patternName = doc.getName(pattern),
-                index = doc.indexByPattern(patternName);
+            var patternName = doc.getAttr(pattern, 'name'),
+                index = doc.indexByPattern[patternName];
             return index && index[name];
         }
 
