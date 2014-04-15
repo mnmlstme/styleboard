@@ -53,7 +53,6 @@
         background: @inv-background-color;
         box-shadow: inset 1px 1px 1px @border-hi-color,
                     inset -1px -1px 1px @border-lo-color;
-        .font( nav, inherit, inv-lo );
         a {
             color: inherit;
             text-decoration: inherit;
@@ -63,7 +62,12 @@
         }
     }
 
+    .frame-tabs {
+        .font( nav, inherit, inv-lo );
+    }
+
     .frame-header {
+        .font( header, inherit, inv-lo );
         .frame-tabs {
             // if tabs are inside a header, float them inside the header
             position: static;

@@ -94,6 +94,8 @@ define(['StyleDoc'], function (StyleDoc) {
             }
             function parseComment ( comment ) {
 
+                if ( !regex.cmtfirst.exec( comment ) ) { return; }
+
                 var  lines = comment.trim().split('\n')
                     .map( function ( line, i, list ) {
                         if ( i === 0 ) line = line.replace( regex.cmtfirst, '' );

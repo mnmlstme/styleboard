@@ -2,7 +2,7 @@
  @filespec StyleDoc - A structured document representing the CSS and embedded StyleDoc comments
  */
 
-define( function () {
+define( ['../lib/marked'], function ( marked ) {
 
     function StyleDoc() {
         var doc = this;
@@ -86,7 +86,8 @@ define( function () {
         };
 
         doc.addText = function addText( text ) {
-            doc.insert(['p',text]);
+            var html = marked(text);
+            doc.insert(['html',html]);
         };
 
         doc.insertNode = function insertNode( type, attrs, content ) {

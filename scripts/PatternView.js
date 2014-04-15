@@ -44,6 +44,9 @@ define(['appState', 'Example'], function (appState, Example) {
                     case 'p':
                         $parent.mk( 'p', node.getText() );
                         break;
+                    case 'html':
+                        $(node.getText()).appendTo($parent);
+                        break;
                     case 'example':
                         // TODO: this relies on order of traversal
                         example = examples[exampleIndex];
