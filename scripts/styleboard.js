@@ -86,9 +86,9 @@ function( Parser, Context, Example,
                 appState.on('change', function () {
                     var pattern = appState.get('pattern'),
                         example = appState.get('example'),
-                        href = './#' + pattern.get('name');
+                        href = './#' + pattern.getName();
                     if ( example ) {
-                        href = href + '/' + (example.get('slug') || example.get('index') || '');
+                        href = href + '/' + example.getName();
                     }
                     $a.attr('href', href);
                 });
