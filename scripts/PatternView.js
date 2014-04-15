@@ -82,7 +82,7 @@ define(['appState', 'Example'], function (appState, Example) {
                 viewOffset = view.$el.offset(),
                 $pane = view.$el.closest('.pane'),
                 $active = $examples.filter( function () {
-                    return $(this).data('example') === example;
+                    return $(this).data('example').getNode() === example.getNode();
                 }),
                 activeOffset = $active.offset(),
                 relativeOffset = activeOffset ?

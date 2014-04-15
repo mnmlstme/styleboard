@@ -9,8 +9,12 @@ define( function () {
             attrs && attrs.node || model.set('node', []);
         },
 
+        getNode: function () {
+            return this.get('node');
+        },
+
         getType: function () {
-            return this.get('doc').getType( this.get('node') );
+            return this.get('doc').getType( this.getNode() );
         },
 
         getName: function () {
@@ -18,7 +22,7 @@ define( function () {
         },
 
         getAttr: function ( key ) {
-            return this.get('doc').getAttr( this.get('node'), key );
+            return this.get('doc').getAttr( this.getNode(), key );
         },
 
         getNodes: function ( constructor ) {
@@ -27,7 +31,7 @@ define( function () {
 
             constructor = constructor || Context;
 
-            return doc.getNodes( model.get('node') ).map( function (node) {
+            return doc.getNodes( model.getNode() ).map( function (node) {
                 return new constructor({ doc: doc, node: node });
             });
         },
@@ -38,7 +42,7 @@ define( function () {
 
             constructor = constructor || Context;
 
-            return doc.getNodesOfType( model.get('node'), type ).map( function (node) {
+            return doc.getNodesOfType( model.getNode(), type ).map( function (node) {
                 return new constructor({ doc: doc, node: node });
             });
         },
@@ -49,11 +53,11 @@ define( function () {
 
             constructor = constructor || Context;
 
-            return new constructor({ doc: doc, node: doc.getDefinition( model.get('node'), type )});
+            return new constructor({ doc: doc, node: doc.getDefinition( model.getNode(), type )});
         },
 
         getText: function () {
-            return this.get('doc').getText( this.get('node') );
+            return this.get('doc').getText( this.getNode() );
         },
 
     });
