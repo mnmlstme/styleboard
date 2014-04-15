@@ -37,6 +37,12 @@ function ( PatternView, TabbedFrameView, appState ) {
             var view = this,
                 dict = view.model;
 
+            if ( view.currentPattern &&
+                 view.currentPattern.getNode() === pat.getNode() ) {
+                return;
+            }
+
+            view.currentPattern = pat;
             view.$namedTab.text( pat.get('name') );
             view.$current.empty();
             (new PatternView({
