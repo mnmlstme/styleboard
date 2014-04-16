@@ -110,7 +110,7 @@ body {
     */
 
     @padding: .5em;
-    @indent: 2em;
+    @indent:  40px;
 
     .font( body, medium, body );
 
@@ -124,22 +124,27 @@ body {
         margin-top: 1em;
     }
 
-    header {
-
-        margin-left: -@indent;
-        margin-bottom: @padding;
+    header,
+    h1, h2, h3 {
         line-height: 1.25;
+        margin-left: -@indent;
+    }
 
-        h2 {
-            .font( header, xlarge, alpha );
-            .glow( alpha );
+    header {
+        h1, h2, h3 {
+            margin-left: 0;
         }
+    }
 
-        h3 {
-            .font( header, large, beta );
-            .glow( beta );
-            letter-spacing: -.05em;
-        }
+    h2 {
+        .font( header, xlarge, alpha );
+        .glow( alpha );
+    }
+
+    h3 {
+        .font( header, large, beta );
+        .glow( beta );
+        letter-spacing: -.05em;
     }
 
     p, ul, ol, dl {
