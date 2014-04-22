@@ -50,7 +50,7 @@ define(['appState'], function (appState) {
             if (example) {
                 doc = view.$iframe[0].contentWindow.document;
                 doc.open();
-                doc.write('<html lang="en" style="height: auto">' +
+                doc.write('<html lang="en" style="height: auto" ng-app="uxcl.examples">' +
                           '<head>' +
                           '<meta charset="utf-8">' +
                           view.styles.map( function (url) {
@@ -61,6 +61,10 @@ define(['appState'], function (appState) {
                           view.scripts.map( function (url) {
                               return '<script src="' + url + '"></script>';
                           }).join('\n') +
+                          '<script>' +
+                          'angular.module("uxcl.examples",["ngAnimate", "ngSanitize", "mgcrea.ngStrap"]);' +
+                          '</script>'+
+
                           '</head>' +
                           '<body class="styleboard-view">' +
                           example.expand() +
