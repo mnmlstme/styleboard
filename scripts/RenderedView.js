@@ -7,14 +7,10 @@ define(['appState'], function (appState) {
         initialize: function ( options ) {
             var view = this;
 
-            view.cssUrl = options.cssUrl;
-            view.$iframe = view.$('iframe');
+            view.styles = options.styles;
+            view.scripts = options.scripts;
             view.$pane = view.$el.closest('.pane');
             view.settings = {};
-
-            view.$iframe.load( function () {
-                view.updateSettings();
-            });
 
             appState.on('change:example', function( appState, example ) {
                 view.setModel( example );
@@ -41,17 +37,30 @@ define(['appState'], function (appState) {
 
         render: function render () {
             var view = this,
-                doc = view.$iframe[0].contentWindow.document,
-                example = view.model;
+                example = view.model,
+                iframeHtml = '<iframe src="about:blank">',
+                doc;
+
+            view.$el.html( iframeHtml );
+            view.$iframe = view.$el.find('iframe');
+            view.$iframe.load( function () {
+                view.updateSettings();
+            });
 
             if (example) {
-
+                doc = view.$iframe[0].contentWindow.document;
                 doc.open();
                 doc.write('<html lang="en" style="height: auto">' +
                           '<head>' +
                           '<meta charset="utf-8">' +
-                          '<link rel="stylesheet" type="text/css" href="' + view.cssUrl + '">' +
+                          view.styles.map( function (url) {
+                              return '<link rel="stylesheet" type="text/css" ' +
+                                  'href="' + url + '">';
+                          }).join('\n') +
                           '<link rel="stylesheet" type="text/css" href="styles/styleboard-view.css">' +
+                          view.scripts.map( function (url) {
+                              return '<script src="' + url + '"></script>';
+                          }).join('\n') +
                           '</head>' +
                           '<body class="styleboard-view">' +
                           example.expand() +
@@ -59,9 +68,11 @@ define(['appState'], function (appState) {
                           '</html>');
                 doc.close();
             }
+
         },
 
         updateSettings: function updateSettings() {
+            if ( !this.$iframe ) { return; }
             var view = this,
                 $body = view.$iframe.contents().find('body'),
                 defaultHeight = view.$el.offsetParent().height() -

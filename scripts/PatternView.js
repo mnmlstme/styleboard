@@ -16,7 +16,7 @@ define(['appState', 'Example'], function (appState, Example) {
                 pat = view.model,
                 name = pat.getName();
 
-            view.$el.mk( 'header', [ 'h2', name] );
+            view.$el.mk( 'header', [ 'h1', name] );
 
             view.renderNodes();
 
@@ -64,7 +64,7 @@ define(['appState', 'Example'], function (appState, Example) {
                         $section = $parent.mk(
                             'section', attrs,
                             [ 'header',
-                              [ 'p.pattern-role', node.getType()],
+                              [ 'h4', node.getType()],
                               [ 'h3', node.getName()]
                             ]);
                         recursivelyRenderNodes( node, $section );

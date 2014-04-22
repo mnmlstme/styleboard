@@ -9,7 +9,7 @@ function( Parser, Context, Example,
     var configs = {
         'default': 'styleboard',
         'styleboard': {
-            'cssUrl': 'styles/styleboard.css',
+            'styles': 'styles/styleboard.css',
             'options': {}
         }
     };
@@ -39,10 +39,12 @@ function( Parser, Context, Example,
 
     function StyleBoard( config, hash ) {
         var sb = this,
-            cssUrl = config.cssUrl || 'samples/home.css',
+            styles = config.styles,
+            scripts = _.isArray(config.scripts) ? config.scripts : [config.scripts],
             parser = new Parser();
 
-        parser.load( cssUrl, function (doc) {
+        // TODO: allow loading of more than one stylesheet URL
+        parser.load( styles, function (doc) {
 
             sb.doc = doc;
 
@@ -62,7 +64,7 @@ function( Parser, Context, Example,
             });
 
             $('#sandbox').each( function () {
-                (new RenderedView({ el: $(this), cssUrl: cssUrl })).render();
+                (new RenderedView({ el: $(this), styles: [styles], scripts: scripts })).render();
             });
 
             $('#example').each( function () {
