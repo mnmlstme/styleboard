@@ -3,11 +3,18 @@
 .pattern {
     /** A styleguide entry for a pattern. */
 
-    .pattern-role {
-        .font( header, xsmall, gamma );
-        .glow( gamma );
-        +h2, +h3 {
-            margin-top: -.25em;
+    header {
+        h1 {
+            .color( alpha );
+            .glow( alpha );
+        }
+        h3 {
+            .color( beta );
+            .glow( beta );
+        }
+        h4 {
+            .color( gamma );
+            .glow( gamma );
         }
     }
 
@@ -24,9 +31,15 @@
         padding-left: .5em;
         padding-right: .5em;
         width: 100%;
-        text-align: left;
-        background-image: url( ../graphics/checkerboard.svg );
-        background-position: center;
+        text-align: right;
+        border-color: transparent;
+        background: #ddd;
+        font-style: oblique;
+        &.is-active {
+            .box-glow( delta );
+            background-color: #ccc;
+            border-color: #999;
+        }
     }
 
 }

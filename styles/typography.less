@@ -39,13 +39,15 @@
 .font-size ( xsmall ) { font-size: 0.75 * @font-size-base; }
 .font-size ( small ) { font-size: 0.875 * @font-size-base; }
 .font-size ( medium ) { font-size: @font-size-base; }
-.font-size ( large ) { font-size: 1.33 * @font-size-base; }
-.font-size ( xlarge ) { font-size: 2.0 * @font-size-base; }
+.font-size ( large ) { font-size: 1.25 * @font-size-base; }
+.font-size ( xlarge ) { font-size: 1.5 * @font-size-base; }
+.font-size ( xxlarge ) { font-size: 2 * @font-size-base; }
 
 .font-size ( xsmaller ) { font-size: 75%; }
 .font-size ( smaller ) { font-size: 87.5%; }
-.font-size ( larger ) { font-size: 133%; }
-.font-size ( xlarger ) { font-size: 200%; }
+.font-size ( larger ) { font-size: 125%; }
+.font-size ( xlarger ) { font-size: 150%; }
+.font-size ( xxlarger ) { font-size: 200%; }
 
 .font ( @family: body ) {
     .font-family( @family );
@@ -124,27 +126,43 @@ body {
         margin-top: 1em;
     }
 
+    h1 {
+        .font( header, 600, xxlarge, body );
+    }
+
+    h2 {
+        .font( header, 400, xlarge, body );
+    }
+
+    h3 {
+        .font( header, large, body );
+        letter-spacing: -.05em;
+    }
+
+    h4 {
+        .font( header, xsmall, body );
+    }
+
+    h1, h2, h3, h4 {
+        margin-top: 2em;
+        .glow( body );
+    }
+
     header,
-    h1, h2, h3 {
+    h1, h2, h3, h4 {
         line-height: 1.25;
         margin-left: -@indent;
     }
 
     header {
-        h1, h2, h3 {
-            margin-left: 0;
+        h1, h2, h3, h4 {
+            margin: 0;
         }
-    }
-
-    h2 {
-        .font( header, xlarge, alpha );
-        .glow( alpha );
-    }
-
-    h3 {
-        .font( header, large, beta );
-        .glow( beta );
-        letter-spacing: -.05em;
+        h4 {
+            +h1, +h2, +h3 {
+                margin-top: -.25em;
+            }
+        }
     }
 
     p, ul, ol, dl {
