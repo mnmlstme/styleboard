@@ -64,7 +64,11 @@ function( Parser, Context, Example,
             });
 
             $('#sandbox').each( function () {
-                (new RenderedView({ el: $(this), styles: [styles], scripts: scripts })).render();
+                (new RenderedView({ el: $(this),
+                                    styles: [styles],
+                                    scripts: scripts,
+                                    ngApp: config.ngApp || config['ng-app']
+                                  })).render();
             });
 
             $('#example').each( function () {

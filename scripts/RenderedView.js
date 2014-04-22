@@ -5,12 +5,37 @@ define(['appState'], function (appState) {
     var RenderedView = Backbone.View.extend({
 
         initialize: function ( options ) {
-            var view = this;
+            var view = this,
+                styles = options.styles;
+                scripts = options.scripts,
+                $iframe = view.$iframe = view.$el.find('iframe'),
+                context = view.context = view.$iframe[0].contentWindow,
+                doc = view.doc = context.document;
 
-            view.styles = options.styles;
-            view.scripts = options.scripts;
             view.$pane = view.$el.closest('.pane');
+            view.ngApp = options.ngApp || options['ng-app'];
             view.settings = {};
+
+            $iframe.load( function () {
+                view.render();
+                view.updateSettings();
+            });
+
+            doc.open();
+            doc.write('<html lang="en" style="height: auto">' +
+                      '<head>' +
+                      '<meta charset="utf-8">' +
+                      styles.map( function (url) {
+                          return '<link rel="stylesheet" type="text/css" ' +
+                              'href="' + url + '">';
+                      }).join('\n') +
+                      '<link rel="stylesheet" type="text/css" href="styles/styleboard-view.css">' +
+                      scripts.map( function (url) {
+                          return '<script src="' + url + '"></script>';
+                      }).join('\n') +
+                      '</head>' +
+                      '<body class="styleboard-view">');
+            doc.close();
 
             appState.on('change:example', function( appState, example ) {
                 view.setModel( example );
@@ -37,42 +62,23 @@ define(['appState'], function (appState) {
 
         render: function render () {
             var view = this,
+                doc = view.doc,
+                $body = $(doc.body),
                 example = view.model,
-                iframeHtml = '<iframe src="about:blank">',
-                doc;
+                $app = $body;
 
-            view.$el.html( iframeHtml );
-            view.$iframe = view.$el.find('iframe');
-            view.$iframe.load( function () {
-                view.updateSettings();
-            });
-
-            if (example) {
-                doc = view.$iframe[0].contentWindow.document;
-                doc.open();
-                doc.write('<html lang="en" style="height: auto" ng-app="uxcl.examples">' +
-                          '<head>' +
-                          '<meta charset="utf-8">' +
-                          view.styles.map( function (url) {
-                              return '<link rel="stylesheet" type="text/css" ' +
-                                  'href="' + url + '">';
-                          }).join('\n') +
-                          '<link rel="stylesheet" type="text/css" href="styles/styleboard-view.css">' +
-                          view.scripts.map( function (url) {
-                              return '<script src="' + url + '"></script>';
-                          }).join('\n') +
-                          '<script>' +
-                          'angular.module("uxcl.examples",["ngAnimate", "ngSanitize", "mgcrea.ngStrap"]);' +
-                          '</script>'+
-
-                          '</head>' +
-                          '<body class="styleboard-view">' +
-                          example.expand() +
-                          '</body>' +
-                          '</html>');
-                doc.close();
+            if ( $body.length ) {
+                $body.empty();
+                if ( example ) {
+                    if ( view.ngApp ) {
+                        $app = $body.mk('div.styleboard-ng-app');
+                    }
+                    $app.append( $.parseHTML( example.expand(), view.doc, true ) );
+                    if ( view.ngApp ) {
+                        view.context.angular.bootstrap($app[0],[view.ngApp]);
+                    }
+                }
             }
-
         },
 
         updateSettings: function updateSettings() {
