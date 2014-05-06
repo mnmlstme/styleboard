@@ -40,7 +40,8 @@ function( Parser, Context, Example,
     function StyleBoard( config, hash ) {
         var sb = this,
             styles = config.styles,
-            scripts = _.isArray(config.scripts) ? config.scripts : [config.scripts],
+            scripts = _.isArray(config.scripts) ? config.scripts :
+                ( config.scripts ? [config.scripts] : [] ),
             parser = new Parser();
 
         // TODO: allow loading of more than one stylesheet URL
