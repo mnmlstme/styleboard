@@ -1,7 +1,7 @@
 /**
  @filespec TabbedFrameView - view of a tabbed frame, with pane switching
  */
-define(["appState"], function ( appState ) {
+define( function () {
 
     var TabbedFrameView = Backbone.View.extend({
 

@@ -43,7 +43,7 @@ function ( PatternView, TabbedFrameView, appState ) {
             }
 
             view.currentPattern = pat;
-            view.$namedTab.text( pat.get('name') );
+            view.$namedTab.text( pat.getName() );
             view.$current.empty();
             (new PatternView({
                 el: view.$current,
@@ -59,11 +59,23 @@ function ( PatternView, TabbedFrameView, appState ) {
                                   ['a', { href: '#' + name }, name ]);
         },
 
-        selectPattern: function ( pattern ) {
+        clearPattern: function () {
             var view = this;
 
-            view.renderPattern( pattern );
-            view.selectPane( 1 );
+            view.$namedTab.empty();
+            view.$current.empty();
+        },
+
+        selectPattern: function ( pattern ) {
+            var view = this,
+                name = pattern.getName();
+
+            if ( name ) {
+                view.renderPattern( pattern );
+            } else {
+                view.clearPattern();
+            }
+            view.selectPane( name ? 1 : 0 );
         },
 
     }); // end of DictionaryView view

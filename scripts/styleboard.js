@@ -1,11 +1,11 @@
 require(['Parser', 'Context', 'Example',
-         'TabbedFrameView', 'DictionaryView', 'RenderedView', 'MarkupView', 'RulesView',
+         'DictionaryView', 'RenderedView', 'MarkupView', 'RulesView',
          'FooterView', 'SettingsView', 'appState'],
 function( Parser, Context, Example,
-          TabbedFrameView, DictionaryView, RenderedView, MarkupView, RulesView,
+          DictionaryView, RenderedView, MarkupView, RulesView,
           FooterView, SettingsView, appState) {
 
-    // copy this JSON into ../styleboard.config to configure styleboard.
+    // Default configuration. Copy styleboard.config.default to styleboard.config to edit.
     var configs = {
         'default': 'styleboard',
         'styleboard': {
@@ -13,16 +13,20 @@ function( Parser, Context, Example,
             'options': {}
         }
     };
+    var configUrl = 'styleboard.config';
 
     $.ajax({
         dataType: 'json',
         cache: false,
-        url: '../styleboard.config',
+        url: configUrl,
         success: function ( jsonObject ) {
             configs = jsonObject;
         },
         error: function ( jqxhr, status, error ) {
-            console.warn( "No configuration: " + status + "(" + error + ")" );
+            console.warn( "Failed to load configuration file " + configUrl + "\n" +
+                          "Error: " + status + "(" + error + ")\n" +
+                          "using default configuration\n" +
+                          "(inspecting Styleboard itself)" );
         },
         complete: function () {
             var config = configs['default'];
@@ -58,10 +62,6 @@ function( Parser, Context, Example,
 
             $('#dictionaryView').each( function () {
                 (new DictionaryView({ el: $(this), model: dictionary })).render();
-            });
-
-            $('#tabbedView').each( function () {
-                (new TabbedFrameView({ el: $(this) })).render();
             });
 
             $('#sandbox').each( function () {
