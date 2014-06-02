@@ -1,0 +1,8 @@
+{
+    "default": "styleboard",
+
+    "styleboard": {
+        "styles": "styles/styleboard.css",
+        "options": {}
+    }
+}

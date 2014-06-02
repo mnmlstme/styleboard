@@ -1,6 +1,7 @@
 *~
 .emacs-project
-node_modules/
+/node_modules/
 styles/*.css
 graphics/iconfont/
+/dist/
 

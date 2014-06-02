@@ -5,9 +5,11 @@
   "description": "A CSS documentation and test framework",
   "devDependencies": {
     "grunt": "~0.4.1",
+    "grunt-contrib-clean": "~0.5.0",
     "grunt-contrib-less": "~0.8.1",
     "grunt-contrib-qunit": "~0.3.0",
     "grunt-contrib-jshint": "~0.7.2",
+    "grunt-copy-to": "~0.0.10",
     "grunt-webfont": "~0.2.1"
   }
 }

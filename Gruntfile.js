@@ -7,6 +7,8 @@ module.exports = function(grunt){
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
+        clean: [ 'dist/', 'styles/*.css', 'graphics/iconfont/' ],
+
         less: {
             options: {
                 sourceMap: true,
@@ -33,6 +35,21 @@ module.exports = function(grunt){
             }
         },
 
+        copyto: {
+            dist: {
+                cwd: '.',
+                dest: 'dist/',
+                src: [
+                    'LICENSE.txt',
+                    '*.html',
+                    '{lib,scripts}/*',
+                    'graphics/iconfont/*.{eot,svg,ttf,woff}',
+                    'graphics/*.svg',
+                    'styles/*.css'
+                ]
+            }
+        },
+
         jshint: {
             files: ['scripts/*.js'],
             options: {
@@ -47,11 +64,14 @@ module.exports = function(grunt){
         }
     });
 
+    grunt.loadNpmTasks('grunt-copy-to');
+    grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-qunit');
     grunt.loadNpmTasks('grunt-webfont');
 
     grunt.registerTask('default', ['webfont', 'less']);
+    grunt.registerTask('dist', ['default', 'copyto:dist']);
 
 };
