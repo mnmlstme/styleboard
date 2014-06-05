@@ -1,7 +1,5 @@
 # StyleBoard
 
-> This initial version of **StyleBoard** is a work in progress.
-
 **StyleBoard** is a single-page web application which analyzes the CSS
 of your site and generates an interactive styleguide which documents
 and tests your CSS.
@@ -23,13 +21,10 @@ configuration, **StyleBoard** builds a styleguide for its own CSS.
 ## Feature Roadmap
 
 The intent is that the styleguide will be interactive, allowing for
-in-browser experimentation.
+rapid in-browser experimentation.
 
 * Examples will be editable, so you can substitute your own text to see
   how it will look within the context of the pattern.
 * If **StyleBoard** finds CSS classes which modify the style of a pattern,
   it will create controls to let you cycle through viewing the variations.
-* Affordances will be made to allow viewing the examples at different
-  screen sizes, or within different styling contexts (background, fonts,
-  constrained width).
 

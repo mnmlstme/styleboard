@@ -1,0 +1,32 @@
+{
+  "name": "styleboard",
+  "version": "0.2.0",
+  "homepage": "https://github.com/mnmlstme/styleboard",
+  "authors": [
+    "ken@mnmlst.me"
+  ],
+  "description": "Documentation and test framework for CSS",
+  "main": "scripts/styleboard.js",
+  "keywords": [
+    "CSS",
+    "styleguide"
+  ],
+  "license": "BSD",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ],
+  "dependencies": {
+    "marked": "chjj/marked#0.3.2",
+    "mkay": "fgnass/mkay"
+  },
+  "exportsOverride": {
+    "marked": {
+      "js": "lib/*.js"
+    },
+    "mkay": {
+      "js": "mkay.js"
+    }
+  }
+}

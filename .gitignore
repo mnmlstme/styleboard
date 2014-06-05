@@ -1,7 +1,9 @@
 *~
 .emacs-project
 /node_modules/
+/bower_components/
+/dist/
+/lib/
 styles/*.css
 graphics/iconfont/
-/dist/
 

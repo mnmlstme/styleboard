@@ -1,9 +1,10 @@
 require(['Parser', 'Context', 'Example',
          'DictionaryView', 'RenderedView', 'MarkupView', 'RulesView',
-         'FooterView', 'SettingsView', 'appState'],
+         'FooterView', 'SettingsView', 'appState',
+         '../lib/mkay/js/mkay'],
 function( Parser, Context, Example,
           DictionaryView, RenderedView, MarkupView, RulesView,
-          FooterView, SettingsView, appState) {
+          FooterView, SettingsView, appState ) {
 
     // Default configuration. Copy styleboard.config.default to styleboard.config to edit.
     var configs = {

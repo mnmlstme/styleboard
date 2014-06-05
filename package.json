@@ -5,6 +5,7 @@
   "description": "A CSS documentation and test framework",
   "devDependencies": {
     "grunt": "~0.4.1",
+    "grunt-bower-task": "~0.3.4",
     "grunt-contrib-clean": "~0.5.0",
     "grunt-contrib-less": "~0.8.1",
     "grunt-contrib-qunit": "~0.3.0",

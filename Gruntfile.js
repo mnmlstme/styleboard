@@ -5,9 +5,15 @@ module.exports = function(grunt){
     var path = require('path');
 
     grunt.initConfig({
-        pkg: grunt.file.readJSON('package.json'),
-
         clean: [ 'dist/', 'styles/*.css', 'graphics/iconfont/' ],
+
+        bower: {
+            install: {
+                options: {
+                    layout: 'byComponent'
+                }
+            }
+        },
 
         less: {
             options: {
@@ -64,6 +70,7 @@ module.exports = function(grunt){
         }
     });
 
+    grunt.loadNpmTasks('grunt-bower-task');
     grunt.loadNpmTasks('grunt-copy-to');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-less');
