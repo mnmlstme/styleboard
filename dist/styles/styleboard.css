@@ -1,0 +1,1327 @@
+@import url(https://fonts.googleapis.com/css?family=Oxygen:400,300,700);
+@import url(https://fonts.googleapis.com/css?family=Source+Code+Pro);
+@import url(https://fonts.googleapis.com/css?family=Lato:300,400);
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+ol,
+ul {
+  list-style: none;
+}
+blockquote,
+q {
+  quotes: none;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: '';
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+/* End Meyer reset code */
+/* Begin local reset code */
+hr {
+  margin: 0;
+}
+* {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+/*
+  CSS3 utility mixins
+*/
+body {
+  -webkit-font-smoothing: antialiased;
+}
+.typography {
+  /** Applies standard typographical formatting conventions
+        to HTML tags inside.
+@example An article with typography applied.
+    <article class="typography">
+      <header>
+        <h1>Lorem ipsum</h1>
+      </header>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus
+      tortor dolor, sollicitudin sit amet nibh ac, suscipit ultrices
+      augue. Nullam dictum mauris eu mi lacinia consectetur. Proin sit amet
+      nisl ipsum.
+      <ul>
+        <li>Praesent vulputate luctus risus
+        <li>nec venenatis neque
+        <li>consectetur
+      </ul>
+      <ol>
+        <li>Pellentesque
+        <li>in sapien
+        <li>eu diam
+      </ol>
+      <dl>
+        <dt>Incidunt
+        <dd>fringilla in vehicula lacus.
+        <dt>Donec
+        <dd>at rhoncus neque.
+        <dt>Cras
+        <dd>molestie sem tortor, sit
+        amet venenatis lectus auctor sed.
+      </dl>
+      <p>Aenean adipiscing euismod lorem, non
+      euismod purus aliquet non. Sed ullamcorper vestibulum congue. Proin at
+      ligula faucibus, lobortis elit eu, sagittis magna. Sed volutpat lacus
+      ut varius dictum.
+    </article>
+    */
+  font-family: Oxygen, Tahoma, Geneva, sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  color: #333333;
+}
+.typography article,
+article.typography {
+  padding: 0.5em;
+  padding-left: 40.5px;
+}
+.typography section {
+  margin-top: 1em;
+}
+.typography h1 {
+  font-family: Oxygen, Helvetica, Arial, sans-serif;
+  font-weight: 600;
+  font-size: 32px;
+  color: #333333;
+}
+.typography h2 {
+  font-family: Oxygen, Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  font-size: 24px;
+  color: #333333;
+}
+.typography h3 {
+  font-family: Oxygen, Helvetica, Arial, sans-serif;
+  font-weight: 300;
+  font-size: 20px;
+  color: #333333;
+  letter-spacing: -0.05em;
+}
+.typography h4 {
+  font-family: Oxygen, Helvetica, Arial, sans-serif;
+  font-weight: 300;
+  font-size: 12px;
+  color: #333333;
+}
+.typography h1,
+.typography h2,
+.typography h3,
+.typography h4 {
+  margin-top: 2em;
+  text-shadow: 0 0 0.15em rgba(51, 51, 51, 0.8);
+}
+.typography header,
+.typography h1,
+.typography h2,
+.typography h3,
+.typography h4 {
+  line-height: 1.25;
+  margin-left: -40px;
+}
+.typography header h1,
+.typography header h2,
+.typography header h3,
+.typography header h4 {
+  margin: 0;
+}
+.typography header h4 + h1,
+.typography header h4 + h2,
+.typography header h4 + h3 {
+  margin-top: -0.25em;
+}
+.typography p,
+.typography ul,
+.typography ol,
+.typography dl {
+  margin-top: 1em;
+}
+.typography p {
+  line-height: 1.5;
+}
+.typography ul,
+.typography ol,
+.typography dl {
+  line-height: 1.25;
+}
+.typography pre {
+  font-family: 'Source Code Pro', 'Courier', 'Courier New', monospace;
+  font-weight: 400;
+  font-size: 14px;
+}
+.typography code {
+  font-family: 'Source Code Pro', 'Courier', 'Courier New', monospace;
+  font-weight: 400;
+  font-size: 87.5%;
+  color: inherit;
+  background-color: #eeeeee;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 2px;
+  padding: 0 0.25em;
+}
+.typography em {
+  font-weight: 600;
+}
+.icon {
+  /** Icons. Implemented as an icon font using grunt-webfont.
+        @example
+        <ul class="list">
+        <li><i class="pagesize- icon"></i>  Page Size <code>pagesize</code>
+        </ul>
+        */
+  font-size: 1.25em;
+}
+@font-face {
+  font-family: "iconfont";
+  src: url("../graphics/iconfont/iconfont-3409d9813fcc5280ebccb0814762608e.eot");
+  src: url("../graphics/iconfont/iconfont-3409d9813fcc5280ebccb0814762608e.eot?#iefix") format("embedded-opentype"), url("../graphics/iconfont/iconfont-3409d9813fcc5280ebccb0814762608e.woff") format("woff"), url("../graphics/iconfont/iconfont-3409d9813fcc5280ebccb0814762608e.ttf") format("truetype"), url("../graphics/iconfont/iconfont-3409d9813fcc5280ebccb0814762608e.svg?#iconfont") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+.icon {
+  font-family: "iconfont";
+  display: inline-block;
+  font-weight: normal;
+  font-style: normal;
+  speak: none;
+  text-decoration: inherit;
+  text-transform: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.icon:before {
+  content: "\f100";
+}
+.icon.0default-:before {
+  content: "\f100";
+}
+.icon.circle-:before {
+  content: "\f101";
+}
+.icon.fontsize-:before {
+  content: "\f102";
+}
+.icon.fullscreen-:before {
+  content: "\f103";
+}
+.icon.opencircle-:before {
+  content: "\f104";
+}
+.icon.pagesize-:before {
+  content: "\f105";
+}
+.icon.scale-:before {
+  content: "\f106";
+}
+.swatch {
+  /** Color swatches.
+        @example
+        <i class="white- swatch></i> White
+    */
+  font-size: 1.5em;
+  display: inline-block;
+  position: relative;
+  height: 1em;
+  width: 1em;
+  background: #ffffff url(../graphics/checkerboard.svg );
+  background-position: center;
+}
+.swatch::before {
+  background-color: transparent;
+}
+.swatch::before {
+  content: "";
+  display: inline-block;
+  height: 100%;
+  width: 100%;
+}
+.swatch.transparent-::before {
+  background-color: transparent;
+}
+.swatch.white-::before {
+  background-color: #ffffff;
+}
+.swatch.off-white-::before {
+  background-color: #f4f4f4;
+}
+.swatch.grey-75-::before {
+  background-color: #c0c0c0;
+}
+.swatch.black-::before {
+  background-color: #000000;
+}
+.list,
+.typography ul {
+  /**
+       A simple list.  Items are arranged vertically, with no decoration.
+        @example
+        <ul class="list">
+          <li>2½ oz gin
+          <li>½ oz dry vermouth
+          <li>1 green olive
+          <li>Angostura bitters
+        </ul>
+     */
+}
+.list > *,
+.typography ul > * {
+  list-style: none;
+}
+.list.bullet-,
+.typography ul.bullet- {
+  /**
+           A bulleted list.  Items are arranged vertically with colored bullets.
+           @example
+           <ul class="bullet- list">
+             <li>2½ oz gin
+             <li>½ oz dry vermouth
+             <li>1 green olive
+             <li>Angostura bitters (optional)
+           </ul>
+        */
+  margin-left: 1em;
+}
+.list.bullet- > *::before,
+.typography ul.bullet- > *::before {
+  display: inline-block;
+  font-family: 'Symbol', symbol;
+  font-size: inherit;
+  color: #105c9b;
+  content: '•';
+  width: 1em;
+  margin-left: -1em;
+}
+.list.comma-,
+.typography ul.comma- {
+  /**
+           A comma-separated list.  Items are set inline, as a line of text, with commas between.
+           @example 
+           <ul class="comma- list">
+             <li>2½ oz gin
+             <li>½ oz dry vermouth
+             <li>1 green olive
+             <li>Angostura bitters (optional)
+           </ul>
+        */
+}
+.list.comma- > *,
+.typography ul.comma- > * {
+  display: inline-block;
+}
+.list.comma- > * + *::before,
+.typography ul.comma- > * + *::before {
+  content: ', ';
+}
+.list.definition-,
+.typography ul.definition-,
+.typography dl {
+  /**
+           A definition list.  The list items ae terms, each of which may
+           have one or more definitions.
+
+           @example
+           <dl class="definition- list">
+             <dt class="list-term">2½ oz gin
+             <dd class="list-definition">Vodka may be substituted
+             <dt class="list-term">½ oz dry vermouth
+             <dd class="list-definition">Use very little, just enough to coat the ice cubes
+             <dt class="list-term">1 green olive
+             <dd class="list-definition">Or a lemon twist
+             <dt class="list-term">Angostura bitters (optional)
+             <dd class="list-definition">Or orange bitters
+           </dl>
+           */
+  padding-left: 6em;
+}
+.list.definition-::after,
+.typography ul.definition-::after,
+.typography dl::after {
+  content: '';
+  display: block;
+  clear: both;
+}
+.list.definition- > *,
+.typography ul.definition- > *,
+.typography dl > * {
+  margin-bottom: 1em;
+}
+.list .list-term,
+.typography ul .list-term,
+.typography dt {
+  /** A term in a definition list. */
+  float: left;
+  margin-left: -6em;
+  font-family: Oxygen, Helvetica, Arial, sans-serif;
+  font-weight: 300;
+  font-size: inherit;
+  color: #105c9b;
+}
+.list .list-definition,
+.typography ul .list-definition {
+  /** The definition for a term in a definition list. */
+}
+.bar {
+  /**
+       A horizontal, packed arrangement of items, such buttons or tools
+
+    @example A tool bar
+       <ul class="tool- bar">
+         <li>A
+         <li>B
+         <li>C
+       </ul>
+
+    When creating the items in the list, care should be take to not have any
+    incidental whitespace between the <li> elements.  A good way to ensure this
+    is to *not* provide the </li> tag, allowing the next <li> (or the </ul>) to
+    implicitly close the <li>.
+    */
+  font-family: Lato, Helvetica, Arial, sans-serif;
+  font-weight: 300;
+}
+.bar > li {
+  display: inline-block;
+  vertical-align: top;
+  padding: 0 .25em;
+  border-left: 1px solid rgba(153, 153, 153, 0.5);
+  border-right: 1px solid rgba(0, 0, 0, 0.5);
+}
+.bar .button,
+.bar button {
+  font-size: inherit;
+  font-weight: inherit;
+  margin: 0;
+  border-width: 0;
+}
+.bar.tool- .button,
+.bar.tool- button {
+  background: transparent;
+  color: inherit;
+}
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+.button {
+  /**
+       A clickable control with a single on-click action.
+
+        @example A button with an icon in it
+        You can <button><i class="scale- icon"></i><span>Zoom</span></button>
+        if you like.
+
+        @example A basic button
+        You can <button>Click this</button> if you like.
+    */
+  display: inline-block;
+  padding: .25em;
+  vertical-align: baseline;
+  outline: none;
+  font-family: Lato, Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  font-size: inherit;
+  color: #333333;
+  text-decoration: none;
+  -webkit-font-smoothing: antialiased;
+  background: #eeeeee;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 1px;
+  line-height: 1.5em;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+button:hover,
+input[type="button"]:hover,
+input[type="submit"]:hover,
+input[type="reset"]:hover,
+.button:hover,
+button:focus,
+input[type="button"]:focus,
+input[type="submit"]:focus,
+input[type="reset"]:focus,
+.button:focus {
+  text-decoration: none;
+  color: #000000;
+  border-color: #000000;
+}
+button.is-active,
+input[type="button"].is-active,
+input[type="submit"].is-active,
+input[type="reset"].is-active,
+.button.is-active,
+button:active,
+input[type="button"]:active,
+input[type="submit"]:active,
+input[type="reset"]:active,
+.button:active {
+  /** A button which is currently in the “on” or active state.
+            @example An active button
+            You have <button class="is-active">Clicked this</button> already.
+            */
+  background: #f19914;
+}
+button[disabled],
+input[type="button"][disabled],
+input[type="submit"][disabled],
+input[type="reset"][disabled],
+.button[disabled],
+button.is-disabled,
+input[type="button"].is-disabled,
+input[type="submit"].is-disabled,
+input[type="reset"].is-disabled,
+.button.is-disabled {
+  /** A button which has been disabled and is not currently clickable.
+            @example A disabled button
+            You <button class="is-disabled">Cannot click this</button> button.
+            */
+  opacity: .5;
+  cursor: default;
+}
+button[disabled]:hover,
+input[type="button"][disabled]:hover,
+input[type="submit"][disabled]:hover,
+input[type="reset"][disabled]:hover,
+.button[disabled]:hover,
+button.is-disabled:hover,
+input[type="button"].is-disabled:hover,
+input[type="submit"].is-disabled:hover,
+input[type="reset"].is-disabled:hover,
+.button.is-disabled:hover {
+  color: inherit;
+  border-color: rgba(0, 0, 0, 0.25);
+}
+button.primary-,
+input[type="button"].primary-,
+input[type="submit"].primary-,
+input[type="reset"].primary-,
+.button.primary- {
+  /** The primary call to action in a dialog.
+            @example A primary button
+            You probably want <button class="primary-">This button</button>
+            and not <button>This other one</button>.
+            */
+  color: #ffffff;
+  background: #105c9b;
+}
+button.link-,
+input[type="button"].link-,
+input[type="submit"].link-,
+input[type="reset"].link-,
+.button.link- {
+  /** A button which is styled to look like a link.
+            @example A link button
+            This may look like a link but it's really
+            a <button class="link-">button</button> in disguise.
+            */
+  color: #105c9b;
+  text-shadow: 0 0 0.15em rgba(16, 92, 155, 0.8);
+  font-family: inherit;
+  font-weight: 500;
+  padding: 0;
+  border-color: transparent;
+  background: transparent;
+}
+button.delete-,
+input[type="button"].delete-,
+input[type="submit"].delete-,
+input[type="reset"].delete-,
+.button.delete- {
+  /** A delete button or similarly dangerous action.
+            @example A delete button
+            Be careful of <button class="delete-">This Dangerous</button> button.
+            */
+  color: #ffffff;
+  background: #9b3314;
+}
+button .icon,
+input[type="button"] .icon,
+input[type="submit"] .icon,
+input[type="reset"] .icon,
+.button .icon,
+button .swatch,
+input[type="button"] .swatch,
+input[type="submit"] .swatch,
+input[type="reset"] .swatch,
+.button .swatch {
+  vertical-align: bottom;
+  margin-left: .25em;
+  margin-right: .25em;
+}
+button .icon:first-child,
+input[type="button"] .icon:first-child,
+input[type="submit"] .icon:first-child,
+input[type="reset"] .icon:first-child,
+.button .icon:first-child,
+button .swatch:first-child,
+input[type="button"] .swatch:first-child,
+input[type="submit"] .swatch:first-child,
+input[type="reset"] .swatch:first-child,
+.button .swatch:first-child {
+  margin-left: 0;
+}
+button .icon:last-child,
+input[type="button"] .icon:last-child,
+input[type="submit"] .icon:last-child,
+input[type="reset"] .icon:last-child,
+.button .icon:last-child,
+button .swatch:last-child,
+input[type="button"] .swatch:last-child,
+input[type="submit"] .swatch:last-child,
+input[type="reset"] .swatch:last-child,
+.button .swatch:last-child {
+  margin-right: 0;
+}
+button strong,
+input[type="button"] strong,
+input[type="submit"] strong,
+input[type="reset"] strong,
+.button strong {
+  font-weight: 400;
+}
+.menu {
+  /**
+       A vertical arrangement of actions or options from which the user may choose.
+       */
+}
+.menu > li {
+  padding: .25em .5em;
+  line-height: 1.5em;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.menu > li:hover {
+  color: #f19914;
+}
+.menu > li .icon,
+.menu > li .swatch {
+  vertical-align: bottom;
+  margin-left: .25em;
+  margin-right: .25em;
+}
+.menu > li .icon:first-child,
+.menu > li .swatch:first-child {
+  margin-left: 0;
+}
+.menu > li .icon:last-child,
+.menu > li .swatch:last-child {
+  margin-right: 0;
+}
+.menu .menu-divider {
+  height: 2px;
+  padding: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.5);
+  border-bottom: 1px solid rgba(153, 153, 153, 0.5);
+}
+.dropdown {
+  /**
+       An overlay pade which appears below a control.
+    */
+  display: inline-block;
+  position: relative;
+}
+.dropdown .dropdown-pane {
+  display: none;
+  position: absolute;
+  top: 100%;
+  min-width: 100%;
+  background-color: rgba(57, 54, 51, 0.9);
+  color: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-top: none;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2);
+  text-shadow: 1px 1px #000;
+  z-index: 5;
+}
+.dropdown.left-aligned- {
+  /** Align the pane with the left edge of the control. */
+  text-align: left;
+}
+.dropdown.left-aligned- .dropdown-pane {
+  left: 0;
+}
+.dropdown.right-aligned- {
+  /** Align the pane with the right edge of the control. */
+  text-align: right;
+}
+.dropdown.right-aligned- .dropdown-pane {
+  right: 0;
+}
+.dropdown.centered- {
+  /** Align the center of the pane with the center of the control. */
+  text-align: center;
+}
+.dropdown.centered- .dropdown-pane {
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  -moz-transform: translateX(-50%);
+  transform: translateX(-50%);
+}
+.dropdown:hover {
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.35);
+}
+.dropdown:hover button,
+.dropdown:hover .button {
+  color: #f19914;
+}
+.dropdown:hover .dropdown-pane {
+  display: block;
+}
+.pane {
+  /** A rectangular region of the screen. 
+        @example
+        <div class="pane typography">
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus
+          tortor dolor, sollicitudin sit amet nibh ac, suscipit ultrices
+          augue. Nullam dictum mauris eu mi lacinia consectetur. Proin sit amet
+          nisl ipsum.
+          <p>Praesent vulputate luctus risus, nec venenatis neque
+          consectetur a. Pellentesque in sapien eu diam tincidunt fringilla in
+          vehicula lacus. Donec at rhoncus neque. Cras molestie sem tortor, sit
+          amet venenatis lectus auctor sed.
+          <p>Aenean adipiscing euismod lorem, non
+          euismod purus aliquet non. Sed ullamcorper vestibulum congue. Proin at
+          ligula faucibus, lobortis elit eu, sagittis magna. Sed volutpat lacus
+          ut varius dictum.
+        </div>
+        */
+  position: relative;
+  height: 100%;
+  width: 100%;
+  padding: .5em;
+  background: #f8f8f8;
+  box-shadow: inset 1px 1px 1px rgba(153, 153, 153, 0.5), inset -1px -1px 1px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+.pane.dark- {
+  /** A pane with a dark background (inverted colors).
+            @example
+            <div class="dark- pane typography">
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus
+              tortor dolor, sollicitudin sit amet nibh ac, suscipit ultrices
+              augue. Nullam dictum mauris eu mi lacinia consectetur. Proin sit amet
+              nisl ipsum.
+              <p>Praesent vulputate luctus risus, nec venenatis neque
+              consectetur a. Pellentesque in sapien eu diam tincidunt fringilla in
+              vehicula lacus. Donec at rhoncus neque. Cras molestie sem tortor, sit
+              amet venenatis lectus auctor sed.
+              <p>Aenean adipiscing euismod lorem, non
+              euismod purus aliquet non. Sed ullamcorper vestibulum congue. Proin at
+              ligula faucibus, lobortis elit eu, sagittis magna. Sed volutpat lacus
+              ut varius dictum.
+            </div>
+            */
+  background: #282624;
+  color: #dddddd;
+}
+.pane.scrollable- {
+  /** A pane with scrolling content (in both directions). */
+  overflow-x: auto;
+  overflow-y: auto;
+}
+.pane.scrollable-.vertically- {
+  /** A pane with vertically scrolling content. */
+  overflow-x: hidden;
+}
+.pane.scrollable-.horizontally- {
+  /** A pane with horizontally scrolling content. */
+  overflow-y: hidden;
+}
+.pane.scrollable-::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.pane.scrollable-::-webkit-scrollbar-track,
+.pane.scrollable-::-webkit-scrollbar-corner {
+  background: transparent;
+}
+.pane.scrollable-::-webkit-scrollbar-thumb {
+  background: rgba(200, 200, 200, 0.8);
+  box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.2);
+  border-radius: 1px;
+}
+.frame {
+  /** A container for one or more panes.
+
+       @example A basic frame with one pane.
+       <div class="frame">
+         <div class="pane">
+           <p>Lorem ipsum dolor sit amet, 
+             consectetur adipiscing elit.</p>
+           <p>Duis tempor risus vitae
+             nulla commodo tempus.</p>
+           <p>Praesent semper arcu quis
+             diam aliquam aliquam.</p> 
+         </div>
+       </div>
+    */
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+.frame.headered- {
+  /** A frame which has a header at the top.  The header might include
+            a title, navigation, or tools, for example.
+
+            @example A frame with a title bar.
+            <div class="headered- frame">
+              <h1 class="frame-header">Lorem Ipsum</h1>
+              <div class="pane">
+                <p>Lorem ipsum dolor sit amet, 
+                consectetur adipiscing elit.</p>
+              </div>
+            </div
+         */
+  padding-top: 2em;
+}
+.frame .frame-header,
+.frame .frame-tabs {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 2em;
+  line-height: 2em;
+  width: 100%;
+  background: #282624;
+  box-shadow: inset 1px 1px 1px rgba(153, 153, 153, 0.5), inset -1px -1px 1px rgba(0, 0, 0, 0.5);
+}
+.frame .frame-header a,
+.frame .frame-tabs a {
+  color: inherit;
+  text-decoration: inherit;
+}
+.frame .frame-header small,
+.frame .frame-tabs small {
+  font-size: 75%;
+}
+.frame .frame-tabs {
+  font-family: Lato, Helvetica, Arial, sans-serif;
+  font-weight: 300;
+  font-size: inherit;
+  color: #aaaaaa;
+}
+.frame .frame-header {
+  font-family: Oxygen, Helvetica, Arial, sans-serif;
+  font-weight: 300;
+  font-size: inherit;
+  color: #aaaaaa;
+}
+.frame .frame-header .frame-tabs {
+  position: static;
+  width: auto;
+  float: left;
+}
+.frame .frame-header h1 {
+  float: left;
+  margin: 0 .5em;
+  font-size: 20px;
+}
+.frame .frame-header-left {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.frame .frame-header-right {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+.frame.footered- {
+  /** A frame which has a header at the top.  The header might include
+            a title, navigation, or tools, for example.
+
+            @example A frame with a title bar.
+            <div class="footered- frame">
+              <div class="pane">
+                <p>Lorem ipsum dolor sit amet,
+                consectetur adipiscing elit.</p>
+              </div>
+              <p class="frame-footer">Lorem Ipsum</p>
+            </div
+         */
+  padding-bottom: 1.2em;
+}
+.frame .frame-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 1.2em;
+  line-height: 1.2em;
+  width: 100%;
+  background: #282624;
+  box-shadow: inset 1px 1px 1px rgba(153, 153, 153, 0.5), inset -1px -1px 1px rgba(0, 0, 0, 0.5);
+  font-family: Lato, Helvetica, Arial, sans-serif;
+  font-weight: 300;
+  font-size: inherit;
+  color: #aaaaaa;
+}
+.frame .frame-footer-left {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+.frame .frame-footer-right {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+.frame.split- {
+  /** A frame which is split into two panes */
+}
+.frame.split- > * {
+  position: absolute;
+}
+.frame.split-.horizontal- {
+  /** A frame which is split horizontally.
+                By default the frame is split equally (1:1)
+                */
+  /**
+               @example Two panes side-by-side
+               <div class="horizontal- split- frame">
+                   <div class="pane">
+                       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                       <p>Duis tempor risus vitae nulla commodo tempus.</p>
+                   </div>
+                   <div class="pane">
+                       <p>Praesent semper arcu quis diam aliquam aliquam.</p>
+                   </div>
+               </div>
+               */
+}
+.frame.split-.horizontal- > * {
+  width: 50%;
+  height: 100%;
+  top: 0;
+}
+.frame.split-.horizontal- > :first-child {
+  left: 0;
+}
+.frame.split-.horizontal- > :last-child {
+  right: 0;
+}
+.frame.split-.horizontal-.one-two- {
+  /** Split the frame 1:2 */
+}
+.frame.split-.horizontal-.one-two- > :first-child {
+  width: 33.33333333333333%;
+}
+.frame.split-.horizontal-.one-two- > :last-child {
+  width: 66.66666666666666%;
+}
+.frame.split-.vertical- {
+  /** A frame which is split vertically.
+                By default the frame is split equally (1:1)
+                */
+}
+.frame.split-.vertical- > * {
+  width: 100%;
+  height: 50%;
+  left: 0;
+}
+.frame.split-.vertical- > *:first-child {
+  top: 0;
+}
+.frame.split-.vertical- > *:last-child {
+  bottom: 0;
+}
+.frame.split-.vertical-.one-two- {
+  /** Split the frame 1:2 */
+}
+.frame.split-.vertical-.one-two- > :first-child {
+  height: 33.33333333333333%;
+}
+.frame.split-.vertical-.one-two- > :last-child {
+  height: 66.66666666666666%;
+}
+.frame.split-.vertical-.two-one- {
+  /** Split the frame 2:1 */
+}
+.frame.split-.vertical-.two-one- > :first-child {
+  height: 66.66666666666666%;
+}
+.frame.split-.vertical-.two-one- > :last-child {
+  height: 33.33333333333333%;
+}
+.frame.tabbed- {
+  /** A frame with tabs to select alternate panes to view.
+            @example Two tabs
+            <div class="tabbed- frame">
+              <nav>
+                <ul class="frame-tabs">
+                  <li class="is-active">One
+                  <li>Two
+                </ul>
+              </nav>
+              <ul class="frame-panes">
+                <li class="pane is-active">This is pane One
+                <li class="pane">This is pane Two
+            </div>
+        */
+  padding-top: 2em;
+}
+.frame.tabbed- .frame-tabs {
+  white-space: nowrap;
+}
+.frame.tabbed- .frame-tabs > * {
+  display: inline-block;
+  cursor: pointer;
+  padding: 0 .5em;
+}
+.frame.tabbed- .frame-tabs > *.is-active {
+  color: #f19914;
+  outline-color: #f19914;
+}
+.frame.tabbed- .frame-tabs > *:empty {
+  visibility: hidden;
+}
+.frame.tabbed- .frame-panes {
+  /** A list of panes to show in a `tabbed-` frame */
+  height: 100%;
+}
+.frame.tabbed- .frame-panes > * {
+  display: none;
+}
+.frame.tabbed- .frame-panes > *.is-active {
+  display: block;
+}
+.code,
+code,
+pre {
+  /** A section of computer code */
+  font-family: 'Source Code Pro', 'Courier', 'Courier New', monospace;
+  font-weight: 400;
+  font-size: 14px;
+}
+.code,
+pre {
+  line-height: 1.15;
+}
+section.code {
+  padding: .5em;
+}
+code.combinator {
+  margin: 0 .25em;
+  color: #f19914;
+}
+.highlight {
+  color: #aaaaaa;
+}
+.highlight .css .hljs-pseudo,
+.highlight .rule-declarations .hljs-pseudo {
+  color: #f19914;
+}
+.highlight .css .hljs-rule,
+.highlight .rule-declarations .hljs-rule {
+  color: #f19914;
+}
+.highlight .css .hljs-rules,
+.highlight .rule-declarations .hljs-rules {
+  color: #f19914;
+}
+.highlight .css .hljs-value,
+.highlight .rule-declarations .hljs-value {
+  color: #aaaaaa;
+}
+.highlight .css .hljs-attribute,
+.highlight .rule-declarations .hljs-attribute {
+  color: #9b3314;
+}
+.highlight .hljs-tag .hljs-title {
+  color: #f19914;
+}
+.highlight .hljs-tag.hidden- {
+  display: none;
+}
+.highlight .hljs-class {
+  color: #ffffff;
+}
+.highlight .hljs-class.pattern- {
+  color: #105c9b;
+  text-shadow: 0 0 0.15em rgba(16, 92, 155, 0.8);
+}
+.highlight .hljs-class.member-,
+.highlight .hljs-class.modifier-,
+.highlight .hljs-class.state- {
+  color: #3a6b0c;
+  text-shadow: 0 0 0.15em rgba(58, 107, 12, 0.8);
+}
+.rule-selectors > li::after,
+.rule-declarations::after {
+  color: #f19914;
+}
+.pattern {
+  /** A styleguide entry for a pattern. */
+}
+.pattern header h1 {
+  color: #105c9b;
+  text-shadow: 0 0 0.15em rgba(16, 92, 155, 0.8);
+}
+.pattern header h3 {
+  color: #3a6b0c;
+  text-shadow: 0 0 0.15em rgba(58, 107, 12, 0.8);
+}
+.pattern header h4 {
+  color: #9b3314;
+  text-shadow: 0 0 0.15em rgba(155, 51, 20, 0.8);
+}
+.pattern .pattern-selectors {
+  font-size: 12px;
+}
+.pattern .pattern-selectors code {
+  color: #666666;
+}
+.pattern .pattern-example {
+  display: block;
+  margin: 1em 0;
+  padding-left: .5em;
+  padding-right: .5em;
+  width: 100%;
+  text-align: right;
+  border-color: transparent;
+  background: #ddd;
+  font-style: oblique;
+}
+.pattern .pattern-example.is-active {
+  box-shadow: 0 0 5px #f19914;
+  background-color: #ccc;
+  border-color: #999;
+}
+.rule {
+  /**
+       Styles for presenting (CSS) rules
+    */
+  font-family: 'Source Code Pro', 'Courier', 'Courier New', monospace;
+  font-weight: 400;
+  font-size: 14px;
+}
+.rule + .rule {
+  margin-top: 1em;
+}
+.rule .rule-selectors > li::after {
+  content: ',';
+}
+.rule .rule-selectors > li:last-child::after {
+  content: ' {';
+}
+.rule .rule-declarations > li {
+  margin-left: 3em;
+  text-indent: -1em;
+}
+.rule .rule-declarations::after {
+  display: block;
+  content: '}';
+}
+.rule .rule-comment {
+  display: none;
+}
+body.styleboard {
+  position: fixed;
+  top: 0;
+  left: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+#settings {
+  background: #282624;
+}
+#settings h1 {
+  font-family: Lato, Helvetica, Arial, sans-serif;
+  font-weight: 300;
+  font-size: 20px;
+  color: #aaaaaa;
+  margin: 0 .25em;
+}
+#sandboxPane {
+  background: #ffffff url(../graphics/checkerboard.svg);
+  background-size: 16px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5) inset;
+  padding: 0;
+}
+#sandbox {
+  position: absolute;
+  top: 0;
+  left: 0;
+  -webkit-transform-origin: top left;
+  -moz-transform-origin: top left;
+  transform-origin: top left;
+  width: 100%;
+  height: 100%;
+}
+#sandbox iframe {
+  display: block;
+  outline: 1px dotted rgba(0, 0, 0, 0.2);
+  margin: 0 auto;
+  -webkit-transition: width 0.5s;
+  -moz-transition: width 0.5s;
+  transition: width 0.5s;
+  height: 100%;
+  width: 100%;
+}
+#dictionaryView .dictionary-list {
+  font-family: Oxygen, Helvetica, Arial, sans-serif;
+  font-weight: 300;
+  font-size: 16px;
+}
+#dictionaryView .dictionary-list > li + li {
+  margin-top: .5em;
+}
+#dictionaryView .dictionary-list > li a {
+  color: inherit;
+  text-decoration: none;
+}
+#dictionaryView .dictionary-list > li a:hover {
+  color: #000000;
+  text-shadow: 0 0 0.15em rgba(51, 51, 51, 0.8);
+}
+#sources {
+  color: #aaaaaa;
+}
+.embedded-.styleboard .frame .frame-header h1 {
+  float: right;
+}
+.embedded-.styleboard #openInStyleboard {
+  color: rgba(170, 170, 170, 0);
+  -webkit-transition: color 0.5s;
+  -moz-transition: color 0.5s;
+  transition: color 0.5s;
+}
+.embedded-.styleboard #openInStyleboard:hover {
+  color: #aaaaaa;
+}
+.embedded-.styleboard #openInStyleboard .icon {
+  color: #aaaaaa;
+}
+.embedded-.styleboard #settings {
+  opacity: 0;
+  -webkit-transition: opacity 0.5s;
+  -moz-transition: opacity 0.5s;
+  transition: opacity 0.5s;
+}
+.embedded-.styleboard #settings:hover {
+  opacity: 1;
+}
+.embedded-.styleboard .frame-footer > h3 {
+  font-size: 75%;
+  margin: 0 .5em;
+}
+/*# sourceMappingURL=data:application/json,%7B%22version%22%3A3%2C%22sources%22%3A%5B%22styles%2Freset.less%22%2C%22styles%2Ftypography.less%22%2C%22styles%2Fcolor.less%22%2C%22styles%2Ficon.less%22%2C%22graphics%2Ficonfont%2Ficonfont.less%22%2C%22styles%2Fswatch.less%22%2C%22styles%2Flist.less%22%2C%22styles%2Futil.less%22%2C%22styles%2Fbar.less%22%2C%22styles%2Fbutton.less%22%2C%22styles%2Fmenu.less%22%2C%22styles%2Fdropdown.less%22%2C%22styles%2Fcss3.less%22%2C%22styles%2Fpane.less%22%2C%22styles%2Fframe.less%22%2C%22styles%2Fcode.less%22%2C%22styles%2Fpattern.less%22%2C%22styles%2Frule.less%22%2C%22styles%2Fstyleboard.less%22%5D%2C%22names%22%3A%5B%5D%2C%22mappings%22%3A%22%3B%3B%3B%3B%3B%3B%3BAAKI%3BAAAM%3BAAAK%3BAAAM%3BAAAQ%3BAAAQ%3BAAAQ%3BAAC3C%3BAAAI%3BAAAI%3BAAAI%3BAAAI%3BAAAI%3BAAAG%3BAAAY%3BAAAK%3BAACzC%3BAAAM%3BAAAS%3BAAAS%3BAAAK%3BAAAM%3BAAAM%3BAACvC%3BAAAK%3BAAAI%3BAAAK%3BAAAK%3BAAAK%3BAAAG%3BAAAG%3BAAAM%3BAAClC%3BAAAQ%3BAAAQ%3BAAAK%3BAAAK%3BAAAI%3BAAAK%3BAACvC%3BAAAG%3BAAAG%3BAAAQ%3BAACb%3BAAAI%3BAAAI%3BAAAI%3BAAAI%3BAAAI%3BAACd%3BAAAM%3BAAAO%3BAAAQ%3BAACxB%3BAAAS%3BAAAO%3BAAAO%3BAAAO%3BAAAI%3BAAAI%3BAAAI%3BAACxC%3BAAAO%3BAAAQ%3BAAAS%3BAAAO%3BAAChC%3BAAAY%3BAAAQ%3BAAAQ%3BAAAQ%3BAACtC%3BAAAK%3BAAAQ%3BAAAM%3BAAAS%3BAAAS%3BAACrC%3BAAAM%3BAAAO%3BAAAQ%3BEACxB%2CSAAA%3BEACA%2CUAAA%3BEACA%2CSAAA%3BEACA%2CeAAA%3BEACA%2CaAAA%3BEACA%2CwBAAA%3B%3B%3BAAGM%3BAAAO%3BAAAS%3BAAAY%3BAAAQ%3BAACrC%3BAAAQ%3BAAAQ%3BAAAM%3BAAAK%3BAAAU%3BEAC1C%2CcAAA%3B%3BAAEI%3BEACJ%2CcAAA%3B%3BAAEC%3BAAAK%3BEACN%2CgBAAA%3B%3BAAES%3BAAAI%3BEACb%2CYAAA%3B%3BAAES%2CUAAO%3BAAAY%2CUAAM%3BAAClC%2CCAAO%3BAAAG%2CCAAO%3BEACjB%2CSAAS%2CEAAT%3BEACA%2CaAAA%3B%3BAAEK%3BEACL%2CyBAAA%3BEACA%2CiBAAA%3B%3B%3B%3BAAIE%3BEACC%2CSAAA%3B%3BAAEF%3BEACE%2CsBAAA%3BEACA%2C2BAAA%3B%3B%3B%3B%3BACgBC%3BEACD%2CmCAAA%3B%3BAAGQ%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3BEAhER%2C%2BCAAA%3BEACA%2CgBAAA%3BEA4BoB%2CeAAA%3BECdN%2CcAAA%3B%3BADiDN%2CWA2CD%3BAACA%2COAAE%3BEACL%2CcAAA%3BEACA%2CoBAAA%3B%3BAA9CI%2CWAiDA%3BEACJ%2CeAAA%3B%3BAAlDI%2CWAqDL%3BEAhHH%2CiDAAA%3BEACA%2CgBAAA%3BEA0BqB%2CeAAA%3BECjBP%2CcAAA%3B%3BADiDN%2CWAyDL%3BEApHH%2CiDAAA%3BEACA%2CgBAAA%3BEAyBoB%2CeAAA%3BEChBN%2CcAAA%3B%3BADiDN%2CWA6DL%3BEAxHH%2CiDAAA%3BEACA%2CgBAAA%3BEAwBmB%2CeAAA%3BECfL%2CcAAA%3BEDgHV%2CuBAAA%3B%3BAA%2FDI%2CWAkEL%3BEA7HH%2CiDAAA%3BEACA%2CgBAAA%3BEAqBoB%2CeAAA%3BECZN%2CcAAA%3B%3BADiDN%2CWAsEN%3BAAtEM%2CWAsEF%3BAAtEE%2CWAsEE%3BAAtEF%2CWAsEO%3BEACX%2CeAAA%3BEC3GU%2C6CAAA%3B%3BADoCN%2CWA2EF%3BAA3EE%2CWA4EN%3BAA5EM%2CWA4EF%3BAA5EE%2CWA4EE%3BAA5EF%2CWA4EO%3BEACX%2CiBAAA%3BEACA%2CkBAAA%3B%3BAA9EI%2CWAiFD%2COACD%3BAAlFE%2CWAiFD%2COACG%3BAAlFF%2CWAiFD%2COACO%3BAAlFN%2CWAiFD%2COACY%3BEACX%2CSAAA%3B%3BAAnFA%2CWAiFD%2COAIA%2CGACI%3BAAtFH%2CWAiFD%2COAIA%2CGACS%3BAAtFR%2CWAiFD%2COAIA%2CGACe%3BEACV%2CmBAAA%3B%3BAAvFJ%2CWA4FP%3BAA5FO%2CWA4FH%3BAA5FG%2CWA4FC%3BAA5FD%2CWA4FM%3BEACV%2CeAAA%3B%3BAA7FI%2CWAgGN%3BEACE%2CgBAAA%3B%3BAAjGI%2CWAoGN%3BAApGM%2CWAoGF%3BAApGE%2CWAoGG%3BEACP%2CiBAAA%3B%3BAArGI%2CWAwGJ%3BEA9JJ%2CaAAa%2CmBAAmB%2CWAAW%2CwBAA3C%3BEACA%2CgBAAA%3BEAiBmB%2CeAAA%3B%3BAAoCX%2CWA4GH%3BEAlKL%2CaAAa%2CmBAAmB%2CWAAW%2CwBAA3C%3BEACA%2CgBAAA%3BEAwBqB%2CgBAAA%3BECtBJ%2CcAAA%3BEDiKb%2CyBAAA%3BEACA%2CqCAAA%3BEACA%2CkBAAA%3BEACA%2CiBAAA%3B%3BAAjHI%2CWAoHL%3BEACC%2CgBAAA%3B%3BAEhMF%3B%3B%3B%3B%3B%3B%3BEAWE%2CiBAAA%3B%3BAC2CR%3BEAnDC%2CaAAY%2CUAAZ%3BEACA%2CSAAQ%2CqEAAR%3BEACA%2CSAAQ%2C6EAAwD%2COAAO%2C0BAClE%2CuEAAkD%2COAAO%2CaACzD%2CsEAAiD%2COAAO%2CiBACxD%2CgFAA2D%2COAAO%2CMAHvE%3BEAIA%2CmBAAA%3BEACA%2CkBAAA%3B%3BAAGK%3BEACL%2CaAAY%2CUAAZ%3BEACA%2CqBAAA%3BEACA%2CmBAAA%3BEACA%2CkBAAA%3BEACA%2CWAAA%3BEACA%2CwBAAA%3BEACA%2CoBAAA%3BEACA%2CkCAAA%3BEACA%2CmCAAA%3BEACA%2CkCAAA%3B%3BAAGI%2CKAAQ%3BEAAE%2CSAAQ%2COAAR%3B%3BAAMS%2CKACT%2CUADiB%3BEAAE%2CSAAQ%2COAAR%3B%3BAAGZ%2CKACT%2CQADiB%3BEAAE%2CSAAQ%2COAAR%3B%3BAAGR%2CKACT%2CUADiB%3BEAAE%2CSAAQ%2COAAR%3B%3BAAGR%2CKACT%2CYADiB%3BEAAE%2CSAAQ%2COAAR%3B%3BAAGV%2CKACT%2CYADiB%3BEAAE%2CSAAQ%2COAAR%3B%3BAAGZ%2CKACT%2CUADiB%3BEAAE%2CSAAQ%2COAAR%3B%3BAAGb%2CKACT%2COADiB%3BEAAE%2CSAAQ%2COAAR%3B%3BAClDvB%3B%3B%3B%3B%3BEAwCA%2CgBAAA%3BEA9BJ%2CqBAAA%3BEACA%2CkBAAA%3BEACA%2CWAAA%3BEACA%2CUAAA%3BEAEA%2CsDAAA%3BEACA%2C2BAAA%3B%3BAAkBK%2COAAS%3BEACN%2C6BAAA%3B%3BAAjBP%2COAAS%3BEACN%2CSAAS%2CEAAT%3BEACA%2CqBAAA%3BEACA%2CYAAA%3BEACA%2CWAAA%3B%3BAAYC%2COATU%2CaASD%3BEACN%2C6BAAA%3B%3BAADH%2COARI%2COAQK%3BEACN%2CyBAAA%3B%3BAADH%2COAPQ%2CWAOC%3BEACN%2CyBAAA%3B%3BAADH%2COANM%2CSAMG%3BEACN%2CyBAAA%3B%3BAADH%2COALI%2COAKK%3BEACN%2CyBAAA%3B%3BACjCN%3BALyEM%2CWAwHL%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3BAKjMD%2CKAYE%3BAL6DI%2CWAwHL%2CGKrLC%3BEACA%2CgBAAA%3B%3BAAGH%2CKAAS%3BALyDF%2CWAwHL%2CGKjLO%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3BEAYN%2CgBAAA%3B%3BAAZH%2CKAAS%2CQAaH%2CIAAS%3BAL4CR%2CWAwHL%2CGKjLO%2CQAaH%2CIAAS%3BEACR%2CqBAAA%3BELDR%2CaAAa%2CgBAAb%3BEAKqB%2CkBAAA%3BECFL%2CcAAA%3BEIAR%2CSAAS%2CGAAT%3BEACA%2CUAAA%3BEACA%2CiBAAA%3B%3BAAIP%2CKAAQ%3BALmCD%2CWAwHL%2CGK3JM%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3BAAAR%2CKAAQ%2COAWD%3BALwBA%2CWAwHL%2CGK3JM%2COAWD%3BEACA%2CqBAAA%3B%3BAACE%2CKAbD%2COAWD%2CIAEK%2CIAAS%3BALsBd%2CWAwHL%2CGK3JM%2COAWD%2CIAEK%2CIAAS%3BEACV%2CSAAS%2CIAAT%3B%3BAAKX%2CKAAa%3BALgBN%2CWAwHL%2CGKxIW%3BALgBN%2CWA4HL%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3BEK1HC%2CiBAAA%3B%3BAC3EH%2CKDyDa%2CYCzDL%3BANyED%2CWAwHL%2CGKxIW%2CYCzDL%3BANyED%2CWA4HL%2CGMrMM%3BEACL%2CSAAS%2CEAAT%3BEACA%2CcAAA%3BEACA%2CWAAA%3B%3BADsDH%2CKAAa%2CYAmBN%3BALHA%2CWAwHL%2CGKxIW%2CYAmBN%3BALHA%2CWA4HL%2CGKzHK%3BEACA%2CkBAAA%3B%3BAA7EN%2CKAiFS%3BALRH%2CWAwHL%2CGKhHQ%3BALRH%2CWA6HL%3B%3BEKnHC%2CWAAA%3BEACA%2CiBAAA%3BELtEJ%2CiDAAA%3BEACA%2CgBAAA%3BEAmBqB%2CkBAAA%3BECFL%2CcAAA%3B%3BAIhCd%2CKAwFe%3BALfT%2CWAwHL%2CGKzGc%3B%3B%3BAE1FhB%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3BEP0BD%2C%2BCAAA%3BEACA%2CgBAAA%3B%3BAO3BC%2CIAoBI%3BEACD%2CqBAAA%3BEACA%2CmBAAA%3BEACA%2CgBAAA%3BEACA%2C%2BCAAA%3BEACA%2C0CAAA%3B%3BAAzBH%2CIA4BM%3BAA5BN%2CIA4Be%3BEACZ%2CkBAAA%3BEACA%2CoBAAA%3BEACA%2CSAAA%3BEACA%2CeAAA%3B%3BAAGH%2CIAAO%2CMACG%3BAADV%2CIAAO%2CMACY%3BEACZ%2CuBAAA%3BEACA%2CcAAA%3B%3BACtCN%3BAACD%2CKAAe%3BAACf%2CKAAe%3BAACf%2CKAAc%3BAACX%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3BEAYJ%2CqBAAA%3BEACA%2CcAAA%3BEACA%2CwBAAA%3BEACA%2CaAAA%3BEROA%2C%2BCAAA%3BEACA%2CgBAAA%3BEASqB%2CkBAAA%3BECVP%2CcAAA%3BEOLd%2CqBAAA%3BEACA%2CmCAAA%3BEACA%2CmBAAA%3BEACA%2CqCAAA%3BEACA%2CkBAAA%3BEACA%2CkBAAA%3BEACA%2CkBAAA%3BEACA%2CmBAAA%3BEACA%2CgBAAA%3BEACA%2CuBAAA%3BEACA%2CeAAA%3B%3BAAGC%2CMAAM%3BAAAN%2CKAjCe%2CeAiCT%3BAAAN%2CKAhCe%2CeAgCT%3BAAAN%2CKA%2FBc%2CcA%2BBR%3BAAAN%2COAAM%3BAACN%2CMAAO%3BAAAP%2CKAlCe%2CeAkCR%3BAAAP%2CKAjCe%2CeAiCR%3BAAAP%2CKAhCc%2CcAgCP%3BAAAP%2COAAO%3BEACJ%2CqBAAA%3BEPRQ%2CcAAA%3BEOUR%2CqBAAA%3B%3BAAGH%2CMAAU%3BAAAV%2CKAxCe%2CeAwCL%3BAAAV%2CKAvCe%2CeAuCL%3BAAAV%2CKAtCc%2CcAsCJ%3BAAAV%2COAAU%3BAACV%2CMAAQ%3BAAAR%2CKAzCe%2CeAyCP%3BAAAR%2CKAxCe%2CeAwCP%3BAAAR%2CKAvCc%2CcAuCN%3BAAAR%2COAAQ%3B%3B%3B%3B%3BEAKL%2CmBAAA%3B%3BAAGH%2CMAAU%3BAAAV%2CKAjDe%2CeAiDL%3BAAAV%2CKAhDe%2CeAgDL%3BAAAV%2CKA%2FCc%2CcA%2BCJ%3BAAAV%2COAAU%3BAACV%2CMAAa%3BAAAb%2CKAlDe%2CeAkDF%3BAAAb%2CKAjDe%2CeAiDF%3BAAAb%2CKAhDc%2CcAgDD%3BAAAb%2COAAa%3B%3B%3B%3B%3BEAKV%2CWAAA%3BEACA%2CeAAA%3B%3BAACC%2CMARM%2CUAQC%3BAAAP%2CKAzDW%2CeAiDL%2CUAQC%3BAAAP%2CKAxDW%2CeAgDL%2CUAQC%3BAAAP%2CKAvDU%2CcA%2BCJ%2CUAQC%3BAAAP%2COARM%2CUAQC%3BAAAP%2CMAPS%2CYAOF%3BAAAP%2CKAzDW%2CeAkDF%2CYAOF%3BAAAP%2CKAxDW%2CeAiDF%2CYAOF%3BAAAP%2CKAvDU%2CcAgDD%2CYAOF%3BAAAP%2COAPS%2CYAOF%3BEACJ%2CcAAA%3BEACA%2CiCAAA%3B%3BAAIP%2CMAAU%3BAAAV%2CKA%2FDe%2CeA%2BDL%3BAAAV%2CKA9De%2CeA8DL%3BAAAV%2CKA7Dc%2CcA6DJ%3BAAAV%2COAAU%3B%3B%3B%3B%3B%3BEAMP%2CcAAA%3BEACA%2CmBAAA%3B%3BAAGH%2CMAAO%3BAAAP%2CKAzEe%2CeAyER%3BAAAP%2CKAxEe%2CeAwER%3BAAAP%2CKAvEc%2CcAuEP%3BAAAP%2COAAO%3B%3B%3B%3B%3B%3BEPxCQ%2CcAAA%3BEAMD%2C8CAAA%3BEO0CX%2CoBAAA%3BEACA%2CgBAAA%3BEACA%2CUAAA%3BEACA%2CyBAAA%3BEACA%2CuBAAA%3B%3BAAGH%2CMAAS%3BAAAT%2CKAxFe%2CeAwFN%3BAAAT%2CKAvFe%2CeAuFN%3BAAAT%2CKAtFc%2CcAsFL%3BAAAT%2COAAS%3B%3B%3B%3B%3BEAKN%2CcAAA%3BEACA%2CmBAAA%3B%3BAA%2FFF%2CMAkGG%3BAAjGJ%2CKAAe%2CeAiGX%3BAAhGJ%2CKAAe%2CeAgGX%3BAA%2FFJ%2CKAAc%2CcA%2BFV%3BAA9FD%2COA8FC%3BAAlGH%2CMAkGa%3BAAjGd%2CKAAe%2CeAiGD%3BAAhGd%2CKAAe%2CeAgGD%3BAA%2FFd%2CKAAc%2CcA%2BFA%3BAA9FX%2COA8FW%3BEACX%2CsBAAA%3BEACA%2CkBAAA%3BEAEA%2CmBAAA%3B%3BAADC%2CMAHA%2CMAGa%3BAAAb%2CKApGW%2CeAiGX%2CMAGa%3BAAAb%2CKAnGW%2CeAgGX%2CMAGa%3BAAAb%2CKAlGU%2CcA%2BFV%2CMAGa%3BAAAb%2COAHA%2CMAGa%3BAAAb%2CMAHU%2CQAGG%3BAAAb%2CKApGW%2CeAiGD%2CQAGG%3BAAAb%2CKAnGW%2CeAgGD%2CQAGG%3BAAAb%2CKAlGU%2CcA%2BFA%2CQAGG%3BAAAb%2COAHU%2CQAGG%3BEAAE%2CcAAA%3B%3BAAEf%2CMALA%2CMAKY%3BAAAZ%2CKAtGW%2CeAiGX%2CMAKY%3BAAAZ%2CKArGW%2CeAgGX%2CMAKY%3BAAAZ%2CKApGU%2CcA%2BFV%2CMAKY%3BAAAZ%2COALA%2CMAKY%3BAAAZ%2CMALU%2CQAKE%3BAAAZ%2CKAtGW%2CeAiGD%2CQAKE%3BAAAZ%2CKArGW%2CeAgGD%2CQAKE%3BAAAZ%2CKApGU%2CcA%2BFA%2CQAKE%3BAAAZ%2COALU%2CQAKE%3BEAAE%2CeAAA%3B%3BAAvGjB%2CMA0GK%3BAAzGN%2CKAAe%2CeAyGT%3BAAxGN%2CKAAe%2CeAwGT%3BAAvGN%2CKAAc%2CcAuGR%3BAAtGH%2COAsGG%3BEACH%2CgBAAA%3B%3BAC3GF%3B%3B%3B%3B%3BAAAA%2CKAMG%3BEAGD%2CmBAAA%3BEACA%2CkBAAA%3BEACA%2CeAAA%3BEACA%2CmBAAA%3B%3BAAEC%2CKARA%2CKAQO%3BERuBI%2CcAAA%3B%3BAQrCd%2CKAMG%2CKAYI%3BAAlBP%2CKAMG%2CKAYc%3BEACX%2CsBAAA%3BEACA%2CkBAAA%3BEAEA%2CmBAAA%3B%3BAADC%2CKAfJ%2CKAYI%2CMAGa%3BAAAb%2CKAfJ%2CKAYc%2CQAGG%3BEAAE%2CcAAA%3B%3BAAEf%2CKAjBJ%2CKAYI%2CMAKY%3BAAAZ%2CKAjBJ%2CKAYc%2CQAKE%3BEAAE%2CeAAA%3B%3BAAvBrB%2CKA2BY%3BEACV%2CWAAA%3BEACA%2CUAAA%3BEACA%2CwCAAA%3BEACA%2CiDAAA%3B%3BAC5BE%3B%3B%3B%3BEAMN%2CqBAAA%3BEACA%2CkBAAA%3B%3BAAPM%2CSASS%3BEACX%2CaAAA%3BEACA%2CkBAAA%3BEACA%2CSAAA%3BEACA%2CeAAA%3BEACA%2CuCAAA%3BEACA%2CcAAA%3BEACA%2CqCAAA%3BEACA%2CgBAAA%3BEACA%2C0CAAA%3BEACA%2CyBAAA%3BEACA%2CUAAA%3B%3BAAGH%2CSAAe%3B%3BEAEZ%2CgBAAA%3B%3BAAFH%2CSAAe%2CcAGG%3BEACX%2COAAA%3B%3BAAIP%2CSAAgB%3B%3BEAEb%2CiBAAA%3B%3BAAFH%2CSAAgB%2CeAGE%3BEACX%2CQAAA%3B%3BAAIP%2CSAAW%3B%3BEAER%2CkBAAA%3B%3BAAFH%2CSAAW%2CUAGO%3BEACX%2CSAAA%3BECpCR%2CmBDqCoB%2CgBCrCpB%3BEACA%2CgBDoCoB%2CgBCpCpB%3BEACA%2CWDmCoB%2CgBCnCpB%3B%3BADuCC%2CSAAO%3BEACJ%2C%2BCAAA%3B%3BAADH%2CSAAO%2CMAGE%3BAAHT%2CSAAO%2CMAGY%3BETjBJ%2CcAAA%3B%3BAScf%2CSAAO%2CMAOW%3BEACX%2CcAAA%3B%3BAEzDN%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3BEAmBF%2CkBAAA%3BEACA%2CYAAA%3BEACA%2CWAAA%3BEACA%2CaAAA%3BEACA%2CmBAAA%3BEACA%2C8FAAA%3BEAEA%2CgBAAA%3B%3BAAEC%2CKAAO%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3BEAkBJ%2CmBAAA%3BEACA%2CcAAA%3B%3BAAGH%2CKAAa%3B%3BEAEV%2CgBAAA%3BEACA%2CgBAAA%3B%3BAACC%2CKAJS%2CYAII%3B%3BEAEV%2CkBAAA%3B%3BAAEH%2CKARS%2CYAQM%3B%3BEAEZ%2CkBAAA%3B%3BAAEH%2CKAZS%2CYAYW%3BEACjB%2CUAAA%3BEACA%2CWAAA%3B%3BAAEH%2CKAhBS%2CYAgBgB%3BAACzB%2CKAjBS%2CYAiBkB%3BEACxB%2CuBAAA%3B%3BAAEH%2CKApBS%2CYAoBiB%3BEACvB%2CoCAAA%3BEACA%2C4CAAA%3BEACA%2CkBAAA%3B%3BACxEL%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3BEAmBH%2CYAAA%3BEACA%2CWAAA%3BEAGA%2CkBAAA%3B%3BAAEC%2CMAAW%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3BEAaR%2CgBAAA%3B%3BAAtCD%2CMAyCU%3BAAzCV%2CMA0CS%3BEACR%2CkBAAA%3BEACA%2CMAAA%3BEACA%2COAAA%3BEACA%2CWAAA%3BEACA%2CgBAAA%3BEACA%2CWAAA%3BEACA%2CmBAAA%3BEACA%2C8FAAA%3B%3BAAlDD%2CMAyCU%2CcAWP%3BAApDH%2CMA0CS%2CYAUN%3BEACE%2CcAAA%3BEACA%2CwBAAA%3B%3BAAtDL%2CMAyCU%2CcAeH%3BAAxDP%2CMA0CS%2CYAcF%3BEACF%2CcAAA%3B%3BAAzDL%2CMA6DS%3BEbtCZ%2C%2BCAAA%3BEACA%2CgBAAA%3BEASqB%2CkBAAA%3BECLL%2CcAAA%3B%3BAY5Bb%2CMAiEW%3BEbpDd%2CiDAAA%3BEACA%2CgBAAA%3BEAmBqB%2CkBAAA%3BECLL%2CcAAA%3B%3BAY5Bb%2CMAiEW%2CcAEE%3BEAER%2CgBAAA%3BEACA%2CWAAA%3BEACA%2CWAAA%3B%3BAAvEL%2CMAiEW%2CcASP%3BEACC%2CWAAA%3BEACA%2CcAAA%3BEACA%2CeAAA%3B%3BAA7EL%2CMAiFgB%3BEACf%2CkBAAA%3BEACA%2COAAA%3BEACA%2CMAAA%3B%3BAApFD%2CMAuFiB%3BEAChB%2CkBAAA%3BEACA%2CQAAA%3BEACA%2CMAAA%3B%3BAAGH%2CMAAW%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3BEAaR%2CqBAAA%3B%3BAA1GD%2CMA6GW%3BEACV%2CkBAAA%3BEACA%2CSAAA%3BEACA%2COAAA%3BEACA%2CaAAA%3BEACA%2CkBAAA%3BEACA%2CWAAA%3BEACA%2CmBAAA%3BEACA%2C8FAAA%3BEb9FJ%2C%2BCAAA%3BEACA%2CgBAAA%3BEASqB%2CkBAAA%3BECLL%2CcAAA%3B%3BAY5Bb%2CMA0HgB%3BEACf%2CkBAAA%3BEACA%2CSAAA%3BEACA%2COAAA%3B%3BAA7HD%2CMAgIiB%3BEAChB%2CkBAAA%3BEACA%2CSAAA%3BEACA%2CQAAA%3B%3BAAGH%2CMAAQ%3B%3B%3BAAAR%2CMAAQ%2COAED%3BEACA%2CkBAAA%3B%3BAAEH%2CMALI%2COAKS%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3BAAAb%2CMALI%2COAKS%2CYAgBN%3BEACA%2CUAAA%3BEACA%2CYAAA%3BEACA%2CMAAA%3B%3BAAnBP%2CMALI%2COAKS%2CYAqBK%3BEACX%2COAAA%3B%3BAAtBP%2CMALI%2COAKS%2CYAwBI%3BEACV%2CQAAA%3B%3BAAEH%2CMAhCA%2COAKS%2CYA2BC%3B%3B%3BAAAV%2CMAhCA%2COAKS%2CYA2BC%2CSAEQ%3BEAAE%2CyBAAA%3B%3BAAFpB%2CMAhCA%2COAKS%2CYA2BC%2CSAGO%3BEAAE%2CyBAAA%3B%3BAAGvB%2CMAtCI%2COAsCO%3B%3B%3B%3B%3BAAAX%2CMAtCI%2COAsCO%2CUAIJ%3BEACA%2CWAAA%3BEACA%2CWAAA%3BEACA%2COAAA%3B%3BAACC%2CMA9CJ%2COAsCO%2CUAIJ%2CIAIc%3BEAAE%2CMAAA%3B%3BAACf%2CMA%2FCJ%2COAsCO%2CUAIJ%2CIAKa%3BEAAE%2CSAAA%3B%3BAAElB%2CMAjDA%2COAsCO%2CUAWG%3B%3B%3BAAAV%2CMAjDA%2COAsCO%2CUAWG%2CSAEQ%3BEAAE%2C0BAAA%3B%3BAAFpB%2CMAjDA%2COAsCO%2CUAWG%2CSAGO%3BEAAE%2C0BAAA%3B%3BAAEnB%2CMAtDA%2COAsCO%2CUAgBG%3B%3B%3BAAAV%2CMAtDA%2COAsCO%2CUAgBG%2CSAEQ%3BEAAE%2C0BAAA%3B%3BAAFpB%2CMAtDA%2COAsCO%2CUAgBG%2CSAGO%3BEAAE%2C0BAAA%3B%3BAAK3B%2CMAAS%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3B%3BEAeN%2CgBAAA%3B%3BAAfH%2CMAAS%2CQAiBM%3BEACR%2CmBAAA%3B%3BAAlBP%2CMAAS%2CQAiBM%2CYAEJ%3BEACA%2CqBAAA%3BEACA%2CeAAA%3BEACA%2CeAAA%3B%3BAACC%2CMAvBH%2CQAiBM%2CYAEJ%2CIAIY%3BEZzLR%2CcAAA%3BEY2LA%2CsBAAA%3B%3BAAEH%2CMA3BH%2CQAiBM%2CYAEJ%2CIAQQ%3BEACJ%2CkBAAA%3B%3BAA5Bf%2CMAAS%2CQAiCO%3B%3BEAET%2CYAAA%3B%3BAAnCP%2CMAAS%2CQAiCO%2CaAGL%3BEACA%2CaAAA%3B%3BAACC%2CMAtCH%2CQAiCO%2CaAGL%2CIAEY%3BEACR%2CcAAA%3B%3BAC3Of%3BAACD%3BAACA%3B%3BEdgBA%2CaAAa%2CmBAAmB%2CWAAW%2CwBAA3C%3BEACA%2CgBAAA%3BEAiBmB%2CeAAA%3B%3BAc7BlB%3BAACD%3BEACA%2CiBAAA%3B%3BAAGG%2COAAM%3BEACT%2CaAAA%3B%3BAAIC%2CIAAY%3BEACT%2CeAAA%3BEbgBY%2CcAAA%3B%3BAaXT%3BEbKS%2CcAAA%3B%3BAaLT%2CUAGH%2CKACa%3BAAJV%2CUAGkB%2CmBACR%3BEbOD%2CcAAA%3B%3BAaXT%2CUAGH%2CKAEW%3BAALR%2CUAGkB%2CmBAEV%3BEbMC%2CcAAA%3B%3BAaXT%2CUAGH%2CKAGY%3BAANT%2CUAGkB%2CmBAGT%3BEbKA%2CcAAA%3B%3BAaXT%2CUAGH%2CKAIY%3BAAPT%2CUAGkB%2CmBAIT%3BEbFA%2CcAAA%3B%3BAaLT%2CUAGH%2CKAKgB%3BAARb%2CUAGkB%2CmBAKL%3BEbEJ%2CcAAA%3B%3BAaVT%2CUAUG%2CUACM%3BEbAA%2CcAAA%3B%3BAaCX%2CUAFK%2CUAEI%3BEAAE%2CaAAA%3B%3BAAZT%2CUAcK%3BEbRI%2CcAAA%3B%3BAaUX%2CUAFO%2CYAEG%3BEbRC%2CcAAA%3BEAMD%2C8CAAA%3B%3BAaMV%2CUANO%2CYAMC%3BAAAG%2CUANJ%2CYAMc%3BAAAG%2CUANjB%2CYAMyB%3BEbXtB%2CcAAA%3BEAMD%2C8CAAA%3B%3BAaaF%2CeAAI%2CKAAO%3BAACT%2CkBAAQ%3BEblBN%2CcAAA%3B%3BAcnCX%3B%3B%3BAAAA%2CQAGE%2COACA%3BEd4BS%2CcAAA%3BEAMD%2C8CAAA%3B%3BActCV%2CQAGE%2COAKA%3BEdyBQ%2CcAAA%3BEAMD%2C8CAAA%3B%3BAcvCT%2CQAGE%2COASA%3BEdsBS%2CcAAA%3BEAMD%2C8CAAA%3B%3BAcxCV%2CQAkBc%3BEfkBC%2CeAAA%3B%3BAepCf%2CQAkBc%2CmBAEV%3BEdKI%2CcAAA%3B%3BAczBR%2CQAyBY%3BEACb%2CcAAA%3BEACA%2CaAAA%3BEACA%2CkBAAA%3BEACA%2CmBAAA%3BEACA%2CWAAA%3BEACA%2CiBAAA%3BEACA%2CyBAAA%3BEACA%2CgBAAA%3BEACA%2CmBAAA%3B%3BAACC%2CQAVY%2CiBAUD%3BEdQE%2C2BAAA%3BEcNV%2CsBAAA%3BEACA%2CkBAAA%3B%3BACtCN%3B%3B%3B%3BEhBmBF%2CaAAa%2CmBAAmB%2CWAAW%2CwBAA3C%3BEACA%2CgBAAA%3BEAiBmB%2CeAAA%3B%3BAgBrCjB%2CKAMM%3BEACJ%2CeAAA%3B%3BAAKK%2CKAFO%2CgBACP%2CKACQ%3BEACL%2CSAAS%2CGAAT%3B%3BAAEH%2CKALO%2CgBACP%2CKAIW%2CWAAQ%3BEAChB%2CSAAS%2CIAAT%3B%3BAAhBV%2CKAqBiB%2CmBACV%3BEACD%2CgBAAA%3BEACA%2CiBAAA%3B%3BAAEH%2CKALc%2CmBAKN%3BEACL%2CcAAA%3BEACA%2CSAAS%2CGAAT%3B%3BAA5BN%2CKAgCY%3BEACV%2CaAAA%3B%3BACjBJ%2CIAAY%3BEACZ%2CeAAA%3BEACA%2CMAAA%3BEACA%2COAAA%3BEACA%2CSAAA%3BEACA%2CWAAA%3BEACA%2CYAAA%3BEACA%2CgBAAA%3B%3BAAGM%3BEACN%2CmBAAA%3B%3BAADM%2CSAEH%3BEjBJH%2C%2BCAAA%3BEACA%2CgBAAA%3BEAcmB%2CeAAA%3BECVH%2CcAAA%3BEgBCZ%2CeAAA%3B%3BAAIK%3BEACT%2CqDAAA%3BEACA%2CqBAAA%3BEACA%2C4CAAA%3BEACA%2CUAAA%3B%3BAAGK%3BEACL%2CkBAAA%3BEACA%2CMAAA%3BEACA%2COAAA%3BEN9BA%2CkCAAA%3BEACA%2C%2BBAAA%3BEACA%2C0BAAA%3BEM8BA%2CWAAA%3BEACA%2CYAAA%3B%3BAANK%2CQAQE%3BEACH%2CcAAA%3BEACA%2CsCAAA%3BEACA%2CcAAA%3BEN3BJ%2C8BAAA%3BEACA%2C2BAAA%3BEACA%2CsBAAA%3BEM2BI%2CYAAA%3BEACA%2CWAAA%3B%3BAAIQ%2CeACK%3BEjB9CjB%2CiDAAA%3BEACA%2CgBAAA%3BEAuBoB%2CeAAA%3B%3BAiByBV%2CeAHO%2CiBAER%2CKACM%3BEACH%2CgBAAA%3B%3BAALA%2CeACK%2CiBAER%2CKAIC%3BEACE%2CcAAA%3BEACA%2CqBAAA%3B%3BAACC%2CeATI%2CiBAER%2CKAIC%2CEAGU%3BEhB3CR%2CcAAA%3BEAWE%2C6CAAA%3B%3BAgByCT%3BEhBjDW%2CcAAA%3B%3BAgBqDV%2CUAAY%2CWAEX%2COAAc%2CcAAG%3BEACpB%2CYAAA%3B%3BAAHE%2CUAAY%2CWAMA%3BEACd%2C6BAAA%3BENhEJ%2C8BAAA%3BEACA%2C2BAAA%3BEACA%2CsBAAA%3B%3BAMgEK%2CUATa%2CWAMA%2CkBAGN%3BEACJ%2CcAAA%3B%3BAAVF%2CUAAY%2CWAMA%2CkBAMR%3BEACF%2CcAAA%3B%3BAAbF%2CUAAY%2CWAiBR%3BEACN%2CUAAA%3BEN3EJ%2CgCAAA%3BEACA%2C6BAAA%3BEACA%2CwBAAA%3B%3BAM2EK%2CUApBa%2CWAiBR%2CUAGE%3BEACJ%2CUAAA%3B%3BAArBF%2CUAAY%2CWAyBJ%2CcAAK%3BEACf%2CcAAA%3BEACA%2CcAAA%22%7D */

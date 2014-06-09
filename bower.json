@@ -6,7 +6,7 @@
     "ken@mnmlst.me"
   ],
   "description": "Documentation and test framework for CSS",
-  "main": "scripts/styleboard.js",
+  "main": "dist",
   "keywords": [
     "CSS",
     "styleguide"

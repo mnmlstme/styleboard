@@ -1,0 +1,54 @@
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>StyleBoard</title>
+        <link rel="stylesheet" type="text/css" href="styles/styleboard.css">
+        <script src="https://code.jquery.com/jquery-1.10.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone-min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/1.4.1/less.min.js"></script>
+        <script src="https://yandex.st/highlightjs/8.0/highlight.min.js"></script>
+        <script src="lib/mkay.js"></script>
+    </head>
+    <body class="embedded- styleboard">
+        <div id="tabbedView" class="headered- footered- tabbed- frame">
+            <nav class="frame-header">
+                <ul class="frame-tabs bar">
+                    <li>HTML
+                    <li>CSS
+                    <li class="is-active">View
+                </ul>
+                <ul id="settings" class="tool- bar"></ul>
+                <h1>
+                    <a id="openInStyleboard" href="./#" target="styleboard">
+                         Styleboard <i class="fullscreen- icon"></i></a>
+                </h1>
+            </nav>
+            <ul class="frame-panes">
+                <li>
+                    <section class="code dark- scrollable- pane">
+                        <pre id="example" class="highlight">
+                        </pre>
+                    </section>
+                </li>
+                <li>
+                    <section class="code dark- scrollable- pane">
+                        <ul id ="sources"></ul>
+                    </section>
+                </li>
+                <li class="is-active">
+                    <div id="sandboxPane" class="scrollable- pane">
+                        <section id="sandbox">
+                            <iframe src="about:blank"></iframe>
+                        </section>
+                    </div>
+                </li>
+            </ul>
+            <footer id="embedFooter" class="frame-footer">
+                <h3 class="footer-title"></h3>
+            </footer>
+        </div>
+        <script data-main="scripts/styleboard" src="scripts/require.js"></script>
+    </body>
+</html>
