@@ -1,6 +1,6 @@
-define(['Context',
-        '../lib/highlight/js/highlight.js'],
-       function (Context, highlight) {
+define(['Context'], function (Context) {
+
+    var highlight = hljs.highlight;
 
     var MarkupView = Backbone.View.extend({
 

@@ -48,7 +48,8 @@ module.exports = function(grunt){
                 src: [
                     'LICENSE.txt',
                     '*.html',
-                    '{lib,scripts}/*',
+                    'scripts/*',
+                    'lib/*/js/*',
                     'graphics/iconfont/*.{eot,svg,ttf,woff}',
                     'graphics/*.svg',
                     'styles/*.css'
