@@ -3,8 +3,8 @@ define( function () {
 /**
  * @name AppState
  * @constructor
- * @param attrs.pattern {Pattern}   the pattern currently being viewed
- * @param attrs.example {Example}   the example curently being viewed
+ * @param attrs.pattern {Context}   the pattern currently being viewed
+ * @param attrs.example {Context}   the example curently being viewed
  */
     appState = new Backbone.Model();
 

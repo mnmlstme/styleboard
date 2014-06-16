@@ -27,7 +27,7 @@ define(['Context'], function (Context) {
             var view = this,
                 example = view.model,
                 patterns = [],
-                code = example ? highlight( 'xml', example.expand() ).value : '';
+                code = example ? highlight( 'xml', example.getText() || '' ).value : '';
 
             view.$pre.html( code )
               // TODO: make this less tied to highlight.js

@@ -73,7 +73,7 @@ define(['appState'], function (appState) {
                     if ( view.ngApp ) {
                         $app = $body.mk('div.styleboard-ng-app');
                     }
-                    $app.append( $.parseHTML( example.expand(), view.doc, true ) );
+                    $app.append( $.parseHTML( example.getText() || '', view.doc, true ) );
                     if ( view.ngApp ) {
                         view.context.angular.bootstrap($app[0],[view.ngApp]);
                     }

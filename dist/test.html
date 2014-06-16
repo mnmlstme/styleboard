@@ -76,11 +76,20 @@
             .foo.bar { /** This is NOT a bar foo. */ }
         </style>
 
-        <style id="explicitModifier">
+        <style id="explicitPatternModifier">
             /** @pattern .foo
                 This is a foo. */
             /** @modifier .foo.bar-
                 This is a bar foo. */
+        </style>
+
+        <style id="explicitModifier">
+            .foo {
+                /** This is a foo.
+
+                    @modifier .foo.bar-
+                    This is a bar foo. */
+            }
         </style>
 
         <style id="modifierConvention">
@@ -99,14 +108,36 @@
             .foo.another-.bar- { /** This is a bar foo. */ }
         </style>
 
-        <style id="memberConvention">
-            .foo { /** This is a foo. */ }
-            .foo .foo-bar { /** This is a bar of a foo. */ }
+        <style id="twoModifiers">
+            /** @pattern .foo */
+            .foo.bar- { /** This is a bar foo. */ }
+            /** @modifier .foo.another- */
         </style>
 
         <style id="memberNoConvention">
             .foo { /** This is a foo. */ }
             .foo .bar { /** This is NOT a bar of a foo. */ }
+        </style>
+
+        <style id="explicitPatternMember">
+            /** @pattern .foo
+                This is a foo. */
+            /** @member .foo .foo-bar
+                This is a bar of a foo. */
+        </style>
+
+        <style id="explicitMember">
+            .foo {
+                /** This is a foo.
+
+                    @member .foo .foo-bar
+                    This is a bar of a foo. */
+            }
+        </style>
+
+        <style id="memberConvention">
+            .foo { /** This is a foo. */ }
+            .foo .foo-bar { /** This is a bar of a foo. */ }
         </style>
 
         <style id="directMemberConvention">
@@ -119,21 +150,16 @@
             .foo section.bar ul.baz .foo-bar { /** This is a bar of a foo. */ }
         </style>
 
-        <style id="twoModifiers">
-            /** @pattern .foo */
-            /** @modifier .foo.another- */
-            .foo.bar- { /** This is a bar foo. */ }
-        </style>
-
         <style id="twoMembers">
             /** @pattern .foo */
+            .foo .foo-bar { /* This is a bar of a foo. */}
             /** @member .foo .foo-something */
-            .foo .foo-bar { /** This is a bar of a foo. */ }
         </style>
 
         <style id="modifierAndMember">
-            /** @pattern .foo */
-            /** @modifier .foo.bar- */
+            .foo {
+                /** @modifier .foo.bar- */
+            }
             .foo .foo-bar { /** This is a bar of a foo. */ }
         </style>
 
@@ -149,14 +175,17 @@
         </style>
 
         <style id="explicitReopenPattern">
-            /** @pattern .foo */
-            /** @pattern .bar */
+            /** @pattern .foo
+                This is a foo. */
+            /** @pattern .bar
+                This is a bar. */
             /** @member .foo .foo-bar
                 This is a bar of a foo. */
         </style>
 
         <style id="implicitReopenPattern">
-            /** @pattern .foo */
+            /** @pattern .foo
+                This is a foo. */
             .bar { /** This is a bar. */ }
             .foo .foo-bar { /** This is a bar of a foo. */ }
         </style>

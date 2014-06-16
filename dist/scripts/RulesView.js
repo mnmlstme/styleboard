@@ -29,7 +29,7 @@ define( function () {
             $list.empty();
 
             if ( pattern ) {
-                pattern.getNodesOfType( 'rule' )
+                pattern.getAllNodesOfType( 'rule' )
                     .forEach( function (node) {
                         var $rule = $list.mk('li.highlight.rule',
                                              ['pre.code', node.getText()]);

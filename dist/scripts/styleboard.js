@@ -1,8 +1,8 @@
-require(['Parser', 'Context', 'Example',
+require(['Parser', 'Context',
          'DictionaryView', 'RenderedView', 'MarkupView', 'RulesView',
          'FooterView', 'SettingsView', 'appState',
          '../lib/mkay/js/mkay'],
-function( Parser, Context, Example,
+function( Parser, Context,
           DictionaryView, RenderedView, MarkupView, RulesView,
           FooterView, SettingsView, appState ) {
 
@@ -129,7 +129,7 @@ function( Parser, Context, Example,
 
             if ( path.length ) {
                 pattern = new Context({ doc: sb.doc, node: sb.doc.findByName( path[0] ) });
-                examples = pattern.getNodesOfType('example', Example);
+                examples = pattern.getAllNodesOfType('example');
 
                 if ( path.length > 1 ) {
                     if ( path[1].match( /^\d+$/ ) ) {
@@ -151,7 +151,7 @@ function( Parser, Context, Example,
             }
 
             appState.set('pattern', pattern || new Context({doc: sb.doc}) );
-            appState.set('example', example || new Example({doc: sb.doc}) );
+            appState.set('example', example || new Context({doc: sb.doc}) );
         }
 
     }

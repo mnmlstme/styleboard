@@ -1,7 +1,7 @@
 /**
  @filespec PatternView - the view which depicts a Pattern in the styleboard
  */
-define(['appState', 'Example'], function (appState, Example) {
+define(['appState'], function (appState) {
 
     var PatternView = Backbone.View.extend({
 
@@ -26,7 +26,7 @@ define(['appState', 'Example'], function (appState, Example) {
         renderNodes: function () {
             var view = this,
                 pat = view.model,
-                examples = pat.getNodesOfType('example'),
+                examples = pat.getAllNodesOfType('example'),
                 exampleIndex = 0;
 
             recursivelyRenderNodes( pat, view.$el );

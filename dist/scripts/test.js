@@ -1,258 +1,297 @@
-require(['StyleDoc', 'Parser'],
-function( StyleDoc, Parser ) {
+require(['StyleDoc', 'Context', 'Parser'],
+function( StyleDoc, Context, Parser ) {
 
     T( 'implicitPattern', function ( t ) {
-        var pat = t.findPattern('foo'),
-            nodes = t.getNodes(pat);
-
+        var pat = t.findByName('foo');
         ok( pat );
-        equal( nodes.length, 1 );
-        deepEqual( nodes[0], ['p', 'This is a foo.'] );
+
+        var html = pat.getNodesOfType('html');
+        equal( html.length, 1 );
+        equal( html[0].getText(), '<p>This is a foo.</p>' );
+
+        equal( pat.getNodesOfType('rule').length, 1 );
     });
 
     T( 'invalidPatternName', function ( t ) {
-        var nodes = t.getNodes();
+        ok( !t.findByName('foo-bar') );
 
-        ok( !t.findPattern('foo-bar') );
-        equal( nodes.length, 1 );
-        deepEqual( nodes[0], ['p', 'This is NOT a foo-bar.'] );
+        var html = t.getNodesOfType('html');
+        equal( html.length, 1 );
+        equal( html[0].getText(), '<p>This is NOT a foo-bar.</p>' );
+
+        equal( t.getNodesOfType('rule').length, 1 );
     });
 
     T( 'explicitPattern', function ( t ) {
-        var pat = t.findPattern('foo'),
-            nodes = t.getNodes(pat);
+        var pat = t.findByName('foo');
         ok( pat );
-        equal( nodes.length, 1 );
-        deepEqual( nodes[0], ['p', 'This is a foo.'] );
+
+        var html = pat.getNodesOfType('html');
+        equal( html.length, 1 );
+        equal( html[0].getText(), '<p>This is a foo.</p>' );
     });
 
     T( 'explicitInvalidPattern', function ( t ) {
-        var pat = t.findPattern('foo-bar'),
-            nodes = t.getNodes(pat);
-
+        var pat = t.findByName('foo-bar');
         ok( pat );
-        equal( nodes.length, 1 );
-        deepEqual( nodes[0], ['p', 'This is a foo-bar.'] );
+
+        var html = pat.getNodesOfType('html');
+        equal( html.length, 1 );
+        equal( html[0].getText(), '<p>This is a foo-bar.</p>' );
+
+        equal( pat.getNodesOfType('rule').length, 1 );
     });
 
     T( 'descriptionBefore', function ( t ) {
-        var pat = t.findPattern('foo'),
-            outside = t.getNodes(),
-            inside = t.getNodes( pat );
-
+        var pat = t.findByName('foo');
         ok( pat );
-        equal( outside.length, 2 );
-        deepEqual( outside[0], ['p', 'This is outside foo.'] );
-        equal( outside[1], pat );
+
+        var outside = t.getNodesOfType('html');
+        equal( outside.length, 1 );
+        equal( outside[0].getText(), '<p>This is outside foo.</p>' );
+
+        var inside = pat.getNodesOfType('html');
         equal( inside.length, 1 );
-        deepEqual( inside[0], ['p', 'This is a foo.'] );
+        equal( inside[0].getText(), '<p>This is a foo.</p>' );
+
+        equal( pat.getNodesOfType('rule').length, 1 );
     });
 
     T( 'declarationBefore', function ( t ) {
-        var pat = t.findPattern('foo'),
-            nodes = t.getNodes(pat);
-
+        var pat = t.findByName('foo');
         ok( pat );
-        equal( nodes.length, 2 );
-        deepEqual( nodes[0], ['p', 'This is a foo.'] );
-        deepEqual( nodes[1], ['p', 'nice.'] );
+
+        var html = pat.getNodesOfType('html');
+        equal( html.length, 2 );
+        equal( html[0].getText(), '<p>This is a foo.</p>' );
+        equal( html[1].getText(), '<p>nice.</p>' );
+
+        equal( pat.getNodesOfType('rule').length, 1 );
     });
 
     T( 'twoLineParagraph', function (t) {
-        var nodes = t.getNodes( t.findPattern('foo') );
-
-        equal( nodes.length, 1 );
-        deepEqual( nodes[0], ['p', 'This is line 1.' + '\n' + 'This is line 2.'] );
+        var pat = t.findByName('foo');
+        var html = pat.getNodesOfType('html');
+        equal( html.length, 1 );
+        equal( html[0].getText(), '<p>This is line 1.\nThis is line 2.</p>' );
     });
 
     T( 'twoParagraphs', function (t) {
-        var nodes = t.getNodes( t.findPattern('foo') );
-
-        equal( nodes.length, 2 );
-        deepEqual( nodes[0], ['p', 'This is paragraph 1.'] );
-        deepEqual( nodes[1], ['p', 'This is paragraph 2.'] );
+        var pat = t.findByName('foo');
+        var html = pat.getNodesOfType('html');
+        equal( html.length, 2 );
+        equal( html[0].getText(), '<p>This is paragraph 1.</p>' );
+        equal( html[1].getText(), '<p>This is paragraph 2.</p>' );
     });
 
     T( 'anExample', function (t) {
-        var nodes = t.getNodes( t.findPattern('foo') );
-
-        equal( nodes.length, 1 );
-        equal( t.getType(nodes[0]), 'example' );
-        equal( t.getAttr(nodes[0], 'title'), 'This is an example.' );
-        equal( t.getNodes(nodes[0])[0], '<xmp>An Example</xmp>' );
+        var pat = t.findByName('foo');
+        var xmp = pat.getNodesOfType('example');
+        equal( xmp.length, 1 );
+        equal( xmp[0].getAttr('title'), 'This is an example.' );
+        equal( xmp[0].getText(), '<xmp>An Example</xmp>' );
     });
 
     T( 'modifierNoConvention', function (t) {
-        var nodes = t.getNodes( t.findPattern('foo') );
+        var pat = t.findByName('foo');
+        var mod = pat.getNodesOfType('modifier');
+        equal( mod.length, 0 );
 
-        equal( nodes.length, 1 );
-        deepEqual( nodes[0], ['p', 'This is NOT a bar foo.'] );
+        var html = pat.getNodesOfType('html');
+        equal( html.length, 1 );
+        equal( html[0].getText(), '<p>This is NOT a bar foo.</p>' );
+
+        equal( pat.getNodesOfType('rule').length, 1 );
     });
 
     T( 'modifierNoPattern', function (t) {
-        var nodes = t.getNodes();
+        var pat = t.findByName('foo');
+        var html = t.getNodesOfType('html');
 
-        equal( nodes.length, 1 );
-        deepEqual( nodes[0], ['p', 'This is NOT a bar foo.'] );
+        ok( !pat );
+
+        equal( html.length, 1 );
+        equal( html[0].getText(), '<p>This is NOT a bar foo.</p>' );
+
+        equal( t.getNodesOfType('rule').length, 1 );
     });
 
-    [ 'explicitModifier', 'modifierConvention', 'modifierAfterPattern', 'doubleModifier' ]
+    [ 'explicitPatternModifier',
+      'explicitModifier',
+      'modifierConvention',
+      'modifierAfterPattern',
+      'doubleModifier' ]
         .forEach( function (id) {
             T( id, function (t) {
-                var nodes = t.getNodes( t.findPattern('foo') );
-                equal( nodes.length, 2 );
-                equal( t.getType(nodes[1]), 'modifier' );
-                equal( t.getAttr(nodes[1], 'name'), 'bar-' );
+                var pat = t.findByName('foo');
+                ok( pat );
 
-                var modNodes = t.getNodes(nodes[1]);
-                equal( modNodes.length, 1 );
-                deepEqual( modNodes[0], ['p', 'This is a bar foo.'] );
+                var html = pat.getNodesOfType('html');
+                equal( html.length, 1 );
+                equal( html[0].getText(), '<p>This is a foo.</p>' );
+
+                var mods = pat.getNodesOfType('modifier');
+                equal( mods.length, 1 );
+                equal( mods[0].getName(), 'bar-' );
+
+                html = mods[0].getNodesOfType('html');
+                equal( html.length, 1 );
+                equal( html[0].getText(), '<p>This is a bar foo.</p>' );
             });
         });
 
-    T( 'memberConvention', function (t) {
-        var nodes = t.getNodes( t.findPattern('foo') );
+    T( 'twoModifiers', function ( t ) {
+        var pat = t.findByName('foo');
+        ok( pat );
 
-        equal( nodes.length, 2 );
-        deepEqual( nodes[0], ['p', 'This is a foo.'] );
-        equal( t.getType(nodes[1]), 'member' );
-        equal( t.getAttr(nodes[1], 'name'), 'foo-bar' );
-
-        var modNodes = t.getNodes(nodes[1]);
-        equal( modNodes.length, 1 );
-        deepEqual( modNodes[0], ['p', 'This is a bar of a foo.'] );
+        var mods = pat.getNodesOfType('modifier');
+        equal( mods.length, 2 );
+        equal( mods[0].getName(), 'bar-' );
+        equal( mods[1].getName(), 'another-' );
     });
 
     T( 'memberNoConvention', function (t) {
-        var nodes = t.getNodes( t.findPattern('foo') );
-
-        equal( nodes.length, 2 );
-        deepEqual( nodes[0], ['p', 'This is a foo.'] );
-        deepEqual( nodes[1], ['p', 'This is NOT a bar of a foo.'] );
-    });
-
-    T( 'directMemberConvention', function (t) {
-        var nodes = t.getNodes( t.findPattern('foo') );
-
-        equal( nodes.length, 2 );
-        deepEqual( nodes[0], ['p', 'This is a foo.'] );
-        equal( t.getType(nodes[1]), 'member' );
-        equal( t.getAttr(nodes[1], 'name'), 'foo-bar' );
-
-        var modNodes = t.getNodes(nodes[1]);
-        equal( modNodes.length, 1 );
-        deepEqual( modNodes[0], ['p', 'This is a bar of a foo.'] );
-    });
-
-    T( 'deepMemberConvention', function (t) {
-        var nodes = t.getNodes( t.findPattern('foo') );
-
-        equal( nodes.length, 2 );
-        deepEqual( nodes[0], ['p', 'This is a foo.'] );
-        equal( t.getType(nodes[1]), 'member' );
-        equal( t.getAttr(nodes[1], 'name'), 'foo-bar' );
-
-        var modNodes = t.getNodes(nodes[1]);
-        equal( modNodes.length, 1 );
-        deepEqual( modNodes[0], ['p', 'This is a bar of a foo.'] );
-    });
-
-    T( 'twoModifiers', function ( t ) {
-        var pat = t.findPattern('foo'),
-            nodes = t.getNodes(pat);
-
+        var pat = t.findByName('foo');
         ok( pat );
-        equal( nodes.length, 2 );
-        equal( t.getType( nodes[0] ), 'modifier' );
-        equal( t.getAttr( nodes[0], 'name' ), 'another-' );
-        equal( t.getType( nodes[1] ), 'modifier' );
-        equal( t.getAttr( nodes[1], 'name' ), 'bar-' );
+
+        var html = pat.getNodesOfType('html');
+        equal( html.length, 2 );
+        equal( html[0].getText(), '<p>This is a foo.</p>' );
+        equal( html[1].getText(), '<p>This is NOT a bar of a foo.</p>' );
+
+        equal( pat.getNodesOfType('member'), 0 );
     });
+
+    [ 'explicitPatternMember',
+      'explicitMember',
+      'memberConvention',
+      'directMemberConvention',
+      'deepMemberConvention' ]
+        .forEach( function (id ) {
+            T( id, function (t) {
+                var pat = t.findByName('foo');
+                ok( pat );
+
+                var html = pat.getNodesOfType('html');
+                equal( html.length, 1 );
+                equal( html[0].getText(), '<p>This is a foo.</p>' );
+
+                var mems = pat.getNodesOfType('member');
+                equal( mems.length, 1 );
+                equal( mems[0].getName(), 'foo-bar' );
+
+                html = mems[0].getNodesOfType('html');
+                equal( html.length, 1 );
+                equal( html[0].getText(), '<p>This is a bar of a foo.</p>' );
+            });
+        });
 
     T( 'twoMembers', function ( t ) {
-        var pat = t.findPattern('foo'),
-            nodes = t.getNodes(pat);
-
+        var pat = t.findByName('foo');
         ok( pat );
-        equal( nodes.length, 2 );
-        equal( t.getType( nodes[0] ), 'member' );
-        equal( t.getAttr( nodes[0], 'name' ), 'foo-something' );
-        equal( t.getType( nodes[1] ), 'member' );
-        equal( t.getAttr( nodes[1], 'name' ), 'foo-bar' );
+
+        var mems = pat.getNodesOfType('member');
+        equal( mems.length, 2 );
+        equal( mems[0].getName(), 'foo-bar' );
+        equal( mems[1].getName(), 'foo-something' );
     });
 
     T( 'modifierAndMember', function ( t ) {
-        var pat = t.findPattern('foo'),
-            nodes = t.getNodes(pat);
-
+        var pat = t.findByName('foo');
         ok( pat );
-        equal( nodes.length, 2 );
-        equal( t.getType( nodes[0] ), 'modifier' );
-        equal( t.getAttr( nodes[0], 'name' ), 'bar-' );
-        equal( t.getType( nodes[1] ), 'member' );
-        equal( t.getAttr( nodes[1], 'name' ), 'foo-bar' );
+
+        var mods = pat.getNodesOfType('modifier');
+        equal( mods.length, 1 );
+        equal( mods[0].getName(), 'bar-' );
+
+        var mems = pat.getNodesOfType('member');
+        equal( mems.length, 1 );
+        equal( mems[0].getName(), 'foo-bar' );
     });
 
     T( 'twoPatterns', function ( t ) {
-        var pat = t.findPattern('foo'),
-            nodes = t.getNodes(pat);
-
+        var pat = t.findByName('foo');
         ok( pat );
-        equal( nodes.length, 1 );
-        deepEqual( nodes[0], ['p', 'This is a foo.'] );
 
-        pat = t.findPattern('bar');
-        nodes = t.getNodes(pat);
+        var html = pat.getNodesOfType('html');
+        equal( html.length, 1 );
+        equal( html[0].getText(), '<p>This is a foo.</p>' );
 
+        pat = t.findByName('bar');
         ok( pat );
-        equal( nodes.length, 1 );
-        deepEqual( nodes[0], ['p', 'This is a bar.'] );
+
+        html = pat.getNodesOfType('html');
+        equal( html.length, 1 );
+        equal( html[0].getText(), '<p>This is a bar.</p>' );
     });
 
-    T( 'closeTwoLevels', function ( t ) {
-        var nodes = t.getNodes();
-
-        equal( nodes.length, 2 );
-        equal( nodes[1], t.findPattern('bar') );
-    });
-
-    [ 'explicitReopenPattern', 'implicitReopenPattern' ]
+    [ 'closeTwoLevels',
+      'explicitReopenPattern',
+      'implicitReopenPattern' ]
         .forEach( function (id) {
             T( id, function ( t ) {
-                var tree = t.getNodes(),
-                pat = t.findPattern('foo'),
-                nodes = t.getNodes(pat);
+                var pat = t.findByName('foo');
+                ok( pat );
 
-                equal( tree.length, 2 );
-                equal( tree[0], pat );
+                var html = pat.getNodesOfType('html');
+                equal( html.length, 1 );
+                equal( html[0].getText(), '<p>This is a foo.</p>' );
 
-                equal( nodes.length, 1 );
-                equal( t.getType(nodes[0]), 'member' );
-                equal( t.getAttr(nodes[0], 'name'), 'foo-bar' );
+                var mems = pat.getNodesOfType('member');
+                equal( mems.length, 1 );
+                equal( mems[0].getName(), 'foo-bar' );
 
-                var modNodes = t.getNodes(nodes[0]);
-                equal( modNodes.length, 1 );
-                deepEqual( modNodes[0], ['p', 'This is a bar of a foo.'] );
+                html = mems[0].getNodesOfType('html');
+                equal( html.length, 1 );
+                equal( html[0].getText(), '<p>This is a bar of a foo.</p>' );
+
+                pat = t.findByName('bar');
+                ok( pat );
+
+                html = pat.getNodesOfType('html');
+                equal( html.length, 1 );
+                equal( html[0].getText(), '<p>This is a bar.</p>' );
+
+                equal( pat.getNodesOfType('member').length, 0 );
             });
         });
 
     [ 'explicitlyInterleaved', 'implicitlyInterleaved' ]
         .forEach( function (id) {
             T( id, function ( t ) {
-                var foo = t.findPattern('foo'),
-                    bar = t.findPattern('bar'),
-                    fooNodes = t.getNodes(foo),
-                    barNodes = t.getNodes(bar);
+                var pat = t.findByName('foo');
+                ok( pat );
 
-                equal( t.getNodes().length, 2 );
+                var html = pat.getNodesOfType('html');
+                equal( html.length, 1 );
+                equal( html[0].getText(), '<p>This is a foo.</p>' );
 
-                equal( fooNodes.length, 2 );
-                equal( t.getType(fooNodes[1]), 'member' );
-                equal( t.getAttr(fooNodes[1], 'name'), 'foo-bar' );
+                var mems = pat.getNodesOfType('member');
+                equal( mems.length, 1 );
+                equal( mems[0].getName(), 'foo-bar' );
 
-                equal( barNodes.length, 2 );
-                equal( t.getType(barNodes[1]), 'modifier' );
-                equal( t.getAttr(barNodes[1], 'name'), 'foo-' );
+                html = mems[0].getNodesOfType('html');
+                equal( html.length, 1 );
+                equal( html[0].getText(), '<p>This is a bar of a foo.</p>' );
+
+                equal( pat.getNodesOfType('modifier').length, 0 );
+
+                pat = t.findByName('bar');
+                ok( pat );
+
+                html = pat.getNodesOfType('html');
+                equal( html.length, 1 );
+                equal( html[0].getText(), '<p>This is a bar.</p>' );
+
+                var mods = pat.getNodesOfType('modifier');
+                equal( mods.length, 1 );
+                equal( mods[0].getName(), 'foo-' );
+
+                html = mods[0].getNodesOfType('html');
+                equal( html.length, 1 );
+                equal( html[0].getText(), '<p>This is a foo bar.</p>' );
+
+                equal( pat.getNodesOfType('member').length, 0 );
             });
         });
 
@@ -268,23 +307,7 @@ function( StyleDoc, Parser ) {
         var cssString = $('#' + title).text(),
             parser = new Parser( opts ),
             doc = parser.parse( cssString ),
-            t = { doc: doc };
-
-        t.findPattern = function ( name ) {
-            return doc.findByName( name );
-        };
-
-        t.getType = function ( node ) {
-            return doc.getType( node );
-        };
-
-        t.getAttr = function ( node, key ) {
-            return doc.getAttr( node, key );
-        };
-
-        t.getNodes = function ( node ) {
-            return doc.getNodes( node );
-        }
+            t = new Context({ doc: doc, node: doc.getRoot() });
 
         test( title, function () {
             testFunction( t );

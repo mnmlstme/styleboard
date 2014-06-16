@@ -6,7 +6,17 @@ define( function () {
             var model = this,
                 doc = model.get('doc');
 
-            attrs && attrs.node || model.set('node', []);
+            if ( attrs && !attrs.node ) {
+                model.set( 'node', [] );
+            }
+        },
+
+        findByName: function ( name ) {
+            var model = this,
+                doc = model.get('doc'),
+                node = doc.findByName(name);
+
+            return node ? new Context({ doc: doc, node: node }) : null;
         },
 
         getNode: function () {
@@ -36,24 +46,26 @@ define( function () {
             });
         },
 
-        getNodesOfType: function ( type, constructor ) {
+        getNodesOfType: function ( type, recursively ) {
+
             var model = this,
                 doc = model.get('doc');
 
-            constructor = constructor || Context;
-
-            return doc.getNodesOfType( model.getNode(), type ).map( function (node) {
-                return new constructor({ doc: doc, node: node });
-            });
+            return doc.getNodesOfType( model.getNode(), type, recursively )
+                .map( function (node) {
+                    return new Context({ doc: doc, node: node });
+                });
         },
 
-        getDefinition: function ( type, constructor ) {
+        getAllNodesOfType: function ( type ) {
+            return this.getNodesOfType( type, true );
+        },
+
+        getDefinition: function ( type ) {
             var model = this,
                 doc = model.get('doc');
 
-            constructor = constructor || Context;
-
-            return new constructor({ doc: doc, node: doc.getDefinition( model.getNode(), type )});
+            return new Context({ doc: doc, node: doc.getDefinition( model.getNode(), type )});
         },
 
         getText: function () {

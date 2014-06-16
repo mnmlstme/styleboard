@@ -70,7 +70,7 @@ define(['StyleDoc'], function (StyleDoc) {
                         doc.openContext( context );
                     }
                     comments.map( function (rule) {
-                        parseComment( rule.value, node );
+                        parseComment( rule.value );
                     });
                     code = node.selectors.map( convertToCss )
                         .join(',\n');

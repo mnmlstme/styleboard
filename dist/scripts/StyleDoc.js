@@ -86,7 +86,7 @@ define( ['../lib/marked/js/marked'], function ( marked ) {
         };
 
         doc.addText = function addText( text ) {
-            var html = marked(text);
+            var html = marked(text).trim();
             doc.insert(['html',html]);
         };
 
@@ -118,7 +118,7 @@ define( ['../lib/marked/js/marked'], function ( marked ) {
             return node.slice( _.isObject(attrs) ? 2 : 1 );
         };
 
-        doc.getNodesOfType = function ( parent, type ) {
+        doc.getNodesOfType = function ( parent, type, recursively ) {
             var list = [];
 
             recursivelyGetNodes( parent );
@@ -128,7 +128,7 @@ define( ['../lib/marked/js/marked'], function ( marked ) {
                 doc.getNodes(parent).forEach( function (node) {
                     if ( doc.getType(node) === type ) {
                         list.push( node );
-                    } else if ( _.isArray( node ) ) {
+                    } else if ( recursively && _.isArray( node ) ) {
                         recursivelyGetNodes( node );
                     }
                 });
