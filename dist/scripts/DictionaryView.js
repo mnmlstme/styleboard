@@ -4,6 +4,8 @@
 define(["PatternView", "TabbedFrameView", "appState"],
 function ( PatternView, TabbedFrameView, appState ) {
 
+    var title = 'StyleBoard';
+
     var DictionaryView = TabbedFrameView.extend({
 
         initialize: function () {
@@ -35,7 +37,8 @@ function ( PatternView, TabbedFrameView, appState ) {
 
         renderPattern: function ( pat ) {
             var view = this,
-                dict = view.model;
+                dict = view.model,
+                patternName = pat.getName();
 
             if ( view.currentPattern &&
                  view.currentPattern.getNode() === pat.getNode() ) {
@@ -43,7 +46,8 @@ function ( PatternView, TabbedFrameView, appState ) {
             }
 
             view.currentPattern = pat;
-            view.$namedTab.text( pat.getName() );
+            view.$namedTab.text( patternName );
+            $('title').text( patternName + ' — ' + title );
             view.$current.empty();
             (new PatternView({
                 el: view.$current,
@@ -64,6 +68,8 @@ function ( PatternView, TabbedFrameView, appState ) {
 
             view.$namedTab.empty();
             view.$current.empty();
+
+            $('title').text( title );
         },
 
         selectPattern: function ( pattern ) {

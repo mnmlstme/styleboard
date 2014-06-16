@@ -26,6 +26,7 @@ define(['appState'], function (appState) {
         renderNodes: function () {
             var view = this,
                 pat = view.model,
+                patternName = pat.getName(),
                 examples = pat.getAllNodesOfType('example'),
                 exampleIndex = 0;
 
@@ -33,7 +34,7 @@ define(['appState'], function (appState) {
 
             function recursivelyRenderNodes ( parent, $parent ) {
                 var children = parent.getNodes(),
-                    scope = { pattern: pat.getName() },
+                    scope = { pattern: patternName },
                     $section;
                 scope[ parent.getType() ] = parent.getName();
                 children.forEach( function (node) {
