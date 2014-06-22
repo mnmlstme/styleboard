@@ -6,14 +6,14 @@ function( Parser, Context,
           DictionaryView, RenderedView, MarkupView, RulesView,
           FooterView, SettingsView, appState ) {
 
-    // Default configuration. Copy styleboard.config.default to styleboard.config to edit.
+    // Default configuration. Edit in styleboard.config.
     var configs = {
-        'default': 'styleboard',
-        'styleboard': {
+        'default': {
             'styles': 'styles/styleboard.css',
             'options': {}
         }
     };
+
     var configUrl = 'styleboard.config';
 
     $.ajax({
@@ -25,9 +25,7 @@ function( Parser, Context,
         },
         error: function ( jqxhr, status, error ) {
             console.warn( "Failed to load configuration file " + configUrl + "\n" +
-                          "Error: " + status + "(" + error + ")\n" +
-                          "using default configuration\n" +
-                          "(inspecting Styleboard itself)" );
+                          "Error: " + status + "(" + error + ")\n");
         },
         complete: function () {
             var config = configs['default'];

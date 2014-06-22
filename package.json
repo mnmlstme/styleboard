@@ -1,7 +1,11 @@
 {
   "name": "Styleboard",
-  "version": "0.1.0",
+  "version": "0.2.4",
   "author": "Ken Kubiak",
+  "repository": {
+     "type": "git",
+     "url": "https://github.com/mnmlstme/styleboard.git"
+  },
   "description": "A CSS documentation and test framework",
   "devDependencies": {
     "grunt": "~0.4.1",
@@ -11,6 +15,7 @@
     "grunt-contrib-qunit": "~0.3.0",
     "grunt-contrib-jshint": "~0.7.2",
     "grunt-copy-to": "~0.0.10",
-    "grunt-webfont": "~0.2.1"
+    "grunt-webfont": "~0.2.1",
+    "grunt-contrib-requirejs": "~0.4.4"
   }
 }

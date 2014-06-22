@@ -5,10 +5,10 @@
        A simple list.  Items are arranged vertically, with no decoration.
         @example
         <ul class="list">
-          <li>2½ oz gin
-          <li>½ oz dry vermouth
-          <li>1 green olive
-          <li>Angostura bitters
+          <li dummy="disclaimer">
+          <li dummy="disclaimer">
+          <li dummy="disclaimer">
+          <li dummy="disclaimer">
         </ul>
      */
 
@@ -21,10 +21,10 @@
            A bulleted list.  Items are arranged vertically with colored bullets.
            @example
            <ul class="bullet- list">
-             <li>2½ oz gin
-             <li>½ oz dry vermouth
-             <li>1 green olive
-             <li>Angostura bitters (optional)
+               <li dummy="disclaimer">
+               <li dummy="disclaimer">
+               <li dummy="disclaimer">
+               <li dummy="disclaimer">
            </ul>
         */
         @margin: 1em;
@@ -41,16 +41,16 @@
     &.comma- {
         /**
            A comma-separated list.  Items are set inline, as a line of text, with commas between.
-           @example 
+           @example
            <ul class="comma- list">
-             <li>2½ oz gin
-             <li>½ oz dry vermouth
-             <li>1 green olive
-             <li>Angostura bitters (optional)
+               <li dummy="disclaimer 4w">
+               <li dummy="disclaimer 4w">
+               <li dummy="disclaimer 4w">
+               <li dummy="disclaimer 4w">
            </ul>
         */
         > * {
-            display: inline-block;
+            display: inline;
             & + *::before {
                 content: ', ';
             }
@@ -64,34 +64,35 @@
 
            @example
            <dl class="definition- list">
-             <dt class="list-term">2½ oz gin
-             <dd class="list-definition">Vodka may be substituted
-             <dt class="list-term">½ oz dry vermouth
-             <dd class="list-definition">Use very little, just enough to coat the ice cubes
-             <dt class="list-term">1 green olive
-             <dd class="list-definition">Or a lemon twist
-             <dt class="list-term">Angostura bitters (optional)
-             <dd class="list-definition">Or orange bitters
+             <dt dummy="disclaimer">
+             <dd dummy="disclaimer">
+             <dt dummy="disclaimer">
+             <dd dummy="disclaimer">
+             <dt dummy="disclaimer">
+             <dd dummy="disclaimer">
+             <dt dummy="disclaimer">
+             <dd dummy="disclaimer">
            </dl>
            */
         .clearfix;
-        padding-left: 6em; 
+        padding-left: 6em;
         > * {
             margin-bottom: 1em;
         }
     }
 
-    .list-term {
+    .list-term,
+    &.definition- > dt {
         /** A term in a definition list. */
         float: left;
         margin-left: -6em;
         .font( header, inherit, alpha );
     }
 
-    .list-definition {
+    .list-definition,
+    &.definition- > dd {
         /** The definition for a term in a definition list. */
     }
-
 }
 
 
