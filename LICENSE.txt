@@ -1,4 +1,4 @@
-Styleboard 0.2.3
+Styleboard 0.2.4
 https://github.com/mnmlstme/styleboard
 
 Copyright (c) 2013-14, Ken Kubiak (ken@mnmlst.me)

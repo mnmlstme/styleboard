@@ -1,6 +1,6 @@
 {
   "name": "styleboard",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "homepage": "https://github.com/mnmlstme/styleboard",
   "authors": [
     "ken@mnmlst.me"
@@ -19,7 +19,9 @@
   ],
   "dependencies": {
     "marked": "chjj/marked#0.3.2",
-    "mkay": "fgnass/mkay"
+    "mkay": "fgnass/mkay",
+    "ng-dummy": "mnmlstme/ng-dummy#0.0.1",
+    "requirejs": "2.1.4"
   },
   "exportsOverride": {
     "marked": {
@@ -27,6 +29,13 @@
     },
     "mkay": {
       "js": "mkay.js"
-    }
+    },
+    "ng-dummy": {
+      "js": "dist/*.js"
+    },
+    "requirejs": {
+      "js": "require.js
+    },
+    "seedrandom": {}
   }
 }

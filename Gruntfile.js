@@ -28,6 +28,16 @@ module.exports = function(grunt){
             }
         },
 
+        requirejs: {
+            dist: {
+                options: {
+                    baseUrl: './scripts',
+                    name: 'styleboard',
+                    out: 'dist/scripts/styleboard.js'
+                }
+            }
+        },
+
         webfont: {
             iconfont: {
                 src: 'graphics/icons/*.svg',
@@ -47,9 +57,9 @@ module.exports = function(grunt){
                 dest: 'dist/',
                 src: [
                     'LICENSE.txt',
-                    '*.html',
-                    'scripts/*',
-                    'lib/*/js/*',
+                    'styleboard.config',
+                    '{index,embed}.html',
+                    'lib/{requirejs,ng-dummy}/js/*',
                     'graphics/iconfont/*.{eot,svg,ttf,woff}',
                     'graphics/*.svg',
                     'styles/*.css'
@@ -77,9 +87,10 @@ module.exports = function(grunt){
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-qunit');
+    grunt.loadNpmTasks('grunt-contrib-requirejs');
     grunt.loadNpmTasks('grunt-webfont');
 
     grunt.registerTask('default', ['webfont', 'less']);
-    grunt.registerTask('dist', ['default', 'copyto:dist']);
+    grunt.registerTask('dist', ['default', 'requirejs:dist', 'copyto:dist']);
 
 };

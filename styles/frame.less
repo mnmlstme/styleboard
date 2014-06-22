@@ -7,12 +7,9 @@
        @example A basic frame with one pane.
        <div class="frame">
          <div class="pane">
-           <p>Lorem ipsum dolor sit amet, 
-             consectetur adipiscing elit.</p>
-           <p>Duis tempor risus vitae
-             nulla commodo tempus.</p>
-           <p>Praesent semper arcu quis
-             diam aliquam aliquam.</p> 
+           <p dummy>
+           <p dummy>
+           <p dummy>
          </div>
        </div>
     */
@@ -32,10 +29,9 @@
 
             @example A frame with a title bar.
             <div class="headered- frame">
-              <h1 class="frame-header">Lorem Ipsum</h1>
+              <h1 class="frame-header" dummy></h1>
               <div class="pane">
-                <p>Lorem ipsum dolor sit amet, 
-                consectetur adipiscing elit.</p>
+                <p dummy>
               </div>
             </div
          */
@@ -101,11 +97,10 @@
             @example A frame with a title bar.
             <div class="footered- frame">
               <div class="pane">
-                <p>Lorem ipsum dolor sit amet,
-                consectetur adipiscing elit.</p>
+                <p dummy>
               </div>
-              <p class="frame-footer">Lorem Ipsum</p>
-            </div
+              <p class="frame-footer" dummy>
+            </div>
          */
         padding-bottom: @footerHeight;
     }
@@ -148,11 +143,11 @@
                @example Two panes side-by-side
                <div class="horizontal- split- frame">
                    <div class="pane">
-                       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                       <p>Duis tempor risus vitae nulla commodo tempus.</p>
+                       <p dummy>
+                       <p dummy>
                    </div>
                    <div class="pane">
-                       <p>Praesent semper arcu quis diam aliquam aliquam.</p>
+                       <p dummy>
                    </div>
                </div>
                */
@@ -203,13 +198,13 @@
             <div class="tabbed- frame">
               <nav>
                 <ul class="frame-tabs">
-                  <li class="is-active">One
-                  <li>Two
+                  <li class="is-active" dummy="1w @0">
+                  <li dummy="1w @1">
                 </ul>
               </nav>
               <ul class="frame-panes">
-                <li class="pane is-active">This is pane One
-                <li class="pane">This is pane Two
+                <li class="pane is-active"><p dummy="@0">
+                <li class="pane"><p dummy="@1">
             </div>
         */
         padding-top: @headerHeight;
