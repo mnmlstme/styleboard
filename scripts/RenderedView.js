@@ -65,19 +65,51 @@ define(['appState'], function (appState) {
                 doc = view.doc,
                 $body = $(doc.body),
                 example = view.model,
-                $app = $body;
+                $content;
 
             if ( $body.length ) {
                 $body.empty();
                 if ( example ) {
+                    $content = $body.mk('div.styleboard-content')
+                        .toggleClass('styleboard-ng-app', view.ngApp)
+                        .append( $.parseHTML( example.getText() || '', view.doc, true ) );
+
                     if ( view.ngApp ) {
-                        $app = $body.mk('div.styleboard-ng-app');
+                        // TODO: possible race condition affecting sizing
+                        view.context.angular.bootstrap($content[0],[view.ngApp]);
                     }
-                    $app.append( $.parseHTML( example.getText() || '', view.doc, true ) );
-                    if ( view.ngApp ) {
-                        view.context.angular.bootstrap($app[0],[view.ngApp]);
-                    }
+
+                    view.updatePosition();
                 }
+            }
+        },
+
+        updatePosition: function updatePostion() {
+            var view = this,
+                $body = view.$iframe.contents().find('body'),
+                $content = $body.children(),
+                bw = $body.width(), // don't include padding here
+                bh = $body.height(),
+                cw, ch,
+                position = { position: 'relative', top: 0, left: 0 };
+
+            // Determine the natural size of the content.
+            $content.removeAttr('style')
+                .css({ float: 'left' });
+            cw = $content.outerWidth();
+            ch = $content.outerHeight();
+
+            // Position appropriately based on natural size.
+            $content.removeAttr('style');
+            if ( cw && cw < bw ) {
+                position.width = Math.ceil(cw);
+                position.left = Math.floor((bw - cw) / 2);
+            }
+            if ( ch && ch < bh ) {
+                position.top = Math.floor((bh - ch) / 2);
+            }
+            if ( position.top || position.left ) {
+                $content.css(position);
             }
         },
 
@@ -98,6 +130,7 @@ define(['appState'], function (appState) {
                 view.$iframe.css( 'height', $body.outerHeight() );
                 view.$el.css( _(view.settings).pick(sandboxSettings) );
                 view.updateTransform( view.settings.transform );
+                view.updatePosition();
             }
         },
 
