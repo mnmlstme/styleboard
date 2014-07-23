@@ -6,12 +6,12 @@ input[type="reset"],
     /**
        A clickable control with a single on-click action.
 
-        @example A button with an icon in it
-        You can <button><i class="scale- icon"></i><span>Zoom</span></button>
-        if you like.
-
         @example A basic button
-        You can <button>Click this</button> if you like.
+        You can click this <button>{{button}}</button> if you like.
+
+        @example A button with an icon in it
+        You can zoom with this
+        <button><i class="scale- icon"></i><span>{{button}}</span></button>.
     */
     @lineht: 1.5em;
     display: inline-block;
@@ -43,7 +43,7 @@ input[type="reset"],
     &:active {
         /** A button which is currently in the “on” or active state.
             @example An active button
-            You have <button class="is-active">Clicked this</button> already.
+            You have clicked this <button class="is-active">{{button}}</button> already.
             */
         background: @color-delta;
     }
@@ -52,7 +52,7 @@ input[type="reset"],
     &.is-disabled {
         /** A button which has been disabled and is not currently clickable.
             @example A disabled button
-            You <button class="is-disabled">Cannot click this</button> button.
+            You cannot click this <button class="is-disabled">{{button}}</button>.
             */
         opacity: .5;
         cursor: default;
@@ -65,8 +65,8 @@ input[type="reset"],
     &.primary- {
         /** The primary call to action in a dialog.
             @example A primary button
-            You probably want <button class="primary-">This button</button>
-            and not <button>This other one</button>.
+            You probably want this <button class="primary-">{{button}}</button>
+            and not this other <button>{{button}}</button>.
             */
         color: @inv-body-hi-color;
         background: @color-alpha;
@@ -76,7 +76,7 @@ input[type="reset"],
         /** A button which is styled to look like a link.
             @example A link button
             This may look like a link but it's really
-            a <button class="link-">button</button> in disguise.
+            a <button class="link-">{{button}}</button> in disguise.
             */
         .color( alpha );
         .glow( alpha );
@@ -90,7 +90,7 @@ input[type="reset"],
     &.delete- {
         /** A delete button or similarly dangerous action.
             @example A delete button
-            Be careful of <button class="delete-">This Dangerous</button> button.
+            Be careful of this <button class="delete-">{{button}}</button>.
             */
         color: @inv-body-hi-color;
         background: @color-danger;

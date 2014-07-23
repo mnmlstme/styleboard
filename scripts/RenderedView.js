@@ -12,6 +12,7 @@ define(['appState'], function (appState) {
                 context = view.context = view.$iframe[0].contentWindow,
                 doc = view.doc = context.document;
 
+            view.filler = options.filler;
             view.$pane = view.$el.closest('.pane');
             view.ngApp = options.ngApp || options['ng-app'];
             view.settings = {};
@@ -36,6 +37,10 @@ define(['appState'], function (appState) {
                       '</head>' +
                       '<body class="styleboard-view">');
             doc.close();
+
+            view.filler.on('change', function () {
+                view.render();
+            });
 
             appState.on('change:example', function( appState, example ) {
                 view.setModel( example );
@@ -65,6 +70,9 @@ define(['appState'], function (appState) {
                 doc = view.doc,
                 $body = $(doc.body),
                 example = view.model,
+                scope = example ? example.getScope() : {},
+                template = example ? example.getText() : '',
+                code = template ? view.filler.expand( template, scope ) : '',
                 $app = $body;
 
             if ( $body.length ) {
@@ -73,7 +81,7 @@ define(['appState'], function (appState) {
                     if ( view.ngApp ) {
                         $app = $body.mk('div.styleboard-ng-app');
                     }
-                    $app.append( $.parseHTML( example.getText() || '', view.doc, true ) );
+                    $app.append( $.parseHTML( code || '', view.doc, true ) );
                     if ( view.ngApp ) {
                         view.context.angular.bootstrap($app[0],[view.ngApp]);
                     }

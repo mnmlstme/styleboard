@@ -62,7 +62,8 @@ module.exports = function(grunt){
                     'lib/{requirejs,ng-dummy}/js/*',
                     'graphics/iconfont/*.{eot,svg,ttf,woff}',
                     'graphics/*.svg',
-                    'styles/*.css'
+                    'styles/*.css',
+                    'wordpress/plugins/*php'
                 ]
             }
         },

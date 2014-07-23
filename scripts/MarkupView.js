@@ -1,4 +1,4 @@
-define(['Context'], function (Context) {
+define(['Context', 'EditableFillerView'], function (Context, EditableFillerView) {
 
     var highlight = hljs.highlight;
 
@@ -8,12 +8,12 @@ define(['Context'], function (Context) {
             var view = this;
 
             view.doc = options.doc;
+            view.filler = options.filler;
             view.$pre = view.$el;
 
             appState.on('change:example', function( appState, example ) {
                 view.setModel( example );
             });
-
         },
 
         setModel: function ( example ) {
@@ -26,12 +26,28 @@ define(['Context'], function (Context) {
         render: function () {
             var view = this,
                 example = view.model,
-                patterns = [],
-                code = example ? highlight( 'xml', example.getText() || '' ).value : '';
+                template = example ? example.getText() : '',
+                code = template ? highlight( 'xml', template, true ).value : '',
+                html = code ? view.filler.replace( code, function (key) {
+                    return '<span class="styleboard-filler" data-filler-key="' + key + '"></span>';
+                } ) : '',
+                patterns = [];
 
-            view.$pre.html( code )
-              // TODO: make this less tied to highlight.js
-              .find(".hljs-attribute:contains('class') + .hljs-value")
+            view.$pre.html( html )
+                .find('.styleboard-filler')
+                .each( function () {
+                    var $el = $(this),
+                        key = $el.data('filler-key'),
+                        subview = new EditableFillerView({
+                            model: view.filler,
+                            key: key,
+                            el: $el[0]
+                        });
+                    subview.render();
+                });
+
+            // TODO: make this less tied to highlight.js
+            view.$pre.find(".hljs-attribute:contains('class') + .hljs-value")
                 // First find all the patterns used in the example:
                 .each( function () {
                     var $atv = $(this),

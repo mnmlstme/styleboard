@@ -7,9 +7,9 @@
        @example A basic frame with one pane.
        <div class="frame">
          <div class="pane">
-           <p dummy>
-           <p dummy>
-           <p dummy>
+           <p>{{p}}
+           <p>{{p}}
+           <p>{{p}}
          </div>
        </div>
     */
@@ -29,9 +29,9 @@
 
             @example A frame with a title bar.
             <div class="headered- frame">
-              <h1 class="frame-header" dummy></h1>
+              <h1 class="frame-header">{{H}}</h1>
               <div class="pane">
-                <p dummy>
+                <p>{{p}}
               </div>
             </div
          */
@@ -91,15 +91,14 @@
     }
 
     &.footered- {
-        /** A frame which has a header at the top.  The header might include
-            a title, navigation, or tools, for example.
+        /** A frame which has a footer at the bottom.
 
-            @example A frame with a title bar.
+            @example A frame with a footer.
             <div class="footered- frame">
               <div class="pane">
-                <p dummy>
+                <p>{{p}}
               </div>
-              <p class="frame-footer" dummy>
+              <p class="frame-footer">{{s}}
             </div>
          */
         padding-bottom: @footerHeight;
@@ -143,11 +142,11 @@
                @example Two panes side-by-side
                <div class="horizontal- split- frame">
                    <div class="pane">
-                       <p dummy>
-                       <p dummy>
+                       <p>{{p}}
+                       <p>{{p}}
                    </div>
                    <div class="pane">
-                       <p dummy>
+                       <p>{{p}}
                    </div>
                </div>
                */
@@ -198,13 +197,13 @@
             <div class="tabbed- frame">
               <nav>
                 <ul class="frame-tabs">
-                  <li class="is-active" dummy="1w @0">
-                  <li dummy="1w @1">
+                  <li class="is-active">{{W}}
+                  <li>{{W}}
                 </ul>
               </nav>
               <ul class="frame-panes">
-                <li class="pane is-active"><p dummy="@0">
-                <li class="pane"><p dummy="@1">
+                <li class="pane is-active"><p>{{p}}
+                <li class="pane"><p>{{p}}
             </div>
         */
         padding-top: @headerHeight;

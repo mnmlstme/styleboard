@@ -68,9 +68,13 @@ define( function () {
             return new Context({ doc: doc, node: doc.getDefinition( model.getNode(), type )});
         },
 
+        getScope: function () {
+            return {};
+        },
+
         getText: function () {
             return this.get('doc').getText( this.getNode() );
-        },
+        }
 
     });
 

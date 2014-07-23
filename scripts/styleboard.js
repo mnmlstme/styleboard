@@ -1,8 +1,8 @@
-require(['Parser', 'Context',
+require(['Parser', 'Context', 'Filler',
          'DictionaryView', 'RenderedView', 'MarkupView', 'RulesView',
          'FooterView', 'SettingsView', 'appState',
          '../lib/mkay/js/mkay'],
-function( Parser, Context,
+function( Parser, Context, Filler,
           DictionaryView, RenderedView, MarkupView, RulesView,
           FooterView, SettingsView, appState ) {
 
@@ -55,7 +55,10 @@ function( Parser, Context,
             var patterns = doc.getAllOfType('pattern').map( function (node) {
                 return new Context({ doc: doc, node: node });
             });
+
             var dictionary = new Backbone.Collection( patterns );
+
+            var filler = new Filler();
 
             // initialize each view, if it exists in the markup
 
@@ -65,6 +68,7 @@ function( Parser, Context,
 
             $('#sandbox').each( function () {
                 (new RenderedView({ el: $(this),
+                                    filler: filler,
                                     styles: [styles],
                                     scripts: scripts,
                                     ngApp: config.ngApp || config['ng-app']
@@ -72,7 +76,7 @@ function( Parser, Context,
             });
 
             $('#example').each( function () {
-                (new MarkupView({ el: $(this), doc: doc })).render();
+                (new MarkupView({ el: $(this), doc: doc, filler: filler })).render();
             });
 
             $('#sources').each( function () {
