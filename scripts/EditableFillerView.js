@@ -9,9 +9,14 @@ define( function () {
         },
 
         initialize: function ( options ) {
-            var view = this;
+            var view = this,
+                filler = view.model,
+                key = options.key,
+                firstKey = key.replace(/\..*/,'');
 
-            view.key = options.key;
+            view.key = key;
+
+            filler.on('change:' + firstKey, view.render, view);
         },
 
         render: function () {
@@ -19,7 +24,10 @@ define( function () {
                 filler = view.model,
                 value = filler.lookup(view.key);
 
-            view.$el.text( value );
+            view.$el
+                .addClass('editable')
+                .attr('spellcheck', false)
+                .text( value );
         },
 
         uiStartEditing: function () {

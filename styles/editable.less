@@ -1,0 +1,27 @@
+@import "color";
+
+.editable {
+    /** A region of text which is in-place editable,
+        usually by just clicking on it */
+
+    background: @background-alt-color;
+
+    &:focus {
+        outline: 1px dashed fade( #000, 50% );
+        background: @background-alt-color;
+        border: 1px dotted @border-color;
+        .color(body);
+        z-index: 1;
+    }
+
+    .dark-.pane & {
+        background: @inv-background-alt-color;
+        &:focus {
+            outline-color: fade( #fff, 50% );
+            background: @background-alt-color;
+        }
+    }
+}
+
+
+

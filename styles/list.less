@@ -5,10 +5,9 @@
        A simple list.  Items are arranged vertically, with no decoration.
         @example
         <ul class="list">
-          <li dummy="disclaimer">
-          <li dummy="disclaimer">
-          <li dummy="disclaimer">
-          <li dummy="disclaimer">
+          <li>{{s1}}
+          <li>{{s2}}
+          <li>{{s3}}
         </ul>
      */
 
@@ -21,10 +20,9 @@
            A bulleted list.  Items are arranged vertically with colored bullets.
            @example
            <ul class="bullet- list">
-               <li dummy="disclaimer">
-               <li dummy="disclaimer">
-               <li dummy="disclaimer">
-               <li dummy="disclaimer">
+               <li>{{s1}}
+               <li>{{s2}}
+               <li>{{s3}}
            </ul>
         */
         @margin: 1em;
@@ -42,11 +40,11 @@
         /**
            A comma-separated list.  Items are set inline, as a line of text, with commas between.
            @example
+           In this box I have
            <ul class="comma- list">
-               <li dummy="disclaimer 4w">
-               <li dummy="disclaimer 4w">
-               <li dummy="disclaimer 4w">
-               <li dummy="disclaimer 4w">
+               <li>{{phr1}}
+               <li>{{phr2}}
+               <li>and {{phr3}}
            </ul>
         */
         > * {
@@ -64,14 +62,12 @@
 
            @example
            <dl class="definition- list">
-             <dt dummy="disclaimer">
-             <dd dummy="disclaimer">
-             <dt dummy="disclaimer">
-             <dd dummy="disclaimer">
-             <dt dummy="disclaimer">
-             <dd dummy="disclaimer">
-             <dt dummy="disclaimer">
-             <dd dummy="disclaimer">
+             <dt>{{w1}}
+             <dd>{{s1}}
+             <dt>{{w2}}
+             <dd>{{s2}}
+             <dt>{{w3}}
+             <dd>{{s3}}
            </dl>
            */
         .clearfix;

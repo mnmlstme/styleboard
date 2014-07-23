@@ -38,9 +38,7 @@ define(['appState'], function (appState) {
                       '<body class="styleboard-view">');
             doc.close();
 
-            view.filler.on('change', function () {
-                view.render();
-            });
+            view.filler.on('change', view.render, view );
 
             appState.on('change:example', function( appState, example ) {
                 view.setModel( example );

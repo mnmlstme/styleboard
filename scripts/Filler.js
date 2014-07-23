@@ -33,28 +33,38 @@ define ( function () {
     ];
 
     var builtin = {
-        p: lorem.slice(0,3).join(' '),
+        p:  lorem.slice(0,3).join(' '),
         p1: lorem.slice(0,3).join(' '),
         p2: lorem.slice(3,6).join(' '),
         p3: lorem.slice(6,9).join(' '),
-        h: words(lorem[0], 4, true),
-        h1: words(lorem[0], 4, true),
-        h2: words(lorem[1], 4, true),
-        h3: words(lorem[2], 4, true),
-        s: lorem[0],
-        button: 'Button'
+        h:  words(lorem[0], 3, true),
+        h1: words(lorem[0], 2, true),
+        h2: words(lorem[1], 2, true),
+        h3: words(lorem[2], 5, true),
+        s:  lorem[0],
+        s1: lorem[0],
+        s2: lorem[1],
+        s3: lorem[2],
+        phr:  words(lorem[0], 4),
+        phr1: words(lorem[0], 4),
+        phr2: words(lorem[1], 6),
+        phr3: words(lorem[2], 5),
+        w:  words(lorem[0], 1),
+        w1: words(lorem[0], 1),
+        w2: words(lorem[1], 1),
+        w3: words(lorem[2], 1),
+        btn: 'Button'
     };
 
     function words(s, n, titlecase) {
-        var w = s.toLowerCase().split(/\w+/);
-        if (n) {
-            w.splice(0,n);
-        }
+        var w = s.toLowerCase().split(/[^\w]+/).slice(0,n || 0);
+
         if (titlecase) {
             w = w.map( function (string) {
                 return string.charAt(0).toUpperCase() + string.slice(1);
             });
         }
+
         return w.join(' ');
     }
 
