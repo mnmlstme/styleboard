@@ -166,6 +166,11 @@
                 > :first-child { width: 1/3 * 100%; }
                 > :last-child { width: 2/3 * 100%; }
             }
+            &.forty-sixty-{
+                /** Split the frame 40%/60% */
+                > :first-child { width: 40%; }
+                > :last-child { width: 60%; }
+            }
         }
         &.vertical- {
             /** A frame which is split vertically.
@@ -187,6 +192,11 @@
                 /** Split the frame 2:1 */
                 > :first-child { height: 2/3 * 100%; }
                 > :last-child { height: 1/3 * 100%; }
+            }
+            &.sixty-forty- {
+                /** Split the frame 60%/40% */
+                > :first-child { height: 60%; }
+                > :last-child { height: 40%; }
             }
         }
     }

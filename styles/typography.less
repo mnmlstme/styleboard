@@ -87,11 +87,6 @@ body {
         <li>{{s2}}
         <li>{{s3}}
       </ul>
-      <ol>
-        <li>{{s1}}
-        <li>{{s2}}
-        <li>{{s3}}
-      </ol>
       <dl>
         <dt>{{w1}}
         <dd>{{s1}}
@@ -184,7 +179,7 @@ body {
     }
 
     ul {
-        &:extend( .list all );
+        &:extend( .list.bullet- all );
     }
 
     dl { &:extend( .list.definition- all ); }

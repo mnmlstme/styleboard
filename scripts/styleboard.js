@@ -1,10 +1,10 @@
 require(['Parser', 'Context', 'Filler',
-         'DictionaryView', 'RenderedView', 'MarkupView', 'RulesView',
-         'FooterView', 'SettingsView', 'appState',
+         'DictionaryView', 'RenderedView', 'MarkupView',
+         'TabbedFrameView', 'FooterView', 'SettingsView', 'appState',
          '../lib/mkay/js/mkay'],
 function( Parser, Context, Filler,
-          DictionaryView, RenderedView, MarkupView, RulesView,
-          FooterView, SettingsView, appState ) {
+          DictionaryView, RenderedView, MarkupView,
+          TabbedFrameView, FooterView, SettingsView, appState ) {
 
     // Default configuration. Edit in styleboard.config.
     var configs = {
@@ -66,6 +66,10 @@ function( Parser, Context, Filler,
                 (new DictionaryView({ el: $(this), model: dictionary })).render();
             });
 
+            $('#tabbedView').each( function () {
+                (new TabbedFrameView({ el: $(this) })).render();
+            });
+
             $('#sandbox').each( function () {
                 (new RenderedView({ el: $(this),
                                     filler: filler,
@@ -77,10 +81,6 @@ function( Parser, Context, Filler,
 
             $('#example').each( function () {
                 (new MarkupView({ el: $(this), doc: doc, filler: filler })).render();
-            });
-
-            $('#sources').each( function () {
-                (new RulesView({ el: $('#sources'), doc: doc })).render();
             });
 
             $('#settings').each( function () {

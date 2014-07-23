@@ -42,15 +42,19 @@
            @example
            In this box I have
            <ul class="comma- list">
-               <li>{{phr1}}
-               <li>{{phr2}}
-               <li>and {{phr3}}
-           </ul>
+               <li>{{phr1}}</li>
+               <li>{{phr2}}</li>
+               <li>and {{phr3}}</li>
+           </ul>.
         */
+        display: inline;
         > * {
             display: inline;
-            & + *::before {
+            &::after {
                 content: ', ';
+            }
+            &:last-child::after {
+                content: '';
             }
         }
     }
