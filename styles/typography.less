@@ -105,14 +105,12 @@ body {
     */
 
     @padding: .5em;
-    @indent:  40px;
 
     .font( body, medium, body );
 
     article,
     article& {
         padding: @padding;
-        padding-left: (@indent + @padding);
     }
 
     section {
@@ -144,7 +142,6 @@ body {
     header,
     h1, h2, h3, h4 {
         line-height: 1.25;
-        margin-left: -@indent;
     }
 
     header {

@@ -5,7 +5,7 @@ define(['appState'], function (appState) {
 
     var defaultSettings = {
         // TODO: make this configurable from styleboard.config
-        "background-color": "#fff",
+        "background-color": "transparent",
         "font-size": "14px",
         "width": "100%",
         "transform": "scale(1)",
