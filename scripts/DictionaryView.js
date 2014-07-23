@@ -27,10 +27,9 @@ function ( PatternView, TabbedFrameView, appState ) {
         render: function () {
             var view = this,
                 dict = view.model;
-
-            dict.each( function (pat) {
-                view.addPattern( pat );
-            });
+            dict
+                .sortBy( function (pat) { return pat.getName(); } )
+                .forEach( function (pat) { view.addPattern( pat ); });
 
             return view;
         },
