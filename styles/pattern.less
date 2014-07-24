@@ -16,6 +16,9 @@
             .color( gamma );
             .glow( gamma );
         }
+        + p {
+            margin-top: 0;
+        }
     }
 
     .pattern-selectors {
@@ -27,13 +30,13 @@
 
     .pattern-example {
         display: block;
-        margin: 1em 0;
+        margin: .5em 0;
         padding-left: .5em;
         padding-right: .5em;
         width: 100%;
         text-align: right;
-        border-color: transparent;
-        background: #ddd;
+        border-color: @background-color;
+        .background-gradient( horizontal, transparent, #ddd );
         font-style: oblique;
         &.is-active {
             .box-glow( delta );

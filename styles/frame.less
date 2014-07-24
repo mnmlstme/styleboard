@@ -6,10 +6,10 @@
 
        @example A basic frame with one pane.
        <div class="frame">
-         <div class="pane">
-           <p>{{p}}
-           <p>{{p}}
-           <p>{{p}}
+         <div class="pane typography">
+           <p>{{p1}}
+           <p>{{p2}}
+           <p>{{p3}}
          </div>
        </div>
     */
@@ -29,8 +29,8 @@
 
             @example A frame with a title bar.
             <div class="headered- frame">
-              <h1 class="frame-header">{{H}}</h1>
-              <div class="pane">
+              <h1 class="frame-header">{{h}}</h1>
+              <div class="pane typography">
                 <p>{{p}}
               </div>
             </div
@@ -95,7 +95,7 @@
 
             @example A frame with a footer.
             <div class="footered- frame">
-              <div class="pane">
+              <div class="pane typography">
                 <p>{{p}}
               </div>
               <p class="frame-footer">{{s}}
@@ -141,12 +141,14 @@
             /**
                @example Two panes side-by-side
                <div class="horizontal- split- frame">
-                   <div class="pane">
-                       <p>{{p}}
-                       <p>{{p}}
+                   <div class="pane typography">
+                       <h1>{{h1}}</h1>
+                       <p>{{p1}}
+                       <p>{{p2}}
                    </div>
-                   <div class="pane">
-                       <p>{{p}}
+                   <div class="pane typography">
+                       <h1>{{h2}}</h1>
+                       <p>{{p3}}
                    </div>
                </div>
                */
@@ -207,13 +209,13 @@
             <div class="tabbed- frame">
               <nav>
                 <ul class="frame-tabs">
-                  <li class="is-active">{{W}}
-                  <li>{{W}}
+                  <li class="is-active">{{w1}}
+                  <li>{{w2}}
                 </ul>
               </nav>
               <ul class="frame-panes">
-                <li class="pane is-active"><p>{{p}}
-                <li class="pane"><p>{{p}}
+                <li class="pane typography is-active"><p>{{p1}}
+                <li class="pane typography"><p>{{p2}}
             </div>
         */
         padding-top: @headerHeight;

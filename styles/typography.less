@@ -109,7 +109,7 @@ body {
     }
 
     section {
-        margin-top: 1em;
+        margin-top: 2em;
     }
 
     h1 {
@@ -132,6 +132,9 @@ body {
     h1, h2, h3, h4 {
         margin-top: 2em;
         .glow( body );
+        &:first-child {
+            margin-top: 0;
+        }
     }
 
     header,
@@ -152,6 +155,9 @@ body {
 
     p, ul, ol, dl {
         margin-top: 1em;
+        &:first-child {
+            margin-top: 0;
+        }
     }
 
     p {
@@ -186,4 +192,10 @@ body {
     dt { &:extend( .list .list-term ); }
     dd { &:extend( .list-definition ); }
 
+    table {
+        td, th {
+            white-space: nowrap;
+            padding: .25em;
+        }
+    }
 }

@@ -2,6 +2,42 @@
   CSS3 utility mixins
 */
 
+// Background Gradients
+// .background-gradient( @direction, @start, @end )
+// Gradient background from one color to another
+.background-gradient ( vertical, @color1, @color2 ) {
+    background-image: -webkit-linear-gradient( top, @color1, @color2 );
+    background-image: -moz-linear-gradient( top, @color1, @color2 );
+    background-image: -ms-linear-gradient( top, @color1, @color2 );
+    background-image: linear-gradient( to bottom, @color1, @color2 );
+}
+
+.background-gradient ( horizontal, @color1, @color2 ) {
+    background: -webkit-linear-gradient( left, @color1, @color2 );
+    background: -moz-linear-gradient( left, @color1, @color2 );
+    background: -ms-linear-gradient( left, @color1, @color2 );
+    background: linear-gradient( to right, @color1, @color2 );
+}
+
+.background-gradient ( diagonal, @color1, @color2 ) {
+    background-image: -webkit-linear-gradient( top left, @color1, @color2 );
+    background-image: -moz-linear-gradient( top left, @color1, @color2 );
+    background-image: -ms-linear-gradient( top left, @color1, @color2 );
+    background-image: linear-gradient( top left, @color1, @color2 );
+}
+
+.background-gradient ( radial, @center, @color1, @radius1, @color2, @radius2 ) {
+    background: -webkit-radial-gradient( @center, @color1 @radius1, @color2 @radius2
+ );
+    background: -moz-radial-gradient( @center, @color1 @radius1, @color2 @radius2 );
+    background: -ms-radial-gradient( @center, @color1 @radius1, @color2 @radius2 );
+    background: radial-gradient( @center, @color1 @radius1, @color2 @radius2 );
+}
+
+.background-gradient ( none ) {
+    background-image: none;
+}
+
 .box-sizing ( @spec ) {
     -moz-box-sizing: @spec;
     box-sizing: @spec;
