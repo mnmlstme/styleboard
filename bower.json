@@ -20,7 +20,7 @@
   "dependencies": {
     "marked": "chjj/marked#0.3.2",
     "mkay": "fgnass/mkay",
-    "ng-dummy": "mnmlstme/ng-dummy#0.0.1",
+    "prism": "LeaVerou/prism#gh-pages",
     "requirejs": "2.1.4"
   },
   "exportsOverride": {
@@ -30,12 +30,12 @@
     "mkay": {
       "js": "mkay.js"
     },
-    "ng-dummy": {
-      "js": "dist/*.js"
+    "prism": {
+      "js": "prism.js",
+      "css": "themes/prism.css"
     },
     "requirejs": {
       "js": "require.js"
-    },
-    "seedrandom": {}
+    }
   }
 }
