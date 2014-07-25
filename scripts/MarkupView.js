@@ -1,6 +1,9 @@
-define(['Context', 'EditableFillerView'], function (Context, EditableFillerView) {
+define(['Context', 'EditableFillerView', '../lib/prism/js/prism'],
+    function (Context, EditableFillerView) {
 
-    var highlight = hljs.highlight;
+    var highlight = function (text) {
+        return Prism.highlight( text, Prism.languages.markup );
+    }
 
     var MarkupView = Backbone.View.extend({
 
@@ -27,7 +30,7 @@ define(['Context', 'EditableFillerView'], function (Context, EditableFillerView)
             var view = this,
                 example = view.model,
                 template = example ? example.getText() : '',
-                code = template ? highlight( 'xml', template, true ).value : '',
+                code = template ? highlight( template ) : '',
                 html = code ? view.filler.replace( code, function (key) {
                     return '<span class="styleboard-filler" data-filler-key="' + key + '"></span>';
                 } ) : '',
@@ -91,12 +94,6 @@ define(['Context', 'EditableFillerView'], function (Context, EditableFillerView)
                         }
                     });
                 });
-
-            // Look for artifacts that aren't really part of the example, so we can hide them w/CSS
-            view.$pre.find('.hljs-tag')
-                .filter( function () {
-                    return $(this).find('.hljs-class').text() === 'styleboard-layout';
-                }).addClass('hidden-');
 
             return view;
         }

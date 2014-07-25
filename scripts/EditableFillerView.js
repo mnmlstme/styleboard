@@ -3,7 +3,7 @@ define( function () {
     var EditableFillerView = Backbone.View.extend({
 
         events: {
-            'click': 'uiStartEditing',
+            // 'click': 'uiStartEditing',
             'blur': 'uiStopEditing',
             'keypress': 'uiKeypress'
         },
@@ -26,7 +26,10 @@ define( function () {
 
             view.$el
                 .addClass('editable')
-                .attr('spellcheck', false)
+                .attr({
+                    contenteditable: true,
+                    spellcheck: false
+                })
                 .text( value );
         },
 
@@ -35,7 +38,6 @@ define( function () {
                 $editable = view.$el;
 
             $editable
-                .attr('contenteditable', true)
                 .focus();
         },
 
