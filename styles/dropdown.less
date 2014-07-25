@@ -4,8 +4,19 @@
 .dropdown {
 
     /**
-       An overlay pade which appears below a control.
-    */
+       A control for which an overlay pane (usually a menu) appears below.
+
+       @example
+       <div class="dropdown">
+         <button>{{btn}}</button>
+         <ul class="dropdown-pane menu">
+           <li>{{w1}}
+           <li>{{w2}}
+           <li>{{w3}}
+         </ul>
+       </div>
+
+      */
 
     display: inline-block;
     position: relative;
@@ -25,7 +36,18 @@
     }
 
     &.left-aligned- {
-        /** Align the pane with the left edge of the control. */
+        /** Align the pane with the left edge of the control.
+
+        @example
+        <div class="left-aligned- dropdown">
+          <button>{{btn}}</button>
+          <ul class="dropdown-pane menu">
+            <li>{{w1}}
+            <li>{{w2}}
+            <li>{{w3}}
+          </ul>
+        </div>
+        */
         text-align: left;
         .dropdown-pane {
             left: 0;
@@ -33,7 +55,18 @@
     }
 
     &.right-aligned- {
-        /** Align the pane with the right edge of the control. */
+        /** Align the pane with the right edge of the control.
+
+        @example
+        <div class="right-aligned- dropdown">
+          <button>{{btn}}</button>
+          <ul class="dropdown-pane menu">
+            <li>{{w1}}
+            <li>{{w2}}
+            <li>{{w3}}
+          </ul>
+        </div>
+        */
         text-align: right;
         .dropdown-pane {
             right: 0;
@@ -41,7 +74,18 @@
     }
 
     &.centered- {
-        /** Align the center of the pane with the center of the control. */
+        /** Align the center of the pane with the center of the control.
+
+        @example
+        <div class="centered- dropdown">
+          <button>{{btn}}</button>
+          <ul class="dropdown-pane menu">
+            <li>{{w1}}
+            <li>{{w2}}
+            <li>{{w3}}
+          </ul>
+        </div>
+        */
         text-align: center;
         .dropdown-pane {
             left: 50%;
