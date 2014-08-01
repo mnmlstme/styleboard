@@ -74,6 +74,10 @@ define( function () {
 
         getText: function () {
             return this.get('doc').getText( this.getNode() );
+        },
+
+        isValid: function () {
+            return this.getNode().length;
         }
 
     });

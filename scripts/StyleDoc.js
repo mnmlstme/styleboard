@@ -9,16 +9,23 @@ define( ['../lib/marked/js/marked'], function ( marked ) {
 
         doc.tree = ['styledoc',{}]; // JSON-ML
         doc.stack = [ doc.tree ];
-        doc.indexByType = {};
-        doc.indexByPattern = {};
+        doc.index={}; // name -> [ nodes ]
+        doc.indexByType = {}; // type -> { name -> node }
+        doc.indexByPattern = {}; // patternName -> { name -> node }
 
-        doc.findByName = function findByName( name ) {
-            return doc.findContext({type: 'pattern', name: name });
+        doc.findByName = function findByName( name, type ) {
+            if ( type ) {
+                return doc.findContext({type: type, name: name });
+            } else {
+                var nodes = doc.index[name];
+                // TODO: no reason to prefer the first one here.
+                return nodes && nodes.length ? nodes[0] : undefined;
+            }
         };
 
-        doc.getAllOfType = function getAllOfType( type ) {
-            var patternIndex = doc.indexByType[ type ];
-            return patternIndex ? _.values(patternIndex) : [];
+        doc.getPatterns = function getPatterns() {
+            var patternIndex = doc.indexByType['pattern'] || {};
+            return _.values( patternIndex );
         };
 
         doc.getCurrent = function getCurrent( type ) {
@@ -149,9 +156,15 @@ define( ['../lib/marked/js/marked'], function ( marked ) {
         // private
 
         function define( type, name, node ) {
-            var index = doc.indexByType[type],
+            var index = doc.index,
                 pattern = doc.getCurrent('pattern'),
                 patternName = pattern && doc.getAttr(pattern, 'name');
+            if ( !index[name] ) {
+                index[name] = [node];
+            } else {
+                index[name].push(node);
+            }
+            index = doc.indexByType[type];
             if ( !index ) {
                 index = doc.indexByType[type] = {};
             }

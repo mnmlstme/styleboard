@@ -29,6 +29,7 @@ define(['Context', 'EditableFillerView', 'appState', '../lib/prism/js/prism'],
 
         render: function () {
             var view = this,
+                doc = view.doc,
                 $pre = view.$pre,
                 example = view.model,
                 pattern = view.pattern,
@@ -69,27 +70,41 @@ define(['Context', 'EditableFillerView', 'appState', '../lib/prism/js/prism'],
                             classlist = $textnode.text().split(/\s+/);
 
                         classlist.forEach( function (classname, index) {
-                            var type = '';
+                            var modifiers = [],
+                                defn = doc.findByName( classname ),
+                                type = defn && doc.getType(defn),
+                                highlight = false;
 
                             if ( pattern ) {
                                 if ( pattern.getName() === classname ) {
-                                    type = 'pattern';
-                                } else {
-                                    type = pattern.getDefinition( classname ).getType();
+                                    highlight = true;
+                                } else  {
+                                    defn = pattern.getDefinition( classname );
+                                    if ( defn.isValid() ) {
+                                        type = defn.getType();
+                                        highlight = true;
+                                    }
                                 }
-                                if ( type ) {
-                                    type = '.' + type + '-';
-                                    // also highlight the token
-                                    // type += '.highlight-';
-                                    $tag.addClass('highlight-');
-                                }
+                            }
+
+                            if ( type ) {
+                                modifiers.push( type );
+                            }
+
+                            if ( highlight ) {
+                                modifiers.push('highlight');
+                                $tag.addClass('highlight-');
                             }
 
                             if ( index ) {
                                 $(document.createTextNode(' ')).insertBefore( $textnode );
                             }
 
-                            $.mk('span' + type + '.classname-.token', classname )
+                            $.mk('span.classname-.token'+
+                                 modifiers
+                                     .map( function (mod) { return '.' + mod + '-'; })
+                                     .join(''),
+                                 classname )
                                 .insertBefore( $textnode );
                         });
 

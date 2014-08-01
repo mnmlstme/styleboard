@@ -52,7 +52,7 @@ function( Parser, Context, Filler,
 
             sb.doc = doc;
 
-            var patterns = doc.getAllOfType('pattern').map( function (node) {
+            var patterns = doc.getPatterns().map( function (node) {
                 return new Context({ doc: doc, node: node });
             });
 
