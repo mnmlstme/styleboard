@@ -38,7 +38,7 @@ define(['appState'], function (appState) {
                     $section;
                 scope[ parent.getType() ] = parent.getName();
                 children.forEach( function (node) {
-                    var key = node.getType();
+                    var key = node.getType(),
                         attrs = { 'class': 'pattern-' + key },
                         example;
                     switch ( key ) {

@@ -130,8 +130,14 @@ function( Parser, Context, Filler,
                 example;
 
             if ( path.length ) {
-                pattern = new Context({ doc: sb.doc, node: sb.doc.findByName( path[0] ) });
-                examples = pattern.getAllNodesOfType('example');
+                pattern = new Context({
+                    doc: sb.doc,
+                    node: sb.doc.findByName( path[0], 'pattern' )
+                });
+
+                if ( pattern.isValid() ) {
+                    examples = pattern.getAllNodesOfType('example');
+                }
 
                 if ( path.length > 1 ) {
                     if ( path[1].match( /^\d+$/ ) ) {

@@ -4,7 +4,7 @@ define(['StyleDoc'], function (StyleDoc) {
     // be confined to this file.
 
     var regex = {
-        classname:      /^\.([a-zA-Z][a-zA-Z0-9-_]+)$/,
+        classname:      /^\.([a-zA-Z][a-zA-Z0-9_-]*)$/,
         tagname:        /^([a-z]+)$/,
         pseudo:         /^::?([a-z-]+)$/,
         cmtfirst:       /^\s*\/\*\*\s*/,
@@ -13,11 +13,15 @@ define(['StyleDoc'], function (StyleDoc) {
         atcommand:      /^\s*@([a-z-]+)\s*(\[([a-z][a-z0-9-]*)\])?(.*)\s*$/,
         ateot:          /^\s*(@[a-z-]+.*)?$/,
         empty:          /^\s*$/,
-        pattern:        /^\.([a-z]+)$/,                 // lowercase, no hyphens
-        modifier:       /^\.([a-z-]+\-)$/,              // trailing hyphen
-        member:         /^\.(([a-z]+)\-[a-z-]+)$/,      // pattern name '-' member name
-        helper:         /^\.(([a-z]+)\-[a-z-]+)$/,      // pattern name '-' helper name
-        state:          /^\.(is-[a-z-]+)$/              // 'is-' prefix
+        pattern:        /^\.([a-z][a-z0-9]*)$/,                // lowercase, no hyphens
+        modifier:       /^\.([a-z][a-z0-9-]*\-)$/,             // trailing hyphen
+        member:         /^\.(([a-z][a-z0-9]*)\-[a-z0-9-]+)$/,  // pattern name '-' member name
+        state:          /^\.((is|has)\-[a-z0-9-]+)$/           // 'is-' or 'has-' prefix
+    };
+
+    var options = {
+        requireDoc: false,        // if true, only consider rules with documentation
+        requireNaming: false,     // if true, only consider classes that follow naming convention
     };
 
     function Parser( opts ) {
@@ -65,22 +69,14 @@ define(['StyleDoc'], function (StyleDoc) {
                     comments = node.rules.filter( function (rule) {
                         return rule.type === 'Comment';
                     });
-                    context = comments.length && identifyContext( node.selectors );
+                    context = (comments.length || !options.requireDoc) &&
+                        identifyContext( node.selectors );
                     if (context) {
                         doc.openContext( context );
                     }
                     comments.map( function (rule) {
                         parseComment( rule.value );
                     });
-                    code = node.selectors.map( convertToCss )
-                        .join(',\n');
-                    code += ' {\n';
-                    code += node.rules.filter( function (rule) { return rule.type === 'Rule'; } )
-                        .map( convertToCss )
-                        .map( function (s) { return '  ' + s; } )
-                        .join('\n');
-                    code += '\n}\n';
-                    doc.insertNode('rule', code);
                     break;
                 default:
                     // ignore all other nodes
@@ -123,7 +119,6 @@ define(['StyleDoc'], function (StyleDoc) {
                         case 'member':
                         case 'pattern':
                         case 'state':
-                        case 'helper':
                             context = identifyContext(data, command);
                             if ( context ) {
                                 doc.openContext( context );
@@ -188,7 +183,7 @@ define(['StyleDoc'], function (StyleDoc) {
                         }
                         return list;
                     }));
-                    selectors = [ { elements: elements } ]
+                    selectors = [ { elements: elements } ];
                 } else {
                     selectors = selectors.slice(0);
                 }
@@ -200,7 +195,8 @@ define(['StyleDoc'], function (StyleDoc) {
                     atRoot = true;
                     patternIdentified = null;
 
-                    if ( expectedType === 'pattern' &&
+                    if ( (expectedType === 'pattern' ||
+                          !expectedType && !options.requireNaming) &&
                          (matches = regex.classname.exec(root)) ||
                          (matches = regex.pattern.exec(root)) ) {
                         patternIdentified = {
@@ -218,7 +214,8 @@ define(['StyleDoc'], function (StyleDoc) {
                             atRoot = atRoot && elements[0].combinator.value === '';
                             current = elements.shift().value;
                             if ( atRoot ) {
-                                if ( expectedType === 'modifier' &&
+                                if ( (expectedType === 'modifier' ||
+                                      !expectedType && !options.requireNaming) &&
                                      (matches = regex.classname.exec(current)) ||
                                      (matches = regex.modifier.exec(current)) ) {
                                     identified = [ patternIdentified, {
@@ -237,7 +234,8 @@ define(['StyleDoc'], function (StyleDoc) {
                                     } ];
                                 }
                             } else {
-                                if ( expectedType === 'member' &&
+                                if ( (expectedType === 'member' ||
+                                      !expectedType && !options.requireNaming) &&
                                      (matches = regex.classname.exec(current)) ||
                                      (matches = regex.member.exec(current)) ) {
                                     identified = [ patternIdentified, {
