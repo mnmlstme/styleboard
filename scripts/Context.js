@@ -61,11 +61,11 @@ define( function () {
             return this.getNodesOfType( type, true );
         },
 
-        getDefinition: function ( type ) {
+        getDefinition: function ( name ) {
             var model = this,
                 doc = model.get('doc');
 
-            return new Context({ doc: doc, node: doc.getDefinition( model.getNode(), type )});
+            return new Context({ doc: doc, node: doc.getDefinition( model.getNode(), name )});
         },
 
         getScope: function () {

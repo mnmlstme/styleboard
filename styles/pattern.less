@@ -4,27 +4,34 @@
     /** A styleguide entry for a pattern. */
 
     header {
-        h1 {
-            .color( alpha );
-            .glow( alpha );
-        }
-        h3 {
-            .color( beta );
-            .glow( beta );
-        }
-        h4 {
-            .color( gamma );
-            .glow( gamma );
-        }
         + p {
             margin-top: 0;
         }
     }
 
-    .pattern-selectors {
-        .font-size( xsmall );
-        code {
-            .color( lo );
+    > header {
+        h1, h2, h3 {
+            .color( alpha );
+            .glow( alpha );
+        }
+    }
+
+    .pattern-member {
+        > header {
+            h2, h2, h3 {
+                .color( beta );
+                .glow( beta );
+            }
+        }
+    }
+
+    .pattern-state,
+    .pattern-modifier {
+        > header {
+            h1, h2, h3 {
+                .color( gamma );
+                .glow( gamma );
+            }
         }
     }
 

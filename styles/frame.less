@@ -58,11 +58,8 @@
         }
     }
 
-    .frame-tabs {
-        .font( nav, inherit, inv-lo );
-    }
-
     .frame-header {
+        /** A fixed area at the top of the frame, usually containing a title. */
         .font( header, inherit, inv-lo );
         .frame-tabs {
             // if tabs are inside a header, float them inside the header
@@ -105,6 +102,7 @@
     }
 
     .frame-footer {
+        /** A fixed area at the bottom of the frame. */
         position: absolute;
         bottom: 0;
         left: 0;
@@ -221,6 +219,8 @@
         padding-top: @headerHeight;
 
         .frame-tabs {
+            /** Tabs for switching the current `pane` to view within a `tabbed-` frame. */
+            .font( nav, inherit, inv-lo );
             white-space: nowrap;
             > * {
                 display: inline-block;

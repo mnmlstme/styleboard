@@ -176,7 +176,6 @@ define(['StyleDoc'], function (StyleDoc) {
                 var identified,
                     selector, elements, root, atRoot,
                     patternIdentified, matches;
-
                 if ( _.isString( selectors ) ) {
                     // TODO: our own neutral format for selectors
                     //       instead of duck-typing to LESS's
@@ -218,7 +217,6 @@ define(['StyleDoc'], function (StyleDoc) {
                         while ( elements.length ) {
                             atRoot = atRoot && elements[0].combinator.value === '';
                             current = elements.shift().value;
-
                             if ( atRoot ) {
                                 if ( expectedType === 'modifier' &&
                                      (matches = regex.classname.exec(current)) ||
