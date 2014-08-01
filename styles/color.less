@@ -10,16 +10,17 @@
 
 @color-alpha: #105c9b; // blue
 @color-beta: #3a6b0c; // green
-@color-gamma: #9b3314;  // red
+@color-gamma: #7f41b1; // purple
 @color-delta: #f19914; // orange
 
-@color-danger: @color-gamma;
-@color-success: @color-beta;
+@color-danger: #9b3314; // red
+@color-warning: #f3b319; // yellow
+@color-success: @color-beta; // green
 
 @inv-background-color: #282624;
 @inv-background-alt-color: #393633;
 @inv-body-color: #ddd;
-@inv-body-lo-color: #aaa;
+@inv-body-lo-color: #666;
 @inv-body-hi-color: #fff;
 
 .color ( inherit ) { color: inherit; }
@@ -37,7 +38,17 @@
 .color ( gamma )  { color: @color-gamma; }
 .color ( delta )  { color: @color-delta; }
 
+.color ( danger )  { color: @color-danger; }
+.color ( warning )  { color: @color-warning; }
+.color ( success )  { color: @color-success; }
+
+.color ( @keyword, @opacity ) {
+    .color( @keyword );
+    opacity: @opacity;
+}
+
 .glow ( body )  { text-shadow: 0 0 .15em fade(@body-color, 80%); }
+.glow ( inv )  { text-shadow: 0 0 .15em fade(@inv-body-color, 80%); }
 .glow ( alpha )  { text-shadow: 0 0 .15em fade(@color-alpha, 80%); }
 .glow ( beta )  { text-shadow: 0 0 .15em fade(@color-beta, 80%); }
 .glow ( gamma )  { text-shadow: 0 0 .15em fade(@color-gamma, 80%); }

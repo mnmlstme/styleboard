@@ -29,7 +29,7 @@
 .<%= baseClass %> {
 <% for (var glyphIdx = 0; glyphIdx < glyphs.length; glyphIdx++) {%>
     .<%= mixinName %>(<%= glyphs[glyphIdx] %>) { &:before { content:"<% if (addLigatures) { %><%= glyphs[glyphIdx] %><% } else { %>\<%= (61696+glyphIdx).toString(16) %><% } %>"; } }
-    &.<%= classPrefix %><%= glyphs[glyphIdx] %>-{.<%= mixinName %>(<%= glyphs[glyphIdx] %>);}
+    &.<%= classPrefix %><%= glyphs[glyphIdx] %>-{ .<%= mixinName %>(<%= glyphs[glyphIdx] %>);}
 <% } %>
 }<% } else { for (var glyphIdx = 0; glyphIdx < glyphs.length; glyphIdx++) {%>
 .<%= baseClass %>.<%= classPrefix %><%= glyphs[glyphIdx] %>-:before {

@@ -120,6 +120,7 @@ function( StyleDoc, Context, Parser ) {
       'explicitModifier',
       'modifierConvention',
       'modifierAfterPattern',
+      'modifierWithPseudo',
       'doubleModifier' ]
         .forEach( function (id) {
             T( id, function (t) {

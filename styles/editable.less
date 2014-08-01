@@ -4,27 +4,23 @@
     /** A region of text which is in-place editable,
         usually by just clicking on it */
 
-    background: @background-alt-color;
 
     &:hover,
     &:focus {
+        background: @background-alt-color;
         outline: 1px dashed fade( #000, 50% );
     }
 
     &:focus {
-        background: @background-alt-color;
         .color(body);
         z-index: 1;
     }
 
     .dark-.pane & {
-        background: @inv-background-alt-color;
         &:hover,
         &:focus {
+            background: @inv-background-alt-color;
             outline-color: fade( #fff, 50% );
-        }
-        &:focus {
-            background: @background-alt-color;
         }
     }
 }

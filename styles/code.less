@@ -6,54 +6,9 @@ code,
 pre {
     /** A section of computer code */
     .font( code, small );
-}
-
-.code,
-pre {
-    line-height: 1.3;
+    line-height: 1.4;
 }
 
 section.code {
     padding: .5em;
 }
-
-code {
-    &.combinator {
-        margin: 0 .25em;
-        .color( delta );
-    }
-}
-
-.highlight {
-    // for highlight.js
-    .color( inv-lo );
-    .css, .rule-declarations {
-        .hljs-pseudo { .color( delta ); }
-        .hljs-rule { .color( delta ); }
-        .hljs-rules { .color( delta ); }
-        .hljs-value { .color( inv-lo ); }
-        .hljs-attribute { .color( gamma ); }
-    }
-    .hljs-tag {
-        .hljs-title { .color( delta ); }
-        &.hidden- { display: none; }
-    }
-    .hljs-class {
-        .color( inv-hi );
-        &.pattern- {
-            .color( alpha );
-            .glow( alpha );
-        }
-        &.member-, &.modifier-, &.state- {
-            .color( beta );
-            .glow( beta );
-        }
-    }
-}
-
-
-.rule-selectors > li::after,
-.rule-declarations::after {
-    .color( delta );
-}
-

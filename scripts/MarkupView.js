@@ -1,9 +1,9 @@
-define(['Context', 'EditableFillerView', '../lib/prism/js/prism'],
-    function (Context, EditableFillerView) {
+define(['Context', 'EditableFillerView', 'appState', '../lib/prism/js/prism'],
+    function (Context, EditableFillerView, appState) {
 
     var highlight = function (text) {
         return Prism.highlight( text, Prism.languages.markup );
-    }
+    };
 
     var MarkupView = Backbone.View.extend({
 
@@ -15,29 +15,34 @@ define(['Context', 'EditableFillerView', '../lib/prism/js/prism'],
             view.$pre = view.$el;
 
             appState.on('change:example', function( appState, example ) {
-                view.setModel( example );
+                view.setModel( example, appState.get('pattern') );
             });
         },
 
-        setModel: function ( example ) {
+        setModel: function ( example, pattern ) {
             var view = this;
 
             view.model = example;
+            view.pattern = pattern;
             view.render();
         },
 
         render: function () {
             var view = this,
+                $pre = view.$pre,
                 example = view.model,
+                pattern = view.pattern,
                 template = example ? example.getText() : '',
                 code = template ? highlight( template ) : '',
                 html = code ? view.filler.replace( code, function (key) {
                     return '<span class="styleboard-filler" data-filler-key="' + key + '"></span>';
-                } ) : '',
-                patterns = [];
+                } ) : '';
 
-            view.$pre.html( html )
-                .find('.styleboard-filler')
+            // Insert the html
+            $pre.html(html);
+
+            // Replace the filler text
+            $pre.find('.styleboard-filler')
                 .each( function () {
                     var $el = $(this),
                         key = $el.data('filler-key'),
@@ -49,49 +54,46 @@ define(['Context', 'EditableFillerView', '../lib/prism/js/prism'],
                     subview.render();
                 });
 
-            // TODO: make this less tied to highlight.js
-            view.$pre.find(".hljs-attribute:contains('class') + .hljs-value")
-                // First find all the patterns used in the example:
-                .each( function () {
-                    var $atv = $(this),
-                        // TODO: assumes quotes are in the value
-                        value = $atv.text().slice(1,-1),
-                        classes = value.split( /\s+/ );
-                    $atv.empty();
-                    $atv.append('"');
-                    classes.forEach( function (name, index ) {
-                        var pat = new Context({
-                            doc: view.doc,
-                            node: view.doc.findByName( name )
-                        });
-                        if ( index ) {
-                            $atv.append(' ');
-                        }
-                        if ( pat ) {
-                            $atv.mk('span.pattern-.hljs-class', name);
-                            patterns.push( pat );
-                        } else {
-                            $atv.mk('span.hljs-class', name);
-                        }
-                    });
-                    $atv.append('"');
-                });
+            // Highlight the tags that contain pattern names
+            $pre.find('.token.tag').each( function () {
+                var $tag = $(this);
 
-            // Then search those patterns for other classes used
-            view.$pre.find('.hljs-class')
-                .each( function () {
-                    var $class = $(this),
-                        name = $class.text();
-                    if (name.charAt(0) === '.' ) {
-                        name = name.slice(1);
-                    }
-                    patterns.forEach( function (pat) {
-                        var defn = pat.getDefinition(name);
-                        if ( defn ) {
-                            $class.addClass(defn.get('type') + '-');
-                        } else if ( name === pat.getName() ) {
-                            $class.addClass('pattern-');
-                        }
+                $tag.find('.token.attr-name')
+                    .filter( function () { return $(this).text() === 'class'; })
+                    .next()
+                    .each( function () {
+                        var $token = $(this),
+                            $textnode = $token.contents().filter( function () {
+                                return this.nodeType === Node.TEXT_NODE;
+                            }),
+                            classlist = $textnode.text().split(/\s+/);
+
+                        classlist.forEach( function (classname, index) {
+                            var type = '';
+
+                            if ( pattern ) {
+                                if ( pattern.getName() === classname ) {
+                                    type = 'pattern';
+                                } else {
+                                    type = pattern.getDefinition( classname ).getType();
+                                }
+                                if ( type ) {
+                                    type = '.' + type + '-';
+                                    // also highlight the token
+                                    // type += '.highlight-';
+                                    $tag.addClass('highlight-');
+                                }
+                            }
+
+                            if ( index ) {
+                                $(document.createTextNode(' ')).insertBefore( $textnode );
+                            }
+
+                            $.mk('span' + type + '.classname-.token', classname )
+                                .insertBefore( $textnode );
+                        });
+
+                        $textnode.remove();
                     });
                 });
 

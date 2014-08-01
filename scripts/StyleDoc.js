@@ -38,7 +38,7 @@ define( ['../lib/marked/js/marked'], function ( marked ) {
         doc.findContext = function findContext( context ) {
             var index = this.indexByType[context.type];
             return index && index[context.name];
-        }
+        };
 
         doc.openContext = function openContext( list ) {
             if ( !_.isArray( list ) ) { list = [ list ]; }
@@ -144,7 +144,7 @@ define( ['../lib/marked/js/marked'], function ( marked ) {
             var patternName = doc.getAttr(pattern, 'name'),
                 index = doc.indexByPattern[patternName];
             return index && index[name];
-        }
+        };
 
         // private
 

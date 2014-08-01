@@ -5,6 +5,7 @@
 
     @example A tool bar
        <ul class="tool- bar">
+         <!-- NOTE: do not close the <li> tags; avoid unwanted whitespace -->
          <li><button>{{w1}}</button>
          <li><button>{{w2}}</button>
          <li><button>{{w3}}</button>
@@ -34,6 +35,7 @@
     }
 
     &.tool- {
+        /** A tool bar, usually containing buttons within each item. */
         .button, button {
             background: transparent;
             color: inherit;

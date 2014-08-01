@@ -11,7 +11,7 @@ define(['Definition'], function (Definition) {
                                          // documented, either with text or @pattern
         structuralInference: true,       // infer relations by analyzing selectors
         semanticInference: false,        // infer relations by applying naming conventions
-        strictConventions: true,         // only infer patterns and relations that
+        strictConventions: false,        // only infer patterns and relations that
                                          // follow conventions
         warnConventions: true,           // flag violations of naming conventions
                                          // (relations within patterns will still be inferred)
@@ -110,6 +110,7 @@ define(['Definition'], function (Definition) {
 
             });
             // Pass 3 - Process definitions and infer relations
+                    debugger;
             defns.forEach( function( defn ) {
                 var type = defn.get('type');
                 switch (type) {
@@ -249,7 +250,7 @@ define(['Definition'], function (Definition) {
                         atRoot = atRoot && elements[0].combinator.value === '';
                         current = elements.shift().value,
                         attrs = defn.toJSON();
-                        // TODO: also look for semantic inferences that are not struct
+                        // TODO: also look for semantic inferences that are not strict
                         if ( str ) {
                             if ( atRoot ) {
                                 if ( (matches = modRegex.exec(current)) ) {
