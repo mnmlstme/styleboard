@@ -21,7 +21,7 @@ define(['StyleDoc'], function (StyleDoc) {
 
     var options = {
         requireDoc: false,        // if true, only consider rules with documentation
-        requireNaming: false,     // if true, only consider classes that follow naming convention
+        requireNaming: true       // if true, only consider classes that follow naming convention
     };
 
     function Parser( opts ) {
@@ -70,7 +70,7 @@ define(['StyleDoc'], function (StyleDoc) {
                         return rule.type === 'Comment';
                     });
                     context = (comments.length || !options.requireDoc) &&
-                        identifyContext( node.selectors );
+                        identifyContext( doc, node.selectors );
                     if (context) {
                         doc.openContext( context );
                     }
@@ -119,7 +119,7 @@ define(['StyleDoc'], function (StyleDoc) {
                         case 'member':
                         case 'pattern':
                         case 'state':
-                            context = identifyContext(data, command);
+                            context = identifyContext(doc, data, command);
                             if ( context ) {
                                 doc.openContext( context );
                             }
@@ -167,9 +167,9 @@ define(['StyleDoc'], function (StyleDoc) {
                 }
             }
 
-            function identifyContext ( selectors, expectedType ) {
+            function identifyContext ( doc, selectors, expectedType ) {
                 var identified,
-                    selector, elements, root, atRoot,
+                    selector, elements, token, atRoot,
                     patternIdentified, matches;
                 if ( _.isString( selectors ) ) {
                     // TODO: our own neutral format for selectors
@@ -191,58 +191,69 @@ define(['StyleDoc'], function (StyleDoc) {
                 while ( selectors.length && !identified ) {
                     selector = selectors.shift();
                     elements = selector.elements.slice(0);
-                    root = elements.shift().value;
                     atRoot = true;
                     patternIdentified = null;
+                    token = elements.shift().value;
 
-                    if ( (expectedType === 'pattern' ||
-                          !expectedType && !options.requireNaming) &&
-                         (matches = regex.classname.exec(root)) ||
-                         (matches = regex.pattern.exec(root)) ) {
+                    if ((expectedType === 'pattern' || !expectedType && !options.requireNaming) ?
+                        (matches = regex.classname.exec( token )) :
+                        (matches = regex.pattern.exec( token))) {
+                        console.log('pattern matched: ' + matches[1]);
                         patternIdentified = {
                             name: matches[1],
-                            selector: root,
+                            selector: token,
                             type: 'pattern'
                         };
-                        if ( elements.length === 0 || expectedType === 'pattern' ) {
-                            identified = [ patternIdentified ];
+                    }
+
+                    if ( patternIdentified ) {
+                        if ( !doc.findByName( patternIdentified.name, 'pattern' ) ) {
+                            // if it's not already a pattern, it must be solo
+                            for ( var i = 0; patternIdentified && i < elements.length && elements[i].combinator.value === ''; i++ ) {
+                                if ( (options.requireNaming ? regex.pattern : regex.classname).exec( token ) ) {
+                                    // Another potential pattern, don't consider either
+                                    patternIdentified = null;
+                                }
+                            }
                         }
                     }
 
                     if ( patternIdentified ) {
-                        while ( elements.length ) {
+                        identified = [ patternIdentified ];
+                        while ( patternIdentified && elements.length ) {
                             atRoot = atRoot && elements[0].combinator.value === '';
-                            current = elements.shift().value;
+                            token = elements.shift().value;
                             if ( atRoot ) {
                                 if ( (expectedType === 'modifier' ||
-                                      !expectedType && !options.requireNaming) &&
-                                     (matches = regex.classname.exec(current)) ||
-                                     (matches = regex.modifier.exec(current)) ) {
-                                    identified = [ patternIdentified, {
+                                      !expectedType && !options.requireNaming) ?
+                                     (matches = regex.classname.exec( token )) :
+                                     (matches = regex.modifier.exec( token )) ) {
+                                         console.log('modifier matched: ' + matches[1]);
+                                    identified.push({
                                         name: matches[1],
                                         selector: patternIdentified.selector + '.' + matches[1],
                                         type: 'modifier'
-                                    } ];
-                                }
-                                if ( expectedType === 'state' &&
-                                     (matches = regex.classname.exec(current)) ||
-                                     (matches = regex.state.exec(current)) ) {
-                                    identified = [ patternIdentified, {
+                                    });
+                                } else if ( (expectedType === 'state' ||
+                                      !expectedType && !options.requireNaming) ?
+                                     (matches = regex.classname.exec( token )) :
+                                     (matches = regex.state.exec( token )) ) {
+                                    identified.push({
                                         name: matches[1],
                                         selector: patternIdentified.selector + '.' + matches[1],
                                         type : 'state'
-                                    } ];
+                                    });
                                 }
                             } else {
                                 if ( (expectedType === 'member' ||
-                                      !expectedType && !options.requireNaming) &&
-                                     (matches = regex.classname.exec(current)) ||
-                                     (matches = regex.member.exec(current)) ) {
-                                    identified = [ patternIdentified, {
+                                      !expectedType && !options.requireNaming) ?
+                                     (matches = regex.classname.exec( token )) :
+                                     (matches = regex.member.exec( token )) ) {
+                                    identified.push({
                                         name: matches[1],
                                         selector: patternIdentified.selector + ' .' + matches[1],
                                         type: 'member'
-                                    } ];
+                                    });
                                 }
                             }
                         }

@@ -108,15 +108,15 @@
             .foo.bar-:before { /** This is a bar foo. */ }
         </style>
 
-        <style id="doubleModifier">
-            .foo { /** This is a foo. */ }
-            .foo.another-.bar- { /** This is a bar foo. */ }
-        </style>
-
         <style id="twoModifiers">
             /** @pattern .foo */
             .foo.bar- { /** This is a bar foo. */ }
             /** @modifier .foo.another- */
+        </style>
+
+        <style id="doubleModifier">
+            .foo { /** This is a foo. */ }
+            .foo.bar-.another- { /** This is another foo. */ }
         </style>
 
         <style id="memberNoConvention">

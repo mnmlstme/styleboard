@@ -8,8 +8,6 @@ function( StyleDoc, Context, Parser ) {
         var html = pat.getNodesOfType('html');
         equal( html.length, 1 );
         equal( html[0].getText(), '<p>This is a foo.</p>' );
-
-        equal( pat.getNodesOfType('rule').length, 1 );
     });
 
     T( 'invalidPatternName', function ( t ) {
@@ -18,8 +16,6 @@ function( StyleDoc, Context, Parser ) {
         var html = t.getNodesOfType('html');
         equal( html.length, 1 );
         equal( html[0].getText(), '<p>This is NOT a foo-bar.</p>' );
-
-        equal( t.getNodesOfType('rule').length, 1 );
     });
 
     T( 'explicitPattern', function ( t ) {
@@ -38,8 +34,6 @@ function( StyleDoc, Context, Parser ) {
         var html = pat.getNodesOfType('html');
         equal( html.length, 1 );
         equal( html[0].getText(), '<p>This is a foo-bar.</p>' );
-
-        equal( pat.getNodesOfType('rule').length, 1 );
     });
 
     T( 'descriptionBefore', function ( t ) {
@@ -53,8 +47,6 @@ function( StyleDoc, Context, Parser ) {
         var inside = pat.getNodesOfType('html');
         equal( inside.length, 1 );
         equal( inside[0].getText(), '<p>This is a foo.</p>' );
-
-        equal( pat.getNodesOfType('rule').length, 1 );
     });
 
     T( 'declarationBefore', function ( t ) {
@@ -65,8 +57,6 @@ function( StyleDoc, Context, Parser ) {
         equal( html.length, 2 );
         equal( html[0].getText(), '<p>This is a foo.</p>' );
         equal( html[1].getText(), '<p>nice.</p>' );
-
-        equal( pat.getNodesOfType('rule').length, 1 );
     });
 
     T( 'twoLineParagraph', function (t) {
@@ -100,8 +90,6 @@ function( StyleDoc, Context, Parser ) {
         var html = pat.getNodesOfType('html');
         equal( html.length, 1 );
         equal( html[0].getText(), '<p>This is NOT a bar foo.</p>' );
-
-        equal( pat.getNodesOfType('rule').length, 1 );
     });
 
     T( 'modifierNoPattern', function (t) {
@@ -112,16 +100,13 @@ function( StyleDoc, Context, Parser ) {
 
         equal( html.length, 1 );
         equal( html[0].getText(), '<p>This is NOT a bar foo.</p>' );
-
-        equal( t.getNodesOfType('rule').length, 1 );
     });
 
     [ 'explicitPatternModifier',
       'explicitModifier',
       'modifierConvention',
       'modifierAfterPattern',
-      'modifierWithPseudo',
-      'doubleModifier' ]
+      'modifierWithPseudo' ]
         .forEach( function (id) {
             T( id, function (t) {
                 var pat = t.findByName('foo');
@@ -141,15 +126,19 @@ function( StyleDoc, Context, Parser ) {
             });
         });
 
-    T( 'twoModifiers', function ( t ) {
-        var pat = t.findByName('foo');
-        ok( pat );
+    [ 'twoModifiers',
+      'doubleModifier' ]
+        .forEach( function (id ) {
+            T( id, function (t) {
+                var pat = t.findByName('foo');
+                ok( pat );
 
-        var mods = pat.getNodesOfType('modifier');
-        equal( mods.length, 2 );
-        equal( mods[0].getName(), 'bar-' );
-        equal( mods[1].getName(), 'another-' );
-    });
+                var mods = pat.getNodesOfType('modifier');
+                equal( mods.length, 2 );
+                equal( mods[0].getName(), 'bar-' );
+                equal( mods[1].getName(), 'another-' );
+            });
+        });
 
     T( 'memberNoConvention', function (t) {
         var pat = t.findByName('foo');
