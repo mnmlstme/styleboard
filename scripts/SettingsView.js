@@ -7,10 +7,9 @@ define(['appState'], function (appState) {
         // TODO: make this configurable from styleboard.config
         "background-color": "transparent",
         "font-size": "14px",
-        "width": "100%",
-        "transform": "scale(1)",
-        "padding": "20px"
-    }
+        width: "100%",
+        transform: "scale(1)"
+    };
 
     var SettingsView = Backbone.View.extend({
 

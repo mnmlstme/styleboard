@@ -86,69 +86,83 @@ define(['appState'], function (appState) {
                         view.context.angular.bootstrap($content[0],[view.ngApp]);
                     }
 
-                    view.updatePosition();
+                    view.updateSettings();
                 }
-            }
-        },
-
-        updatePosition: function updatePostion() {
-            var view = this,
-                $body = view.$iframe.contents().find('body'),
-                $content = $body.children(),
-                bw = $body.width(), // don't include padding here
-                bh = $body.height(),
-                cw, ch,
-                position = { position: 'relative', top: 0, left: 0 };
-
-            // Determine the natural size of the content.
-            $content.removeAttr('style')
-                .css({ float: 'left' });
-            cw = $content.outerWidth();
-            ch = $content.outerHeight();
-
-            // Position appropriately based on natural size.
-            $content.removeAttr('style');
-            if ( cw && cw < bw ) {
-                position.width = Math.ceil(cw);
-                position.left = Math.floor((bw - cw) / 2);
-            }
-            if ( ch && ch < bh ) {
-                position.top = Math.floor((bh - ch) / 2);
-            }
-            if ( position.top || position.left ) {
-                $content.css(position);
             }
         },
 
         updateSettings: function updateSettings() {
             if ( !this.$iframe ) { return; }
             var view = this,
-                $body = view.$iframe.contents().find('body'),
-                defaultHeight = view.$el.offsetParent().height() -
-                                    2 * view.$el.position().top,
+                $sandbox = view.$el,
+                $iframe = view.$iframe,
+                $body = $iframe.contents().find('body'),
+                $content = $body.children(),
                 iFrameSettings = ['width'],
-                sandboxSettings = ['transform'];
-
-            view.$iframe.css( 'height', defaultHeight ); // used if content is height: 100%
-
-            if ( $body.children().length ) {
-                $body.css( _(view.settings).omit(iFrameSettings.concat(sandboxSettings)) );
-                view.$iframe.css( _(view.settings).pick(iFrameSettings) );
-                view.$iframe.css( 'height', $body.outerHeight() );
-                view.$el.css( _(view.settings).pick(sandboxSettings) );
-                view.updateTransform( view.settings.transform );
-                view.updatePosition();
-            }
-        },
-
-        updateTransform: function updateTransform( transform ) {
-            transform = transform || "";
-            var view = this,
+                sandboxSettings = ['transform'],
+                transform = view.settings.transform || "",
                 scaleMatch = transform.match( /^scale\(([0-9.]+)\)$/ ),
-                scale = scaleMatch ? 1 * scaleMatch[1] : 1;
+                scale = scaleMatch ? 1 * scaleMatch[1] : 1,
+                bw, bh, cw, ch,
+                position = { position: 'relative', top: 0, left: 0 },
+                applyTo = {
+                    transform: $sandbox,
+                    width:  $iframe,
+                    'background-color': $body,
+                    'font-size': $body
+                };
 
-            view.$pane.css({ 'background-size': CHECKERBOARD_SIZE * scale + 'px' });
-        },
+            $iframe.removeAttr('style');
+
+            if ( $content.length ) {
+                $content.removeAttr('style');
+
+                // Apply all the user-controlled view settings.
+                // TODO: animate the transitions
+                _(applyTo).each( function ($where, key) {
+                    $where.css( key, view.settings[key] );
+                });
+
+                // Make adjustments for scale.
+                view.$el.css({ width: (100 / scale) + '%', height: (100 / scale) + '%' });
+                view.$pane.css({ 'background-size': CHECKERBOARD_SIZE * scale + 'px' });
+
+                // Float the content to determine its natural size.
+                $content.css('float', 'left');
+
+                bw = $body.width(), // don't include padding
+                bh = $body.height(),
+                cw = $content.outerWidth(); // include padding
+                ch = $content.outerHeight();
+
+                console.log('body    w=' + bw + ', h=' + bh);
+                console.log('content w=' + cw + ', h=' + ch);
+
+                // Extend the iframe's height to fit content, if necessary.
+                if ( ch && ch > bh ) {
+                    if ( cw && cw > bw ) {
+                        ch += 15; // account for horizontal scrollbar
+                    }
+                    $iframe.height( Math.ceil(ch) );
+                }
+
+                // Let the content flow itself within this size.
+                $content.css('float', undefined);
+
+                // Position appropriately based on natural size.
+                if ( cw && cw < bw ) {
+                    position.width = Math.ceil(cw);
+                    position.left = Math.floor((bw - cw) / 2 );
+                }
+                if ( ch && ch < bh ) {
+                    position.top = Math.floor((bh - ch) / 2 );
+                }
+                if ( position.top || position.left ) {
+                    $content.css(position);
+                }
+
+            }
+        }
 
     }); // end of view RenderedView
 
