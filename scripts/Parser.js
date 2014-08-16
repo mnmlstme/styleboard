@@ -25,7 +25,7 @@ define(['StyleDoc'], function (StyleDoc) {
     };
 
     function Parser( opts ) {
-        opts = opts || {};
+        opts = _.extend( options, opts || {} );
         var parser = this;
 
         parser.load = function load ( url, done ) {
@@ -45,7 +45,7 @@ define(['StyleDoc'], function (StyleDoc) {
 
         parser.parse = function parse( data ) {
             var doc = new StyleDoc();
-            new less.Parser( opts )
+            new less.Parser()
                 .parse( data, function (err, css ) {
                     if ( err ) {
                         alert( "Failed to parse CSS: " + err );
@@ -69,7 +69,7 @@ define(['StyleDoc'], function (StyleDoc) {
                     comments = node.rules.filter( function (rule) {
                         return rule.type === 'Comment';
                     });
-                    context = (comments.length || !options.requireDoc) &&
+                    context = (comments.length || !opts.requireDoc) &&
                         identifyContext( doc, node.selectors );
                     if (context) {
                         doc.openContext( context );
@@ -195,7 +195,7 @@ define(['StyleDoc'], function (StyleDoc) {
                     patternIdentified = null;
                     token = elements.shift().value;
 
-                    if ((expectedType === 'pattern' || !expectedType && !options.requireNaming) ?
+                    if ((expectedType === 'pattern' || !expectedType && !opts.requireNaming) ?
                         (matches = regex.classname.exec( token )) :
                         (matches = regex.pattern.exec( token))) {
                         console.log('pattern matched: ' + matches[1]);
@@ -210,7 +210,7 @@ define(['StyleDoc'], function (StyleDoc) {
                         if ( !doc.findByName( patternIdentified.name, 'pattern' ) ) {
                             // if it's not already a pattern, it must be solo
                             for ( var i = 0; patternIdentified && i < elements.length && elements[i].combinator.value === ''; i++ ) {
-                                if ( (options.requireNaming ? regex.pattern : regex.classname).exec( token ) ) {
+                                if ( (opts.requireNaming ? regex.pattern : regex.classname).exec( token ) ) {
                                     // Another potential pattern, don't consider either
                                     patternIdentified = null;
                                 }
@@ -225,7 +225,7 @@ define(['StyleDoc'], function (StyleDoc) {
                             token = elements.shift().value;
                             if ( atRoot ) {
                                 if ( (expectedType === 'modifier' ||
-                                      !expectedType && !options.requireNaming) ?
+                                      !expectedType && !opts.requireNaming) ?
                                      (matches = regex.classname.exec( token )) :
                                      (matches = regex.modifier.exec( token )) ) {
                                          console.log('modifier matched: ' + matches[1]);
@@ -235,7 +235,7 @@ define(['StyleDoc'], function (StyleDoc) {
                                         type: 'modifier'
                                     });
                                 } else if ( (expectedType === 'state' ||
-                                      !expectedType && !options.requireNaming) ?
+                                      !expectedType && !opts.requireNaming) ?
                                      (matches = regex.classname.exec( token )) :
                                      (matches = regex.state.exec( token )) ) {
                                     identified.push({
@@ -246,7 +246,7 @@ define(['StyleDoc'], function (StyleDoc) {
                                 }
                             } else {
                                 if ( (expectedType === 'member' ||
-                                      !expectedType && !options.requireNaming) ?
+                                      !expectedType && !opts.requireNaming) ?
                                      (matches = regex.classname.exec( token )) :
                                      (matches = regex.member.exec( token )) ) {
                                     identified.push({
