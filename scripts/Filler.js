@@ -1,6 +1,7 @@
 define ( function () {
 
-    var lorem = [
+    var corpus = [
+        // TODO: provide alternative corpuses
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
         'In sit amet lorem ipsum. Suspendisse nisl enim, iaculis a blandit et, lobortis ut turpis.',
         'Sed eu velit vel augue ultricies ullamcorper sed ut nulla.',
@@ -33,33 +34,24 @@ define ( function () {
     ];
 
     var builtin = {
-        p:  lorem.slice(0,3).join(' '),
-        p1: lorem.slice(0,3).join(' '),
-        p2: lorem.slice(3,6).join(' '),
-        p3: lorem.slice(6,9).join(' '),
-        h:  words(lorem[0], 3, true),
-        h1: words(lorem[0], 2, true),
-        h2: words(lorem[3], 3, true),
-        h3: words(lorem[6], 4, true),
-        s:  lorem[0],
-        s1: lorem[0],
-        s2: lorem[3],
-        s3: lorem[6],
-        phr:  words(lorem[0], 4),
-        phr1: words(lorem[0], 4),
-        phr2: words(lorem[3], 5),
-        phr3: words(lorem[6], 3),
-        w:  words(lorem[0], 1),
-        w1: words(lorem[0], 1),
-        w2: words(lorem[3], 1),
-        w3: words(lorem[6], 1),
+        // Strings not taken from corpus
         btn: 'Button'
     };
+
+    function sentences(list, start, n) {
+        var sentences = [];
+
+        for( var j=0; j < n; j++ ) {
+            sentences.push( list[(start + n*j)%list.length] );
+        }
+        return sentences.join(' ');
+    }
 
     function words(s, n, titlecase) {
         var w = s.toLowerCase().split(/[^\w]+/).slice(0,n || 0);
 
         if (titlecase) {
+            // TODO: handle prepositions and articles properly
             w = w.map( function (string) {
                 return string.charAt(0).toUpperCase() + string.slice(1);
             });
@@ -68,16 +60,47 @@ define ( function () {
         return w.join(' ');
     }
 
-    var regex = /\{\{\s*([A-Za-z][A-Za-z0-9_.]*)\s*\}\}(?!\})/g
+    // Matches token{.token}* or token{[token]}*
+    var regex = /\{\{\s*(([A-Za-z_]\w*)(\.\w+|\[\w+\])*)\s*\}\}(?!\})/g;
+
+    function keyToPath(key) {
+        return key.split(/\W/).filter( function(s) { return s !== ''; } );
+    }
+
+    var nullString = '(null)';
 
     var Filler = Backbone.Model.extend({
 
         initialize: function ( attrs ) {
             var model = this;
 
+            // Build the dictionary
             _(builtin).each( function (value, key) {
                 model.set(key, value);
             });
+
+            // s: Sentences are taken directly from the corpus.
+            model.set('s', corpus.slice(0));
+
+            // p: Paragraphs are 3 sentences long.
+            model.set('p', corpus.map( function (s, i, list) {
+                return sentences( list, i, 3 );
+            }));
+
+            // h: Headers are 2-3 words, title case.
+            model.set('h', corpus.map( function (s, i) {
+                return words( s, 2 + (i%2), true );
+            }));
+
+            // w: Single words
+            model.set('w', corpus.map( function (s) {
+                return words( s, 1 );
+            }));
+
+            // phr: Phrases are 3-6 words.
+            model.set('phr', corpus.map( function (s, i) {
+                return words( s, 3 + (i%4), true );
+            }));
         },
 
         replace: function ( template, f ) {
@@ -107,31 +130,56 @@ define ( function () {
 
         lookup: function ( key ) {
             var model = this,
-                path = key.split('.'),
-                value = model.get(path[0]);
+                path = keyToPath(key),
+                k = path[0],
+                hash = {},
+                i;
 
-            for ( var i = 1; typeof value === 'object' && i < path.length; i++ ) {
-                value = value[path[i]];
+            hash[k] = model.get(k);
+            return recurse( hash, path );
+
+            function recurse( hash, path ) {
+                var k = path.length ? path.shift() : 0;
+                // TODO: optimize tail recursion
+                if ( !_.isObject(hash) ) {
+                    return hash;
+                }
+
+                return recurse(hash[k], path);
             }
-
-            return value;
         },
 
         setValue: function (key, value) {
             var model = this,
-                path = key.split('.'),
-                object = model.get(path[0]),
-                i = 0;
+                path = keyToPath(key),
+                k = path[0],
+                hash = {};
 
-            if ( typeof object === 'object' ) {
-                for ( i = 1; typeof object === 'object' && i < path.length-1; i++ ) {
-                    object = object[path[i]];
-                }
-                object[path[i]] = value;
-                model.set(path[0], model.get(path[0]));
-            } else {
-                model.set(path[0], value);
+            hash[k] = model.get(k);
+            recurse( hash, path, value );
+            model.set( k, hash[k] );
+            if ( _.isObject(hash[k]) ) {
+                // because Backbone doesn't check for deep changes
+                model.trigger('change change:' + k);
             }
+
+            function recurse( object, path, value ) {
+                // TODO: optimize tail recursion
+                var k = path.shift(),
+                    hash = object[k];
+                if ( !path.length && !_.isObject(hash)) {
+                    object[k] = value;
+                } else {
+                    if ( !_.isObject(hash) ) {
+                        object[k] = { 0: hash };
+                    }
+                    if ( !path.length ) {
+                        path = [0];
+                    }
+                    recurse( hash, path.length ? path : 0, value );
+                }
+            }
+
         }
 
     });

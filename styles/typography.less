@@ -79,21 +79,23 @@ body {
 @example An article with typography applied.
     <article class="typography">
       <header>
-        <h1>{{h1}}
+        <h1>{{h}}
       </header>
-      <p>{{p2}}
+      <p>{{p.0}}
+      <p>{{p.1}}
+      <p>{{p.2}}
       <ul>
-        <li>{{s1}}
-        <li>{{s2}}
-        <li>{{s3}}
+        <li>{{s.1}}
+        <li>{{s.2}}
+        <li>{{s.3}}
       </ul>
       <dl>
-        <dt>{{w1}}
-        <dd>{{s1}}
-        <dt>{{w2}}
-        <dd>{{s2}}
-        <dt>{{w3}}
-        <dd>{{s3}}
+        <dt>{{w.1}}
+        <dd>{{s.1}}
+        <dt>{{w.2}}
+        <dd>{{s.2}}
+        <dt>{{w.3}}
+        <dd>{{s.3}}
       </dl>
       <p>{{p3}}
     </article>
