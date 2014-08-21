@@ -7,9 +7,9 @@
        @example A basic frame with one pane.
        <div class="frame">
          <div class="pane typography">
-           <p>{{p1}}
-           <p>{{p2}}
-           <p>{{p3}}
+           <p>{{p.1}}
+           <p>{{p.2}}
+           <p>{{p.3}}
          </div>
        </div>
     */
@@ -140,13 +140,13 @@
                @example Two panes side-by-side
                <div class="horizontal- split- frame">
                    <div class="pane typography">
-                       <h1>{{h1}}</h1>
-                       <p>{{p1}}
-                       <p>{{p2}}
+                       <h1>{{h}}</h1>
+                       <p>{{p.1}}
+                       <p>{{p.2}}
                    </div>
                    <div class="pane typography">
-                       <h1>{{h2}}</h1>
-                       <p>{{p3}}
+                       <h1>{{h.1}}</h1>
+                       <p>{{p.3}}
                    </div>
                </div>
                */
@@ -207,13 +207,13 @@
             <div class="tabbed- frame">
               <nav>
                 <ul class="frame-tabs">
-                  <li class="is-active">{{w1}}
-                  <li>{{w2}}
+                  <li class="is-active">{{h.1}}
+                  <li>{{h.2}}
                 </ul>
               </nav>
               <ul class="frame-panes">
-                <li class="pane typography is-active"><p>{{p1}}
-                <li class="pane typography"><p>{{p2}}
+                <li class="pane typography is-active"><p>{{p.1}}
+                <li class="pane typography"><p>{{p.2}}
             </div>
         */
         padding-top: @headerHeight;

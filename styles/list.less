@@ -5,9 +5,9 @@
        A simple list.  Items are arranged vertically, with no decoration.
         @example
         <ul class="list">
-          <li>{{s1}}
-          <li>{{s2}}
-          <li>{{s3}}
+          <li>{{s.1}}
+          <li>{{s.2}}
+          <li>{{s.3}}
         </ul>
      */
 
@@ -20,9 +20,9 @@
            A bulleted list.  Items are arranged vertically with colored bullets.
            @example
            <ul class="bullet- list">
-               <li>{{s1}}
-               <li>{{s2}}
-               <li>{{s3}}
+               <li>{{s.1}}
+               <li>{{s.2}}
+               <li>{{s.3}}
            </ul>
         */
         @margin: 1em;
@@ -42,9 +42,9 @@
            @example
            In this box I have
            <ul class="comma- list">
-               <li>{{phr1}}</li>
-               <li>{{phr2}}</li>
-               <li>and {{phr3}}</li></ul>.
+               <li>{{phr.1}}</li>
+               <li>{{phr.2}}</li>
+               <li>and {{phr.3}}</li></ul>.
         */
         display: inline;
         > * {
@@ -65,12 +65,12 @@
 
            @example
            <dl class="definition- list">
-             <dt>{{w1}}
-             <dd>{{s1}}
-             <dt>{{w2}}
-             <dd>{{s2}}
-             <dt>{{w3}}
-             <dd>{{s3}}
+             <dt>{{w.1}}
+             <dd>{{s.1}}
+             <dt>{{w.2}}
+             <dd>{{s.2}}
+             <dt>{{w.3}}
+             <dd>{{s.3}}
            </dl>
            */
         .clearfix;
