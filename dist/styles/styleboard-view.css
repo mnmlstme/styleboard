@@ -1,10 +1,12 @@
-/*
-  CSS3 utility mixins
-*/
 .styleboard-view {
   background: #fff;
   font-size: 100%;
-  height: auto;
+  height: 100%;
   overflow: auto;
 }
-/*# sourceMappingURL=data:application/json,%7B%22version%22%3A3%2C%22sources%22%3A%5B%22styles%2Fstyleboard-view.less%22%5D%2C%22names%22%3A%5B%5D%2C%22mappings%22%3A%22%3B%3B%3BAAEiB%3BEACb%2CgBAAA%3BEACA%2CeAAA%3BEACA%2CYAAA%3BEACA%2CcAAA%22%7D */
+.styleboard-content::after {
+  content: '';
+  display: block;
+  clear: both;
+}
+/*# sourceMappingURL=data:application/json,%7B%22version%22%3A3%2C%22sources%22%3A%5B%22styles%2Fstyleboard-view.less%22%2C%22styles%2Futil.less%22%5D%2C%22names%22%3A%5B%5D%2C%22mappings%22%3A%22AAEiB%3BEACb%2CgBAAA%3BEACA%2CeAAA%3BEACA%2CYAAA%3BEACA%2CcAAA%3B%3BACJC%2CmBAAQ%3BEACL%2CSAAS%2CEAAT%3BEACA%2CcAAA%3BEACA%2CWAAA%22%7D */

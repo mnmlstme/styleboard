@@ -135,9 +135,6 @@ define(['appState'], function (appState) {
                 cw = $content.outerWidth(); // include padding
                 ch = $content.outerHeight();
 
-                console.log('body    w=' + bw + ', h=' + bh);
-                console.log('content w=' + cw + ', h=' + ch);
-
                 // Extend the iframe's height to fit content, if necessary.
                 if ( ch && ch > bh ) {
                     if ( cw && cw > bw ) {

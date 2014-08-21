@@ -45,7 +45,8 @@ function( Parser, Context, Filler,
             styles = config.styles,
             scripts = _.isArray(config.scripts) ? config.scripts :
                 ( config.scripts ? [config.scripts] : [] ),
-            parser = new Parser();
+            rules = config.options.rules || {},
+            parser = new Parser(rules);
 
         // TODO: allow loading of more than one stylesheet URL
         parser.load( styles, function (doc) {

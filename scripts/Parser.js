@@ -198,7 +198,6 @@ define(['StyleDoc'], function (StyleDoc) {
                     if ((expectedType === 'pattern' || !expectedType && !opts.requireNaming) ?
                         (matches = regex.classname.exec( token )) :
                         (matches = regex.pattern.exec( token))) {
-                        console.log('pattern matched: ' + matches[1]);
                         patternIdentified = {
                             name: matches[1],
                             selector: token,
@@ -228,7 +227,6 @@ define(['StyleDoc'], function (StyleDoc) {
                                       !expectedType && !opts.requireNaming) ?
                                      (matches = regex.classname.exec( token )) :
                                      (matches = regex.modifier.exec( token )) ) {
-                                         console.log('modifier matched: ' + matches[1]);
                                     identified.push({
                                         name: matches[1],
                                         selector: patternIdentified.selector + '.' + matches[1],
