@@ -22,8 +22,7 @@ module.exports = function(grunt){
             },
             build: {
                 files : {
-                    "styles/styleboard.css": "styles/styleboard.less",
-                    "styles/styleboard-view.css": "styles/styleboard-view.less"
+                    "styles/styleboard.css": "styles/styleboard.less"
                 }
             }
         },

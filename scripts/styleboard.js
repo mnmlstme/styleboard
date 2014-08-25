@@ -59,7 +59,7 @@ function( Parser, Context, Filler,
 
             var dictionary = new Backbone.Collection( patterns );
 
-            var filler = new Filler({fillerText: config.options.fillerText})
+            var filler = new Filler({fillerText: config.options.fillerText});
 
             // initialize each view, if it exists in the markup
 

@@ -23,14 +23,17 @@ define(['appState'], function (appState) {
             });
 
             doc.open();
-            doc.write('<html lang="en" style="height: auto">' +
+            doc.write('<html lang="en" style="height: 100%">' +
                       '<head>' +
                       '<meta charset="utf-8">' +
                       styles.map( function (url) {
                           return '<link rel="stylesheet" type="text/css" ' +
                               'href="' + url + '">';
                       }).join('\n') +
-                      '<link rel="stylesheet" type="text/css" href="styles/styleboard-view.css">' +
+                      '<style>\n' +
+                      '.styleboard-view{background:#fff;margin:0;font-size:100%;overflow:hidden}\n' +
+                      '.styleboard-content::after{display:block;content:"";clear:both}\n' +
+                      '</style>\n' +
                       scripts.map( function (url) {
                           return '<script src="' + url + '"></script>';
                       }).join('\n') +
@@ -47,6 +50,8 @@ define(['appState'], function (appState) {
             appState.on('change:settings', function( appState, settingsJSON ) {
                 view.setSettings( settingsJSON );
             });
+
+            $(window).on("resize", function () { view.updateSettings(); } );
         },
 
         setModel: function setModel ( example ) {
@@ -143,8 +148,8 @@ define(['appState'], function (appState) {
                     $iframe.height( Math.ceil(ch) );
                 }
 
-                // Let the content flow itself within this size.
-                $content.css('float', undefined);
+                // Let the content flow itself within this size, remove the float
+                $content.removeAttr('style');
 
                 // Position appropriately based on natural size.
                 if ( cw && cw < bw ) {
