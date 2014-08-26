@@ -2,7 +2,13 @@ define(['Context', 'EditableFillerView', 'appState', '../lib/prism/js/prism'],
     function (Context, EditableFillerView, appState) {
 
     var highlight = function (text) {
-        return Prism.highlight( text, Prism.languages.markup );
+        var result = Prism.highlight( text, Prism.languages.markup );
+        // Prism highlights/escapes the ERb syntax, and we need to match it after we
+        // highlight, so unhighlight it.
+        return result
+            .replace(/&lt;%=/g,'<%=')
+            .replace(/&lt;%<span\s+class="[^"]*"\s*>=<\/span>/g,'<%=')
+            .replace(/%<span\s+class="[^"]*"\s*>><\/span>/g,'%>');
     };
 
     var MarkupView = Backbone.View.extend({

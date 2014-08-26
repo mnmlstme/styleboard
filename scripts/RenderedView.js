@@ -31,7 +31,7 @@ define(['appState'], function (appState) {
                               'href="' + url + '">';
                       }).join('\n') +
                       '<style>\n' +
-                      '.styleboard-view{background:#fff;margin:0;font-size:100%;overflow:hidden}\n' +
+                      '.styleboard-view{background:transparent;margin:0;font-size:100%;overflow:hidden}\n' +
                       '.styleboard-content::after{display:block;content:"";clear:both}\n' +
                       '</style>\n' +
                       scripts.map( function (url) {

@@ -1,3 +1,9 @@
+/**
+ * Styleboard 0.2.4 - extract a styleguide from your site's CSS.
+ * Copyright (c) 2013-14, Ken Kubiak (BSD Licensed)
+ * https://github.com/mnmlstme/styleboard
+ */
+
 require(['Parser', 'Context', 'Filler',
          'DictionaryView', 'RenderedView', 'MarkupView',
          'TabbedFrameView', 'FooterView', 'SettingsView', 'appState',
@@ -59,7 +65,10 @@ function( Parser, Context, Filler,
 
             var dictionary = new Backbone.Collection( patterns );
 
-            var filler = new Filler({fillerText: config.options.fillerText});
+            var filler = new Filler({
+                fillerText: config.options.fillerText,
+                templating: config.options.templating
+            });
 
             // initialize each view, if it exists in the markup
 
@@ -126,7 +135,7 @@ function( Parser, Context, Filler,
         function route( string ) {
             var path = string.split('/'),
                 pattern,
-                examples,
+                examples = [],
                 index,
                 example;
 

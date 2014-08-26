@@ -5,16 +5,27 @@ define ( function () {
         btn: 'Button'
     };
 
-    // Matches token{.token}* or token{[token]}*
-    var regex = /\{\{\s*(([A-Za-z_]\w*)(\.\w+|\[\w+\])*)\s*\}\}(?!\})/g;
-
     var nullString = '(null)';
 
     var Filler = Backbone.Model.extend({
 
         initialize: function ( attrs ) {
             var model = this,
-                corpus = texts[attrs.fillerText || 'lorem'];
+                corpus = texts[attrs.fillerText || 'lorem'],
+                pat = {
+                    // Default is mustache templating
+                    open: '\\{\\{',
+                    // Expression is a.b or a[b]
+                    expr: '([A-Za-z_]\\w*)(\\.\\w+|\\[\\w+\\])*',
+                    close: '\\}\\}'
+                };
+
+            if ( attrs.templating === 'erb' ) {
+                pat.open = '<%=';
+                pat.close = '%>';
+            }
+
+            model.regex = new RegExp( pat.open + '\s*(' + pat.expr + ')\s*' + pat.close, 'g' );
 
             // Build the dictionary
             _(standard).each( function (value, key) {
@@ -47,6 +58,8 @@ define ( function () {
         },
 
         replace: function ( template, f ) {
+            var regex = this.regex;
+
             return template.replace( regex, function (match, key) {
                 return f(key);
             });
