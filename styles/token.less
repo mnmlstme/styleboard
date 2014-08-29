@@ -63,10 +63,11 @@
     &.classname- {
         /** A CSS class name in HTML or CSS context */
         .color( danger, .7 );
-        &.highlight- {
-            opacity: 1;
-            text-shadow: 0 0 1px;
-        }
+    }
+
+    &.classname-,
+    &.tagname-,
+    &.attr-name {
         &.pattern- {
             /** A CSS class name corresponding to a pattern. */
             .color( alpha );
@@ -79,6 +80,10 @@
         &.state- {
             /** A CSS class name corresponding to a modifier or state. */
             .color( gamma );
+        }
+        &.highlight- {
+            opacity: 1;
+            text-shadow: 0 0 1px;
         }
     }
 

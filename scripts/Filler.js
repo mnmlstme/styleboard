@@ -155,7 +155,7 @@ define ( function () {
     }
 
     function words(s, n, titlecase) {
-        var w = s.toLowerCase().split(/[^\w]+/).slice(0,n || 0);
+        var w = s.toLowerCase().split(/[^\w'’]+/).slice(0,n || 0);
 
         if (titlecase) {
             // TODO: handle prepositions and articles properly

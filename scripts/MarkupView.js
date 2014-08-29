@@ -65,53 +65,73 @@ define(['Context', 'EditableFillerView', 'appState', '../lib/prism/js/prism'],
             $pre.find('.token.tag').each( function () {
                 var $tag = $(this);
 
+                function decorate ($token) {
+                    var name = $token.text(),
+                        defn = doc.findByName( name ),
+                        type = defn && doc.getType(defn),
+                        highlight = false;
+
+                    if ( pattern ) {
+                        if ( pattern.getName() === name ) {
+                            highlight = true;
+                        } else {
+                            defn = pattern.getDefinition( name );
+                            if ( defn.isValid() ) {
+                                type = defn.getType();
+                                highlight = true;
+                            }
+                        }
+                    }
+
+                    if ( type ) {
+                        $token.addClass( type + '-' );
+                        if ( highlight ) {
+                            $token.addClass('highlight-');
+                            $tag.addClass('highlight-');
+                        }
+                    }
+                }
+
+                // decorate tag names
+                // TODO: only decorate if the defn includes an element selector
+                $tag.find('.token.tag')
+                    .contents()
+                    .filter( function () { return this.nodeType === Node.TEXT_NODE; } )
+                    .each( function () {
+                        var $textnode = $(this),
+                            $nametoken = $.mk('span.tagname-.token', $textnode.text() )
+                                .insertBefore($textnode);
+
+                        decorate( $nametoken );
+                        $textnode.remove();
+                    });
+
+                // decorate attribute names
+                // TODO: only decorate if the defn includes an attribute selector
+                $tag.find('.token.attr-name')
+                    .each( function() { decorate( $(this) ); } );
+
+                // decorate class names
                 $tag.find('.token.attr-name')
                     .filter( function () { return $(this).text() === 'class'; })
                     .next()
                     .each( function () {
                         var $token = $(this),
-                            $textnode = $token.contents().filter( function () {
-                                return this.nodeType === Node.TEXT_NODE;
-                            }),
+                            $textnode = $token.contents()
+                                .filter( function () { return this.nodeType === Node.TEXT_NODE; }),
                             classlist = $textnode.text().split(/\s+/);
 
                         classlist.forEach( function (classname, index) {
                             var modifiers = [],
-                                defn = doc.findByName( classname ),
-                                type = defn && doc.getType(defn),
-                                highlight = false;
+                                highlight = false,
+                                $classtoken = $.mk('span.classname-.token', classname)
+                                    .insertBefore( $textnode );
 
-                            if ( pattern ) {
-                                if ( pattern.getName() === classname ) {
-                                    highlight = true;
-                                } else  {
-                                    defn = pattern.getDefinition( classname );
-                                    if ( defn.isValid() ) {
-                                        type = defn.getType();
-                                        highlight = true;
-                                    }
-                                }
-                            }
-
-                            if ( type ) {
-                                modifiers.push( type );
-                            }
-
-                            if ( highlight ) {
-                                modifiers.push('highlight');
-                                $tag.addClass('highlight-');
-                            }
+                            decorate( $classtoken );
 
                             if ( index ) {
-                                $(document.createTextNode(' ')).insertBefore( $textnode );
+                                $(document.createTextNode(' ')).insertBefore( $classtoken );
                             }
-
-                            $.mk('span.classname-.token'+
-                                 modifiers
-                                     .map( function (mod) { return '.' + mod + '-'; })
-                                     .join(''),
-                                 classname )
-                                .insertBefore( $textnode );
                         });
 
                         $textnode.remove();
