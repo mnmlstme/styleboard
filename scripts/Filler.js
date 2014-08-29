@@ -25,7 +25,7 @@ define ( function () {
                 pat.close = '%>';
             }
 
-            model.regex = new RegExp( pat.open + '\s*(' + pat.expr + ')\s*' + pat.close, 'g' );
+            model.regex = new RegExp( pat.open + '\\s*(' + pat.expr + ')\\s*' + pat.close, 'g' );
 
             // Build the dictionary
             _(standard).each( function (value, key) {

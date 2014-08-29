@@ -83,11 +83,10 @@ define(['appState'], function (appState) {
                 $body.empty();
                 if ( example ) {
                     $content = $body.mk('div.styleboard-content')
-                        .toggleClass('styleboard-ng-app', view.ngApp)
                         .append( $.parseHTML( code || '', view.doc, true ) );
 
                     if ( view.ngApp ) {
-                        // TODO: possible race condition affecting sizing
+                        $content.toggleClass('styleboard-ng-app', view.ngApp);
                         view.context.angular.bootstrap($content[0],[view.ngApp]);
                     }
 
