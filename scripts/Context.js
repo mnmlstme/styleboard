@@ -11,10 +11,10 @@ define( function () {
             }
         },
 
-        findByName: function ( name ) {
+        getPattern: function ( name ) {
             var model = this,
                 doc = model.get('doc'),
-                node = doc.findByName(name);
+                node = doc.getPattern(name);
 
             return node ? new Context({ doc: doc, node: node }) : null;
         },
@@ -65,7 +65,7 @@ define( function () {
             var model = this,
                 doc = model.get('doc');
 
-            return new Context({ doc: doc, node: doc.getDefinition( model.getNode(), name )});
+            return new Context({ doc: doc, node: doc.getDefinition( name, model.getNode() )});
         },
 
         getScope: function () {

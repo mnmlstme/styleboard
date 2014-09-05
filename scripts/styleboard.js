@@ -142,7 +142,7 @@ function( Parser, Context, Filler,
             if ( path.length ) {
                 pattern = new Context({
                     doc: sb.doc,
-                    node: sb.doc.findByName( path[0], 'pattern' )
+                    node: sb.doc.getPattern( path[0] )
                 });
 
                 if ( pattern.isValid() ) {

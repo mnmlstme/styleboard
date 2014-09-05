@@ -67,7 +67,7 @@ define(['Context', 'EditableFillerView', 'appState', '../lib/prism/js/prism'],
 
                 function decorate ($token) {
                     var name = $token.text(),
-                        defn = doc.findByName( name ),
+                        defn = doc.getPattern( name ),
                         type = defn && doc.getType(defn),
                         highlight = false;
 

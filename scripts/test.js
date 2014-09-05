@@ -2,7 +2,7 @@ require(['StyleDoc', 'Context', 'Parser'],
 function( StyleDoc, Context, Parser ) {
 
     T( 'implicitPattern', function ( t ) {
-        var pat = t.findByName('foo');
+        var pat = t.getPattern('foo');
         ok( pat );
 
         var html = pat.getNodesOfType('html');
@@ -10,7 +10,7 @@ function( StyleDoc, Context, Parser ) {
     });
 
     T( 'implicitPattern', { requireDoc: true }, function ( t ) {
-        ok( !t.findByName('foo') );
+        ok( !t.getPattern('foo') );
     });
 
     ['implicitDocPattern',
@@ -18,7 +18,7 @@ function( StyleDoc, Context, Parser ) {
      'flagPattern',
      'aliasPattern'].forEach( function (id) {
          T( id, function ( t ) {
-             var pat = t.findByName('foo');
+             var pat = t.getPattern('foo');
              ok( pat );
 
              var html = pat.getNodesOfType('html');
@@ -28,7 +28,7 @@ function( StyleDoc, Context, Parser ) {
      });
 
     T( 'invalidPatternName', function ( t ) {
-        ok( !t.findByName('foo-bar') );
+        ok( !t.getPattern('foo-bar') );
 
         var html = t.getNodesOfType('html');
         equal( html.length, 1 );
@@ -36,7 +36,7 @@ function( StyleDoc, Context, Parser ) {
     });
 
     T( 'invalidPatternName', { requireNaming: false }, function ( t ) {
-        var pat = t.findByName('foo-bar');
+        var pat = t.getPattern('foo-bar');
 
         var html = pat.getNodesOfType('html');
         equal( html.length, 1 );
@@ -46,7 +46,7 @@ function( StyleDoc, Context, Parser ) {
     ['explicitInvalidPattern',
      'flagInvalidPattern'].forEach( function (id) {
          T( id, function ( t ) {
-             var pat = t.findByName('foo-bar');
+             var pat = t.getPattern('foo-bar');
              ok( pat );
 
              var html = pat.getNodesOfType('html');
@@ -56,7 +56,7 @@ function( StyleDoc, Context, Parser ) {
     });
 
     T( 'descriptionBefore', function ( t ) {
-        var pat = t.findByName('foo');
+        var pat = t.getPattern('foo');
         ok( pat );
 
         var outside = t.getNodesOfType('html');
@@ -69,7 +69,7 @@ function( StyleDoc, Context, Parser ) {
     });
 
     T( 'declarationBefore', function ( t ) {
-        var pat = t.findByName('foo');
+        var pat = t.getPattern('foo');
         ok( pat );
 
         var html = pat.getNodesOfType('html');
@@ -79,14 +79,14 @@ function( StyleDoc, Context, Parser ) {
     });
 
     T( 'twoLineParagraph', function (t) {
-        var pat = t.findByName('foo');
+        var pat = t.getPattern('foo');
         var html = pat.getNodesOfType('html');
         equal( html.length, 1 );
         equal( html[0].getText(), '<p>This is line 1.\nThis is line 2.</p>' );
     });
 
     T( 'twoParagraphs', function (t) {
-        var pat = t.findByName('foo');
+        var pat = t.getPattern('foo');
         var html = pat.getNodesOfType('html');
         equal( html.length, 2 );
         equal( html[0].getText(), '<p>This is paragraph 1.</p>' );
@@ -94,7 +94,7 @@ function( StyleDoc, Context, Parser ) {
     });
 
     T( 'anExample', function (t) {
-        var pat = t.findByName('foo');
+        var pat = t.getPattern('foo');
         var xmp = pat.getNodesOfType('example');
         equal( xmp.length, 1 );
         equal( xmp[0].getAttr('title'), 'This is an example.' );
@@ -102,13 +102,13 @@ function( StyleDoc, Context, Parser ) {
     });
 
     T( 'modifierNoConvention', {requireNaming: true}, function (t) {
-        var pat = t.findByName('foo');
+        var pat = t.getPattern('foo');
         var mod = pat.getNodesOfType('modifier');
         equal( mod.length, 0 );
     });
 
     T( 'modifierNoConvention', {requireNaming: false}, function (t) {
-        var pat = t.findByName('foo');
+        var pat = t.getPattern('foo');
         var mod = pat.getNodesOfType('modifier');
         equal( mod.length, 1 );
 
@@ -117,7 +117,7 @@ function( StyleDoc, Context, Parser ) {
     });
 
     T( 'modifierFlagNoConvention', {requireNaming: true}, function (t) {
-        var pat = t.findByName('foo');
+        var pat = t.getPattern('foo');
         var mod = pat.getNodesOfType('modifier');
         equal( mod.length, 1 );
 
@@ -126,7 +126,7 @@ function( StyleDoc, Context, Parser ) {
     });
 
     T( 'modifierNoPattern', function (t) {
-        var pat = t.findByName('foo');
+        var pat = t.getPattern('foo');
         var html = t.getNodesOfType('html');
 
         ok( !pat );
@@ -143,7 +143,7 @@ function( StyleDoc, Context, Parser ) {
       'modifierWithPseudo' ]
         .forEach( function (id) {
             T( id, function (t) {
-                var pat = t.findByName('foo');
+                var pat = t.getPattern('foo');
                 ok( pat );
 
                 var html = pat.getNodesOfType('html');
@@ -164,7 +164,7 @@ function( StyleDoc, Context, Parser ) {
       'doubleModifier' ]
         .forEach( function (id ) {
             T( id, function (t) {
-                var pat = t.findByName('foo');
+                var pat = t.getPattern('foo');
                 ok( pat );
 
                 var mods = pat.getNodesOfType('modifier');
@@ -175,7 +175,7 @@ function( StyleDoc, Context, Parser ) {
         });
 
     T( 'memberNoConvention', { requireNaming: true }, function (t) {
-        var pat = t.findByName('foo');
+        var pat = t.getPattern('foo');
         ok( pat );
 
         var html = pat.getNodesOfType('html');
@@ -189,7 +189,7 @@ function( StyleDoc, Context, Parser ) {
     ['memberNoConvention',
      'flagMemberNoConvention'].forEach( function (id) {
          T( id, { requireNaming: false }, function (t) {
-             var pat = t.findByName('foo');
+             var pat = t.getPattern('foo');
              ok( pat );
 
              var html = pat.getNodesOfType('html');
@@ -212,7 +212,7 @@ function( StyleDoc, Context, Parser ) {
       'deepMemberConvention' ]
         .forEach( function (id ) {
             T( id, { requireNaming: true }, function (t) {
-                var pat = t.findByName('foo');
+                var pat = t.getPattern('foo');
                 ok( pat );
 
                 var html = pat.getNodesOfType('html');
@@ -230,7 +230,7 @@ function( StyleDoc, Context, Parser ) {
         });
 
     T( 'deepMemberConvention', { requireNaming: false }, function (t) {
-        var pat = t.findByName('foo');
+        var pat = t.getPattern('foo');
         ok( pat );
 
         var html = pat.getNodesOfType('html');
@@ -249,7 +249,7 @@ function( StyleDoc, Context, Parser ) {
     });
 
     T( 'twoMembers', function ( t ) {
-        var pat = t.findByName('foo');
+        var pat = t.getPattern('foo');
         ok( pat );
 
         var mems = pat.getNodesOfType('member');
@@ -259,7 +259,7 @@ function( StyleDoc, Context, Parser ) {
     });
 
     T( 'modifierAndMember', function ( t ) {
-        var pat = t.findByName('foo');
+        var pat = t.getPattern('foo');
         ok( pat );
 
         var mods = pat.getNodesOfType('modifier');
@@ -272,14 +272,14 @@ function( StyleDoc, Context, Parser ) {
     });
 
     T( 'twoPatterns', function ( t ) {
-        var pat = t.findByName('foo');
+        var pat = t.getPattern('foo');
         ok( pat );
 
         var html = pat.getNodesOfType('html');
         equal( html.length, 1 );
         equal( html[0].getText(), '<p>This is a foo.</p>' );
 
-        pat = t.findByName('bar');
+        pat = t.getPattern('bar');
         ok( pat );
 
         html = pat.getNodesOfType('html');
@@ -292,7 +292,7 @@ function( StyleDoc, Context, Parser ) {
       'implicitReopenPattern' ]
         .forEach( function (id) {
             T( id, function ( t ) {
-                var pat = t.findByName('foo');
+                var pat = t.getPattern('foo');
                 ok( pat );
 
                 var html = pat.getNodesOfType('html');
@@ -307,7 +307,7 @@ function( StyleDoc, Context, Parser ) {
                 equal( html.length, 1 );
                 equal( html[0].getText(), '<p>This is a bar of a foo.</p>' );
 
-                pat = t.findByName('bar');
+                pat = t.getPattern('bar');
                 ok( pat );
 
                 html = pat.getNodesOfType('html');
@@ -321,7 +321,7 @@ function( StyleDoc, Context, Parser ) {
     [ 'explicitReopenPatternForModifier',
       'implicitReopenPatternForModifier' ].forEach( function (id) {
           T( id , function(t) {
-              var pat = t.findByName('foo');
+              var pat = t.getPattern('foo');
               ok( pat );
 
               var mods = pat.getNodesOfType('modifier');
@@ -332,7 +332,7 @@ function( StyleDoc, Context, Parser ) {
               equal( html.length, 1 );
               equal( html[0].getText(), '<p>This is a bar foo.</p>' );
 
-              pat = t.findByName('bar');
+              pat = t.getPattern('bar');
               ok( pat );
               equal( pat.getNodesOfType('modifier').length, 0 );
           });
@@ -341,7 +341,7 @@ function( StyleDoc, Context, Parser ) {
     [ 'explicitlyInterleaved', 'implicitlyInterleaved' ]
         .forEach( function (id) {
             T( id, function ( t ) {
-                var pat = t.findByName('foo');
+                var pat = t.getPattern('foo');
                 ok( pat );
 
                 var html = pat.getNodesOfType('html');
@@ -358,7 +358,7 @@ function( StyleDoc, Context, Parser ) {
 
                 equal( pat.getNodesOfType('modifier').length, 0 );
 
-                pat = t.findByName('bar');
+                pat = t.getPattern('bar');
                 ok( pat );
 
                 html = pat.getNodesOfType('html');

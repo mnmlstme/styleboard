@@ -1,4 +1,4 @@
-define(['StyleDoc'], function (StyleDoc) {
+define(['StyleDoc', '../lib/marked/js/marked'], function (StyleDoc, marked) {
 
     // Uses LESS as a CSS parser, but all dependences on LESS should
     // be confined to this file.
@@ -59,6 +59,8 @@ define(['StyleDoc'], function (StyleDoc) {
         return parser;
 
         function buildDoc( doc, nodes ) {
+            var stack = [ doc.getRoot() ];
+
             nodes.forEach( function (node) {
                 var comments, context, code;
                 switch ( node.type ) {
@@ -70,9 +72,9 @@ define(['StyleDoc'], function (StyleDoc) {
                         return rule.type === 'Comment';
                     });
                     context = (comments.length || !opts.requireDoc) &&
-                        identifyContext( doc, node.selectors );
+                        identifyContext( node.selectors );
                     if (context) {
-                        doc.openContext( context );
+                        openContext( context );
                     }
                     comments.map( function (rule) {
                         parseComment( rule.value, node.selectors );
@@ -83,11 +85,94 @@ define(['StyleDoc'], function (StyleDoc) {
                 }
             });
 
-            function convertToCss(node) {
-                var code = node.toCSS({});
-                code = code.replace(/^\s+/,'');
-                return code;
+            function openContext( list ) {
+                if ( !_.isArray( list ) ) { list = [ list ]; }
+                var context, target, old;
+                while ( list.length ) {
+                    context = list.shift();
+                    target = findContext( context );
+                    if ( target && isOpen( target ) ) {
+                        popToContext( target );
+                    } else {
+                        old = getCurrent( context.type );
+                        if ( old ) {
+                            closeContext( old );
+                        }
+                        if ( !target ) {
+                            target = insertNode( context.type, context );
+                            if ( context.name ) {
+                                doc.define( context.type, context.name, target,
+                                            getCurrent('pattern') );
+                            }
+                        }
+                        stack.push( target );
+                    }
+                }
+                return target;
+            };
+
+            function findContext( context ) {
+                var pattern = context.type !== 'pattern' && getCurrent('pattern');
+
+                if ( pattern ) {
+                    return doc.getDefinition(context.name, pattern);
+                } else {
+                    return doc.getPattern(context.name);
+                }
+            };
+
+            function addText( text ) {
+                var html = marked(text).trim();
+                insert(['html',html]);
             }
+
+            function insertNode( type, attrs, content ) {
+                var node =  [ type, _.clone(attrs) ];
+                insert(node);
+                if ( content ) {
+                    insert( content, node );
+                }
+                return node;
+            };
+
+            function getCurrent( type ) {
+                if (type) {
+                    for ( var i = stack.length-1; i >= 0; i-- ) {
+                        var x = stack[i];
+                        if ( doc.getType(x) === type ) {
+                            return x;
+                        }
+                    }
+                } else {
+                    return stack[stack.length-1];
+                }
+                return undefined;
+            };
+
+            function isOpen( node ) {
+                return _(stack).contains( node );
+            };
+
+            function popContext() {
+                return stack.pop();
+            };
+
+            function popToContext( node ) {
+                while ( stack[stack.length-1] !== node ) {
+                    stack.pop();
+                }
+            };
+
+            function closeContext( node ) {
+                popToContext( node );
+                popContext();
+            };
+
+            function insert( node, parent ) {
+                parent = parent || stack[stack.length-1];
+                parent.push( node );
+            };
+
             function parseComment ( comment, selectors ) {
                 var selector = selectors && selectors.length && selectors[0].toCSS() || '';
 
@@ -110,7 +195,7 @@ define(['StyleDoc'], function (StyleDoc) {
                         data = matches[4];
                         switch ( command ) {
                         case 'section':
-                            doc.openContext({
+                            openContext({
                                 type: 'section',
                                 title: data,
                                 name: slug || stringToSlug(data)
@@ -120,10 +205,10 @@ define(['StyleDoc'], function (StyleDoc) {
                         case 'member':
                         case 'pattern':
                         case 'state':
-                            doc.openContext( createContext(doc, data || selector, command) );
+                            openContext( createContext(data || selector, command) );
                             break;
                         case 'example':
-                            doc.insertNode( command, {
+                            insertNode( command, {
                                 title: data,
                                 name: slug || stringToSlug(data)
                             }, contentsOfBlock() );
@@ -132,7 +217,7 @@ define(['StyleDoc'], function (StyleDoc) {
                             console.warn('unrecognized StyleDoc tag @' + command);
                         }
                     } else if ( ! regex.empty.exec(line) ) {
-                        doc.addText( contentsOfBlock(line) );
+                        addText( contentsOfBlock(line) );
                     }
                 }
 
@@ -165,8 +250,7 @@ define(['StyleDoc'], function (StyleDoc) {
                 }
             }
 
-            function createContext( doc, selector, type ) {
-                // Doesn't currently use doc, but could be smarter if it did.
+            function createContext( selector, type ) {
                 var names = selector.split(/[^A-Za-z0-9_-]+/)
                         .filter(function (s) { return s.length; }),
                     pattern = names[0],
@@ -191,7 +275,7 @@ define(['StyleDoc'], function (StyleDoc) {
                 return context;
             }
 
-            function identifyContext ( doc, selectors ) {
+            function identifyContext ( selectors ) {
                 var context,
                     selector, elements, token, atRoot,
                     patternContext, matches,
@@ -216,7 +300,7 @@ define(['StyleDoc'], function (StyleDoc) {
                     }
 
                     if ( patternContext ) {
-                        if ( !doc.findByName( patternContext.name, 'pattern' ) ) {
+                        if ( !doc.getPattern( patternContext.name ) ) {
                             // if it's not already a pattern, it must be solo
                             for ( var i = 0; patternContext && i < elements.length && elements[i].combinator.value === ''; i++ ) {
                                 if ( patternRegex.exec( token ) ) {
