@@ -9,23 +9,34 @@ define( ['../lib/marked/js/marked'], function ( marked ) {
 
         doc.tree = ['styledoc',{}]; // JSON-ML
         doc.stack = [ doc.tree ];
-        doc.index={}; // name -> [ nodes ]
-        doc.indexByType = {}; // type -> { name -> node }
+
+        doc.patternIndex = {}; // name -> node
         doc.indexByPattern = {}; // patternName -> { name -> node }
 
         doc.findByName = function findByName( name, type ) {
-            if ( type ) {
-                return doc.findContext({type: type, name: name });
+            type = type || 'pattern';
+            return doc.findContext({type: type, name: name });
+        };
+
+        doc.findContext = function findContext( context ) {
+            var pattern = context.type !== 'pattern' && doc.getCurrent('pattern');
+
+            if ( pattern ) {
+                console.log('Current pattern: ' + doc.getAttr(pattern,'name'));
+                return doc.getDefinition(pattern, context.name);
             } else {
-                var nodes = doc.index[name];
-                // TODO: no reason to prefer the first one here.
-                return nodes && nodes.length ? nodes[0] : undefined;
+                return doc.patternIndex[context.name];
             }
         };
 
+        doc.getDefinition = function ( pattern, name ) {
+            var patternName = doc.getAttr(pattern, 'name'),
+                index = doc.indexByPattern[patternName];
+            return index && index[name];
+        };
+
         doc.getPatterns = function getPatterns() {
-            var patternIndex = doc.indexByType['pattern'] || {};
-            return _.values( patternIndex );
+            return _.values( doc.patternIndex );
         };
 
         doc.getCurrent = function getCurrent( type ) {
@@ -42,16 +53,12 @@ define( ['../lib/marked/js/marked'], function ( marked ) {
             return _(doc.stack).contains( node );
         };
 
-        doc.findContext = function findContext( context ) {
-            var index = this.indexByType[context.type];
-            return index && index[context.name];
-        };
-
         doc.openContext = function openContext( list ) {
             if ( !_.isArray( list ) ) { list = [ list ]; }
             var context, target, old;
             while ( list.length ) {
                 context = list.shift();
+                console.log('openContext ' + context.type + ': ' + context.name);
                 target = doc.findContext( context );
                 if ( target && doc.isOpen( target ) ) {
                     doc.popToContext( target );
@@ -147,29 +154,15 @@ define( ['../lib/marked/js/marked'], function ( marked ) {
             return _.isObject(node[1]) ? node[2] : node[1];
         };
 
-        doc.getDefinition = function ( pattern, name ) {
-            var patternName = doc.getAttr(pattern, 'name'),
-                index = doc.indexByPattern[patternName];
-            return index && index[name];
-        };
-
         // private
 
         function define( type, name, node ) {
-            var index = doc.index,
-                pattern = doc.getCurrent('pattern'),
-                patternName = pattern && doc.getAttr(pattern, 'name');
-            if ( !index[name] ) {
-                index[name] = [node];
-            } else {
-                index[name].push(node);
-            }
-            index = doc.indexByType[type];
-            if ( !index ) {
-                index = doc.indexByType[type] = {};
-            }
-            index[name] = node;
-            if ( pattern ) {
+            var pattern = doc.getCurrent('pattern'),
+                patternName, index;
+            if ( type === 'pattern' ) {
+                doc.patternIndex[name] = node;
+            } else if ( pattern ) {
+                patternName = doc.getAttr(pattern, 'name');
                 index = doc.indexByPattern[patternName];
                 if ( !index ) {
                     index = doc.indexByPattern[patternName] = {};

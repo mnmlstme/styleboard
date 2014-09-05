@@ -13,14 +13,19 @@ function( StyleDoc, Context, Parser ) {
         ok( !t.findByName('foo') );
     });
 
-    T( 'implicitDocPattern', function ( t ) {
-        var pat = t.findByName('foo');
-        ok( pat );
+    ['implicitDocPattern',
+     'explicitPattern',
+     'flagPattern',
+     'aliasPattern'].forEach( function (id) {
+         T( id, function ( t ) {
+             var pat = t.findByName('foo');
+             ok( pat );
 
-        var html = pat.getNodesOfType('html');
-        equal( html.length, 1 );
-        equal( html[0].getText(), '<p>This is a foo.</p>' );
-    });
+             var html = pat.getNodesOfType('html');
+             equal( html.length, 1 );
+             equal( html[0].getText(), '<p>This is a foo.</p>' );
+         });
+     });
 
     T( 'invalidPatternName', function ( t ) {
         ok( !t.findByName('foo-bar') );
@@ -38,22 +43,16 @@ function( StyleDoc, Context, Parser ) {
         equal( html[0].getText(), '<p>This is NOT a foo-bar.</p>' );
     });
 
-    T( 'explicitPattern', function ( t ) {
-        var pat = t.findByName('foo');
-        ok( pat );
+    ['explicitInvalidPattern',
+     'flagInvalidPattern'].forEach( function (id) {
+         T( id, function ( t ) {
+             var pat = t.findByName('foo-bar');
+             ok( pat );
 
-        var html = pat.getNodesOfType('html');
-        equal( html.length, 1 );
-        equal( html[0].getText(), '<p>This is a foo.</p>' );
-    });
-
-    T( 'explicitInvalidPattern', function ( t ) {
-        var pat = t.findByName('foo-bar');
-        ok( pat );
-
-        var html = pat.getNodesOfType('html');
-        equal( html.length, 1 );
-        equal( html[0].getText(), '<p>This is a foo-bar.</p>' );
+             var html = pat.getNodesOfType('html');
+             equal( html.length, 1 );
+             equal( html[0].getText(), '<p>This is a foo-bar.</p>' );
+         });
     });
 
     T( 'descriptionBefore', function ( t ) {
@@ -102,14 +101,28 @@ function( StyleDoc, Context, Parser ) {
         equal( xmp[0].getText(), '<xmp>An Example</xmp>' );
     });
 
-    T( 'modifierNoConvention', function (t) {
+    T( 'modifierNoConvention', {requireNaming: true}, function (t) {
+        var pat = t.findByName('foo');
+        var mod = pat.getNodesOfType('modifier');
+        equal( mod.length, 0 );
+    });
+
+    T( 'modifierNoConvention', {requireNaming: false}, function (t) {
         var pat = t.findByName('foo');
         var mod = pat.getNodesOfType('modifier');
         equal( mod.length, 1 );
 
         var html = mod[0].getNodesOfType('html');
         equal( html.length, 1 );
-        equal( html[0].getText(), '<p>This is NOT a bar foo.</p>' );
+    });
+
+    T( 'modifierFlagNoConvention', {requireNaming: true}, function (t) {
+        var pat = t.findByName('foo');
+        var mod = pat.getNodesOfType('modifier');
+        equal( mod.length, 1 );
+
+        var html = mod[0].getNodesOfType('html');
+        equal( html.length, 1 );
     });
 
     T( 'modifierNoPattern', function (t) {
@@ -124,6 +137,7 @@ function( StyleDoc, Context, Parser ) {
 
     [ 'explicitPatternModifier',
       'explicitModifier',
+      'explicitModifierContextual',
       'modifierConvention',
       'modifierAfterPattern',
       'modifierWithPseudo' ]
@@ -172,24 +186,27 @@ function( StyleDoc, Context, Parser ) {
         equal( pat.getNodesOfType('member'), 0 );
     });
 
-    T( 'memberNoConvention', { requireNaming: false }, function (t) {
-        var pat = t.findByName('foo');
-        ok( pat );
+    ['memberNoConvention',
+     'flagMemberNoConvention'].forEach( function (id) {
+         T( id, { requireNaming: false }, function (t) {
+             var pat = t.findByName('foo');
+             ok( pat );
 
-        var html = pat.getNodesOfType('html');
-        equal( html.length, 1 );
-        equal( html[0].getText(), '<p>This is a foo.</p>' );
+             var html = pat.getNodesOfType('html');
+             equal( html.length, 1 );
+             equal( html[0].getText(), '<p>This is a foo.</p>' );
 
-        var mems = pat.getNodesOfType('member');
-        equal( mems.length, 1 );
-        equal( mems[0].getName(), 'bar' );
+             var mems = pat.getNodesOfType('member');
+             equal( mems.length, 1 );
+             equal( mems[0].getName(), 'bar' );
 
-        html = mems[0].getNodesOfType('html');
-        equal( html[0].getText(), '<p>This is NOT a bar of a foo.</p>' );
+             html = mems[0].getNodesOfType('html');
+         });
     });
 
     [ 'explicitPatternMember',
       'explicitMember',
+      'explicitMemberContextual',
       'memberConvention',
       'directMemberConvention',
       'deepMemberConvention' ]
@@ -300,6 +317,26 @@ function( StyleDoc, Context, Parser ) {
                 equal( pat.getNodesOfType('member').length, 0 );
             });
         });
+
+    [ 'explicitReopenPatternForModifier',
+      'implicitReopenPatternForModifier' ].forEach( function (id) {
+          T( id , function(t) {
+              var pat = t.findByName('foo');
+              ok( pat );
+
+              var mods = pat.getNodesOfType('modifier');
+              equal( mods.length, 1 );
+              equal( mods[0].getName(), 'bar-' );
+
+              var html = mods[0].getNodesOfType('html');
+              equal( html.length, 1 );
+              equal( html[0].getText(), '<p>This is a bar foo.</p>' );
+
+              pat = t.findByName('bar');
+              ok( pat );
+              equal( pat.getNodesOfType('modifier').length, 0 );
+          });
+      });
 
     [ 'explicitlyInterleaved', 'implicitlyInterleaved' ]
         .forEach( function (id) {

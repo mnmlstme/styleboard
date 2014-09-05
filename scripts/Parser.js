@@ -75,7 +75,7 @@ define(['StyleDoc'], function (StyleDoc) {
                         doc.openContext( context );
                     }
                     comments.map( function (rule) {
-                        parseComment( rule.value );
+                        parseComment( rule.value, node.selectors );
                     });
                     break;
                 default:
@@ -88,7 +88,8 @@ define(['StyleDoc'], function (StyleDoc) {
                 code = code.replace(/^\s+/,'');
                 return code;
             }
-            function parseComment ( comment ) {
+            function parseComment ( comment, selectors ) {
+                var selector = selectors && selectors.length && selectors[0].toCSS() || '';
 
                 if ( !regex.cmtfirst.exec( comment ) ) { return; }
 
@@ -99,7 +100,7 @@ define(['StyleDoc'], function (StyleDoc) {
                         if ( i > 0 && i <= list.length-1 ) line = line.replace( regex.cmtmiddle, '' );
                         return line;
                     }),
-                line, matches, command, slug, data, context;
+                line, matches, command, slug, data;
 
                 while ( lines.length ) {
                     line = lines.shift();
@@ -119,10 +120,7 @@ define(['StyleDoc'], function (StyleDoc) {
                         case 'member':
                         case 'pattern':
                         case 'state':
-                            context = createContext(doc, data, command);
-                            if ( context ) {
-                                doc.openContext( context );
-                            }
+                            doc.openContext( createContext(doc, data || selector, command) );
                             break;
                         case 'example':
                             doc.insertNode( command, {
@@ -169,74 +167,90 @@ define(['StyleDoc'], function (StyleDoc) {
 
             function createContext( doc, selector, type ) {
                 // Doesn't currently use doc, but could be smarter if it did.
-                var names = selector.split(/[^A-Za-z0-9_-]+/);
-                return {
-                    name: names[names.length-1],
-                    selector: selector,
-                    type: type
-                };
+                var names = selector.split(/[^A-Za-z0-9_-]+/)
+                        .filter(function (s) { return s.length; }),
+                    pattern = names[0],
+                    context = [];
+
+                if ( type === 'pattern' || names.length > 1 ) {
+                    context.push({
+                        name: pattern,
+                        selector: selector,
+                        type: 'pattern'
+                    });
+                }
+
+                if ( type !== 'pattern' ) {
+                    context.push({
+                        name: names[names.length-1],
+                        selector: selector,
+                        type: type
+                    });
+                }
+
+                return context;
             }
 
             function identifyContext ( doc, selectors ) {
-                var identified,
+                var context,
                     selector, elements, token, atRoot,
-                    patternIdentified, matches,
+                    patternContext, matches,
                     patternRegex = ( opts.requireNaming ? regex.pattern : regex.classname ),
                     memberRegex = ( opts.requireNaming ? regex.member : regex.classname ),
                     modifierRegex = ( opts.requireNaming ? regex.modifier : regex.classname ),
                     stateRegex = ( opts.requireNaming ? regex.state : regex.classname );
 
-                while ( selectors.length && !identified ) {
-                    selector = selectors.shift();
+                for ( var i = 0; i < selectors.length && !context; i++ ){
+                    selector = selectors[i];
                     elements = selector.elements.slice(0);
                     atRoot = true;
-                    patternIdentified = null;
+                    patternContext = null;
                     token = elements.shift().value;
 
                     if ( (matches = patternRegex.exec( token )) ) {
-                        patternIdentified = {
+                        patternContext = {
                             name: matches[1],
                             selector: token,
                             type: 'pattern'
                         };
                     }
 
-                    if ( patternIdentified ) {
-                        if ( !doc.findByName( patternIdentified.name, 'pattern' ) ) {
+                    if ( patternContext ) {
+                        if ( !doc.findByName( patternContext.name, 'pattern' ) ) {
                             // if it's not already a pattern, it must be solo
-                            for ( var i = 0; patternIdentified && i < elements.length && elements[i].combinator.value === ''; i++ ) {
+                            for ( var i = 0; patternContext && i < elements.length && elements[i].combinator.value === ''; i++ ) {
                                 if ( patternRegex.exec( token ) ) {
                                     // Another potential pattern, don't consider either
-                                    patternIdentified = null;
+                                    patternContext = null;
                                 }
                             }
                         }
                     }
 
-                    if ( patternIdentified ) {
-                        identified = [ patternIdentified ];
-                        while ( patternIdentified && elements.length ) {
+                    if ( patternContext ) {
+                        context = [ patternContext ];
+                        while ( patternContext && elements.length ) {
                             atRoot = atRoot && elements[0].combinator.value === '';
                             token = elements.shift().value;
                             if ( atRoot ) {
                                 if ( (matches = modifierRegex.exec( token )) ) {
-                                    identified.push({
+                                    context.push({
                                         name: matches[1],
-                                        selector: patternIdentified.selector + '.' + matches[1],
+                                        selector: patternContext.selector + '.' + matches[1],
                                         type: 'modifier'
                                     });
                                 } else if ( (matches = stateRegex.exec( token ))  ) {
-                                    identified.push({
+                                    context.push({
                                         name: matches[1],
-                                        selector: patternIdentified.selector + '.' + matches[1],
+                                        selector: patternContext.selector + '.' + matches[1],
                                         type : 'state'
                                     });
                                 }
                             } else {
                                 if ( (matches = memberRegex.exec( token )) ) {
-                                    identified.push({
+                                    context.push({
                                         name: matches[1],
-                                        selector: patternIdentified.selector + ' .' + matches[1],
+                                        selector: patternContext.selector + ' .' + matches[1],
                                         type: 'member'
                                     });
                                 }
@@ -245,7 +259,7 @@ define(['StyleDoc'], function (StyleDoc) {
                     }
                 }
 
-                return identified;
+                return context;
             }
 
         }

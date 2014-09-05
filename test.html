@@ -21,19 +21,37 @@
             .foo { /** This is a foo. **/ }
         </style>
 
-        <style id="invalidPatternName">
-            .foo-bar { /** This is NOT a foo-bar. **/ }
-        </style>
-
         <style id="explicitPattern">
             /** @pattern .foo
                 This is a foo. */
+        </style>
+
+        <style id="flagPattern">
+            .foo {
+            /** @pattern
+                This is a foo. */
+            }
+        </style>
+
+        <style id="aliasPattern">
+            .foo, .bar { /** This is a foo. **/ }
+        </style>
+
+        <style id="invalidPatternName">
+            .foo-bar { /** This is NOT a foo-bar. **/ }
         </style>
 
         <style id="explicitInvalidPattern">
             /** @pattern .foo-bar
                 This is a foo-bar. */
             .foo-bar { }
+        </style>
+
+        <style id="flagInvalidPattern">
+            .foo-bar {
+            /** @pattern
+                This is a foo-bar. */
+            }
         </style>
 
         <style id="descriptionBefore">
@@ -76,6 +94,15 @@
             .foo.bar { /** This is NOT a bar foo. */ }
         </style>
 
+        <style id="modifierFlagNoConvention">
+            /** @pattern .foo */
+            .foo.bar {
+              /** @modifier
+                  This is a bar foo. */
+                display: none;
+            }
+        </style>
+
         <style id="modifierNoPattern">
             .foo.bar { /** This is NOT a bar foo. */ }
         </style>
@@ -92,6 +119,15 @@
                 /** This is a foo.
 
                     @modifier .foo.bar-
+                    This is a bar foo. */
+            }
+        </style>
+
+        <style id="explicitModifierContextual">
+            .foo {
+                /** This is a foo.
+
+                    @modifier .bar-
                     This is a bar foo. */
             }
         </style>
@@ -128,6 +164,14 @@
             .foo .bar { /** This is NOT a bar of a foo. */ }
         </style>
 
+        <style id="flagMemberNoConvention">
+            .foo { /** This is a foo. */ }
+            .foo .bar {
+            /** @member
+                This is a bar of a foo. */
+            }
+        </style>
+
         <style id="explicitPatternMember">
             /** @pattern .foo
                 This is a foo. */
@@ -140,6 +184,15 @@
                 /** This is a foo.
 
                     @member .foo .foo-bar
+                    This is a bar of a foo. */
+            }
+        </style>
+
+        <style id="explicitMemberContextual">
+            .foo {
+                /** This is a foo.
+
+                    @member .foo-bar
                     This is a bar of a foo. */
             }
         </style>
@@ -197,6 +250,22 @@
                 This is a foo. */
             .bar { /** This is a bar. */ }
             .foo .foo-bar { /** This is a bar of a foo. */ }
+        </style>
+
+        <style id="explicitReopenPatternForModifier">
+            /** @pattern .foo
+                This is a foo. */
+            /** @pattern .bar
+                This is a bar. */
+            /** @modifier .foo.bar-
+                This is a bar foo. */
+        </style>
+
+        <style id="implicitReopenPatternForModifier">
+            /** @pattern .foo
+                This is a foo. */
+            .bar { /** This is a bar. */ }
+            .foo.bar- { /** This is a bar foo. */ }
         </style>
 
         <style id="explicitlyInterleaved">
