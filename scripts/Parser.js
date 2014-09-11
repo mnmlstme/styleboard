@@ -16,6 +16,7 @@ define(['StyleDoc', '../lib/marked/js/marked'], function (StyleDoc, marked) {
         pattern:        /^\.([a-z][a-z0-9]*)$/,                // lowercase, no hyphens
         modifier:       /^\.([a-z][a-z0-9-]*\-)$/,             // trailing hyphen
         member:         /^\.(([a-z][a-z0-9]*)\-[a-z0-9-]+)$/,  // pattern name '-' member name
+        helper:         /^\.(([a-z][a-z0-9]*)\-[a-z0-9-]+)$/,  // pattern name '-' member name
         state:          /^\.((is|has)\-[a-z0-9-]+)$/           // 'is-' or 'has-' prefix
     };
 
@@ -201,6 +202,7 @@ define(['StyleDoc', '../lib/marked/js/marked'], function (StyleDoc, marked) {
                                 name: slug || stringToSlug(data)
                             });
                             break;
+                        case 'helper':
                         case 'modifier':
                         case 'member':
                         case 'pattern':
@@ -280,6 +282,7 @@ define(['StyleDoc', '../lib/marked/js/marked'], function (StyleDoc, marked) {
                     selector, elements, token, atRoot,
                     patternContext, matches,
                     patternRegex = ( opts.requireNaming ? regex.pattern : regex.classname ),
+                    helperRegex = ( opts.requireNaming ? regex.helper : regex.classname ),
                     memberRegex = ( opts.requireNaming ? regex.member : regex.classname ),
                     modifierRegex = ( opts.requireNaming ? regex.modifier : regex.classname ),
                     stateRegex = ( opts.requireNaming ? regex.state : regex.classname );

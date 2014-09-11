@@ -131,35 +131,45 @@ define(['appState'], function (appState) {
                 view.$el.css({ width: (100 / scale) + '%', height: (100 / scale) + '%' });
                 view.$pane.css({ 'background-size': CHECKERBOARD_SIZE * scale + 'px' });
 
-                // Float the content to determine its natural size.
-                $content.css('float', 'left');
-
                 bw = $body.width(), // don't include padding
                 bh = $body.height(),
                 cw = $content.outerWidth(); // include padding
                 ch = $content.outerHeight();
 
-                // Extend the iframe's height to fit content, if necessary.
-                if ( ch && ch > bh ) {
-                    if ( cw && cw > bw ) {
-                        ch += 15; // account for horizontal scrollbar
+                if ( cw === bw && ch === bh ) {
+                    // Content is width: 100%, height: 100%
+                    view.$pane.addClass('full-bleed-');
+                } else {
+                    // Try to format at natural size and center in the pane
+                    view.$pane.removeClass('full-bleed-');
+
+                    // Float the content to determine its natural size.
+                    $content.css('float', 'left');
+                    cw = $content.outerWidth(); // include padding
+                    ch = $content.outerHeight();
+
+                    // Extend the iframe's height to fit content, if necessary.
+                    if ( ch && ch > bh ) {
+                        if ( cw && cw > bw ) {
+                            ch += 15; // account for horizontal scrollbar
+                        }
+                        $iframe.height( Math.ceil(ch) );
                     }
-                    $iframe.height( Math.ceil(ch) );
-                }
 
-                // Let the content flow itself within this size, remove the float
-                $content.removeAttr('style');
+                    // Let the content flow itself within this size, remove the float
+                    $content.removeAttr('style');
 
-                // Position appropriately based on natural size.
-                if ( cw && cw < bw ) {
-                    position.width = Math.ceil(cw);
-                    position.left = Math.floor((bw - cw) / 2 );
-                }
-                if ( ch && ch < bh ) {
-                    position.top = Math.floor((bh - ch) / 2 );
-                }
-                if ( position.top || position.left ) {
-                    $content.css(position);
+                    // Position appropriately based on natural size.
+                    if ( cw && cw < bw ) {
+                        position.width = Math.ceil(cw);
+                        position.left = Math.floor((bw - cw) / 2 );
+                    }
+                    if ( ch && ch < bh ) {
+                        position.top = Math.floor((bh - ch) / 2 );
+                    }
+                    if ( position.top || position.left ) {
+                        $content.css(position);
+                    }
                 }
 
             }

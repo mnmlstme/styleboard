@@ -9,29 +9,26 @@
         }
     }
 
-    > header {
+    > header,
+    .pattern-helper > header {
         h1, h2, h3 {
             .color( alpha );
             .glow( alpha );
         }
     }
 
-    .pattern-member {
-        > header {
-            h2, h2, h3 {
-                .color( beta );
-                .glow( beta );
-            }
+    .pattern-member > header {
+        h2, h2, h3 {
+            .color( beta );
+            .glow( beta );
         }
     }
 
-    .pattern-state,
-    .pattern-modifier {
-        > header {
-            h1, h2, h3 {
-                .color( gamma );
-                .glow( gamma );
-            }
+    .pattern-state > header,
+    .pattern-modifier > header {
+        h1, h2, h3 {
+            .color( gamma );
+            .glow( gamma );
         }
     }
 

@@ -21,10 +21,12 @@ define ( function () {
                 };
 
             if ( attrs.templating === 'erb' ) {
-                pat.open = '<%=';
+                // since we run this over HTML, it may be escaped
+                pat.open = '(?:<|&lt;?)%=';
                 pat.close = '%>';
             }
 
+            // the regex to use to find template expressions
             model.regex = new RegExp( pat.open + '\\s*(' + pat.expr + ')\\s*' + pat.close, 'g' );
 
             // Build the dictionary

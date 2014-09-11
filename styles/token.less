@@ -68,7 +68,8 @@
     &.classname-,
     &.tagname-,
     &.attr-name {
-        &.pattern- {
+        &.pattern-,
+        &.helper-{
             /** A CSS class name corresponding to a pattern. */
             .color( alpha );
         }
@@ -85,6 +86,12 @@
             opacity: 1;
             text-shadow: 0 0 1px;
         }
+    }
+
+    &.erb,
+    &.mustache {
+        .color( inv-hi );
+        font-style: oblique;
     }
 
     &.keyword {

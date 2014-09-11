@@ -1,16 +1,6 @@
 define(['Context', 'EditableFillerView', 'appState', '../lib/prism/js/prism'],
     function (Context, EditableFillerView, appState) {
 
-    var highlight = function (text) {
-        var result = Prism.highlight( text, Prism.languages.markup );
-        // Prism highlights/escapes the ERb syntax, and we need to match it after we
-        // highlight, so unhighlight it.
-        return result
-            .replace(/&lt;%=/g,'<%=')
-            .replace(/&lt;%<span\s+class="[^"]*"\s*>=<\/span>/g,'<%=')
-            .replace(/%<span\s+class="[^"]*"\s*>><\/span>/g,'%>');
-    };
-
     var MarkupView = Backbone.View.extend({
 
         initialize: function ( options ) {
@@ -40,7 +30,7 @@ define(['Context', 'EditableFillerView', 'appState', '../lib/prism/js/prism'],
                 example = view.model,
                 pattern = view.pattern,
                 template = example ? example.getText() : '',
-                code = template ? highlight( template ) : '',
+                code = template ? Prism.highlight( template, Prism.languages.markup ) : '',
                 html = code ? view.filler.replace( code, function (key) {
                     return '<span class="styleboard-filler" data-filler-key="' + key + '"></span>';
                 } ) : '';
@@ -141,6 +131,36 @@ define(['Context', 'EditableFillerView', 'appState', '../lib/prism/js/prism'],
             return view;
         }
     });
+
+    // Customizations to Prism (markup highlighter)
+
+    if (Prism.languages.markup) {
+
+        // detect templating for both ERB and mustache
+        Prism.languages.insertBefore('markup', 'tag', {
+            'erb': {
+                pattern: /<%[\W\w]*?%>/ig
+            },
+            'mustache': {
+                pattern: /\{\{[\W\w]*?\}\}/ig
+            }
+        });
+
+        // detect scripts that are really HTML templates
+        Prism.languages.insertBefore('markup', 'script', {
+            'template': {
+                pattern: /<script[\w\W]*?type=['"]text\/(html|ng-template)['"][\w\W]*?>[\w\W]*?<\/script>/ig,
+                inside: {
+                    'tag': {
+                        pattern: /<script[^>]*>|<\/script>/ig,
+                        inside: Prism.languages.markup.tag.inside
+                    },
+                    rest: Prism.languages.markup
+                }
+            },
+        });
+
+    }
 
     return MarkupView;
 });
