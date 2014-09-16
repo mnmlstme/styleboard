@@ -21,48 +21,13 @@
         font-style: oblique;
     }
 
-    &.tag {
+    &.tag,
+    &.tag .punctuation {
         .color( delta );
     }
 
-    &.attr-name,
     &.attr-value {
-        .color( inv-lo );
-    }
-
-    &.highlight- {
-        /** A highlighted token. */
-    }
-
-    &.tag.highlight- {
-        @lineht: 1.5em;
-        line-height: @lineht;
-        padding: .2em .5em;
-        margin: 0 .125em;
-        position: relative;
-        z-index: 0;
-        &::before {
-            // the background "highlight"
-            content: '';
-            display: block;
-            position: absolute;
-            width: 100%;
-            // height is determined by top and bottom
-            top: 0.15em;
-            bottom: 0.10em;
-            left: 0;
-            border: 1px solid; // border color is font color
-            border-radius: (@lineht / 2);
-            background-color: #000;
-            box-sizing: border-box;
-            z-index: -1;
-            opacity: .2;
-        }
-    }
-
-    &.classname- {
-        /** A CSS class name in HTML or CSS context */
-        .color( danger, .7 );
+        .color( inv );
     }
 
     &.classname-,
@@ -72,19 +37,18 @@
         &.helper-{
             /** A CSS class name corresponding to a pattern. */
             .color( alpha );
+            .glow( alpha );
         }
         &.member- {
                  /** A CSS class name corresponding to a member. */
             .color( beta );
+            .glow( beta );
         }
         &.modifier-,
         &.state- {
             /** A CSS class name corresponding to a modifier or state. */
             .color( gamma );
-        }
-        &.highlight- {
-            opacity: 1;
-            text-shadow: 0 0 1px;
+            .glow( gamma );
         }
     }
 

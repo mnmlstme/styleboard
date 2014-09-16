@@ -53,88 +53,98 @@ define(['Context', 'EditableFillerView', 'appState', '../lib/prism/js/prism'],
 
             // Highlight the tags that contain pattern names
             $pre.find('.token.tag').each( function () {
-                var $tag = $(this);
+                var $tag = $(this),
+                    tagIsPattern = false,
+                    $tagToken = $tag.find('.token.tag')
+                        .contents()
+                        .filter( function () { return this.nodeType === Node.TEXT_NODE; } )
+                        .map( function () {
+                            var $textnode = $(this),
+                                $nametoken = $.mk('span.tagname-.token', $textnode.text() )
+                                    .insertBefore($textnode);
 
-                function decorate ($token) {
-                    var name = $token.text(),
-                        defn = doc.getPattern( name ),
-                        type = defn && doc.getType(defn),
-                        highlight = false;
+                            $textnode.remove();
+                            return $nametoken;
+                        }),
+                    $attrTokens = $tag.find('.token.attr-name'),
+                    $classTokens = $tag.find('.token.attr-name')
+                        .filter( function () { return $(this).text() === 'class'; })
+                        .next()
+                        .map( function () {
+                            var $token = $(this),
+                                $textnode = $token.contents()
+                                    .filter( function () { return this.nodeType === Node.TEXT_NODE; }),
+                                classlist = $textnode.text().split(/\s+/),
+                                $classTokens = $.map(classlist, function (classname, index) {
+                                    var $classtoken = $.mk('span.classname-.token', classname)
+                                            .insertBefore( $textnode );
 
-                    if ( pattern ) {
-                        if ( pattern.getName() === name ) {
-                            highlight = true;
-                        } else {
-                            defn = pattern.getDefinition( name );
-                            if ( defn.isValid() ) {
-                                type = defn.getType();
-                                highlight = true;
-                            }
-                        }
-                    }
+                                    if ( index ) {
+                                        $(document.createTextNode(' '))
+                                            .insertBefore( $classtoken );
+                                    }
 
-                    if ( type ) {
-                        $token.addClass( type + '-' );
-                        if ( highlight ) {
-                            $token.addClass('highlight-');
-                            $tag.addClass('highlight-');
-                        }
+                                return $classtoken;
+                            });
+
+                            $textnode.remove();
+                            return $classTokens;
+                        });
+
+
+                function checkForPattern ($token) {
+                    var name = $token.text();
+
+                    if ( pattern.getName() === name ) {
+                        tagIsPattern = true;
                     }
                 }
 
-                // decorate tag names
-                // TODO: only decorate if the defn includes an element selector
-                $tag.find('.token.tag')
-                    .contents()
-                    .filter( function () { return this.nodeType === Node.TEXT_NODE; } )
-                    .each( function () {
-                        var $textnode = $(this),
-                            $nametoken = $.mk('span.tagname-.token', $textnode.text() )
-                                .insertBefore($textnode);
+                function decorate ($token) {
+                    var name = $token.text(),
+                        defn = pattern.getName() === name ? pattern : pattern.getDefinition( name ),
+                        type = defn.isValid() && defn.getType();
 
-                        decorate( $nametoken );
-                        $textnode.remove();
-                    });
+                    if ( type ) {
+                        if ( tagIsPattern || (type !== 'modifier' && type !== 'state') ) {
+                            $token.addClass( type + '-' );
+                        };
+                    }
+                }
 
-                // decorate attribute names
-                // TODO: only decorate if the defn includes an attribute selector
-                $tag.find('.token.attr-name')
-                    .each( function() { decorate( $(this) ); } );
-
-                // decorate class names
-                $tag.find('.token.attr-name')
-                    .filter( function () { return $(this).text() === 'class'; })
-                    .next()
-                    .each( function () {
-                        var $token = $(this),
-                            $textnode = $token.contents()
-                                .filter( function () { return this.nodeType === Node.TEXT_NODE; }),
-                            classlist = $textnode.text().split(/\s+/);
-
-                        classlist.forEach( function (classname, index) {
-                            var modifiers = [],
-                                highlight = false,
-                                $classtoken = $.mk('span.classname-.token', classname)
-                                    .insertBefore( $textnode );
-
-                            decorate( $classtoken );
-
-                            if ( index ) {
-                                $(document.createTextNode(' ')).insertBefore( $classtoken );
-                            }
-                        });
-
-                        $textnode.remove();
+                // first see if there is a pattern anywhere in this tag
+                [$tagToken, $attrTokens, $classTokens].forEach( function ($tokens) {
+                    $tokens.each( function () {
+                        checkForPattern( $(this) );
                     });
                 });
 
-            return view;
+                // decorate tag names
+                // TODO: only decorate if the CSS defn includes an element selector
+                $tagToken.each( function () {
+                    decorate( $(this) );
+                });
+
+                // decorate attribute names
+                // TODO: only decorate if the CSS defn includes an attribute selector
+                $attrTokens.each( function() {
+                    decorate( $(this) );
+                });
+
+                // decorate class names
+                $classTokens.each( function() {
+                    decorate( $(this) );
+                });
+
+                return view;
+            });
+
         }
     });
 
     // Customizations to Prism (markup highlighter)
 
-    if (Prism.languages.markup) {
+        if (Prism.languages.markup) {
 
         // detect templating for both ERB and mustache
         Prism.languages.insertBefore('markup', 'tag', {
