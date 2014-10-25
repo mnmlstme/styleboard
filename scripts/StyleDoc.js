@@ -25,24 +25,24 @@ define( function () {
 
         function getRoot() {
             return root;
-        };
+        }
 
         function getPattern( name ) {
             return patternIndex[name];
-        };
+        }
 
         function getDefinition ( name, pattern ) {
             var index = pattern ? indexByPattern[getAttr(pattern, 'name')] : patternIndex;
             return index && index[name];
-        };
+        }
 
         function getPatterns() {
             return _.values( patternIndex );
-        };
+        }
 
         function getType( node ) {
             return node[0];
-        };
+        }
 
         function getAttr( node, key ) {
             var attrs = node[1];

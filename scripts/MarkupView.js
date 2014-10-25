@@ -108,7 +108,7 @@ define(['Context', 'EditableFillerView', 'appState', '../lib/prism/js/prism'],
                     if ( type ) {
                         if ( tagIsPattern || (type !== 'modifier' && type !== 'state') ) {
                             $token.addClass( type + '-' );
-                        };
+                        }
                     }
                 }
 

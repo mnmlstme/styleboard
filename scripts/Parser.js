@@ -110,7 +110,7 @@ define(['StyleDoc', '../lib/marked/js/marked'], function (StyleDoc, marked) {
                     }
                 }
                 return target;
-            };
+            }
 
             function findContext( context ) {
                 var pattern = context.type !== 'pattern' && getCurrent('pattern');
@@ -120,7 +120,7 @@ define(['StyleDoc', '../lib/marked/js/marked'], function (StyleDoc, marked) {
                 } else {
                     return doc.getPattern(context.name);
                 }
-            };
+            }
 
             function addText( text ) {
                 var html = marked(text).trim();
@@ -134,7 +134,7 @@ define(['StyleDoc', '../lib/marked/js/marked'], function (StyleDoc, marked) {
                     insert( content, node );
                 }
                 return node;
-            };
+            }
 
             function getCurrent( type ) {
                 if (type) {
@@ -148,31 +148,31 @@ define(['StyleDoc', '../lib/marked/js/marked'], function (StyleDoc, marked) {
                     return stack[stack.length-1];
                 }
                 return undefined;
-            };
+            }
 
             function isOpen( node ) {
                 return _(stack).contains( node );
-            };
+            }
 
             function popContext() {
                 return stack.pop();
-            };
+            }
 
             function popToContext( node ) {
                 while ( stack[stack.length-1] !== node ) {
                     stack.pop();
                 }
-            };
+            }
 
             function closeContext( node ) {
                 popToContext( node );
                 popContext();
-            };
+            }
 
             function insert( node, parent ) {
                 parent = parent || stack[stack.length-1];
                 parent.push( node );
-            };
+            }
 
             function parseComment ( comment, selectors ) {
                 var selector = selectors && selectors.length && selectors[0].toCSS() || '';
@@ -305,7 +305,11 @@ define(['StyleDoc', '../lib/marked/js/marked'], function (StyleDoc, marked) {
                     if ( patternContext ) {
                         if ( !doc.getPattern( patternContext.name ) ) {
                             // if it's not already a pattern, it must be solo
-                            for ( var i = 0; patternContext && i < elements.length && elements[i].combinator.value === ''; i++ ) {
+                            for ( var j = 0;
+                                  patternContext &&
+                                  j < elements.length &&
+                                  elements[j].combinator.value === '';
+                                  j++ ) {
                                 if ( patternRegex.exec( token ) ) {
                                     // Another potential pattern, don't consider either
                                     patternContext = null;
@@ -355,4 +359,3 @@ define(['StyleDoc', '../lib/marked/js/marked'], function (StyleDoc, marked) {
     return Parser;
 
 });
-

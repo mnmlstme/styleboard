@@ -148,12 +148,12 @@ define ( function () {
     });
 
     function sentences(list, start, n) {
-        var sentences = [];
+        var sents = [];
 
         for( var j=0; j < n; j++ ) {
-            sentences.push( list[(start + n*j)%list.length] );
+            sents.push( list[(start + n*j)%list.length] );
         }
-        return sentences.join(' ');
+        return sents.join(' ');
     }
 
     function words(s, n, titlecase) {

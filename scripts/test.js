@@ -17,15 +17,24 @@ function( StyleDoc, Context, Parser ) {
      'explicitPattern',
      'flagPattern',
      'aliasPattern'].forEach( function (id) {
-         T( id, function ( t ) {
-             var pat = t.getPattern('foo');
-             ok( pat );
+        T( id, function ( t ) {
+            var pat = t.getPattern('foo');
+            ok( pat );
 
-             var html = pat.getNodesOfType('html');
-             equal( html.length, 1 );
-             equal( html[0].getText(), '<p>This is a foo.</p>' );
-         });
-     });
+            var html = pat.getNodesOfType('html');
+            equal( html.length, 1 );
+            equal( html[0].getText(), '<p>This is a foo.</p>' );
+        });
+    });
+
+    T('aliasPattern', function ( t ) {
+        var pat = t.getPattern('bar');
+        ok( pat );
+
+        var html = pat.getNodesOfType('html');
+        equal( html.length, 1 );
+        equal( html[0].getText(), '<p>This is a bar.</p>' );
+    });
 
     T( 'invalidPatternName', function ( t ) {
         ok( !t.getPattern('foo-bar') );
@@ -391,9 +400,12 @@ function( StyleDoc, Context, Parser ) {
             doc = parser.parse( cssString ),
             t = new Context({ doc: doc, node: doc.getRoot() });
 
-        test( title, function () {
+        QUnit.test( title, function () {
             testFunction( t );
         });
     }
+
+    QUnit.load();
+    QUnit.start();
 
 });

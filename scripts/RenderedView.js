@@ -6,7 +6,7 @@ define(['appState'], function (appState) {
 
         initialize: function ( options ) {
             var view = this,
-                styles = options.styles;
+                styles = options.styles,
                 scripts = options.scripts,
                 $iframe = view.$iframe = view.$el.find('iframe'),
                 context = view.context = view.$iframe[0].contentWindow,
@@ -131,8 +131,8 @@ define(['appState'], function (appState) {
                 view.$el.css({ width: (100 / scale) + '%', height: (100 / scale) + '%' });
                 view.$pane.css({ 'background-size': CHECKERBOARD_SIZE * scale + 'px' });
 
-                bw = $body.width(), // don't include padding
-                bh = $body.height(),
+                bw = $body.width(); // don't include padding
+                bh = $body.height();
                 cw = $content.outerWidth(); // include padding
                 ch = $content.outerHeight();
 

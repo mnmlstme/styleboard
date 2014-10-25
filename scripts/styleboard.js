@@ -81,8 +81,9 @@ function( Parser, Context, Filler,
             });
 
             $('#sandbox').each( function () {
-                (new RenderedView({ el: $(this),
-                                    filler: filler,
+                    (new RenderedView({
+                        el: $(this),
+                        filler: filler,
                                     styles: [styles],
                                     scripts: scripts,
                                     ngApp: config.ngApp || config['ng-app']
@@ -175,4 +176,3 @@ function( Parser, Context, Filler,
     }
 
 });
-
