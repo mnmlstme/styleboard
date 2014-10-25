@@ -5,7 +5,10 @@ module.exports = function(grunt){
     var path = require('path');
 
     grunt.initConfig({
-        clean: [ 'dist/', 'styles/*.css', 'graphics/iconfont/' ],
+        clean: {
+            prep: ['bower_components/', 'lib/'],
+            build: [ 'dist/', 'styles/*.css', 'graphics/iconfont/' ]
+        },
 
         bower: {
             install: {
@@ -90,6 +93,7 @@ module.exports = function(grunt){
     grunt.loadNpmTasks('grunt-contrib-requirejs');
     grunt.loadNpmTasks('grunt-webfont');
 
+    grunt.registerTask('prep', ['bower']);
     grunt.registerTask('default', ['webfont', 'less']);
     grunt.registerTask('check', ['jshint', 'qunit']);
     grunt.registerTask('dist', ['default', 'check', 'requirejs:dist', 'copyto:dist']);
