@@ -23,7 +23,7 @@ function( StyleDoc, Context, Parser ) {
 
             var html = pat.getNodesOfType('html');
             equal( html.length, 1 );
-            equal( html[0].getText(), '<p>This is a foo.</p>' );
+            equal( html[0].getText(), '<p>foo.</p>' );
         });
     });
 
@@ -33,7 +33,7 @@ function( StyleDoc, Context, Parser ) {
 
         var html = pat.getNodesOfType('html');
         equal( html.length, 1 );
-        equal( html[0].getText(), '<p>This is a bar.</p>' );
+        equal( html[0].getText(), '<p>bar.</p>' );
     });
 
     T( 'invalidPatternName', function ( t ) {
@@ -41,7 +41,7 @@ function( StyleDoc, Context, Parser ) {
 
         var html = t.getNodesOfType('html');
         equal( html.length, 1 );
-        equal( html[0].getText(), '<p>This is NOT a foo-bar.</p>' );
+        equal( html[0].getText(), '<p>NOT foo-bar.</p>' );
     });
 
     T( 'invalidPatternName', { requireNaming: false }, function ( t ) {
@@ -49,7 +49,7 @@ function( StyleDoc, Context, Parser ) {
 
         var html = pat.getNodesOfType('html');
         equal( html.length, 1 );
-        equal( html[0].getText(), '<p>This is NOT a foo-bar.</p>' );
+        equal( html[0].getText(), '<p>NOT foo-bar.</p>' );
     });
 
     ['explicitInvalidPattern',
@@ -60,7 +60,7 @@ function( StyleDoc, Context, Parser ) {
 
              var html = pat.getNodesOfType('html');
              equal( html.length, 1 );
-             equal( html[0].getText(), '<p>This is a foo-bar.</p>' );
+             equal( html[0].getText(), '<p>foo-bar.</p>' );
          });
     });
 
@@ -70,11 +70,11 @@ function( StyleDoc, Context, Parser ) {
 
         var outside = t.getNodesOfType('html');
         equal( outside.length, 1 );
-        equal( outside[0].getText(), '<p>This is outside foo.</p>' );
+        equal( outside[0].getText(), '<p>outside foo.</p>' );
 
         var inside = pat.getNodesOfType('html');
         equal( inside.length, 1 );
-        equal( inside[0].getText(), '<p>This is a foo.</p>' );
+        equal( inside[0].getText(), '<p>foo.</p>' );
     });
 
     T( 'declarationBefore', function ( t ) {
@@ -83,7 +83,7 @@ function( StyleDoc, Context, Parser ) {
 
         var html = pat.getNodesOfType('html');
         equal( html.length, 2 );
-        equal( html[0].getText(), '<p>This is a foo.</p>' );
+        equal( html[0].getText(), '<p>foo.</p>' );
         equal( html[1].getText(), '<p>nice.</p>' );
     });
 
@@ -91,22 +91,22 @@ function( StyleDoc, Context, Parser ) {
         var pat = t.getPattern('foo');
         var html = pat.getNodesOfType('html');
         equal( html.length, 1 );
-        equal( html[0].getText(), '<p>This is line 1.\nThis is line 2.</p>' );
+        equal( html[0].getText(), '<p>line 1.\nline 2.</p>' );
     });
 
     T( 'twoParagraphs', function (t) {
         var pat = t.getPattern('foo');
         var html = pat.getNodesOfType('html');
         equal( html.length, 2 );
-        equal( html[0].getText(), '<p>This is paragraph 1.</p>' );
-        equal( html[1].getText(), '<p>This is paragraph 2.</p>' );
+        equal( html[0].getText(), '<p>paragraph 1.</p>' );
+        equal( html[1].getText(), '<p>paragraph 2.</p>' );
     });
 
     T( 'anExample', function (t) {
         var pat = t.getPattern('foo');
         var xmp = pat.getNodesOfType('example');
         equal( xmp.length, 1 );
-        equal( xmp[0].getAttr('title'), 'This is an example.' );
+        equal( xmp[0].getAttr('title'), 'an example.' );
         equal( xmp[0].getText(), '<xmp>An Example</xmp>' );
     });
 
@@ -141,7 +141,7 @@ function( StyleDoc, Context, Parser ) {
         ok( !pat );
 
         equal( html.length, 1 );
-        equal( html[0].getText(), '<p>This is NOT a bar foo.</p>' );
+        equal( html[0].getText(), '<p>NOT bar foo.</p>' );
     });
 
     [ 'explicitPatternModifier',
@@ -157,7 +157,7 @@ function( StyleDoc, Context, Parser ) {
 
                 var html = pat.getNodesOfType('html');
                 equal( html.length, 1 );
-                equal( html[0].getText(), '<p>This is a foo.</p>' );
+                equal( html[0].getText(), '<p>foo.</p>' );
 
                 var mods = pat.getNodesOfType('modifier');
                 equal( mods.length, 1 );
@@ -165,7 +165,7 @@ function( StyleDoc, Context, Parser ) {
 
                 html = mods[0].getNodesOfType('html');
                 equal( html.length, 1 );
-                equal( html[0].getText(), '<p>This is a bar foo.</p>' );
+                equal( html[0].getText(), '<p>bar foo.</p>' );
             });
         });
 
@@ -189,8 +189,8 @@ function( StyleDoc, Context, Parser ) {
 
         var html = pat.getNodesOfType('html');
         equal( html.length, 2 );
-        equal( html[0].getText(), '<p>This is a foo.</p>' );
-        equal( html[1].getText(), '<p>This is NOT a bar of a foo.</p>' );
+        equal( html[0].getText(), '<p>foo.</p>' );
+        equal( html[1].getText(), '<p>NOT bar of a foo.</p>' );
 
         equal( pat.getNodesOfType('member'), 0 );
     });
@@ -203,7 +203,7 @@ function( StyleDoc, Context, Parser ) {
 
              var html = pat.getNodesOfType('html');
              equal( html.length, 1 );
-             equal( html[0].getText(), '<p>This is a foo.</p>' );
+             equal( html[0].getText(), '<p>foo.</p>' );
 
              var mems = pat.getNodesOfType('member');
              equal( mems.length, 1 );
@@ -226,7 +226,7 @@ function( StyleDoc, Context, Parser ) {
 
                 var html = pat.getNodesOfType('html');
                 equal( html.length, 1 );
-                equal( html[0].getText(), '<p>This is a foo.</p>' );
+                equal( html[0].getText(), '<p>foo.</p>' );
 
                 var mems = pat.getNodesOfType('member');
                 equal( mems.length, 1 );
@@ -234,7 +234,7 @@ function( StyleDoc, Context, Parser ) {
 
                 html = mems[0].getNodesOfType('html');
                 equal( html.length, 1 );
-                equal( html[0].getText(), '<p>This is a bar of a foo.</p>' );
+                equal( html[0].getText(), '<p>bar of a foo.</p>' );
             });
         });
 
@@ -244,7 +244,7 @@ function( StyleDoc, Context, Parser ) {
 
         var html = pat.getNodesOfType('html');
         equal( html.length, 1 );
-        equal( html[0].getText(), '<p>This is a foo.</p>' );
+        equal( html[0].getText(), '<p>foo.</p>' );
 
         var mems = pat.getNodesOfType('member');
         equal( mems.length, 3 );
@@ -254,7 +254,7 @@ function( StyleDoc, Context, Parser ) {
 
         html = mems[2].getNodesOfType('html');
         equal( html.length, 1 );
-        equal( html[0].getText(), '<p>This is a bar of a foo.</p>' );
+        equal( html[0].getText(), '<p>bar of a foo.</p>' );
     });
 
     T( 'twoMembers', function ( t ) {
@@ -286,14 +286,14 @@ function( StyleDoc, Context, Parser ) {
 
         var html = pat.getNodesOfType('html');
         equal( html.length, 1 );
-        equal( html[0].getText(), '<p>This is a foo.</p>' );
+        equal( html[0].getText(), '<p>foo.</p>' );
 
         pat = t.getPattern('bar');
         ok( pat );
 
         html = pat.getNodesOfType('html');
         equal( html.length, 1 );
-        equal( html[0].getText(), '<p>This is a bar.</p>' );
+        equal( html[0].getText(), '<p>bar.</p>' );
     });
 
     [ 'closeTwoLevels',
@@ -306,7 +306,7 @@ function( StyleDoc, Context, Parser ) {
 
                 var html = pat.getNodesOfType('html');
                 equal( html.length, 1 );
-                equal( html[0].getText(), '<p>This is a foo.</p>' );
+                equal( html[0].getText(), '<p>foo.</p>' );
 
                 var mems = pat.getNodesOfType('member');
                 equal( mems.length, 1 );
@@ -314,14 +314,14 @@ function( StyleDoc, Context, Parser ) {
 
                 html = mems[0].getNodesOfType('html');
                 equal( html.length, 1 );
-                equal( html[0].getText(), '<p>This is a bar of a foo.</p>' );
+                equal( html[0].getText(), '<p>bar of a foo.</p>' );
 
                 pat = t.getPattern('bar');
                 ok( pat );
 
                 html = pat.getNodesOfType('html');
                 equal( html.length, 1 );
-                equal( html[0].getText(), '<p>This is a bar.</p>' );
+                equal( html[0].getText(), '<p>bar.</p>' );
 
                 equal( pat.getNodesOfType('member').length, 0 );
             });
@@ -339,7 +339,7 @@ function( StyleDoc, Context, Parser ) {
 
               var html = mods[0].getNodesOfType('html');
               equal( html.length, 1 );
-              equal( html[0].getText(), '<p>This is a bar foo.</p>' );
+              equal( html[0].getText(), '<p>bar foo.</p>' );
 
               pat = t.getPattern('bar');
               ok( pat );
@@ -355,7 +355,7 @@ function( StyleDoc, Context, Parser ) {
 
                 var html = pat.getNodesOfType('html');
                 equal( html.length, 1 );
-                equal( html[0].getText(), '<p>This is a foo.</p>' );
+                equal( html[0].getText(), '<p>foo.</p>' );
 
                 var mems = pat.getNodesOfType('member');
                 equal( mems.length, 1 );
@@ -363,16 +363,17 @@ function( StyleDoc, Context, Parser ) {
 
                 html = mems[0].getNodesOfType('html');
                 equal( html.length, 1 );
-                equal( html[0].getText(), '<p>This is a bar of a foo.</p>' );
+                equal( html[0].getText(), '<p>bar of a foo.</p>' );
 
                 equal( pat.getNodesOfType('modifier').length, 0 );
 
                 pat = t.getPattern('bar');
                 ok( pat );
 
+
                 html = pat.getNodesOfType('html');
                 equal( html.length, 1 );
-                equal( html[0].getText(), '<p>This is a bar.</p>' );
+                equal( html[0].getText(), '<p>bar.</p>' );
 
                 var mods = pat.getNodesOfType('modifier');
                 equal( mods.length, 1 );
@@ -380,7 +381,7 @@ function( StyleDoc, Context, Parser ) {
 
                 html = mods[0].getNodesOfType('html');
                 equal( html.length, 1 );
-                equal( html[0].getText(), '<p>This is a foo bar.</p>' );
+                equal( html[0].getText(), '<p>foo bar.</p>' );
 
                 equal( pat.getNodesOfType('member').length, 0 );
             });

@@ -91,6 +91,7 @@ module.exports = function(grunt){
     grunt.loadNpmTasks('grunt-webfont');
 
     grunt.registerTask('default', ['webfont', 'less']);
-    grunt.registerTask('dist', ['default', 'requirejs:dist', 'copyto:dist']);
+    grunt.registerTask('check', ['jshint', 'qunit']);
+    grunt.registerTask('dist', ['default', 'check', 'requirejs:dist', 'copyto:dist']);
 
 };
