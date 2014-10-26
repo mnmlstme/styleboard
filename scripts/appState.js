@@ -1,4 +1,4 @@
-define( function () {
+var Backbone = require('backbone');
 
 /**
  * @name AppState
@@ -6,7 +6,6 @@ define( function () {
  * @param attrs.pattern {Context}   the pattern currently being viewed
  * @param attrs.example {Context}   the example curently being viewed
  */
-    appState = new Backbone.Model();
+appState = new Backbone.Model();
 
-    return appState;
-});
+module.exports = appState;

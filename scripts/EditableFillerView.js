@@ -1,63 +1,63 @@
-define( function () {
 
-    var EditableFillerView = Backbone.View.extend({
+var Backbone = require('backbone');
 
-        events: {
-            // 'click': 'uiStartEditing',
-            'blur': 'uiStopEditing',
-            'keypress': 'uiKeypress'
-        },
+var EditableFillerView = Backbone.View.extend({
 
-        initialize: function ( options ) {
-            var view = this,
-                filler = view.model,
-                key = options.key,
-                firstKey = key.replace(/\..*/,'');
+    events: {
+        // 'click': 'uiStartEditing',
+        'blur': 'uiStopEditing',
+        'keypress': 'uiKeypress'
+    },
 
-            view.key = key;
+    initialize: function ( options ) {
+        var view = this,
+            filler = view.model,
+            key = options.key,
+            firstKey = key.replace(/\..*/,'');
 
-            filler.on('change:' + firstKey, view.render, view);
-        },
+        view.key = key;
 
-        render: function () {
-            var view = this,
-                filler = view.model,
-                value = filler.lookup(view.key);
+        filler.on('change:' + firstKey, view.render, view);
+    },
 
-            view.$el
-                .addClass('editable')
-                .attr({
-                    contenteditable: true,
-                    spellcheck: false
-                })
-                .text( value );
-        },
+    render: function () {
+        var view = this,
+            filler = view.model,
+            value = filler.lookup(view.key);
 
-        uiStartEditing: function () {
-            var view = this,
-                $editable = view.$el;
+        view.$el
+            .addClass('editable')
+            .attr({
+                contenteditable: true,
+                spellcheck: false
+            })
+            .text( value );
+    },
 
-            $editable
-                .focus();
-        },
+    uiStartEditing: function () {
+        var view = this,
+            $editable = view.$el;
 
-        uiStopEditing: function () {
-            var view = this,
-                filler = view.model,
-                $editable = view.$el,
-                value = $editable.text();
+        $editable
+            .focus();
+    },
 
-            filler.setValue( view.key, value );
-        },
+    uiStopEditing: function () {
+        var view = this,
+            filler = view.model,
+            $editable = view.$el,
+            value = $editable.text();
 
-        uiKeypress: function (e) {
-            var view = this;
+        filler.setValue( view.key, value );
+    },
 
-            if (e.which === 13) {
-                view.$el.trigger('blur');
-            }
+    uiKeypress: function (e) {
+        var view = this;
+
+        if (e.which === 13) {
+            view.$el.trigger('blur');
         }
-    });
-
-    return EditableFillerView;
+    }
 });
+
+module.exports = EditableFillerView;

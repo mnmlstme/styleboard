@@ -20,22 +20,22 @@
   "dependencies": {
     "marked": "chjj/marked#0.3.2",
     "mkay": "fgnass/mkay",
-    "prism": "LeaVerou/prism#gh-pages",
-    "requirejs": "2.1.4"
+    "modernizr": "~2.8.3",
+    "prism": "LeaVerou/prism#gh-pages"
   },
   "exportsOverride": {
     "marked": {
       "js": "lib/*.js"
     },
     "mkay": {
-      "js": "mkay.js"
+        "js": "mkay.js"
+    },
+    "modernizr": {
+        "js": "modernizr.js"
     },
     "prism": {
       "js": "prism.js",
       "css": "themes/prism.css"
-    },
-    "requirejs": {
-      "js": "require.js"
     }
   }
 }

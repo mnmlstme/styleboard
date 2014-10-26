@@ -1,30 +1,31 @@
-define(['appState'], function (appState) {
+var Backbone = require('backbone');
 
-    var FooterView = Backbone.View.extend({
+var appState = require('./appState');
 
-        initialize: function ( options ) {
-            view = this;
+var FooterView = Backbone.View.extend({
 
-            view.$title = view.$el.find('.footer-title');
+    initialize: function ( options ) {
+        view = this;
 
-            view.current = appState.get('example');
+        view.$title = view.$el.find('.footer-title');
 
-            appState.on('change:example', function( appState, example ) {
-                view.current = example;
-                view.update();
-            });
-        },
+        view.current = appState.get('example');
 
-        render: function render() {
-            this.update();
-        },
+        appState.on('change:example', function( appState, example ) {
+            view.current = example;
+            view.update();
+        });
+    },
 
-        update: function update() {
-            var view = this;
+    render: function render() {
+        this.update();
+    },
 
-            view.$title.text( view.current ? view.current.get('title') : '' );
-        }
-    });
+    update: function update() {
+        var view = this;
 
-    return FooterView;
+        view.$title.text( view.current ? view.current.get('title') : '' );
+    }
 });
+
+module.exports = FooterView;

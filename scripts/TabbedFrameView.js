@@ -1,36 +1,37 @@
 /**
  @filespec TabbedFrameView - view of a tabbed frame, with pane switching
  */
-define( function () {
 
-    var TabbedFrameView = Backbone.View.extend({
+var $ = require('jquery');
+var Backbone = require('backbone');
 
-        events: {
-            'click .frame-tabs > li': 'uiSelectPane',
-        },
+var TabbedFrameView = Backbone.View.extend({
 
-        uiSelectPane: function (event) {
-            var view = this,
-                $target = $(event.target),
-                index = $target.index();
-            view.selectPane( index );
-        },
+    events: {
+        'click .frame-tabs > li': 'uiSelectPane',
+    },
 
-        selectPane: function ( index ) {
-            var view = this;
+    uiSelectPane: function (event) {
+        var view = this,
+            $target = $(event.target),
+            index = $target.index();
+        view.selectPane( index );
+    },
 
-            activateNth( view.$('.frame-tabs > li'), index );
-            activateNth( view.$('.frame-panes > li'), index );
-        }
+    selectPane: function ( index ) {
+        var view = this;
 
-    });
-
-    function activateNth( $list, index ) {
-        $list
-            .removeClass('is-active')
-          .eq(index)
-            .addClass('is-active');
+        activateNth( view.$('.frame-tabs > li'), index );
+        activateNth( view.$('.frame-panes > li'), index );
     }
 
-    return TabbedFrameView;
 });
+
+function activateNth( $list, index ) {
+    $list
+        .removeClass('is-active')
+      .eq(index)
+        .addClass('is-active');
+}
+
+module.exports = TabbedFrameView;

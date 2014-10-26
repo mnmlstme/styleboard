@@ -1,89 +1,92 @@
+var $ = require('jquery');
+
 /**
  @filespec DictionaryView - view of the dictionary of all patterns in styleboard
  */
-define(["PatternView", "TabbedFrameView", "appState"],
-function ( PatternView, TabbedFrameView, appState ) {
+var PatternView = require('./PatternView');
+var TabbedFrameView = require('./TabbedFrameView');
+var appState = require('./appState');
 
-    var title = 'StyleBoard';
 
-    var DictionaryView = TabbedFrameView.extend({
+var title = 'StyleBoard';
 
-        initialize: function () {
-            var view = this,
-                $el = view.$el,
-                dict = view.model;
+var DictionaryView = TabbedFrameView.extend({
 
-            view.$patternList = $el.find('.dictionary-list');
-            view.$namedTab = $el.find('.frame-tabs > li:eq(1)');
-            view.$current = $el.find('.dictionary-entry');
+    initialize: function () {
+        var view = this,
+            $el = view.$el,
+            dict = view.model;
 
-            dict.on('add', view.addPattern, view);
+        view.$patternList = $el.find('.dictionary-list');
+        view.$namedTab = $el.find('.frame-tabs > li:eq(1)');
+        view.$current = $el.find('.dictionary-entry');
 
-            appState.on('change:pattern', function (model, pattern) {
-                view.selectPattern( pattern );
-            });
-        },
+        dict.on('add', view.addPattern, view);
 
-        render: function () {
-            var view = this,
-                dict = view.model;
-            dict
-                .sortBy( function (pat) { return pat.getName(); } )
-                .forEach( function (pat) { view.addPattern( pat ); });
+        appState.on('change:pattern', function (model, pattern) {
+            view.selectPattern( pattern );
+        });
+    },
 
-            return view;
-        },
+    render: function () {
+        var view = this,
+            dict = view.model;
+        dict
+            .sortBy( function (pat) { return pat.getName(); } )
+            .forEach( function (pat) { view.addPattern( pat ); });
 
-        renderPattern: function ( pat ) {
-            var view = this,
-                dict = view.model,
-                patternName = pat.getName();
+        return view;
+    },
 
-            if ( view.currentPattern &&
-                 view.currentPattern.getNode() === pat.getNode() ) {
-                return;
-            }
+    renderPattern: function ( pat ) {
+        var view = this,
+            dict = view.model,
+            patternName = pat.getName();
 
-            view.currentPattern = pat;
-            view.$namedTab.text( patternName );
-            $('title').text( patternName + ' — ' + title );
-            view.$current.empty();
-            (new PatternView({
-                el: view.$current,
-                model: pat
-            })).render();
-        },
+        if ( view.currentPattern &&
+             view.currentPattern.getNode() === pat.getNode() ) {
+            return;
+        }
 
-        addPattern: function ( pat, options ) {
-            var view = this,
-                name = pat.getName();
+        view.currentPattern = pat;
+        view.$namedTab.text( patternName );
+        $('title').text( patternName + ' — ' + title );
+        view.$current.empty();
+        (new PatternView({
+            el: view.$current,
+            model: pat
+        })).render();
+    },
 
-            view.$patternList.mk( 'li',
-                                  ['a', { href: '#' + name }, name ]);
-        },
+    addPattern: function ( pat, options ) {
+        var view = this,
+            name = pat.getName();
 
-        clearPattern: function () {
-            var view = this;
+        view.$patternList.mk( 'li',
+                              ['a', { href: '#' + name }, name ]);
+    },
 
-            view.$namedTab.empty();
-            view.$current.empty();
+    clearPattern: function () {
+        var view = this;
 
-            $('title').text( title );
-        },
+        view.$namedTab.empty();
+        view.$current.empty();
 
-        selectPattern: function ( pattern ) {
-            var view = this,
-                name = pattern.getName();
+        $('title').text( title );
+    },
 
-            if ( name ) {
-                view.renderPattern( pattern );
-            } else {
-                view.clearPattern();
-            }
-            view.selectPane( name ? 1 : 0 );
-        },
+    selectPattern: function ( pattern ) {
+        var view = this,
+            name = pattern.getName();
 
-    }); // end of DictionaryView view
+        if ( name ) {
+            view.renderPattern( pattern );
+        } else {
+            view.clearPattern();
+        }
+        view.selectPane( name ? 1 : 0 );
+    },
 
-    return DictionaryView;
-});
+}); // end of DictionaryView view
+
+module.exports = DictionaryView;

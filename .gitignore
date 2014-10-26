@@ -5,4 +5,4 @@
 /lib/
 styles/*.css
 graphics/iconfont/
-
+/build/
