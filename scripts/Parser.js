@@ -3,27 +3,27 @@ var _ = require('underscore');
 
 var StyleDoc = require('./StyleDoc');
 var marked = require('../lib/marked/js/marked');
-var less = require('less');
-
+var rework = require('rework');
+var slick = require('slick');
 
 // Uses LESS as a CSS parser, but all dependences on LESS should
 // be confined to this file.
-
 var regex = {
-    classname:      /^\.([a-zA-Z][a-zA-Z0-9_-]*)$/,
+
+    classname:      /^([a-zA-Z][a-zA-Z0-9_-]*)$/,
     tagname:        /^([a-z]+)$/,
     pseudo:         /^::?([a-z-]+)$/,
-    cmtfirst:       /^\s*\/\*\*\s*/,
-    cmtmiddle:      /^(\s*\*+\s?)?/,
-    cmtlast:        /\s*\*+\/\s*$/,
+    cmtfirst:       /^\**\s*/,
+    cmtmiddle:      /^\s*\*+\s?/,
+    cmtlast:        /\s*\**$/,
     atcommand:      /^\s*@([a-z-]+)\s*(\[([a-z][a-z0-9-]*)\])?(.*)\s*$/,
     ateot:          /^\s*(@[a-z-]+.*)?$/,
     empty:          /^\s*$/,
-    pattern:        /^\.([a-z][a-z0-9]*)$/,                // lowercase, no hyphens
-    modifier:       /^\.([a-z][a-z0-9-]*\-)$/,             // trailing hyphen
-    member:         /^\.(([a-z][a-z0-9]*)\-[a-z0-9-]+)$/,  // pattern name '-' member name
-    helper:         /^\.(([a-z][a-z0-9]*)\-[a-z0-9-]+)$/,  // pattern name '-' member name
-    state:          /^\.((is|has)\-[a-z0-9-]+)$/           // 'is-' or 'has-' prefix
+    pattern:        /^([a-z][a-z0-9]*)$/,                // lowercase, no hyphens
+    modifier:       /^([a-z][a-z0-9-]*\-)$/,             // trailing hyphen
+    member:         /^(([a-z][a-z0-9]*)\-[a-z0-9-]+)$/,  // pattern name '-' member name
+    helper:         /^(([a-z][a-z0-9]*)\-[a-z0-9-]+)$/,  // pattern name '-' member name
+    state:          /^((is|has)\-[a-z0-9-]+)$/           // 'is-' or 'has-' prefix
 };
 
 var options = {
@@ -52,13 +52,9 @@ function Parser( opts ) {
 
     parser.parse = function parse( data ) {
         var doc = new StyleDoc();
-        new less.Parser()
-            .parse( data, function (err, css ) {
-                if ( err ) {
-                    alert( "Failed to parse CSS: " + err );
-                } else {
-                    buildDoc( doc, css.rules );
-                }
+        rework( data )
+            .use( function ( stylesheet, rework ) {
+                buildDoc( doc, stylesheet.rules );
             });
         return doc;
     };
@@ -68,23 +64,24 @@ function Parser( opts ) {
     function buildDoc( doc, nodes ) {
         var stack = [ doc.getRoot() ];
 
+
         nodes.forEach( function (node) {
             var comments, context, code;
             switch ( node.type ) {
-            case 'Comment':
-                parseComment( node.value );
+            case 'comment':
+                parseComment( node.comment );
                 break;
-            case 'Ruleset':
-                comments = node.rules.filter( function (rule) {
-                    return rule.type === 'Comment';
+            case 'rule':
+                comments = node.declarations.filter( function (node) {
+                    return node.type === 'comment';
                 });
                 context = (comments.length || !opts.requireDoc) &&
                     identifyContext( node.selectors );
-                if (context) {
+                if (context.length) {
                     openContext( context );
                 }
-                comments.map( function (rule) {
-                    parseComment( rule.value, node.selectors );
+                comments.map( function (comment) {
+                    parseComment( comment.comment, node.selectors );
                 });
                 break;
             default:
@@ -181,11 +178,11 @@ function Parser( opts ) {
         }
 
         function parseComment ( comment, selectors ) {
-            var selector = selectors && selectors.length && selectors[0].toCSS() || '';
+            var selector = selectors && selectors.length && selectors[0] || '';
 
             if ( !regex.cmtfirst.exec( comment ) ) { return; }
 
-            var  lines = comment.trim().split('\n')
+            var  lines = comment.split('\n')
                 .map( function ( line, i, list ) {
                     if ( i === 0 ) line = line.replace( regex.cmtfirst, '' );
                     if ( i === list.length-1 ) line = line.replace( regex.cmtlast, '' );
@@ -284,74 +281,106 @@ function Parser( opts ) {
         }
 
         function identifyContext ( selectors ) {
-            var context,
-                selector, elements, token, atRoot,
-                patternContext, matches,
+            var context = [],
+                selector, elements, first, classes, i, j,
                 patternRegex = ( opts.requireNaming ? regex.pattern : regex.classname ),
                 helperRegex = ( opts.requireNaming ? regex.helper : regex.classname ),
                 memberRegex = ( opts.requireNaming ? regex.member : regex.classname ),
                 modifierRegex = ( opts.requireNaming ? regex.modifier : regex.classname ),
                 stateRegex = ( opts.requireNaming ? regex.state : regex.classname );
 
-            for ( var i = 0; i < selectors.length && !context; i++ ){
+            function patternMatch ( name ) {
+                return name.match( patternRegex );
+            }
+
+            function isPattern ( name ) {
+                return !!doc.getPattern( name );
+            }
+
+            function isNotPattern ( name ) {
+                return !doc.getPattern( name );
+            }
+
+            function isNotContext(name) {
+                var found = false;
+                for ( var i = 0; !found && i < context.length; i++ ) {
+                    if ( context[i].name === name )
+                        found = true;
+                }
+                return !found;
+            }
+
+            function pushPattern ( name ) {
+                context.push({
+                    name: name,
+                    type: 'pattern'
+                });
+            }
+
+            function modStateMatch ( name ) {
+                // TODO: remember which matched
+                return name.match( modifierRegex ) || name.match( stateRegex );
+            }
+
+            function pushModifier ( name ) {
+                context.push({
+                    name: name,
+                    type: ( opts.requireNaming && name.match( stateRegex ) ? 'state' : 'modifier' )
+                });
+            }
+
+            function memberMatch ( name ) {
+                // TODO: check for the pattern name in the member name per convention
+                return name.match( memberRegex );
+            }
+
+            function pushMember ( name ) {
+                context.push({
+                    name: name,
+                    type: 'member'
+                });
+            }
+
+            for ( i = 0; i < selectors.length && !context.length; i++ ){
                 selector = selectors[i];
-                elements = selector.elements.slice(0);
+                elements = slick.parse( selector )[0];
                 atRoot = true;
-                patternContext = null;
-                token = elements.shift().value;
+                first = elements[0];
 
-                if ( (matches = patternRegex.exec( token )) ) {
-                    patternContext = {
-                        name: matches[1],
-                        selector: token,
-                        type: 'pattern'
-                    };
+                // NOTE: slick reverses the classList from the order they
+                // appear, and this algorithm depends on order, so we reverse back.
+                // TODO: make this algorithm not depend on the order of the classes.
+
+                classes = (first.classList || []).slice(0);
+                classes.reverse();
+
+                names = classes.filter( patternMatch );
+
+                if ( names.length > 1 ) {
+                    // Only consider already-identified patterns
+                    names = names.filter( isPattern );
                 }
 
-                if ( patternContext ) {
-                    if ( !doc.getPattern( patternContext.name ) ) {
-                        // if it's not already a pattern, it must be solo
-                        for ( var j = 0;
-                              patternContext &&
-                              j < elements.length &&
-                              elements[j].combinator.value === '';
-                              j++ ) {
-                            if ( patternRegex.exec( token ) ) {
-                                // Another potential pattern, don't consider either
-                                patternContext = null;
-                            }
-                        }
-                    }
+                if ( names.length ) {
+                    // Only take the first one (ambiguous 2 patterns or modifier?)
+                    pushPattern( names[0] );
                 }
 
-                if ( patternContext ) {
-                    context = [ patternContext ];
-                    while ( patternContext && elements.length ) {
-                        atRoot = atRoot && elements[0].combinator.value === '';
-                        token = elements.shift().value;
-                        if ( atRoot ) {
-                            if ( (matches = modifierRegex.exec( token )) ) {
-                                context.push({
-                                    name: matches[1],
-                                    selector: patternContext.selector + '.' + matches[1],
-                                    type: 'modifier'
-                                });
-                            } else if ( (matches = stateRegex.exec( token ))  ) {
-                                context.push({
-                                    name: matches[1],
-                                    selector: patternContext.selector + '.' + matches[1],
-                                    type : 'state'
-                                });
-                            }
-                        } else {
-                            if ( (matches = memberRegex.exec( token )) ) {
-                                context.push({
-                                    name: matches[1],
-                                    selector: patternContext.selector + ' .' + matches[1],
-                                    type: 'member'
-                                });
-                            }
-                        }
+                if ( context.length ) {
+                    // We have a pattern, now look for modifiers/states
+                    classes = (first.classList || []).slice(0);
+                    classes.reverse()
+                        .filter( modStateMatch )
+                        .filter( isNotPattern )
+                        .filter( isNotContext )
+                        .forEach( pushModifier );
+
+                    // Look for members
+                    for ( j = 1; j < elements.length; j++ ) {
+                        classes = (elements[j].classList || []).slice(0);
+                        classes.reverse()
+                            .filter( memberMatch )
+                            .forEach( pushMember );
                     }
                 }
             }

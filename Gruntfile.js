@@ -53,7 +53,7 @@ module.exports = function(grunt){
                 src: 'scripts/styleboard.js',
                 dest: 'build/bundle.js'
             },
-            'test-bundle': {
+            test: {
                 src: 'scripts/test.js',
                 dest: 'build/test-bundle.js'
             }
@@ -100,7 +100,7 @@ module.exports = function(grunt){
 
     grunt.registerTask('prep', ['bower']);
     grunt.registerTask('default', ['webfont', 'less', 'browserify:bundle']);
-    grunt.registerTask('check', ['jshint', 'browserify:test-bundle','qunit']);
+    grunt.registerTask('check', ['jshint', 'browserify:test','qunit']);
     grunt.registerTask('dist', ['default', 'copyto:dist']);
 
 };

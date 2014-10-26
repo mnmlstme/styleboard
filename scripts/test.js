@@ -52,6 +52,7 @@ T( 'invalidPatternName', function ( t ) {
 
 T( 'invalidPatternName', { requireNaming: false }, function ( t ) {
     var pat = t.getPattern('foo-bar');
+    ok( pat );
 
     var html = pat.getNodesOfType('html');
     equal( html.length, 1 );
