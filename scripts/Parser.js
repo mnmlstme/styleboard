@@ -282,7 +282,7 @@ function Parser( opts ) {
 
         function identifyContext ( selectors ) {
             var context = [],
-                selector, elements, first, classes, i, j,
+                selector, levels, first, last, classes, i,
                 patternRegex = ( opts.requireNaming ? regex.pattern : regex.classname ),
                 helperRegex = ( opts.requireNaming ? regex.helper : regex.classname ),
                 memberRegex = ( opts.requireNaming ? regex.member : regex.classname ),
@@ -343,9 +343,10 @@ function Parser( opts ) {
 
             for ( i = 0; i < selectors.length && !context.length; i++ ){
                 selector = selectors[i];
-                elements = slick.parse( selector )[0];
+                levels = slick.parse( selector )[0];
                 atRoot = true;
-                first = elements[0];
+                first = levels[0];
+                last = levels[levels.length - 1];
 
                 // NOTE: slick reverses the classList from the order they
                 // appear, and this algorithm depends on order, so we reverse back.
@@ -375,9 +376,9 @@ function Parser( opts ) {
                         .filter( isNotContext )
                         .forEach( pushModifier );
 
-                    // Look for members
-                    for ( j = 1; j < elements.length; j++ ) {
-                        classes = (elements[j].classList || []).slice(0);
+                    // If there is more than one level, look for members on the last level
+                    if ( levels.length > 1 ) {
+                        classes = (last.classList || []).slice(0);
                         classes.reverse()
                             .filter( memberMatch )
                             .forEach( pushMember );

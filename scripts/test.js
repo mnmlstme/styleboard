@@ -254,12 +254,10 @@ T( 'deepMemberConvention', { requireNaming: false }, function (t) {
     equal( html[0].getText(), '<p>foo.</p>' );
 
     var mems = pat.getNodesOfType('member');
-    equal( mems.length, 3 );
-    equal( mems[0].getName(), 'bar' );
-    equal( mems[1].getName(), 'baz' );
-    equal( mems[2].getName(), 'foo-bar' );
+    equal( mems.length, 1 );
+    equal( mems[0].getName(), 'foo-bar' );
 
-    html = mems[2].getNodesOfType('html');
+    html = mems[0].getNodesOfType('html');
     equal( html.length, 1 );
     equal( html[0].getText(), '<p>bar of a foo.</p>' );
 });
