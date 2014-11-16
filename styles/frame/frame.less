@@ -4,14 +4,7 @@
 .frame {
     /** A container for one or more panes.
 
-       @example A basic frame with one pane.
-       <div class="frame">
-         <div class="pane typography">
-           <p>{{p.1}}
-           <p>{{p.2}}
-           <p>{{p.3}}
-         </div>
-       </div>
+       @example [basic-frame.html] A basic frame with one pane.
     */
 
     @headerHeight: 2em;
@@ -27,13 +20,7 @@
         /** A frame which has a header at the top.  The header might include
             a title, navigation, or tools, for example.
 
-            @example A frame with a title bar.
-            <div class="headered- frame">
-              <h1 class="frame-header">{{h}}</h1>
-              <div class="pane typography">
-                <p>{{p}}
-              </div>
-            </div
+            @example [headered-frame.html] A frame with a title bar.
          */
         padding-top: @headerHeight;
     }
@@ -90,13 +77,7 @@
     &.footered- {
         /** A frame which has a footer at the bottom.
 
-            @example A frame with a footer.
-            <div class="footered- frame">
-              <div class="pane typography">
-                <p>{{p}}
-              </div>
-              <p class="frame-footer">{{s}}
-            </div>
+            @example [footered-frame.html] A frame with a footer.
          */
         padding-bottom: @footerHeight;
     }
@@ -135,21 +116,9 @@
         &.horizontal- {
             /** A frame which is split horizontally.
                 By default the frame is split equally (1:1)
-                */
-            /**
-               @example Two panes side-by-side
-               <div class="horizontal- split- frame">
-                   <div class="pane typography">
-                       <h1>{{h}}</h1>
-                       <p>{{p.1}}
-                       <p>{{p.2}}
-                   </div>
-                   <div class="pane typography">
-                       <h1>{{h.1}}</h1>
-                       <p>{{p.3}}
-                   </div>
-               </div>
-               */
+
+               @example [split-frame.html] Two panes side-by-side
+            */
             > * {
                 width: 50%;
                 height: 100%;
@@ -203,18 +172,7 @@
 
     &.tabbed- {
         /** A frame with tabs to select alternate panes to view.
-            @example Two tabs
-            <div class="tabbed- frame">
-              <nav>
-                <ul class="frame-tabs">
-                  <li class="is-active">{{h.1}}
-                  <li>{{h.2}}
-                </ul>
-              </nav>
-              <ul class="frame-panes">
-                <li class="pane typography is-active"><p>{{p.1}}
-                <li class="pane typography"><p>{{p.2}}
-            </div>
+            @example [tabbed-frame.html] Two tabs
         */
         padding-top: @headerHeight;
 

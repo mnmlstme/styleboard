@@ -77,25 +77,47 @@ var RenderedView = Backbone.View.extend({
             doc = view.doc,
             $body = $(doc.body),
             example = view.model,
-            scope = example ? example.getScope() : {},
-            template = example ? example.getText() : '',
-            code = template ? view.filler.expand( template, scope ) : '',
-            $app = $body,
-            $content;
+            scope, template, files, url;
 
         if ( $body.length ) {
             $body.empty();
             if ( example ) {
-                $content = $body.mk('div.styleboard-content')
-                    .append( $.parseHTML( code || '', view.doc, true ) );
-
-                if ( view.ngApp ) {
-                    $content.toggleClass('styleboard-ng-app', view.ngApp);
-                    view.context.angular.bootstrap($content[0],[view.ngApp]);
+                template = example.getText();
+                files = example.getAttr('files');
+                scope = example.getScope();
+                if ( template ) {
+                    renderTemplate();
+                } else if ( files && files['html'] ) {
+                    url = files['html'][0];
+                    $.ajax({
+                        url: url,
+                        cache: false,
+                        dataType: 'text',
+                        error:  function ( xhr, status, error ) {
+                            alert("Failed to load " + url + "\n" + status + ": " + error);
+                        },
+                        success: function( data, status, xhr ) {
+                            example.addText( template = data );
+                            renderTemplate();
+                        }
+                    });
                 }
-
-                view.updateSettings();
             }
+        }
+
+        function renderTemplate() {
+            var code = template ? view.filler.expand( template, scope ) : '',
+                $content;
+
+            $content = $body.mk('div.styleboard-content')
+                .append( $.parseHTML( code || '', view.doc, true ) );
+
+            if ( view.ngApp ) {
+                $content.toggleClass('styleboard-ng-app', view.ngApp);
+                view.context.angular.bootstrap($content[0],[view.ngApp]);
+            }
+
+            view.updateSettings();
         }
     },
 

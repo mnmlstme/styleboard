@@ -77,6 +77,10 @@ var Context = Backbone.Model.extend({
         return this.get('doc').getText( this.getNode() );
     },
 
+    addText: function ( text ) {
+        this.get('doc').addText( text );
+    },
+
     isValid: function () {
         return this.getNode().length;
     }

@@ -16,7 +16,11 @@ var regex = {
     cmtfirst:       /^\*+\s*/,
     cmtmiddle:      /^\s*\*+\s?/,
     cmtlast:        /\s*\*+$/,
-    atcommand:      /^\s*@([a-z-]+)\s*(\[([a-z][a-z0-9-]*)\])?(.*)\s*$/,
+    atcommand:      /^\s*@([a-z-]+)\s*(\[\s*([^\]]*)\s*\])?\s*(.*)\s*$/,
+    slug:           /^[a-z][a-z-]*/,
+    filename:       /^([_.+a-zA-Z0-9-]+)\.([a-z]+)/,
+    path:           /^(.*\/)?([^/])+$/,
+    interp:         /%{([a-z]+)}/,
     ateot:          /^\s*(@[a-z-]+.*)?$/,
     empty:          /^\s*$/,
     pattern:        /^([a-z][a-z0-9]*)$/,                // lowercase, no hyphens
@@ -28,7 +32,8 @@ var regex = {
 
 var options = {
     requireDoc: false,        // if true, only consider rules with documentation
-    requireNaming: true       // if true, only consider classes that follow naming convention
+    requireNaming: true,      // if true, only consider classes that follow naming convention
+    examplesPath: '%{pattern}/examples'
 };
 
 function Parser( opts ) {
@@ -41,29 +46,31 @@ function Parser( opts ) {
             cache: false,
             dataType: 'text',
             error:  function ( xhr, status, error ) {
-                alert("Failed " + status + ": " + error);
+                alert("Failed to load " + url + "\n" + status + ": " + error);
             },
             success: function( data, status, xhr ) {
-                var doc = parser.parse(data);
+                var doc = parser.parse(data, url);
                 done( doc );
             }
         });
     };
 
-    parser.parse = function parse( data ) {
+    parser.parse = function parse( data, url ) {
         var doc = new StyleDoc();
+
         rework( data )
             .use( function ( stylesheet, rework ) {
-                buildDoc( doc, stylesheet.rules );
+                buildDoc( doc, stylesheet.rules, url );
             });
         return doc;
     };
 
     return parser;
 
-    function buildDoc( doc, nodes ) {
+    function buildDoc( doc, nodes, url ) {
         var stack = [ doc.getRoot() ];
-
+            urlMatches = regex.path.exec(url),
+            urlPath = urlMatches ? urlMatches[1] : '';
 
         nodes.forEach( function (node) {
             var comments, context, code;
@@ -125,9 +132,13 @@ function Parser( opts ) {
             }
         }
 
-        function addText( text ) {
-            var html = marked(text).trim();
-            insert(['html',html]);
+        function addText( line, lines ) {
+            if ( !regex.empty.exec(line) ) {
+                var text = contentsOfBlock(line, lines),
+                    html = marked(text).trim();
+
+                insert(['html',html]);
+            }
         }
 
         function insertNode( type, attrs, content ) {
@@ -182,77 +193,119 @@ function Parser( opts ) {
 
             if ( !regex.cmtfirst.exec( comment ) ) { return; }
 
-            var  lines = comment.split('\n')
+            var lines = comment.split('\n')
                 .map( function ( line, i, list ) {
                     if ( i === 0 ) line = line.replace( regex.cmtfirst, '' );
                     if ( i === list.length-1 ) line = line.replace( regex.cmtlast, '' );
                     if ( i > 0 && i <= list.length-1 ) line = line.replace( regex.cmtmiddle, '' );
                     return line;
                 }),
-            line, matches, command, slug, data;
+                line;
 
             while ( lines.length ) {
                 line = lines.shift();
-                if  (( matches = regex.atcommand.exec( line ) )) {
-                    command = matches[1];
-                    slug = matches[3];
-                    data = matches[4];
-                    switch ( command ) {
-                    case 'section':
-                        openContext({
-                            type: 'section',
-                            title: data,
-                            name: slug || stringToSlug(data)
-                        });
-                        break;
-                    case 'helper':
-                    case 'modifier':
-                    case 'member':
-                    case 'pattern':
-                    case 'state':
-                        openContext( createContext(data || selector, command) );
-                        break;
-                    case 'example':
-                        insertNode( command, {
-                            title: data,
-                            name: slug || stringToSlug(data)
-                        }, contentsOfBlock() );
-                        break;
-                    default:
-                        console.warn('unrecognized StyleDoc tag @' + command);
-                    }
-                } else if ( ! regex.empty.exec(line) ) {
-                    addText( contentsOfBlock(line) );
+                processCommand( line, lines ) || addText( line, lines );
+            }
+        }
+
+        function processCommand( line, lines ) {
+            var matches = regex.atcommand.exec( line );
+            if ( matches ) {
+                var command = matches[1],
+                    brackets = matches[3] || '',
+                    data = matches[4],
+                    slug = brackets && (matches = regex.slug.exec(brackets)) ?
+                        matches[0] : false,
+                    filelist = brackets && regex.filename.exec(brackets) ?
+                        brackets.split(/\s*,\s*/) : [];
+
+
+                switch ( command ) {
+                case 'section':
+                    openContext({
+                        type: 'section',
+                        title: data,
+                        name: slug || stringToSlug(data)
+                    });
+                    break;
+                case 'helper':
+                case 'modifier':
+                case 'member':
+                case 'pattern':
+                case 'state':
+                    openContext( createContext(data || selector, command) );
+                    break;
+                case 'example':
+                    insertNode( command, {
+                        title: data,
+                        name: slug || stringToSlug(data),
+                        files: exampleFiles( filelist )
+                    }, contentsOfBlock('', lines) );
+                    break;
+                default:
+                    console.warn('unrecognized StyleDoc tag @' + command);
                 }
             }
+            return !!matches;
+        }
 
-            function selectorToName( string ) {
-                var trailingClass = /\.([a-zA-Z][a-zA-Z0-9-_]+)$/,
-                    matches = trailingClass.exec( string );
-                return matches ? matches[1] : string;
+        function selectorToName( string ) {
+            var trailingClass = /\.([a-zA-Z][a-zA-Z0-9-_]+)$/,
+                matches = trailingClass.exec( string );
+            return matches ? matches[1] : string;
+        }
+
+        function stringToSlug( string ) {
+            return string.toLowerCase().replace(/[^a-z0-9]+/g,'-');
+        }
+
+        function exampleFiles( filelist ) {
+            var hash = {};
+
+            filelist.forEach( function (filename) {
+                var matches = regex.filename.exec(filename),
+                    type = matches[2];
+
+                hash[type] = hash[type] || [];
+                hash[type].push( filePath(filename, opts.examplesPath) );
+            });
+
+            return hash;
+        }
+
+        function filePath( filename, searchPath ) {
+            var path = searchPath.replace( regex.interp, pathInterpolation );
+
+            if ( path && path[path.length-1] !== '/' ) {
+                path = path + '/';
             }
 
-            function stringToSlug( string ) {
-                return string.toLowerCase().replace(/[^a-z0-9]+/g,'-');
-            }
+            return urlPath + path + filename;
+        }
 
-            function contentsOfBlock( firstLine ) {
-                var content = [],
-                    leader = Infinity;
-                if ( firstLine ) content.push( firstLine );
-                //lookahead: may be ended by another tag which we should not consume
-                while (( lines.length && !regex.ateot.exec(lines[0]) )) {
-                    content.push( lines.shift() );
-                }
-                content.forEach( function (s) {
-                    var leadingWS = /^(\s*)/,
-                    matches = leadingWS.exec( s ),
-                    length = matches ? matches[1].length : 0;
-                    if ( length < leader ) leader = length;
-                });
-                content = content.map( function (s) { return s.substr(leader); } );
-                return content.join('\n');
+        function pathInterpolation( match, token ) {
+            var node = getCurrent( token );
+
+            return node ? doc.getAttr(node, 'name') : token;
+        }
+
+        function contentsOfBlock( line, lines ) {
+            var content = [],
+                leader = Infinity;
+
+            if ( line ) content.push( line );
+            //lookahead: may be ended by another tag which we should not consume
+            while (( lines.length && !regex.ateot.exec(lines[0]) )) {
+                content.push( lines.shift() );
             }
+            content.forEach( function (s) {
+                var leadingWS = /^(\s*)/,
+                matches = leadingWS.exec( s ),
+                length = matches ? matches[1].length : 0;
+                if ( length < leader ) leader = length;
+            });
+            content = content.map( function (s) { return s.substr(leader); } );
+            return content.join('\n');
         }
 
         function createContext( selector, type ) {
@@ -301,7 +354,7 @@ function Parser( opts ) {
                 return !doc.getPattern( name );
             }
 
-            function isNotContext(name) {
+            function isNotContext( name ) {
                 var found = false;
                 for ( var i = 0; !found && i < context.length; i++ ) {
                     if ( context[i].name === name )

@@ -1,18 +1,7 @@
 .icon {
 
     /** Icons. Implemented as an icon font using grunt-webfont.
-        @example
-        <div class="typography">
-        <table>
-        <tr><td><i class="icon"></i><td>Default (missing)
-        <tr><td><i class="circle- icon"></i><td>Circle
-        <tr><td><i class="opencircle- icon"></i><td>Circle (open)
-        <tr><td><i class="fontsize- icon"></i><td>Font Size
-        <tr><td><i class="fullscreen- icon"></i><td>Full Screen
-        <tr><td><i class="pagesize- icon"></i><td>Page Size
-        <tr><td><i class="scale- icon"></i><td>Scale
-        </table>
-        </div>
+        @example [list-of-icons.html] List of icons
         */
 
     // set the size of the icon by changing the font-size.
@@ -23,16 +12,6 @@
     // default size is 1.25em (20px for 16px text)
     .size( 1.25em );
     width: 1em;
-
-    // TODO: the following should not be necessary; Styleboard needs to infer this.
-    /**
-       @modifier .icon.circle-
-       @modifier .icon.opencircle-
-       @modifier .icon.fontsize-
-       @modifier .icon.fullscreen-
-       @modifier .icon.pagesize-
-       @modifier .icon.scale-
-       */
 }
 
 @import "../../graphics/iconfont/iconfont.less";

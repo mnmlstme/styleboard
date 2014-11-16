@@ -20,6 +20,7 @@ function StyleDoc() {
         getAttr: getAttr,
         getType: getType,
         getText: getText,
+        addText: addText,
         define: define
     }, function (value, key) { doc[key] = value; } );
 
@@ -75,6 +76,10 @@ function StyleDoc() {
     function getText( node ) {
         node = node || root;
         return _.isObject(node[1]) ? node[2] : node[1];
+    }
+
+    function addText( node, text ) {
+        node[2] = text;
     }
 
     function define( type, name, node, parent ) {

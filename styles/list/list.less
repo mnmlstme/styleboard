@@ -2,13 +2,8 @@
 
 .list {
     /**
-       A simple list.  Items are arranged vertically, with no decoration.
-        @example
-        <ul class="list">
-          <li>{{s.1}}
-          <li>{{s.2}}
-          <li>{{s.3}}
-        </ul>
+    A simple list.  Items are arranged vertically, with no decoration.
+    @example [basic-list.html] Basic list
      */
 
     > * {
@@ -17,13 +12,8 @@
 
     &.bullet- {
         /**
-           A bulleted list.  Items are arranged vertically with colored bullets.
-           @example
-           <ul class="bullet- list">
-               <li>{{s.1}}
-               <li>{{s.2}}
-               <li>{{s.3}}
-           </ul>
+        A bulleted list.  Items are arranged vertically with colored bullets.
+        @example [bullet-list.html] Bullet list
         */
         @margin: 1em;
         margin-left: @margin;
@@ -38,13 +28,8 @@
 
     &.comma- {
         /**
-           A comma-separated list.  Items are set inline, as a line of text, with commas between.
-           @example
-           In this box I have
-           <ul class="comma- list">
-               <li>{{phr.1}}</li>
-               <li>{{phr.2}}</li>
-               <li>and {{phr.3}}</li></ul>.
+        A comma-separated list.  Items are set inline, as a line of text, with commas between.
+        @example [comma-list.html] Comma list
         */
         display: inline;
         > * {
@@ -60,19 +45,11 @@
 
     &.definition- {
         /**
-           A definition list.  The list items ae terms, each of which may
-           have one or more definitions.
+        A definition list.  The list items ae terms, each of which may
+        have one or more definitions.
 
-           @example
-           <dl class="definition- list">
-             <dt>{{w.1}}
-             <dd>{{s.1}}
-             <dt>{{w.2}}
-             <dd>{{s.2}}
-             <dt>{{w.3}}
-             <dd>{{s.3}}
-           </dl>
-           */
+        @example [defn-list.html] Definition list
+        */
         .clearfix;
         padding-left: 6em;
         > * {

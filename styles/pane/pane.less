@@ -2,13 +2,7 @@
 
 .pane {
     /** A rectangular region of the screen.
-        @example
-        <div class="pane typography">
-          <h1>{{h}}</h1>
-          <p>{{p.1}}
-          <p>{{p.2}}
-          <p>{{p.3}}
-        </div>
+        @example [basic-pane.html] Basic pane
         */
 
     position: relative; // any positioning inside should be relative to frame
@@ -22,13 +16,7 @@
 
     &.dark- {
         /** A pane with a dark background (inverted colors).
-            @example
-            <div class="dark- pane typography">
-              <h1>{{h}}</h1>
-              <p>{{p.1}}
-              <p>{{p.2}}
-              <p>{{p.3}}
-            </div>
+            @example [dark-pane.html] Dark pane
             */
         background: @inv-background-color;
         color: @inv-body-color;

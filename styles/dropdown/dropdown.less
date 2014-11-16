@@ -5,17 +5,7 @@
 
     /**
        A control for which an overlay pane (usually a menu) appears below.
-
-       @example
-       <div class="dropdown">
-         <button>{{btn}}</button>
-         <ul class="dropdown-pane menu">
-           <li>{{w.0}}
-           <li>{{w.1}}
-           <li>{{w.2}}
-         </ul>
-       </div>
-
+       @example [basic-dropdown.html]
       */
 
     display: inline-block;
@@ -38,16 +28,7 @@
 
     &.left-aligned- {
         /** Align the pane with the left edge of the control.
-
-        @example
-        <div class="left-aligned- dropdown">
-          <button>{{btn}}</button>
-          <ul class="dropdown-pane menu">
-            <li>{{w.0}}
-            <li>{{w.1}}
-            <li>{{w.2}}
-          </ul>
-        </div>
+        @example [left-dropdown.html]
         */
         text-align: left;
         .dropdown-pane {
@@ -57,16 +38,7 @@
 
     &.right-aligned- {
         /** Align the pane with the right edge of the control.
-
-        @example
-        <div class="right-aligned- dropdown">
-          <button>{{btn}}</button>
-          <ul class="dropdown-pane menu">
-            <li>{{w.1}}
-            <li>{{w.2}}
-            <li>{{w.3}}
-          </ul>
-        </div>
+        @example [right-dropdown.html]
         */
         text-align: right;
         .dropdown-pane {
@@ -76,16 +48,7 @@
 
     &.centered- {
         /** Align the center of the pane with the center of the control.
-
-        @example
-        <div class="centered- dropdown">
-          <button>{{btn}}</button>
-          <ul class="dropdown-pane menu">
-            <li>{{w.1}}
-            <li>{{w.2}}
-            <li>{{w.3}}
-          </ul>
-        </div>
+        @example [center-dropdown.html]
         */
         text-align: center;
         .dropdown-pane {
