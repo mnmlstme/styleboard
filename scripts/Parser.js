@@ -260,17 +260,18 @@ function Parser( opts ) {
         }
 
         function exampleFiles( filelist ) {
-            var hash = {};
+            var files = [];
 
-            filelist.forEach( function (filename) {
+            return filelist.map( function (filename) {
                 var matches = regex.filename.exec(filename),
                     type = matches[2];
 
-                hash[type] = hash[type] || [];
-                hash[type].push( filePath(filename, opts.examplesPath) );
+                return {
+                    type: type,
+                    name: filename,
+                    url: filePath(filename, opts.examplesPath)
+                };
             });
-
-            return hash;
         }
 
         function filePath( filename, searchPath ) {

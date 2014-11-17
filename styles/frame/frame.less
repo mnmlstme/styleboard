@@ -8,13 +8,15 @@
     */
 
     @headerHeight: 2em;
-    @footerHeight: 1.2em;
+    @footerHeight: 2em;
 
     height: 100%;
     width: 100%;
 
     // most variants require elements be positioned relative to the frame.
     position: relative;
+
+    background: @inv-background-alt-color;
 
     &.headered- {
         /** A frame which has a header at the top.  The header might include
@@ -26,16 +28,13 @@
     }
 
     .frame-header,
-    .frame-tabs {
+    .frame-footer {
         position: absolute;
-        top: 0;
-        left: 0;
-        height: @headerHeight;
-        line-height: @headerHeight;
         width: 100%;
         background: @inv-background-color;
         box-shadow: inset 1px 1px 1px @border-hi-color,
                     inset -1px -1px 1px @border-lo-color;
+        .font( header, inherit, inv-lo );
         a {
             color: inherit;
             text-decoration: inherit;
@@ -47,14 +46,10 @@
 
     .frame-header {
         /** A fixed area at the top of the frame, usually containing a title. */
-        .font( header, inherit, inv-lo );
-        .frame-tabs {
-            // if tabs are inside a header, float them inside the header
-            position: static;
-            width: auto;
-            float: left;
-        }
-
+        top: 0;
+        left: 0;
+        height: @headerHeight;
+        line-height: @headerHeight;
         h1 {
             float: left;
             margin: 0 .5em;
@@ -84,16 +79,10 @@
 
     .frame-footer {
         /** A fixed area at the bottom of the frame. */
-        position: absolute;
         bottom: 0;
         left: 0;
         height: @footerHeight;
         line-height: @footerHeight;
-        width: 100%;
-        background: @inv-background-color;
-        box-shadow: inset 1px 1px 1px @border-hi-color,
-                    inset -1px -1px 1px @border-lo-color;
-        .font( nav, inherit, inv-lo );
     }
 
     .frame-footer-left {
@@ -170,40 +159,44 @@
         }
     }
 
-    &.tabbed- {
-        /** A frame with tabs to select alternate panes to view.
+    .frame-tabs {
+        /** Tabs for switching the current `pane` to view within a `tabbed-` frame.
             @example [tabbed-frame.html] Two tabs
-        */
-        padding-top: @headerHeight;
+         */
+        .font( nav, inherit, inv-lo );
+        white-space: nowrap;
+        > * {
+            display: inline-block;
+            cursor: pointer;
+            padding: 0 .5em;
+            &.is-active {
+                .color( delta );
+                outline-color: @color-delta;
+            }
+            &:empty {
+                visibility: hidden;
+            }
+        }
+    }
 
+    .frame-header,
+    .frame-footer {
         .frame-tabs {
-            /** Tabs for switching the current `pane` to view within a `tabbed-` frame. */
-            .font( nav, inherit, inv-lo );
-            white-space: nowrap;
-            > * {
-                display: inline-block;
-                cursor: pointer;
-                padding: 0 .5em;
-                &.is-active {
-                    .color( delta );
-                    outline-color: @color-delta;
-                }
-                &:empty {
-                    visibility: hidden;
-                }
-            }
-        }
-
-        .frame-panes {
-            /** A list of panes to show in a `tabbed-` frame */
+            // if tabs are inside a header or footer, float them left.
+            width: auto;
+            float: left;
             height: 100%;
-            > * {
-                display: none;
-                &.is-active {
-                    display: block;
-                }
+        }
+    }
+
+    .frame-panes {
+        /** A list of panes to show in a `tabbed-` frame */
+        height: 100%;
+        > * {
+            display: none;
+            &.is-active {
+                display: block;
             }
         }
-
     }
 }

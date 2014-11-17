@@ -77,18 +77,19 @@ var RenderedView = Backbone.View.extend({
             doc = view.doc,
             $body = $(doc.body),
             example = view.model,
-            scope, template, files, url;
+            scope, template, files, firstHtml, url;
 
         if ( $body.length ) {
             $body.empty();
             if ( example ) {
                 template = example.getText();
-                files = example.getAttr('files');
+                files = example.getAttr('files') || [];
+                firstHtml = _.findWhere(files, {type: 'html'});
+                url = firstHtml && firstHtml.url;
                 scope = example.getScope();
                 if ( template ) {
                     renderTemplate();
-                } else if ( files && files['html'] ) {
-                    url = files['html'][0];
+                } else if ( url ) {
                     $.ajax({
                         url: url,
                         cache: false,

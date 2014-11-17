@@ -14,7 +14,7 @@ var Context = require('./Context');
 var Filler = require('./Filler');
 var DictionaryView = require('./DictionaryView');
 var RenderedView = require('./RenderedView');
-var MarkupView = require('./MarkupView');
+var FilesView = require('./FilesView');
 var TabbedFrameView = require('./TabbedFrameView');
 var FooterView = require('./FooterView');
 var SettingsView = require('./SettingsView');
@@ -84,10 +84,6 @@ function StyleBoard( config, hash ) {
             (new DictionaryView({ el: $(this), model: dictionary })).render();
         });
 
-        $('#tabbedView').each( function () {
-            (new TabbedFrameView({ el: $(this) })).render();
-        });
-
         $('#sandbox').each( function () {
                 (new RenderedView({
                     el: $(this),
@@ -98,8 +94,8 @@ function StyleBoard( config, hash ) {
                               })).render();
         });
 
-        $('#example').each( function () {
-            (new MarkupView({ el: $(this), doc: doc, filler: filler })).render();
+        $('#filesView').each( function () {
+            (new FilesView({ el: $(this), doc: doc, filler: filler })).render();
         });
 
         $('#settings').each( function () {
