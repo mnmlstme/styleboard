@@ -204,11 +204,11 @@ function Parser( opts ) {
 
             while ( lines.length ) {
                 line = lines.shift();
-                processCommand( line, lines ) || addText( line, lines );
+                processCommand( selector, line, lines ) || addText( line, lines );
             }
         }
 
-        function processCommand( line, lines ) {
+        function processCommand( selector, line, lines ) {
             var matches = regex.atcommand.exec( line );
             if ( matches ) {
                 var command = matches[1],
