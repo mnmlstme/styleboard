@@ -53,7 +53,7 @@ var FilesView = TabbedFrameView.extend({
         var view = this,
             $tab = $.mk('li', attrs.name),
             $pre = $.mk('pre'),
-            $pane = $.mk('li', ['section.code.dark-.scrollable-.pane', $pre]);
+            $pane = $.mk('li', ['section.dark-.scrollable-.pane', $pre]);
 
         view.$tabs.append( $tab );
         view.$panes.append( $pane );

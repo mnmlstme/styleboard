@@ -76,17 +76,17 @@ var RenderedView = Backbone.View.extend({
         var view = this,
             doc = view.doc,
             $body = $(doc.body),
+            $head = $(doc.head),
             example = view.model,
-            scope, template, files, firstHtml, url;
+            template = example && example.getText(),
+            scope = example && example.getScope(),
+            files = example && example.getAttr('files') || [],
+            firstHtml = _.findWhere(files, {type: 'html'}),
+            url = firstHtml && firstHtml.url;
 
         if ( $body.length ) {
             $body.empty();
             if ( example ) {
-                template = example.getText();
-                files = example.getAttr('files') || [];
-                firstHtml = _.findWhere(files, {type: 'html'});
-                url = firstHtml && firstHtml.url;
-                scope = example.getScope();
                 if ( template ) {
                     renderTemplate();
                 } else if ( url ) {
@@ -118,7 +118,44 @@ var RenderedView = Backbone.View.extend({
                 view.context.angular.bootstrap($content[0],[view.ngApp]);
             }
 
+            if ( files ) {
+                files.forEach( function (attrs) {
+                    switch ( attrs.type ) {
+                    case 'js':
+                        injectScript( attrs.url );
+                        break;
+                    case 'css':
+                        injectStyle( attrs.url );
+                        $head.mk('link', {
+                            rel: 'stylesheet',
+                            type: 'text/css',
+                            href: attrs.url
+                        });
+                        break;
+                    }
+                });
+            }
+
             view.updateSettings();
+        }
+
+        function injectScript( url ) {
+            // We have to create the script tag using the iframe's document,
+            // so it's easiest to use plain Javascript.
+            var script = doc.createElement('script');
+            script.type = 'text/javascript';
+            script.src = url;
+            doc.body.appendChild(script);
+        }
+
+        function injectStyle( url ) {
+            // We have to create the script tag using the iframe's document,
+            // so it's easiest to use plain Javascript.
+            var link = doc.createElement('link');
+            link.ref = 'stylesheet';
+            link.type = 'text/css';
+            link.href = url;
+            doc.head.appendChild(link);
         }
     },
 

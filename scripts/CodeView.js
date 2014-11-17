@@ -7,7 +7,9 @@ var appState = require('./appState');
 var Prism = require('../lib/prism/js/prism');
 
 var prismTypes = {
-    html: Prism.languages.markup
+    html: Prism.languages.markup,
+    js: Prism.languages.javascript,
+    css: Prism.languages.css
 };
 
 var CodeView = Backbone.View.extend({
@@ -38,7 +40,7 @@ var CodeView = Backbone.View.extend({
             }
 
             // Insert the html
-            $pre.html(html);
+            $pre.html(html).addClass(type + '- code');
 
             if ( type === 'html' ) {
                 // Replace the filler text

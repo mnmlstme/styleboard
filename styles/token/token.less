@@ -5,6 +5,8 @@
 
     */
 
+    .color( inv );
+
     &.doctype,
     &.atrule,
     &.cdata {
@@ -53,26 +55,41 @@
         font-style: oblique;
     }
 
-    &.keyword {
+    &.class-name {
+        .color( alpha );
+        .glow( alpha );
     }
 
+    &.function {
+        .color( beta );
+        .punctuation {
+            .color( delta );
+        }
+    }
+
+    &.keyword,
+    &.operator,
+    &.punctuation {
+        .color( delta );
+    }
+
+    &.string,
     &.property,
     &.boolean,
     &.number,
     &.constant,
+    &.variable {
+        .color( gamma );
+    }
+
     &.symbol,
     &.selector,
-    &.string,
     &.builtin,
-    &.operator,
     &.entity,
     &.url,
-    &.string,
-    &.variable,
-    &.function,
     &.regex,
     &.important {
         /** Modifiers used by Prism, but not Styleboard. */
-        .color( warning );
+        .color( danger );
     }
 }

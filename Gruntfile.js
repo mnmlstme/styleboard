@@ -56,6 +56,10 @@ module.exports = function(grunt){
             test: {
                 src: 'scripts/test.js',
                 dest: 'build/test-bundle.js'
+            },
+            demo: {
+                src: 'scripts/demo.js',
+                dest: 'build/demo-bundle.js'
             }
         },
 
@@ -68,9 +72,11 @@ module.exports = function(grunt){
                     'styleboard.config',
                     '{index,embed}.html',
                     'build/bundle.js',
+                    'build/demo-bundle.js',
                     'graphics/iconfont/*.{eot,svg,ttf,woff}',
                     'graphics/*.svg',
-                    'styles/*.css'
+                    'styles/*.css',
+                    'styles/*/examples/**'
                 ]
             }
         },
@@ -99,7 +105,7 @@ module.exports = function(grunt){
     grunt.loadNpmTasks('grunt-webfont');
 
     grunt.registerTask('prep', ['bower']);
-    grunt.registerTask('default', ['webfont', 'less', 'browserify:bundle']);
+    grunt.registerTask('default', ['webfont', 'less', 'browserify:bundle', 'browserify:demo']);
     grunt.registerTask('check', ['jshint', 'browserify:test','qunit']);
     grunt.registerTask('dist', ['default', 'copyto:dist']);
 

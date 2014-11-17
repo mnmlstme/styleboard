@@ -161,7 +161,7 @@
 
     .frame-tabs {
         /** Tabs for switching the current `pane` to view within a `tabbed-` frame.
-            @example [tabbed-frame.html] Two tabs
+            @example [tabbed-frame.html, tabbed-frame.js] Two tabs
          */
         .font( nav, inherit, inv-lo );
         white-space: nowrap;
@@ -169,9 +169,12 @@
             display: inline-block;
             cursor: pointer;
             padding: 0 .5em;
+            height: 2em;
+            border-bottom: 3px solid transparent;
             &.is-active {
                 .color( delta );
                 outline-color: @color-delta;
+                border-bottom-color: @color-delta
             }
             &:empty {
                 visibility: hidden;

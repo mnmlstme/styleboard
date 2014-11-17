@@ -7,9 +7,9 @@
     </head>
     <body class="fullscreen- styleboard">
         <div class="horizontal- forty-sixty- split- frame">
-            <div id="dictionaryView" class="tabbed- frame">
-                <nav>
-                    <ul class="frame-tabs bar">
+            <div id="dictionaryView" class="tabbed- headered- frame">
+                <nav class="frame-header">
+                    <ul class="frame-tabs">
                         <li class="is-active">A-Z
                         <li><!-- pattern goes here -->
                     </ul>
@@ -105,9 +105,14 @@
                         </section>
                     </div>
                 </div>
-                <section class="code dark- scrollable- pane">
-                    <pre id="example"></pre>
-                </section>
+                <div class="headered- frame" id="filesView">
+                    <nav class="frame-header">
+                        <ul class="frame-tabs">
+                        </ul>
+                    </nav>
+                    <ul class="frame-panes">
+                    </ul>
+                </div>
             </div>
         </div>
     </body>
