@@ -33,113 +33,113 @@ var CodeView = Backbone.View.extend({
             type = view.model.get('type'),
             html = Prism.highlight( content, prismTypes[type] );
 
-            if ( type === 'html' ) {
-                html = filler.replace( html, function (key) {
-                    return '<span class="styleboard-filler" data-filler-key="' + key + '"></span>';
-                });
-            }
+        if ( type === 'html' ) {
+            html = filler.replace( html, function (key) {
+                return '<span class="styleboard-filler" data-filler-key="' + key + '"></span>';
+            });
+        }
 
-            // Insert the html
-            $pre.html(html).addClass(type + '- code');
+        // Insert the html
+        $pre.html(html).addClass(type + '- code');
 
-            if ( type === 'html' ) {
-                // Replace the filler text
-                $pre.find('.styleboard-filler')
-                    .each( function () {
-                        var $el = $(this),
-                            key = $el.data('filler-key'),
-                            subview = new EditableFillerView({
-                                model: filler,
-                                key: key,
-                                el: $el[0]
-                            });
-                        subview.render();
-                    });
-
-                // Highlight the tags that contain pattern names
-                $pre.find('.token.tag').each( function () {
-                    var $tag = $(this),
-                        tagIsPattern = false,
-                        $tagToken = $tag.find('.token.tag')
-                            .contents()
-                            .filter( function () { return this.nodeType === Node.TEXT_NODE; } )
-                            .map( function () {
-                                var $textnode = $(this),
-                                    $nametoken = $.mk('span.tagname-.token', $textnode.text() )
-                                    .insertBefore($textnode);
-
-                                $textnode.remove();
-                                return $nametoken;
-                            }),
-                        $attrTokens = $tag.find('.token.attr-name'),
-                        $classTokens = $tag.find('.token.attr-name')
-                            .filter( function () { return $(this).text() === 'class'; })
-                            .next()
-                            .map( function () {
-                                var $token = $(this),
-                                    $textnode = $token.contents()
-                                        .filter( function () { return this.nodeType === Node.TEXT_NODE; }),
-                                    classlist = $textnode.text().split(/\s+/),
-                                    $classTokens = $.map(classlist, function (classname, index) {
-                                        var $classtoken = $.mk('span.classname-.token', classname)
-                                            .insertBefore( $textnode );
-                                        if ( index ) {
-                                            $(document.createTextNode(' '))
-                                                .insertBefore( $classtoken );
-                                        }
-
-                                        return $classtoken;
-                                    });
-                                $textnode.remove();
-                                return $classTokens;
-                            });
-
-                    // first see if there is a pattern anywhere in this tag
-                    [$tagToken, $attrTokens, $classTokens].forEach( function ($tokens) {
-                        $tokens.each( function () {
-                            checkForPattern( $(this) );
+        if ( type === 'html' ) {
+            // Replace the filler text
+            $pre.find('.styleboard-filler')
+                .each( function () {
+                    var $el = $(this),
+                        key = $el.data('filler-key'),
+                        subview = new EditableFillerView({
+                            model: filler,
+                            key: key,
+                            el: $el[0]
                         });
-                    });
-
-                    // decorate tag names
-                    // TODO: only decorate if the CSS defn includes an element selector
-                    $tagToken.each( function () {
-                        decorate( $(this) );
-                    });
-
-                    // decorate attribute names
-                    // TODO: only decorate if the CSS defn includes an attribute selector
-                    $attrTokens.each( function() {
-                        decorate( $(this) );
-                    });
-
-                    // decorate class names
-                    $classTokens.each( function() {
-                        decorate( $(this) );
-                    });
-
-                    return view;
+                    subview.render();
                 });
-            }
 
-            function checkForPattern ($token) {
-                var name = $token.text();
+            // Highlight the tags that contain pattern names
+            $pre.find('.token.tag').each( function () {
+                var $tag = $(this),
+                    tagIsPattern = false,
+                    $tagToken = $tag.find('.token.tag')
+                        .contents()
+                        .filter( function () { return this.nodeType === Node.TEXT_NODE; } )
+                        .map( function () {
+                            var $textnode = $(this),
+                                $nametoken = $.mk('span.tagname-.token', $textnode.text() )
+                                .insertBefore($textnode);
 
-                if ( pattern.getName() === name ) {
-                    tagIsPattern = true;
+                            $textnode.remove();
+                            return $nametoken;
+                        }),
+                    $attrTokens = $tag.find('.token.attr-name'),
+                    $classTokens = $tag.find('.token.attr-name')
+                        .filter( function () { return $(this).text() === 'class'; })
+                        .next()
+                        .map( function () {
+                            var $token = $(this),
+                                $textnode = $token.contents()
+                                    .filter( function () { return this.nodeType === Node.TEXT_NODE; }),
+                                classlist = $textnode.text().split(/\s+/),
+                                $classTokens = $.map(classlist, function (classname, index) {
+                                    var $classtoken = $.mk('span.classname-.token', classname)
+                                        .insertBefore( $textnode );
+                                    if ( index ) {
+                                        $(document.createTextNode(' '))
+                                            .insertBefore( $classtoken );
+                                    }
+
+                                    return $classtoken;
+                                });
+                            $textnode.remove();
+                            return $classTokens;
+                        });
+
+                // first see if there is a pattern anywhere in this tag
+                [$tagToken, $attrTokens, $classTokens].forEach( function ($tokens) {
+                    $tokens.each( function () {
+                        checkForPattern( $(this) );
+                    });
+                });
+
+                // decorate tag names
+                // TODO: only decorate if the CSS defn includes an element selector
+                $tagToken.each( function () {
+                    decorate( $(this) );
+                });
+
+                // decorate attribute names
+                // TODO: only decorate if the CSS defn includes an attribute selector
+                $attrTokens.each( function() {
+                    decorate( $(this) );
+                });
+
+                // decorate class names
+                $classTokens.each( function() {
+                    decorate( $(this) );
+                });
+
+                return view;
+
+                function checkForPattern ($token) {
+                    var name = $token.text();
+
+                    if ( pattern.getName() === name ) {
+                        tagIsPattern = true;
+                    }
                 }
-            }
 
-            function decorate ($token) {
-            var name = $token.text(),
-                defn = pattern.getName() === name ? pattern : pattern.getDefinition( name ),
-                type = defn.isValid() && defn.getType();
+                function decorate ($token) {
+                    var name = $token.text(),
+                        defn = pattern.getName() === name ? pattern : pattern.getDefinition( name ),
+                        type = defn.isValid() && defn.getType();
 
-            if ( type ) {
-                if ( tagIsPattern || (type !== 'modifier' && type !== 'state') ) {
-                    $token.addClass( type + '-' );
+                    if ( type ) {
+                        if ( tagIsPattern || (type !== 'modifier' && type !== 'state') ) {
+                            $token.addClass( type + '-' );
+                        }
+                    }
                 }
-            }
+            });
         }
     }
 });

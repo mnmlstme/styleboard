@@ -105,7 +105,7 @@ module.exports = function(grunt){
     grunt.loadNpmTasks('grunt-webfont');
 
     grunt.registerTask('prep', ['bower']);
-    grunt.registerTask('default', ['webfont', 'less', 'browserify:bundle', 'browserify:demo']);
+    grunt.registerTask('default', ['less', 'browserify:bundle', 'browserify:demo']);
     grunt.registerTask('check', ['jshint', 'browserify:test','qunit']);
     grunt.registerTask('dist', ['default', 'copyto:dist']);
 

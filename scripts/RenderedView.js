@@ -76,7 +76,6 @@ var RenderedView = Backbone.View.extend({
         var view = this,
             doc = view.doc,
             $body = $(doc.body),
-            $head = $(doc.head),
             example = view.model,
             template = example && example.getText(),
             scope = example && example.getScope(),
@@ -108,44 +107,45 @@ var RenderedView = Backbone.View.extend({
 
         function renderTemplate() {
             var code = template ? view.filler.expand( template, scope ) : '',
+                scripts = [],
                 $content;
 
-            $content = $body.mk('div.styleboard-content')
+            $content = $body.mk('div#styleboard-content.styleboard-content')
                 .append( $.parseHTML( code || '', view.doc, true ) );
-
-            if ( view.ngApp ) {
-                $content.toggleClass('styleboard-ng-app', view.ngApp);
-                view.context.angular.bootstrap($content[0],[view.ngApp]);
-            }
 
             if ( files ) {
                 files.forEach( function (attrs) {
                     switch ( attrs.type ) {
                     case 'js':
-                        injectScript( attrs.url );
+                        scripts.push( attrs );
+                        injectScript( attrs.url, bootstrap );
                         break;
                     case 'css':
                         injectStyle( attrs.url );
-                        $head.mk('link', {
-                            rel: 'stylesheet',
-                            type: 'text/css',
-                            href: attrs.url
-                        });
                         break;
                     }
                 });
             }
 
-            view.updateSettings();
+            if ( !scripts.length ) {
+                bootstrap();
+            }
         }
 
-        function injectScript( url ) {
+        function injectScript( url, onload ) {
             // We have to create the script tag using the iframe's document,
             // so it's easiest to use plain Javascript.
             var script = doc.createElement('script');
             script.type = 'text/javascript';
-            script.src = url;
+            if ( onload ) {
+                script.onload = onload
+            }
             doc.body.appendChild(script);
+            // Setting 'src' initiates the request
+            if ( url ) {
+                script.src = url;
+            }
+
         }
 
         function injectStyle( url ) {
@@ -155,8 +155,21 @@ var RenderedView = Backbone.View.extend({
             link.ref = 'stylesheet';
             link.type = 'text/css';
             link.href = url;
-            doc.head.appendChild(link);
+            doc.body.appendChild(link);
         }
+
+        function bootstrap() {
+            var content = doc.getElementById('styleboard-content');
+            // TODO: make this wait for N>1 scripts to load
+            // TODO: any other frameworks require bootstrapping?
+
+            if ( view.ngApp ) {
+                view.context.angular.bootstrap(content,[view.ngApp]);
+            }
+
+            view.updateSettings();
+        }
+
     },
 
     updateSettings: function updateSettings() {
