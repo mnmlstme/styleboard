@@ -38,26 +38,20 @@ body.styleboard {
     background: #fff url(../graphics/checkerboard.svg);
     background-size: 16px;
     box-shadow: 0 0 5px rgba(0,0,0,0.5) inset;
-    padding: 20px;
-
-    &.full-bleed- {
-        overflow: hidden;
-        padding: 0;
-        border: 1px solid @border-lo-color;
-    }
+    padding: 0;
 }
 
 #sandbox {
-    .transform-origin( top left );
     width: 100%;
     height: 100%;
+    padding: 8px;
 
     iframe {
         display: block;
-        outline: 1px dotted rgba(0,0,0,0.2);
         margin: 0 auto;
-        height: 100%; // overridden inline, but this prevents the border flash
+        height: 100%;
         width: 100%;
+        outline: 1px dotted rgba(0, 0, 0, 0.2);
     }
 }
 

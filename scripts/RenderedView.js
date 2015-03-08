@@ -35,14 +35,22 @@ var RenderedView = Backbone.View.extend({
                           'href="' + url + '">';
                   }).join('\n') +
                   '<style>\n' +
-                  '.styleboard-view{background:transparent;margin:0;font-size:100%;overflow:hidden}\n' +
-                  '.styleboard-content::after{display:block;content:"";clear:both}\n' +
+                  'body{background-color:transparent;margin:0;font-size:100%}' +
+                  '.styleboard-view{height:100%}\n' +
+                  '.styleboard-content{float:left;position:relative;top:50%;left:50%;max-height:100%;' +
+                  '-ms-transform:translate(-50%,-50%);' +
+                  '-moz-transform:translate(-50%,-50%);' +
+                  '-webkit-transform:translate(-50%,-50%);' +
+                  'transform:translate(-50%,-50%)}\n' +
+                  '.styleboard-content::after,.styleboard-view::after{display:block;content:"";clear:both}\n' +
                   '</style>\n' +
                   scripts.map( function (url) {
                       return '<script src="' + url + '"></script>';
                   }).join('\n') +
                   '</head>' +
-                  '<body class="styleboard-view">');
+                  '<body>' +
+                  '<div class="styleboard-view"></div>' +
+                  '</body>');
         doc.close();
 
         view.filler.on('change', view.render, view );
@@ -76,6 +84,7 @@ var RenderedView = Backbone.View.extend({
         var view = this,
             doc = view.doc,
             $body = $(doc.body),
+            $view = $(doc.body).find('.styleboard-view').first(),
             example = view.model,
             template = example && example.getText(),
             scope = example && example.getScope(),
@@ -83,8 +92,8 @@ var RenderedView = Backbone.View.extend({
             firstHtml = _.findWhere(files, {type: 'html'}),
             url = firstHtml && firstHtml.url;
 
-        if ( $body.length ) {
-            $body.empty();
+        if ( $view.length ) {
+            $view.empty();
             if ( example ) {
                 if ( template ) {
                     renderTemplate();
@@ -110,7 +119,7 @@ var RenderedView = Backbone.View.extend({
                 scripts = [],
                 $content;
 
-            $content = $body.mk('div#styleboard-content.styleboard-content')
+            $content = $view.mk('div#styleboard-content.styleboard-content')
                 .append( $.parseHTML( code || '', view.doc, true ) );
 
             if ( files ) {
@@ -184,7 +193,6 @@ var RenderedView = Backbone.View.extend({
             transform = view.settings.transform || "",
             scaleMatch = transform.match( /^scale\(([0-9.]+)\)$/ ),
             scale = scaleMatch ? 1 * scaleMatch[1] : 1,
-            bw, bh, cw, ch,
             position = { position: 'relative', top: 0, left: 0 },
             applyTo = {
                 transform: $sandbox,
@@ -207,48 +215,6 @@ var RenderedView = Backbone.View.extend({
             // Make adjustments for scale.
             view.$el.css({ width: (100 / scale) + '%', height: (100 / scale) + '%' });
             view.$pane.css({ 'background-size': CHECKERBOARD_SIZE * scale + 'px' });
-
-            bw = $body.width(); // don't include padding
-            bh = $body.height();
-            cw = $content.outerWidth(); // include padding
-            ch = $content.outerHeight();
-
-            if ( cw === bw && ch === bh ) {
-                // Content is width: 100%, height: 100%
-                view.$pane.addClass('full-bleed-');
-            } else {
-                // Try to format at natural size and center in the pane
-                view.$pane.removeClass('full-bleed-');
-
-                // Float the content to determine its natural size.
-                $content.css('float', 'left');
-                cw = $content.outerWidth(); // include padding
-                ch = $content.outerHeight();
-
-                // Extend the iframe's height to fit content, if necessary.
-                if ( ch && ch > bh ) {
-                    if ( cw && cw > bw ) {
-                        ch += 15; // account for horizontal scrollbar
-                    }
-                    $iframe.height( Math.ceil(ch) );
-                }
-
-                // Let the content flow itself within this size, remove the float
-                $content.removeAttr('style');
-
-                // Position appropriately based on natural size.
-                if ( cw && cw < bw ) {
-                    position.width = Math.ceil(cw);
-                    position.left = Math.floor((bw - cw) / 2 );
-                }
-                if ( ch && ch < bh ) {
-                    position.top = Math.floor((bh - ch) / 2 );
-                }
-                if ( position.top || position.left ) {
-                    $content.css(position);
-                }
-            }
-
         }
     }
 
