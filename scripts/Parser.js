@@ -6,7 +6,7 @@ var marked = require('../lib/marked/js/marked');
 var rework = require('rework');
 var slick = require('slick');
 
-// Uses LESS as a CSS parser, but all dependences on LESS should
+// Uses rework as a CSS parser, but all dependences on rework should
 // be confined to this file.
 var regex = {
 
@@ -73,7 +73,7 @@ function Parser( opts ) {
             urlPath = urlMatches ? urlMatches[1] : '';
 
         nodes.forEach( function (node) {
-            var comments, context, code;
+            var comments, context;
             switch ( node.type ) {
             case 'comment':
                 parseComment( node.comment );
@@ -90,6 +90,7 @@ function Parser( opts ) {
                 comments.map( function (comment) {
                     parseComment( comment.comment, node.selectors );
                 });
+                insertNode('rule', {}, node); 
                 break;
             default:
                 // ignore all other nodes

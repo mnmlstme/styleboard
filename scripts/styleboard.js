@@ -87,11 +87,12 @@ function StyleBoard( config, hash ) {
         $('#sandbox').each( function () {
                 (new RenderedView({
                     el: $(this),
+                    doc: doc,
                     filler: filler,
-                                styles: [styles],
-                                scripts: scripts,
-                                ngApp: config.ngApp || config['ng-app']
-                              })).render();
+                    styles: [styles],
+                    scripts: scripts,
+                    ngApp: config.ngApp || config['ng-app']
+                })).render();
         });
 
         $('#filesView').each( function () {

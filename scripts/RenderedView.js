@@ -3,6 +3,7 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 
 var appState = require('./appState');
+var Context = require('./Context');
 
 var CHECKERBOARD_SIZE = 16;
 
@@ -17,6 +18,7 @@ var RenderedView = Backbone.View.extend({
             doc = view.doc = context.document;
 
         view.filler = options.filler;
+        view.context = new Context({doc: options.doc});
         view.$pane = view.$el.closest('.pane');
         view.ngApp = options.ngApp || options['ng-app'];
         view.settings = {};
@@ -37,7 +39,8 @@ var RenderedView = Backbone.View.extend({
                   '<style>\n' +
                   'body{background-color:transparent;margin:0;font-size:100%}' +
                   '.styleboard-view{height:100%}\n' +
-                  '.styleboard-content{float:left;position:relative;top:50%;left:50%;max-height:100%;' +
+                  '.styleboard-content{max-height:100%;max-width:100%;}\n' +
+                  '.styleboard-content.shrink-wrapped-{float:left;position:relative;top:50%;left:50%;' +
                   '-ms-transform:translate(-50%,-50%);' +
                   '-moz-transform:translate(-50%,-50%);' +
                   '-webkit-transform:translate(-50%,-50%);' +
@@ -117,10 +120,44 @@ var RenderedView = Backbone.View.extend({
         function renderTemplate() {
             var code = template ? view.filler.expand( template, scope ) : '',
                 scripts = [],
-                $content;
+                $content = $view.mk('div#styleboard-content.styleboard-content')
+                    .append( $.parseHTML( code || '', view.doc, true ) ),
+                $children = $content.children(),
+                fullFrame = false;
 
-            $content = $view.mk('div#styleboard-content.styleboard-content')
-                .append( $.parseHTML( code || '', view.doc, true ) );
+            // Look for some indication that the pattern(s) being demoed are
+            // full-frame layouts.  This cannot be determined from getComputedStyle,
+            // we must inspect the CSS declarations themselves.  Fortunately, we
+            // have the declarations loaded, we just need to inspect them.
+            // The following algorithm is incomplete, but handles the common case.
+            // We simply look for class names which are patterns and search
+            // the CSS declarations of those patterns for percentage width/height.
+            $children.each( function () {
+                var classes = this.classList,
+                    length = classes.length,
+                    pattern;
+                for ( var i = 0; i < length && !fullFrame; i++ ) {
+                    pattern = view.context.getPattern( classes[i] );
+                    if ( pattern ) {
+                        fullFrame = _.find( pattern.getNodesOfType('rule'), function (rule) {
+                            var rules = rule.getNodes(),
+                                declarations = rules && rules[0].get('node').declarations;
+                            return _.find(declarations, function (decl) {
+                                var prop = decl.property,
+                                    val = decl.value;
+                                return decl.type === 'declaration' && (
+                                    (prop === 'width' || prop === 'height') && val.indexOf('%') >= 0 ||
+                                    (prop === 'position' && (val === 'relative' || val === 'absolute')));
+                            });
+                        });
+                    }
+                }
+                return !fullFrame; // while !fullFrame
+            });
+
+            if ( !fullFrame ) {
+                $content.addClass('shrink-wrapped-');
+            }
 
             if ( files ) {
                 files.forEach( function (attrs) {
@@ -172,7 +209,7 @@ var RenderedView = Backbone.View.extend({
             // TODO: make this wait for N>1 scripts to load
             // TODO: any other frameworks require bootstrapping?
 
-            if ( view.ngApp ) {
+            if ( view.ngApp && view.context.angular ) {
                 view.context.angular.bootstrap(content,[view.ngApp]);
             }
 
