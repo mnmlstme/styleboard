@@ -14,8 +14,8 @@ var RenderedView = Backbone.View.extend({
             styles = options.styles,
             scripts = options.scripts,
             $iframe = view.$iframe = view.$el.find('iframe'),
-            context = view.context = view.$iframe[0].contentWindow,
-            doc = view.doc = context.document;
+            win = view.window = view.$iframe[0].contentWindow,
+            doc = view.doc = win.document;
 
         view.filler = options.filler;
         view.context = new Context({doc: options.doc});
@@ -209,8 +209,8 @@ var RenderedView = Backbone.View.extend({
             // TODO: make this wait for N>1 scripts to load
             // TODO: any other frameworks require bootstrapping?
 
-            if ( view.ngApp && view.context.angular ) {
-                view.context.angular.bootstrap(content,[view.ngApp]);
+            if ( view.ngApp && view.window.angular ) {
+                view.window.angular.bootstrap(content,[view.ngApp]);
             }
 
             view.updateSettings();
