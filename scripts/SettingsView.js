@@ -8,20 +8,13 @@ var Backbone = require('backbone');
 var appState = require('./appState');
 
 
-var defaultSettings = {
-    // TODO: make this configurable from styleboard.config
-    "background-color": "transparent",
-    "font-size": "14px",
-    width: "100%",
-    transform: "scale(1)"
-};
 
 var SettingsView = Backbone.View.extend({
 
-    initialize: function () {
+    initialize: function ( options ) {
         var view = this;
 
-        view.settings = defaultSettings;
+        view.settings = options.defaults;
 
         appState.set( 'settings', JSON.stringify(view.settings) );
         appState.on( 'change:settings', function( appState, settingsJSON ) {
