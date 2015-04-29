@@ -1,11 +1,8 @@
-
+var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
 
-var standard = {
-    // Strings not taken from corpus
-    btn: 'Button'
-};
+var appState = require('./appState');
 
 var nullString = '(null)';
 
@@ -13,7 +10,6 @@ var Filler = Backbone.Model.extend({
 
     initialize: function ( attrs ) {
         var model = this,
-            corpus = texts[attrs.fillerText || 'lorem'],
             pat = {
                 // Default is mustache templating
                 open: '\\{\\{',
@@ -22,7 +18,7 @@ var Filler = Backbone.Model.extend({
                 close: '\\}\\}'
             };
 
-        if ( attrs.templating === 'erb' ) {
+        if ( attrs.templating === 'ejs' ) {
             // since we run this over HTML, it may be escaped
             pat.open = '(?:<|&lt;?)%=';
             pat.close = '%>';
@@ -31,34 +27,48 @@ var Filler = Backbone.Model.extend({
         // the regex to use to find template expressions
         model.regex = new RegExp( pat.open + '\\s*(' + pat.expr + ')\\s*' + pat.close, 'g' );
 
+        model.texts = attrs.texts;
+
+        if ( attrs.fillerText ) {
+            model.read( model.url = model.texts[attrs.fillerText] );
+        }
+
+        appState.on('change:settings', function( appState, settingsJSON ) {
+            var settings = JSON.parse(settingsJSON),
+                url = model.texts[settings['filler-text']];
+
+            if ( url !== model.url ) {
+                model.read( model.url = url );
+            }
+        });
+    },
+
+    read: function ( url ) {
+        var model = this;
+
+        $.ajax({
+            dataType: 'json',
+            cache: false,
+            url: url,
+            success: function ( jsonObject ) {
+                model.load( jsonObject );
+            },
+            error: function ( jqxhr, status, error ) {
+                console.warn( "Failed to load strings file " + url + "\n" +
+                              "Error: " + status + "(" + error + ")\n");
+            }
+        });
+    },
+
+    load: function ( data ) {
+        var model = this;
+
+        model.clear();
+
         // Build the dictionary
-        _(standard).each( function (value, key) {
+        _(data).each( function (value, key) {
             model.set(key, value);
         });
-
-        // s: Sentences are taken directly from the corpus.
-        model.set('s', corpus.slice(0));
-
-        // p: Paragraphs are 3 sentences long.
-        model.set('p', corpus.map( function (s, i, list) {
-            return sentences( list, i, 3 );
-        }));
-
-        // h: Headers are 2-3 words, title case.
-        model.set('h', corpus.map( function (s, i) {
-            return words( s, 2 + (i%2), true );
-        }));
-
-        // w: Single words
-        // TODO: filter for "interesting" words.
-        model.set('w', corpus.map( function (s) {
-            return words( s, 1 );
-        }));
-
-        // phr: Phrases are 3-6 words.
-        model.set('phr', corpus.map( function (s, i) {
-            return words( s, 3 + (i%4) );
-        }));
     },
 
     replace: function ( template, f ) {
@@ -149,32 +159,11 @@ var Filler = Backbone.Model.extend({
 
 });
 
-function sentences(list, start, n) {
-    var sents = [];
-
-    for( var j=0; j < n; j++ ) {
-        sents.push( list[(start + n*j)%list.length] );
-    }
-    return sents.join(' ');
-}
-
-function words(s, n, titlecase) {
-    var w = s.toLowerCase().split(/[^\w'’]+/).slice(0,n || 0);
-
-    if (titlecase) {
-        // TODO: handle prepositions and articles properly
-        w = w.map( function (string) {
-            return string.charAt(0).toUpperCase() + string.slice(1);
-        });
-    }
-
-    return w.join(' ');
-}
-
 function keyToPath(key) {
     return key.split(/\W/).filter( function(s) { return s !== ''; } );
 }
 
+/**
 var texts = {
     lorem: [
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
@@ -324,5 +313,5 @@ var texts = {
         'However, if Sartreist existentialism holds, we have to choose between capitalist nihilism and the neotextual paradigm of narrative.'
     ],
 };
-
+**/
 module.exports = Filler;

@@ -24,6 +24,7 @@ var appState = require('./appState');
 var configs = {
     'default': {
         'styles': 'styles/styleboard.css',
+        'content': 'texts/kafka.json',
         'options': {}
     }
 };
@@ -57,8 +58,11 @@ $.ajax({
 function StyleBoard( config, hash ) {
     var sb = this,
         styles = config.styles,
+        content = config.content,
         scripts = _.isArray(config.scripts) ? config.scripts :
             ( config.scripts ? [config.scripts] : [] ),
+        texts = config.texts || { 'lorem': 'texts/lorem.json' },
+        fillerText = config.options.fillerText || _(texts).keys()[0],
         rules = config.options.rules || {},
         parser = new Parser(rules);
 
@@ -74,9 +78,19 @@ function StyleBoard( config, hash ) {
         var dictionary = new Backbone.Collection( patterns );
 
         var filler = new Filler({
-            fillerText: config.options.fillerText,
+            texts: texts,
+            fillerText: fillerText,
             templating: config.options.templating
         });
+
+        var defaultSettings = {
+            // TODO: make this configurable from styleboard.config
+            "background-color": "transparent",
+            "font-size": "14px",
+            width: "100%",
+            transform: "scale(1)",
+            "filler-text": fillerText
+        };
 
         // initialize each view, if it exists in the markup
 
@@ -100,7 +114,7 @@ function StyleBoard( config, hash ) {
         });
 
         $('#settings').each( function () {
-            (new SettingsView({ el: $('#settings') })).render();
+            (new SettingsView({ el: $('#settings'), defaults: defaultSettings })).render();
         });
 
         $('#embedFooter').each( function () {

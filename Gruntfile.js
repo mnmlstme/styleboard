@@ -76,7 +76,8 @@ module.exports = function(grunt){
                     'graphics/iconfont/*.{eot,svg,ttf,woff}',
                     'graphics/*.svg',
                     'styles/*.css',
-                    'styles/*/examples/**'
+                    'styles/*/examples/**',
+                    'texts/**'
                 ]
             }
         },
