@@ -20,16 +20,57 @@ var FooterView = require('./FooterView');
 var SettingsView = require('./SettingsView');
 var appState = require('./appState');
 
+
+// URL to fetch the configuration from, relative to index.html.
+var configUrl = 'styleboard.config';
+
 // Default configuration. Edit in styleboard.config.
 var configs = {
     'default': {
         'styles': 'styles/styleboard.css',
-        'content': 'texts/kafka.json',
+        'content': 'texts/lorem.json',
         'options': {}
     }
 };
 
-var configUrl = 'styleboard.config';
+var defaultControls = {
+    "filler-text": {
+        "lorem": "texts/lorem.json",
+        "dickens": "texts/dickens.json",
+        "kafka": "texts/kafka.json"
+    },
+    "transform": {
+        "50%": "scale(.5)",
+        "100%": "scale(1)",
+        "200%": "scale(2)"
+    },
+    "width": {
+        "100%": "100%",
+        "----" : "",
+        "320px": "320px",
+        "600px": "600px",
+        "1024px": "1024px"
+    },
+    "font-size": {
+        "12px": "12px",
+        "16px": "16px",
+        "24px": "24px"
+    },
+    "background-color": {
+        "None": "transparent",
+        "----": "",
+        "White": "#ffffff",
+        "Black": "#000000"
+    }
+};
+
+var defaultSettings = {
+    "background-color": "#ffffff",
+    "font-size": "16px",
+    "width": "100%",
+    "transform": "scale(1)",
+    "filler-text": "texts/lorem.json"
+};
 
 $.ajax({
     dataType: 'json',
@@ -78,19 +119,14 @@ function StyleBoard( config, hash ) {
         var dictionary = new Backbone.Collection( patterns );
 
         var filler = new Filler({
-            texts: texts,
-            fillerText: fillerText,
             templating: config.options.templating
         });
 
-        var defaultSettings = {
-            // TODO: make this configurable from styleboard.config
-            "background-color": "transparent",
-            "font-size": "14px",
-            width: "100%",
-            transform: "scale(1)",
-            "filler-text": fillerText
-        };
+        var controls = config.controls || {};
+        _.defaults( controls, defaultControls );
+
+        var settings = config.defaults || {};
+        _.defaults( settings, defaultSettings);
 
         // initialize each view, if it exists in the markup
 
@@ -114,7 +150,11 @@ function StyleBoard( config, hash ) {
         });
 
         $('#settings').each( function () {
-            (new SettingsView({ el: $('#settings'), defaults: defaultSettings })).render();
+            (new SettingsView({
+                el: $('#settings'),
+                controls: controls,
+                defaults: settings
+            })).render();
         });
 
         $('#embedFooter').each( function () {
