@@ -14,6 +14,7 @@ var SettingsView = Backbone.View.extend({
     initialize: function ( options ) {
         var view = this;
 
+        view.controls = options.controls;
         view.settings = options.defaults;
 
         appState.set( 'settings', JSON.stringify(view.settings) );
@@ -30,7 +31,26 @@ var SettingsView = Backbone.View.extend({
     },
 
     render: function () {
-        this.updateSettings();
+        // Populate the settings controls
+        var view = this,
+            controls = view.controls;
+
+        _(controls).each( function ( options, control ) {
+            var $selector = view.$('.selector[data-select="' + control + '"]'),
+                $list = $selector.find('.menu');
+
+            _(options).each( function ( value, key ) {
+                var divider = /^-+$/.test(key),
+                    $li = divider ? $list.mk('li.menu-divider')
+                        : $list.mk('li', {'data-option': value}, ['span', key ] );
+
+                if ( !divider && control === 'background-color' ) {
+                    $li.mk('i.swatch', {'style': control + ':' + value});
+                }
+            });
+        });
+
+        view.updateSettings();
     },
 
     updateSettings: function updateSettings() {
@@ -41,7 +61,13 @@ var SettingsView = Backbone.View.extend({
                 $button = $selector.find('button'),
                 $value = $button.find('.selector-value'),
                 $swatch = $button.find('.swatch'),
+                $current = $selector.find('.menu > li.is-selected'),
                 $option = $selector.find('[data-option="' + value + '"]');
+
+            if ( $current[0] !== $option[0] ) {
+                $current.removeClass('is-selected');
+                $option.addClass('is-selected');
+            }
 
             if ( $swatch.length ) {
                 $swatch.replaceWith( $option.find('.swatch').clone() );

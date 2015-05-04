@@ -11,15 +11,27 @@
     position: relative;
     height: 1em;
     width: 1em;
-    // checkboard on white, so we can see opacity
-    background: #fff url( ../../graphics/checkerboard.svg );
-    background-position: center;
 
-    &::before {
+    &::before,
+    &::after {
         content: "";
-        display: inline-block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: block;
         height: 100%;
         width: 100%;
+    }
+
+    &::before {
+        // the default background, checkboard on white, so we can see opacity of swatch
+        background: #fff url( ../../graphics/checkerboard.svg );
+        background-position: center;
+    }
+
+    &::after {
+        // duplicate the color of the swatch on top of the background
+        background-color: inherit;
     }
 
     &.transparent- { .color( transparent ); }
@@ -31,9 +43,7 @@
     // mixins
 
     .color ( @color ) {
-        &::before {
-            background-color: @color;
-        }
+        background-color: @color;
     }
 
     .size ( @size ) {
